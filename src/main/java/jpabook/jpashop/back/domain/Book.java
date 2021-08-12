@@ -1,20 +1,25 @@
-package jpabook.jpashop.domain;
+package jpabook.jpashop.back.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "books")
-@Getter @Setter
+@Getter
 public class Book {
     @Id
     @GeneratedValue
-    @Column(name = "bookId")
+    @Column(name = "book_id")
     private Long id;
+
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String author;
+
+    @Column(nullable = false)
     private String imgUrl;
 
 }

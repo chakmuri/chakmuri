@@ -1,29 +1,33 @@
-package jpabook.jpashop.domain;
+package jpabook.jpashop.back.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.FetchType.*;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "users")
 @Getter
-@Setter
 public class User {
 
     @Id
     @GeneratedValue
-    @Column(name = "userId")
-    private int id;
+    @Column(name = "user_id")
+    private Long id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
+    private String platform; // OAuth 종류
+
     private String imgUrl;
-    private String platform; // Aouth 종류
 
     @OneToOne(mappedBy = "user", fetch = LAZY)
     private Club club; // 내가 만든 독서모임

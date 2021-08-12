@@ -1,7 +1,6 @@
-package jpabook.jpashop.domain;
+package jpabook.jpashop.back.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -9,19 +8,19 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "members")
-@Getter @Setter
+@Getter
 public class Member {
 
     @Id @GeneratedValue
-    @Column(name = "memberId")
+    @Column(name = "member_id")
     private String id;
 
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
     private User user;
 
 
-    @JoinColumn(name = "clubId")
+    @JoinColumn(name = "club_id")
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
     private Club club;
 

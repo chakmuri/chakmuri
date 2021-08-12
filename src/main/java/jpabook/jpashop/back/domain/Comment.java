@@ -1,31 +1,34 @@
-package jpabook.jpashop.domain;
+package jpabook.jpashop.back.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Getter @Setter
+@Getter
 @Table(name = "comments")
 public class Comment {
     @Id @GeneratedValue
-    @Column(name = "commentId")
-    private long id;
+    @Column(name = "comment_id")
+    private Long id;
 
-    @JoinColumn(name = "feedId")
+    @JoinColumn(name = "feed_id")
     @ManyToOne(fetch = LAZY)
     private Feed feed;
 
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
     private User user;
 
-
+    @Size(max = 500)
+    @Column(nullable = false)
     private String contents;
-    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt; // NN이 맞을까요??
     private LocalDateTime updatedAt;
 }

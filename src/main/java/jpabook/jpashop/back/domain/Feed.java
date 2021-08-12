@@ -1,7 +1,6 @@
-package jpabook.jpashop.domain;
+package jpabook.jpashop.back.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,24 +11,31 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "feeds")
-@Getter @Setter
+@Getter
 public class Feed {
     @Id @GeneratedValue
-    @Column(name = "feedId")
+    @Column(name = "feed_id")
     private Long id;
 
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
     private User user;
 
-    @JoinColumn(name = "commentId")
+    @JoinColumn(name = "comment_id")
     @OneToMany(mappedBy = "feed")
     private List<Comment> commentList = new ArrayList<>();
 
-    private String title;
-    private int likes;
+    @Column(length = 2000)
     private String contents;
-    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private String title;
+
+    private int likes;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt; // NN이 맞을까요?
+
     private LocalDateTime updatedAt;
     private String imgUrl;
 
