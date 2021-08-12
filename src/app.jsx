@@ -1,8 +1,13 @@
 import React from "react";
-import "./app.css";
+import Board from "../src/pages/board";
+import { Switch, Route } from "react-router-dom";
 
 const App = () => {
-	return <div></div>;
+	return (
+		<Switch>
+			<Route exact path="/" component={Board} />
+		</Switch>
+	);
 };
 
 export default App;
