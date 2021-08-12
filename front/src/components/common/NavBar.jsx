@@ -40,29 +40,27 @@ const NavMenu = styled.div`
 
 const NavBar = () => {
 	return (
-		<>
-			<Nav>
-				<NavLogo>
-					<img src="assets/images/logo.png" alt="Logo" />
-				</NavLogo>
-				<div className="nav-menu">
-					<NavMenu className="board">보드</NavMenu>
-					<NavMenu className="feed">피드</NavMenu>
-					<div className="nav-icon">
-						<img
-							className="profile"
-							src="assets/images/icons/profile.png"
-							alt="Profile icon"
-						/>
-						<img
-							className="add"
-							src="assets/images/icons/add.png"
-							alt="Add icon"
-						/>
-					</div>
+		<Nav>
+			<NavLogo>
+				<img src="assets/images/logo.png" alt="Logo" />
+			</NavLogo>
+			<div className="nav-menu">
+				<NavMenu className="board">보드</NavMenu>
+				<NavMenu className="feed">피드</NavMenu>
+				<div className="nav-icon">
+					<img
+						className="profile"
+						src="assets/images/icons/profile.png"
+						alt="Profile icon"
+					/>
+					<img
+						className="add"
+						src="assets/images/icons/add.png"
+						alt="Add icon"
+					/>
 				</div>
-			</Nav>
-		</>
+			</div>
+		</Nav>
 	);
 };
 

@@ -29,19 +29,20 @@ const StyledCard = styled(Card)`
 	}
 `;
 
+const StyledDivider = styled(Divider)`
+	background-color: #94989b;
+`;
+
 const FeedCard = () => {
 	return (
 		<StyledCard
 			hoverable
 			cover={
-				<img
-					src="assets/images/thumbnail-feed.png"
-					alt="Feedcard thumbnail"
-				></img>
+				<img src="assets/images/thumbnail-feed.png" alt="Feedcard thumbnail" />
 			}
 		>
 			<Meta description="Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia." />
-			<Divider style={{ backgroundColor: "#94989B" }} />
+			<StyledDivider />
 			<p className="writer">
 				by <strong>독서모임 이름</strong>
 			</p>
