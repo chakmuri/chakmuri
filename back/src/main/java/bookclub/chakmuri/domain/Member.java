@@ -19,11 +19,11 @@ public class Member {
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
     private User user;
 
-
     @JoinColumn(name = "club_id")
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
     private Club club;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ApprovalStatus approvalStatus; //승인상태 [WAITING, CONFIRMED]
 

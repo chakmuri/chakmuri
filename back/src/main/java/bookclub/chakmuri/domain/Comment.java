@@ -29,6 +29,6 @@ public class Comment {
     private String contents;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt; // NN이 맞을까요??
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

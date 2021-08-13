@@ -35,7 +35,7 @@ public class Feed {
     private int likes;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt; // NN이 맞을까요?
+    private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
     private String imgUrl;

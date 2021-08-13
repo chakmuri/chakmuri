@@ -30,7 +30,7 @@ public class Club {
     private Tag tag;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "book_id") // Column어노테이션은 필요없나요?
+    @JoinColumn(name = "book_id")
     private Book book;
 
     @OneToMany(mappedBy = "club")
@@ -57,7 +57,7 @@ public class Club {
     private LocalDate endDate;
 
     @Column(nullable = false)
-    private int minPersonnel; // tinyint 자료형 int로 해도 괜찮나요??
+    private int minPersonnel;
 
     @Column(nullable = false)
     private int maxPersonnel;
@@ -74,6 +74,7 @@ public class Club {
     private LocalDateTime updatedAt;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private ClubStatus clubStatus; // [ACTIVE, EXPIRED]
 
 
