@@ -1,4 +1,7 @@
 package bookclub.chakmuri.repository;
 
-public class TagRepository {
+import bookclub.chakmuri.domain.Tag;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TagRepository extends JpaRepository<Tag, Long> {
 }

@@ -1,4 +1,7 @@
 package bookclub.chakmuri.repository;
 
-public class BookRepository {
+import bookclub.chakmuri.domain.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BookRepository extends JpaRepository<Book, Long> {
 }

@@ -1,10 +1,9 @@
 package bookclub.chakmuri.repository;
 
+import bookclub.chakmuri.domain.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface CommentRepository extends JpaRepository {
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 
 
