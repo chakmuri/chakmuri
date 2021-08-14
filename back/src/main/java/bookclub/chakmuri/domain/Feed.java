@@ -23,7 +23,6 @@ public class Feed {
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
     private User user;
 
-    @JoinColumn(name = "comment_id")
     @OneToMany(mappedBy = "feed")
     private List<Comment> commentList = new ArrayList<>();
 
