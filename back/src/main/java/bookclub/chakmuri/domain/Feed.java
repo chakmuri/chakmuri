@@ -14,7 +14,8 @@ import static javax.persistence.FetchType.LAZY;
 @Table(name = "feeds")
 @Getter
 public class Feed {
-    @Id @GeneratedValue
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feed_id")
     private Long id;
 
@@ -26,7 +27,7 @@ public class Feed {
     @OneToMany(mappedBy = "feed")
     private List<Comment> commentList = new ArrayList<>();
 
-    @Size(max = 2000)
+    @Column(length = 2000) @Size(max = 2000)
     private String contents;
 
     @Column(nullable = false)
@@ -34,10 +35,11 @@ public class Feed {
 
     private int likes;
 
-    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @Lob
     private String imgUrl;
 
 

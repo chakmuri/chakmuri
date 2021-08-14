@@ -12,7 +12,7 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @Table(name = "comments")
 public class Comment {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Long id;
 
@@ -24,11 +24,10 @@ public class Comment {
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
     private User user;
 
-    @Size(max = 500)
-    @Column(nullable = false)
+    @Column(length = 500, nullable = false) @Size(max = 500)
     private String contents;
 
-    @Column(nullable = false)
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 }

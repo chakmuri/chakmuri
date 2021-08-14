@@ -16,11 +16,10 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 public class Club {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) //데이터베이스에 위임(자동생성, auto_increment)
     @Column(name = "club_id")
     private Long id;
 
-    //FK
     @JoinColumn(name = "user_id")
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     private User user;
@@ -36,15 +35,16 @@ public class Club {
     @OneToMany(mappedBy = "club")
     private List<Member> memberList = new ArrayList<>();
 
-    @Size(max = 2000) @Column(nullable = false)
+    @Column(length = 2000, nullable = false) @Size(max = 2000)
     private String description;
 
-    @Size(max = 2000)
+    @Column(length = 2000) @Size(max = 2000)
     private String bookDescription;
 
     @Column(nullable = false)
     private String title;
 
+    @Lob
     private String imgUrl;
 
     @Column(nullable = false)
@@ -63,20 +63,17 @@ public class Club {
     private int maxPersonnel;
 
     private String addressDetail;
+
     private String addressStreet;
 
-    @Column(nullable = false)
     private int likes;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt; // datetime
+    private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ClubStatus clubStatus; // [ACTIVE, EXPIRED]
-
-
 
 }

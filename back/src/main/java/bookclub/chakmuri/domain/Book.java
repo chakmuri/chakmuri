@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 public class Book {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
     private Long id;
 
@@ -19,6 +19,7 @@ public class Book {
     @Column(nullable = false)
     private String author;
 
+    @Lob
     @Column(nullable = false)
     private String imgUrl;
 
