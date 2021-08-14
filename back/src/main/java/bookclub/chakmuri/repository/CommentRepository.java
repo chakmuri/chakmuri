@@ -1,4 +1,13 @@
 package bookclub.chakmuri.repository;
 
-public class CommentRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface CommentRepository extends JpaRepository {
+
+
+
+
+
 }
