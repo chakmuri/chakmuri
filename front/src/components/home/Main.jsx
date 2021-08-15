@@ -27,6 +27,17 @@ const Title = styled.div`
 const MainButton = styled.div`
 	text-align: center;
 	margin: 80px 0;
+	border-radius: 30px;
+	color: #ff6701;
+	background-color: #ffffff;
+	border: 1px solid #ff6701;
+	padding: 10px 20px;
+	transition: all 0.3s;
+
+	&:hover {
+		color: #ffffff;
+		background-color: #ff6701;
+	}
 `;
 
 const Main = () => {

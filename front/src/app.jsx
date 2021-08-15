@@ -1,7 +1,8 @@
 import React from "react";
+import AddForm from "./components/common/RegisterForm";
 
 const App = () => {
-	return <div></div>;
+	return <AddForm />;
 };
 
 export default App;
