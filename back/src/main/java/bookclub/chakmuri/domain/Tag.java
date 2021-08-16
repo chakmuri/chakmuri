@@ -3,6 +3,8 @@ package bookclub.chakmuri.domain;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tags")
@@ -14,27 +16,12 @@ public class Tag {
     private Long id;
 
     @Column(nullable = false)
-    private boolean minor;
+    private String name;
 
-    @Column(nullable = false)
-    private boolean online;
-
-    @Column(nullable = false)
-    private boolean offline;
-
-    @Column(nullable = false)
-    private boolean onoff;
-
-    @Column(nullable = false)
-    private boolean capital;
-
-    @Column(nullable = false)
-    private boolean province;
-
-    @Column(nullable = false)
-    private boolean amity;
-
-    @Column(nullable = false)
-    private boolean other;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "taggedClub",
+            joinColumns = @JoinColumn(name = "tag_id"),
+            inverseJoinColumns = @JoinColumn(name = "club_id"))
+    private Set<Club> clubs = new HashSet<>();
 
 }

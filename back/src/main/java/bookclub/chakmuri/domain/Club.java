@@ -7,7 +7,9 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -24,13 +26,14 @@ public class Club {
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     private User user;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
+    @OneToMany(mappedBy = "club")
+    private List<Comment> commentList = new ArrayList<>();
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "book_id")
-    private Book book;
+    @ManyToMany(mappedBy = "clubs")
+    private Set<Tag> tags = new HashSet<>();
+
+    @OneToMany(mappedBy = "club")
+    private List<Book> bookList = new ArrayList<>();
 
     @OneToMany(mappedBy = "club")
     private List<Member> memberList = new ArrayList<>();

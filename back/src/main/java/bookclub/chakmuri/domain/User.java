@@ -39,8 +39,5 @@ public class User {
     private List<LikedClub> likedClubList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Feed> feedList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
 }
