@@ -12,7 +12,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "book_id")
+    //@Column(name = "book_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)

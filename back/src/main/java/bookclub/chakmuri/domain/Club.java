@@ -19,7 +19,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Club {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) //데이터베이스에 위임(자동생성, auto_increment)
-    @Column(name = "club_id")
+    //@Column(name = "club_id")
     private Long id;
 
     @JoinColumn(name = "user_id")

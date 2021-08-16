@@ -14,7 +14,7 @@ import static javax.persistence.FetchType.LAZY;
 public class User {
 
     @Id @GeneratedValue
-    @Column(name = "user_id")
+    //@Column(name = "user_id")
     private String id;
 
     @Column(nullable = false)
@@ -25,9 +25,6 @@ public class User {
 
     @Column(length = 500, nullable = false)
     private String imgUrl;
-
-    @Column(nullable = false)
-    private String platform; // OAuth 종류
 
     @OneToOne(mappedBy = "user", fetch = LAZY)
     private Club club; // 내가 만든 독서모임

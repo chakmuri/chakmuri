@@ -13,7 +13,7 @@ import static javax.persistence.FetchType.LAZY;
 @Table(name = "comments")
 public class Comment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    //@Column(name = "comment_id")
     private Long id;
 
     @JoinColumn(name = "club_id")
