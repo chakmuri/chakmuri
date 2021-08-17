@@ -1,6 +1,8 @@
 package bookclub.chakmuri.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -14,6 +16,8 @@ import java.util.Set;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
+@NoArgsConstructor
+@ToString(exclude = {})
 @Table(name = "clubs")
 @Getter
 public class Club {
