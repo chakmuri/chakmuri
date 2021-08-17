@@ -18,7 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 public class User {
 
-    @Id @GeneratedValue
+    @Id
     //@Column(name = "user_id")
     private String id;
 
