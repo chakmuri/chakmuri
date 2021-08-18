@@ -1,5 +1,6 @@
 package bookclub.chakmuri.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -17,7 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @NoArgsConstructor
-@ToString(exclude = {})
+@ToString(exclude = {"commentList", "tags", "bookList","memberList"})
 @Table(name = "clubs")
 @Getter
 public class Club {
@@ -83,4 +84,25 @@ public class Club {
     @Enumerated(EnumType.STRING)
     private ClubStatus clubStatus; // [ACTIVE, EXPIRED]
 
+    @Builder
+    public Club(User user, String title, String contents, String imgUrl, int minPersonnel, int maxPersonnel,
+                LocalDate startDate, LocalDate endDate, int likes, String bookDescription, String description,
+                String addressDetail, String addressStreet, ClubStatus clubStatus){//Set<Tag> tags, List<Book> bookList
+        this.user = user;
+        this.title = title;
+        this.contents = contents;
+        this.imgUrl = imgUrl;
+        this.minPersonnel = minPersonnel;
+        this.maxPersonnel = maxPersonnel;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        //this.tags = tags;
+        this.likes = likes;
+        //this.bookList = bookList;
+        this.bookDescription = bookDescription;
+        this.description = description;
+        this.addressDetail = addressDetail;
+        this.addressStreet = addressStreet;
+        this.clubStatus = clubStatus;
+    }
 }
