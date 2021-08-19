@@ -6,12 +6,12 @@ import {
 	Row,
 	Col,
 	DatePicker,
-	Tag,
-	Upload,
-	message,
+	// Upload,
+	// message,
 } from "antd";
 import styled from "styled-components";
-import Button from "./Button";
+import Button from "../Button";
+import MapContainer from "./MapContainer";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -48,6 +48,11 @@ const StyledInput = styled(Input)`
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
+	margin-bottom: 10px;
+
+	&:last-of-type {
+		margin-bottom: 0;
+	}
 `;
 
 const StyledInputNumber = styled(InputNumber)`
@@ -89,11 +94,20 @@ const AddIcon = styled.div`
 	justify-content: flex-end;
 `;
 
-const StyledTag = styled(Tag)`
-	height: 40px;
+const Tag = styled.div`
 	padding: 10px 20px;
 	font-size: 16px;
+	color: #f98404;
+	background-color: #ffffff;
+	border: 1px solid #f98404;
 	border-radius: 30px;
+	text-align: center;
+	letter-spacing: 2px;
+`;
+
+const TagContainer = styled.div`
+	display: flex;
+	gap: 10px;
 `;
 
 const PreviewImage = styled.div`
@@ -113,6 +127,12 @@ const ButtonRow = styled(Row)`
 	display: flex;
 	justify-content: center;
 	gap: 88px;
+`;
+
+const MapWrapper = styled.div`
+	width: 1000px;
+	height: 250px;
+	margin-top: 40px;
 `;
 
 // styled-components 재사용 문제
@@ -141,22 +161,23 @@ const RegisterForm = () => {
 		console.log("Failed: ", errorInfo);
 	};
 
-	const props = {
-		name: "file",
-		headers: {
-			authorization: "authorization-text",
-		},
-		onChange(info) {
-			if (info.file.status !== "uploading") {
-				console.log(info.file, info.fileList);
-			}
-			if (info.file.status === "done") {
-				message.success(`${info.file.name} file uploaded successfully`);
-			} else if (info.file.status === "error") {
-				message.error(`${info.file.name} file upload failed.`);
-			}
-		},
-	};
+	// const props = {
+	// 	name: "file",
+	// 	action: "https://api.cloudinary.com/v1_1/diwyt7nzg/image/upload",
+	// 	headers: {
+	// 		authorization: "authorization-text",
+	// 	},
+	// 	onChange(info) {
+	// 		if (info.file.status !== "uploading") {
+	// 			console.log(info.file, info.fileList);
+	// 		}
+	// 		if (info.file.status === "done") {
+	// 			message.success(`${info.file.name} file uploaded successfully`);
+	// 		} else if (info.file.status === "error") {
+	// 			message.error(`${info.file.name} file upload failed.`);
+	// 		}
+	// 	},
+	// };
 
 	return (
 		<Wrapper>
@@ -212,16 +233,20 @@ const RegisterForm = () => {
 							label="사진"
 							name="photo"
 							rules={[
-								{ required: true, message: "모임의 사진을 업로드하세요." },
+								{
+									required: true,
+									message: "모임의 사진을 업로드하세요.",
+								},
 							]}
+							style={{ textAlign: "center" }}
 						>
 							<Row justify="center">
 								<PreviewImage></PreviewImage>
 							</Row>
 							<Row justify="center" align="center">
-								<Upload {...props}>
-									<FilledButton>이미지 업로드</FilledButton>
-								</Upload>
+								{/* <Upload {...props}>
+								</Upload> */}
+								<FilledButton>이미지 업로드</FilledButton>
 							</Row>
 						</Form.Item>
 					</Col>
@@ -232,20 +257,22 @@ const RegisterForm = () => {
 						name="tags"
 						rules={[{ required: true, message: "모임의 태그를 선택하세요." }]}
 					>
-						<div>
-							<StyledTag color="magenta">magenta</StyledTag>
-							<StyledTag color="red">red</StyledTag>
-							<StyledTag color="volcano">volcano</StyledTag>
-							<StyledTag color="orange">orange</StyledTag>
-							<StyledTag color="gold">gold</StyledTag>
-							<StyledTag color="lime">lime</StyledTag>
-							<StyledTag color="green">green</StyledTag>
-							<StyledTag color="cyan">cyan</StyledTag>
-						</div>
+						<TagContainer>
+							<Tag>소수정예</Tag>
+							<Tag>온라인</Tag>
+							<Tag>오프라인</Tag>
+							<Tag>온・오프라인</Tag>
+							<Tag>수도권</Tag>
+							<Tag>지방</Tag>
+							<Tag>친목</Tag>
+							<Tag>독서 외 활동</Tag>
+						</TagContainer>
 					</Form.Item>
+				</Row>
+				<Row>
 					<Col span={16}>
 						<Form.Item label="선정도서" name="book">
-							<Row>
+							<Row gutter={[0, 16]}>
 								<Col span={22}>
 									<StyledInput placeholder="검색" />
 								</Col>
@@ -254,22 +281,16 @@ const RegisterForm = () => {
 										<img src="assets/images/icons/add.png" alt="Add icon" />
 									</AddIcon>
 								</Col>
-								<Row gutter={16}>
-									<Col>
-										<BookCover />
-									</Col>
-									<Col>
-										<BookCover />
-									</Col>
-									<Col>
-										<BookCover />
-									</Col>
-								</Row>
-								<div>도서 선정 이유 및 소개글</div>
-								<StyledTextArea rows={10} />
+								<BookCover />
+								<Col>
+									<div>도서 선정 이유 및 소개글</div>
+									<StyledTextArea rows={10} />
+								</Col>
 							</Row>
 						</Form.Item>
 					</Col>
+				</Row>
+				<Row>
 					<Col span={16}>
 						<Form.Item
 							label="상세설명"
@@ -281,22 +302,17 @@ const RegisterForm = () => {
 							<StyledTextArea rows={10} />
 						</Form.Item>
 					</Col>
-					<Row>
-						<Col span={16}>
-							<Form.Item label="위치">
-								<StyledInput placeholder="도로명 주소" />
-								<StyledInput placeholder="상세 주소" />
-								<div
-									style={{
-										width: "1000px",
-										height: "250px",
-										backgroundColor: "#F6F6F6",
-										border: "1px solid black",
-									}}
-								></div>
-							</Form.Item>
-						</Col>
-					</Row>
+				</Row>
+				<Row>
+					<Col span={16}>
+						<Form.Item label="위치">
+							<StyledInput placeholder="도로명 주소" />
+							<StyledInput placeholder="상세 주소" />
+							<MapWrapper>
+								<MapContainer />
+							</MapWrapper>
+						</Form.Item>
+					</Col>
 				</Row>
 				<ButtonRow>
 					<FilledButton>등록</FilledButton>
