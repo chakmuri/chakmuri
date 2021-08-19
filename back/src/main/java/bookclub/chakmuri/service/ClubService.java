@@ -1,5 +1,6 @@
 package bookclub.chakmuri.service;
 
+import bookclub.chakmuri.controller.club.ClubResponseDto;
 import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.User;
 import bookclub.chakmuri.repository.ClubRepository;
@@ -7,6 +8,9 @@ import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +29,7 @@ public class ClubService {
         return clubRepository.save(newClub);
     }
 
+    //파라미터로 받은 userId 값을 사용해 findById로 찾은 user 객체를 이용, 빌더로 entity를 생성하는 역할
     private Club convertToClub(final Club club, final String userId){
         final User user = userRepository.findById(userId)
                 .orElseThrow(); // -> UserNotFoundException 만들어서 넣기
@@ -47,7 +52,11 @@ public class ClubService {
                 .build();
     }
 
-    public Club searchClub(Long clubId){
+    public List<Club> findAllClubs(){
+        return clubRepository.findAll();
+    }
+
+    public Club findClubById(Long clubId){
         return clubRepository.findById(clubId)
                 .orElseThrow(); // -> ClubNotFoundException 만들기
     }

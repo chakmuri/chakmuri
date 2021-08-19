@@ -84,10 +84,10 @@ public class Club {
     @Enumerated(EnumType.STRING)
     private ClubStatus clubStatus; // [ACTIVE, EXPIRED]
 
-    @Builder
+    @Builder    //Set<Tag> tags, List<Book> bookList //user에 final 추가
     public Club(User user, String title, String contents, String imgUrl, int minPersonnel, int maxPersonnel,
                 LocalDate startDate, LocalDate endDate, int likes, String bookDescription, String description,
-                String addressDetail, String addressStreet, ClubStatus clubStatus){//Set<Tag> tags, List<Book> bookList
+                String addressDetail, String addressStreet, ClubStatus clubStatus){
         this.user = user;
         this.title = title;
         this.contents = contents;
