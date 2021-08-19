@@ -12,7 +12,7 @@ import static javax.persistence.FetchType.LAZY;
 public class LikedClub {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "likedClub_id")
+    //@Column(name = "likedClub_id")
     private Long id;
 
     @JoinColumn(name = "user_id")
