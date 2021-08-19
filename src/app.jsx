@@ -1,5 +1,5 @@
 import React from "react";
-import Board from "../src/pages/board";
+import Board from "../src/pages/Board";
 import { Switch, Route } from "react-router-dom";
 
 const App = () => {
