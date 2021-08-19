@@ -39,13 +39,20 @@ const Wrapper = styled.div`
       line-height: 16px;
       color: #959595;
     }
+    .commentUpdateCheck { // 댓글 수정 여부
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 16px;
+      color: #FEA82F;
+      margin-left: 5px;
+    }
     .commentUpdate { // 댓글 수정
       font-weight: 500;
       font-size: 14px;
       line-height: 16px;
       color: #959595;
 
-      margin-left: 510px; /* 임시 레이아웃 */
+      margin-left: 350px; /* 임시 레이아웃 */
       cursor: pointer;
     }
     .commentDelete { // 댓글 삭제
@@ -77,7 +84,8 @@ const Comment = (props) => {
       <img className="commentProfile" src="assets/images/icons/profile.png" alt="profile" />
       <div className="commentContainer">
         <span className="commentWriter">작성자</span>
-        <span className="commentDate">2시간 전</span>
+        <span className="commentDate">yyyy-mm-dd hh:mm:ss</span>
+        <span className="commentUpdateCheck">(수정됨)</span>
         <span className="commentUpdate">수정</span>
         <span className="commentDelete">삭제</span>
         <p className="commentContents">
