@@ -118,7 +118,7 @@ const NavBar = () => {
 							<br />
 							<strong>책무리</strong>에서 모여보세요!
 						</Title>
-						<Login />
+						<Login onCancel={handleCancel} />
 					</StyledModal>
 					<NavRegister>
 						<img src="assets/images/icons/add.png" alt="Add icon" />
