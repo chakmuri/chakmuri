@@ -1,14 +1,6 @@
-import React from "react";
-import {
-	Form,
-	Input,
-	InputNumber,
-	Row,
-	Col,
-	DatePicker,
-	// Upload,
-	// message,
-} from "antd";
+import React, { useState } from "react";
+import axios from "axios";
+import { Form, Input, InputNumber, Row, Col, DatePicker } from "antd";
 import styled from "styled-components";
 import Button from "../Button";
 import MapContainer from "./MapContainer";
@@ -153,6 +145,29 @@ const UnFilledButton = styled(Button)`
 `;
 
 const RegisterForm = () => {
+	const [imgFile, setImgFile] = useState(null);
+	// const [preview, setPreview] = useState(null);
+
+	const handleImgChange = (e) => {
+		console.log(e.target.files[0]);
+		setImgFile(e.target.files[0]);
+	};
+
+	const handleImgUpload = (e) => {
+		e.preventDefault();
+		const formData = new FormData();
+		formData.append("upload_image", imgFile);
+		console.log("formData: ", formData);
+
+		const config = {
+			headers: {
+				"content-type": "multipart/form-data",
+			},
+		};
+
+		axios.post("", formData, config);
+	};
+
 	const onFinish = (values) => {
 		console.log("form values: ", values);
 	};
@@ -160,24 +175,6 @@ const RegisterForm = () => {
 	const onFinishFailed = (errorInfo) => {
 		console.log("Failed: ", errorInfo);
 	};
-
-	// const props = {
-	// 	name: "file",
-	// 	action: "https://api.cloudinary.com/v1_1/diwyt7nzg/image/upload",
-	// 	headers: {
-	// 		authorization: "authorization-text",
-	// 	},
-	// 	onChange(info) {
-	// 		if (info.file.status !== "uploading") {
-	// 			console.log(info.file, info.fileList);
-	// 		}
-	// 		if (info.file.status === "done") {
-	// 			message.success(`${info.file.name} file uploaded successfully`);
-	// 		} else if (info.file.status === "error") {
-	// 			message.error(`${info.file.name} file upload failed.`);
-	// 		}
-	// 	},
-	// };
 
 	return (
 		<Wrapper>
@@ -208,9 +205,7 @@ const RegisterForm = () => {
 						<Form.Item
 							label="참여 인원"
 							name="members"
-							rules={[
-								{ required: true, message: "모임의 참여 인원을 입력하세요." },
-							]}
+							rules={[{ message: "모임의 참여 인원을 입력하세요." }]}
 						>
 							<StyledInputNumber min={2} defaultValue={2} /> <span>인</span>{" "}
 							<span>~</span>
@@ -219,9 +214,7 @@ const RegisterForm = () => {
 						<Form.Item
 							label="진행 기간"
 							name="date"
-							rules={[
-								{ required: true, message: "모임의 진행 기간을 입력하세요." },
-							]}
+							rules={[{ message: "모임의 진행 기간을 입력하세요." }]}
 						>
 							<div>
 								<StyledRangePicker />
@@ -234,7 +227,6 @@ const RegisterForm = () => {
 							name="photo"
 							rules={[
 								{
-									required: true,
 									message: "모임의 사진을 업로드하세요.",
 								},
 							]}
@@ -243,10 +235,19 @@ const RegisterForm = () => {
 							<Row justify="center">
 								<PreviewImage></PreviewImage>
 							</Row>
-							<Row justify="center" align="center">
-								{/* <Upload {...props}>
-								</Upload> */}
-								<FilledButton>이미지 업로드</FilledButton>
+							<Row>
+								<Col span={12}>
+									<input
+										type="file"
+										accept="image/*"
+										onChange={handleImgChange}
+									/>
+								</Col>
+								<Col span={12}>
+									<FilledButton onClick={handleImgUpload}>
+										이미지 업로드
+									</FilledButton>
+								</Col>
 							</Row>
 						</Form.Item>
 					</Col>
@@ -255,7 +256,7 @@ const RegisterForm = () => {
 					<Form.Item
 						label="태그"
 						name="tags"
-						rules={[{ required: true, message: "모임의 태그를 선택하세요." }]}
+						// rules={[{ required: true, message: "모임의 태그를 선택하세요." }]}
 					>
 						<TagContainer>
 							<Tag>소수정예</Tag>
