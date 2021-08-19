@@ -1,7 +1,5 @@
 package bookclub.chakmuri.service;
 
-import bookclub.chakmuri.controller.club.ClubCreateRequestDto;
-import bookclub.chakmuri.controller.club.ClubDetailResponseDto;
 import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.User;
 import bookclub.chakmuri.repository.ClubRepository;
@@ -9,8 +7,6 @@ import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +18,7 @@ public class ClubService {
     //아직 태그, 선정도서 목록 등 포함안된 것들 있어서 테스트 불가
     @Transactional
     public Club createClub(final Club club, final String userId){
-        //userId NotNull 체크
+        //userId NotNull 체크 -> 없어도 됨
         //이 유저가 만든 독서모임이 있는지 체크(한사람당 한 개)
         //img upload 로직 짜기
         final Club newClub = convertToClub(club, userId);
