@@ -12,8 +12,8 @@ import static javax.persistence.FetchType.LAZY;
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
-    private String id;
+    //@Column(name = "member_id")
+    private Long id;
 
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
