@@ -1,5 +1,15 @@
 import React from "react";
-import { Form, Input, InputNumber, Row, Col, DatePicker, Tag } from "antd";
+import {
+	Form,
+	Input,
+	InputNumber,
+	Row,
+	Col,
+	DatePicker,
+	Tag,
+	Upload,
+	message,
+} from "antd";
 import styled from "styled-components";
 import Button from "./Button";
 
@@ -86,6 +96,13 @@ const StyledTag = styled(Tag)`
 	border-radius: 30px;
 `;
 
+const PreviewImage = styled.div`
+	width: 263px;
+	height: 263px;
+	border: 1px solid black;
+	border-radius: 50%;
+`;
+
 const BookCover = styled.div`
 	width: 180px;
 	height: 225px;
@@ -98,7 +115,7 @@ const ButtonRow = styled(Row)`
 	gap: 88px;
 `;
 
-// styled-components 재사용
+// styled-components 재사용 문제
 const FilledButton = styled(Button)`
 	width: 70px;
 	height: 40px;
@@ -122,6 +139,23 @@ const RegisterForm = () => {
 
 	const onFinishFailed = (errorInfo) => {
 		console.log("Failed: ", errorInfo);
+	};
+
+	const props = {
+		name: "file",
+		headers: {
+			authorization: "authorization-text",
+		},
+		onChange(info) {
+			if (info.file.status !== "uploading") {
+				console.log(info.file, info.fileList);
+			}
+			if (info.file.status === "done") {
+				message.success(`${info.file.name} file uploaded successfully`);
+			} else if (info.file.status === "error") {
+				message.error(`${info.file.name} file upload failed.`);
+			}
+		},
 	};
 
 	return (
@@ -182,17 +216,12 @@ const RegisterForm = () => {
 							]}
 						>
 							<Row justify="center">
-								<div
-									style={{
-										width: "263px",
-										height: "263px",
-										border: "1px solid black",
-										borderRadius: "50%",
-									}}
-								></div>
+								<PreviewImage></PreviewImage>
 							</Row>
 							<Row justify="center" align="center">
-								<FilledButton>이미지 업로드</FilledButton>
+								<Upload {...props}>
+									<FilledButton>이미지 업로드</FilledButton>
+								</Upload>
 							</Row>
 						</Form.Item>
 					</Col>
