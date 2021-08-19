@@ -1,7 +1,9 @@
 import React from "react";
+import MyPage from "./pages/MyPage";
+import "antd/dist/antd.css";
 
 const App = () => {
-	return <div></div>;
+	return <MyPage />;
 };
 
 export default App;

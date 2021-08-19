@@ -9,11 +9,6 @@ import FeedList from "./FeedList";
 const Wrapper = styled.div`
 	width: 1200px;
 	margin: 0 auto;
-
-	.button {
-		text-align: center;
-		margin: 80px 0;
-	}
 `;
 
 const Title = styled.div`
