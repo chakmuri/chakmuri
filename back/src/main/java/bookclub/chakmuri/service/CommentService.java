@@ -1,5 +1,6 @@
 package bookclub.chakmuri.service;
 
+import bookclub.chakmuri.controller.comment.CommentResponseDto;
 import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.Comment;
 import bookclub.chakmuri.domain.User;
@@ -76,6 +77,15 @@ public class CommentService {
 
 //        userRepository.findById(comment.getUser().getId()) // 댓글을 등록한 유저가 맞다면, 댓글을 삭제할 수 있습니다.
 //                .orElseThrow(); // TODO: UserNotFoundException::new 추가하기
+
+
+    }
+    //TODO: 존재하지 않는 모임에 대한 검증 추가
+    public List<Comment> findAllClubComments(Long clubId) {
+        final Club club = clubRepository.findById(clubId)
+                .orElseThrow(); // TODO: ClubNotFoundException::new 추가하기
+
+        return commentRepository.findAllByClubOrderByCreatedAtDesc(club);
 
 
     }
