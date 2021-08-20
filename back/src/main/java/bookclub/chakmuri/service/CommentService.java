@@ -68,14 +68,15 @@ public class CommentService {
 
     }
     @Transactional
-    public void deleteComment(String userId, Long commentId) {
-        userRepository.findById(userId) // 댓글을 등록한 유저가 맞다면, 댓글을 삭제할 수 있습니다.
-                .orElseThrow(); // TODO: UserNotFoundException::new 추가하기
-
-        Comment comment = commentRepository.findById(commentId)
+    public void deleteComment(final Long commentId) {
+        final Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(); // TODO: CommentNotFoundException::new 추가하기
 
         commentRepository.delete(comment);
+
+//        userRepository.findById(comment.getUser().getId()) // 댓글을 등록한 유저가 맞다면, 댓글을 삭제할 수 있습니다.
+//                .orElseThrow(); // TODO: UserNotFoundException::new 추가하기
+
 
     }
 }

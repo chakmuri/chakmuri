@@ -18,6 +18,7 @@ public class Comment {
     //@Column(name = "comment_id")
     private Long id;
 
+
     @JoinColumn(name = "club_id")
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
     private Club club;
