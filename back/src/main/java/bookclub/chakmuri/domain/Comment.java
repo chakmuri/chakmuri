@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -24,7 +26,7 @@ public class Comment {
     private Club club;
 
     @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = EAGER, cascade = CascadeType.ALL)
     private User user;
 
     @Column(length = 500, nullable = false) @Size(max = 500)

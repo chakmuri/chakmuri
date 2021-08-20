@@ -50,7 +50,7 @@ public class CommentController {
     }
 
     // 모임상세 댓글 전체 조회
-    @GetMapping("/club/{clubId}")
+    @GetMapping("/clubs/{clubId}")
     public ResponseEntity<List<CommentResponseDto>> getClubComments(
             @PathVariable("clubId") Long clubId) {
         List<CommentResponseDto> response = commentService.findAllClubComments(clubId)
