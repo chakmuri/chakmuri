@@ -20,7 +20,7 @@ public class Comment {
 
 
     @JoinColumn(name = "club_id")
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = LAZY)
     private Club club;
 
     @JoinColumn(name = "user_id")
