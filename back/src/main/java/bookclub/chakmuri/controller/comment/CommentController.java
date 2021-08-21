@@ -1,7 +1,9 @@
 package bookclub.chakmuri.controller.comment;
 
+import bookclub.chakmuri.domain.Comment;
 import bookclub.chakmuri.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +23,11 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<CommentResponseDto> createComment(
             @RequestBody CommentCreateRequestDto commentCreateRequestDto) {
-        return ResponseEntity.ok(
-                new CommentResponseDto(commentService.createComment(
-                        commentCreateRequestDto.toEntity(),
-                        commentCreateRequestDto.getUserId(),
-                        commentCreateRequestDto.getClubId()))
-                );
+        Comment comment = commentService.createComment(commentCreateRequestDto);
+        return new ResponseEntity(
+                "댓글이 성공적으로 등록되었습니다. (commentId: " + comment.getId() + ")",
+                HttpStatus.OK
+        );
     }
 
     // 댓글 수정
@@ -34,11 +35,13 @@ public class CommentController {
     public ResponseEntity<Void> updateComment(
             @RequestBody CommentUpdateRequestDto commentUpdateRequestDto,
             @PathVariable("commentId") Long commentId) {
-         commentService.updateComment(
-                commentUpdateRequestDto.toEntity(),
-                commentId,
-                commentUpdateRequestDto.getUserId());
-        return ResponseEntity.ok().build();
+        commentService.updateComment(commentUpdateRequestDto, commentId);
+
+        return new ResponseEntity(
+                "댓글이 성공적으로 수정되었습니다. comment: " + commentId + ")",
+                HttpStatus.OK
+        );
+
     }
 
     // 댓글 삭제
@@ -46,7 +49,10 @@ public class CommentController {
     public ResponseEntity<Void> deleteComment(
             @PathVariable("commentId") Long commentId) {
         commentService.deleteComment(commentId);
-        return ResponseEntity.noContent().build(); // 204 반환
+        return new ResponseEntity(
+                "댓글이 성공적으로 삭제되었습니다. comment: " + commentId + ")",
+                HttpStatus.OK
+        );
     }
 
     // 모임상세 댓글 전체 조회

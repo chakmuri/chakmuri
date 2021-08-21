@@ -38,7 +38,7 @@ public class Comment {
 
 
     // 댓글 수정 -> setter역할 (변경감지 활용)
-    public void updateComment(String newComment) {
+    public void changeComment(String newComment) {
         this.contents = newComment;
     }
 

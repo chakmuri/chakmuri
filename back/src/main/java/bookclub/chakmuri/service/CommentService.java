@@ -1,6 +1,9 @@
 package bookclub.chakmuri.service;
 
+import bookclub.chakmuri.controller.club.ClubCreateRequestDto;
+import bookclub.chakmuri.controller.comment.CommentCreateRequestDto;
 import bookclub.chakmuri.controller.comment.CommentResponseDto;
+import bookclub.chakmuri.controller.comment.CommentUpdateRequestDto;
 import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.Comment;
 import bookclub.chakmuri.domain.User;
@@ -30,9 +33,19 @@ public class CommentService {
 
     // 댓글 작성
     @Transactional // readOnly = false (기본값)
-    public Comment createComment(final Comment comment, final String userId, final Long clubId) {
+    public Comment createComment(CommentCreateRequestDto commentCreateRequestDto) {
 //        checkNotNull(userId, "userId must be provided");
 //        checkNotNull(clubId, "clubId must be provided");
+
+        /**
+         *
+         private String userId; // 유저 아이디
+         private Long clubId; // 모임 페이지 번호
+         private String contents; // 댓글 내용
+         */
+        Comment comment = commentCreateRequestDto.toEntity();
+        String userId = commentCreateRequestDto.getUserId();
+        Long clubId = commentCreateRequestDto.getClubId();
 
         //convertToComment:
         final Comment newComment = convertToComment(comment, userId, clubId);
@@ -56,15 +69,21 @@ public class CommentService {
     // 댓글 수정
     // TODO: commentId 예외처리하기, checkArgument(lectureId > 0, "lectureId must be positive number"); import 안됨.
     @Transactional
-    public void updateComment(final Comment requestComment, final Long commentId, final String userId) {
-
+    public void updateComment(CommentUpdateRequestDto commentUpdateRequestDto, Long commentId) {
+/**
+ * commentUpdateRequestDto.toEntity(),
+ *                 commentId,
+ *                 commentUpdateRequestDto.getUserId()
+ */
+        String userId = commentUpdateRequestDto.getUserId();
+        String contents = commentUpdateRequestDto.getContents();
         final User user = userRepository.findById(userId)
                 .orElseThrow();   // TODO: UserNotFoundException::new 추가하기
 
         final Comment comment = commentRepository.findById(commentId)
                 .orElseThrow();   // TODO: CommentNotFoundException::new 추가하기
 
-        comment.updateComment(requestComment.getContents());
+        comment.changeComment(contents);
         // commentRepository.save(comment); 해줄 필요 없다 -> 변경 감지 활용
 
     }
