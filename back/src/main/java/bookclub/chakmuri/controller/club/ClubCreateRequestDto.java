@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
-public class ClubCreateRequestDto { //태그와 선정도서는 따로 처리
+public class ClubCreateRequestDto { //TODO:태그-> string 으로 처리, 선정도서 문제
 
     private String userId;
     private String title;
@@ -18,6 +18,7 @@ public class ClubCreateRequestDto { //태그와 선정도서는 따로 처리
     private int maxPersonnel;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String tags;
     private int likes;
     private String bookDescription;
     private String description;
@@ -34,6 +35,7 @@ public class ClubCreateRequestDto { //태그와 선정도서는 따로 처리
                 .maxPersonnel(maxPersonnel)
                 .startDate(startDate)
                 .endDate(endDate)
+                .tags(tags)
                 .likes(likes)
                 .bookDescription(bookDescription)
                 .description(description)
