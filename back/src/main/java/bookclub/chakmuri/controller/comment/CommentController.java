@@ -66,9 +66,27 @@ public class CommentController {
         return new ResponseEntity<>(response, getStatusCode(response));
     }
 
+    // 사용자 댓글 전체 조회
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<List<CommentResponseDto>> getUserComments(
+            @PathVariable("userId") String userId) {
+        List<CommentResponseDto> response = commentService.findAllUserComments(userId)
+                .stream()
+                .map(CommentResponseDto::new)
+                .collect(Collectors.toList());
 
+        return new ResponseEntity<>(response, getStatusCode(response));
+    }
 
+    // 댓글 전체 삭제
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllComment() {
+        commentService.deleteAll();
+        return new ResponseEntity(
+                "댓글이 모두 삭제되었습니다.",
+                HttpStatus.OK
+        );
 
-
+    }
 
 }

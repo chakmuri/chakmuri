@@ -108,4 +108,16 @@ public class CommentService {
 
 
     }
+
+    public List<Comment> findAllUserComments(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow();// TODO: UserNotFoundException::new 추가하기
+
+        return commentRepository.findAllByUserOrderByCreatedAtDesc(user);
+    }
+
+    @Transactional
+    public void deleteAll() {
+        commentRepository.deleteAll();
+    }
 }
