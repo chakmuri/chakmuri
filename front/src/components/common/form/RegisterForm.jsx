@@ -21,6 +21,10 @@ const StyledForm = styled(Form)`
 		font-weight: bold;
 	}
 
+	.ant-form-item {
+		margin-bottom: 14px;
+	}
+
 	.ant-input:focus,
 	.ant-input-focused,
 	.ant-input:hover,
@@ -40,10 +44,6 @@ const StyledInput = styled(Input)`
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
-	margin-bottom: 10px;
-
-	&:last-of-type {
-		margin-bottom: 0;
 	}
 `;
 
@@ -56,6 +56,11 @@ const StyledInputNumber = styled(InputNumber)`
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
+`;
+
+const PersonnelRow = styled.div`
+	display: flex;
+	gap: 5px;
 `;
 
 const StyledRangePicker = styled(RangePicker)`
@@ -116,6 +121,7 @@ const BookCover = styled.div`
 `;
 
 const ButtonRow = styled(Row)`
+	margin-top: 30px;
 	display: flex;
 	justify-content: center;
 	gap: 88px;
@@ -129,47 +135,92 @@ const MapWrapper = styled.div`
 
 // styled-components 재사용 문제
 const FilledButton = styled(Button)`
-	width: 70px;
-	height: 40px;
-	color: #ffffff;
-	background-color: #f98404;
-	border-radius: 6px;
+	& {
+		color: #ffffff;
+		background-color: #f98404;
+		border: none;
+		border-radius: 6px;
+		outline: none;
+	}
 `;
 
 const UnFilledButton = styled(Button)`
-	width: 70px;
-	height: 40px;
-	background-color: #ffffff;
-	border: 2px solid #f98404;
-	border-radius: 6px;
+	& {
+		color: #f98404;
+		background-color: #ffffff;
+		border: 2px solid #f98404;
+		border-radius: 6px;
+	}
+`;
+
+const SearchButton = styled(FilledButton)`
+	& {
+		type: button;
+	}
 `;
 
 const RegisterForm = () => {
-	const [imgFile, setImgFile] = useState(null);
+	const [inputText, setInputText] = useState("");
+	const [spot, setSpot] = useState("");
+	// const [imgFile, setImgFile] = useState(null);
 	// const [preview, setPreview] = useState(null);
 
-	const handleImgChange = (e) => {
-		console.log(e.target.files[0]);
-		setImgFile(e.target.files[0]);
+	const onChange = (e) => {
+		setInputText(e.target.value);
 	};
 
-	const handleImgUpload = (e) => {
+	const getAddress = (e) => {
 		e.preventDefault();
-		const formData = new FormData();
-		formData.append("upload_image", imgFile);
-		console.log("formData: ", formData);
+		setSpot(inputText);
+		setInputText("");
+		console.log(spot);
+	};
 
-		const config = {
-			headers: {
-				"content-type": "multipart/form-data",
-			},
+	// const handleImgChange = (e) => {
+	// 	// setImgFile(e.target.files[0]);
+	// 	console.log("image file: ", e.target.files[0]);
+	// };
+
+	// const handleImgUpload = () => {
+	// 	const formData = new FormData();
+	// 	formData.append("upload_image", imgFile);
+	// 	console.log("formData: ", formData);
+
+	// const config = {
+	// 	headers: {
+	// 		"content-type": "multipart/form-data",
+	// 	},
+	// };
+
+	// axios.post("", formData, config);
+	// };
+
+	const sendData = async (values) => {
+		const startDate = values.date[0]._d.toISOString().substring(0, 10);
+		const endDate = values.date[1]._d.toISOString().substring(0, 10);
+		const data = {
+			title: values.title,
+			contents: values.contents,
+			startDate,
+			endDate,
+			minPersonnel: values.minPersonnel,
+			maxPersonnel: values.maxPersonnel,
+			description: values.description,
+			bookDescription: values.bookDescription,
+			tags: values.tags,
+			book: values.book,
+			imgUrl: values.imgUrl,
 		};
 
-		axios.post("", formData, config);
+		console.log(data);
+		const res = await axios.post("/clubs", values);
+		if (res.status === 200) console.log("Success");
+		else console.log("Error");
 	};
 
-	const onFinish = (values) => {
+	const onFinish = async (values) => {
 		console.log("form values: ", values);
+		// sendData(values);
 	};
 
 	const onFinishFailed = (errorInfo) => {
@@ -188,43 +239,62 @@ const RegisterForm = () => {
 					<Col span={16}>
 						<Form.Item
 							label="이름"
-							name="name"
-							rules={[{ required: true, message: "모임 이름을 입력하세요." }]}
+							name="title"
+							rules={[{ required: false, message: "모임 이름을 입력하세요." }]}
 						>
 							<StyledInput placeholder="이름" />
 						</Form.Item>
 						<Form.Item
 							label="한 줄 소개"
-							name="intro"
+							name="contents"
 							rules={[
-								{ required: true, message: "모임의 한 줄 소개를 입력하세요." },
+								{ required: false, message: "모임의 한 줄 소개를 입력하세요." },
 							]}
 						>
 							<StyledInput placeholder="한 줄 소개" />
 						</Form.Item>
 						<Form.Item
 							label="참여 인원"
-							name="members"
-							rules={[{ message: "모임의 참여 인원을 입력하세요." }]}
+							rules={[
+								{
+									required: false,
+									message: "모임의 참여 인원을 입력하세요.",
+								},
+							]}
 						>
-							<StyledInputNumber min={2} defaultValue={2} /> <span>인</span>{" "}
-							<span>~</span>
-							<StyledInputNumber min={2} defaultValue={2} /> <span>인</span>
+							<Row>
+								<Form.Item name="minPersonnel">
+									<PersonnelRow>
+										<StyledInputNumber min={2} defaultValue={2} />
+										<span> 인 </span>
+									</PersonnelRow>
+								</Form.Item>
+								<span> ~ </span>
+								<Form.Item name="maxPersonnel">
+									<PersonnelRow>
+										<StyledInputNumber min={2} defaultValue={2} />
+										<span> 인 </span>
+									</PersonnelRow>
+								</Form.Item>
+							</Row>
 						</Form.Item>
 						<Form.Item
 							label="진행 기간"
 							name="date"
-							rules={[{ message: "모임의 진행 기간을 입력하세요." }]}
+							rules={[
+								{
+									type: "array",
+									message: "모임의 진행 기간을 입력하세요.",
+								},
+							]}
 						>
-							<div>
-								<StyledRangePicker />
-							</div>
+							<StyledRangePicker />
 						</Form.Item>
 					</Col>
 					<Col span={8}>
 						<Form.Item
 							label="사진"
-							name="photo"
+							name="imgUrl"
 							rules={[
 								{
 									message: "모임의 사진을 업로드하세요.",
@@ -235,19 +305,9 @@ const RegisterForm = () => {
 							<Row justify="center">
 								<PreviewImage></PreviewImage>
 							</Row>
-							<Row>
-								<Col span={12}>
-									<input
-										type="file"
-										accept="image/*"
-										onChange={handleImgChange}
-									/>
-								</Col>
-								<Col span={12}>
-									<FilledButton onClick={handleImgUpload}>
-										이미지 업로드
-									</FilledButton>
-								</Col>
+							<input type="file" accept="image/*" />
+							<Row justify="center">
+								<FilledButton>이미지 업로드</FilledButton>
 							</Row>
 						</Form.Item>
 					</Col>
@@ -256,7 +316,13 @@ const RegisterForm = () => {
 					<Form.Item
 						label="태그"
 						name="tags"
-						// rules={[{ required: true, message: "모임의 태그를 선택하세요." }]}
+						rules={[
+							{
+								type: "string",
+								required: false,
+								message: "모임의 태그를 선택하세요.",
+							},
+						]}
 					>
 						<TagContainer>
 							<Tag>소수정예</Tag>
@@ -283,11 +349,13 @@ const RegisterForm = () => {
 									</AddIcon>
 								</Col>
 								<BookCover />
-								<Col>
-									<div>도서 선정 이유 및 소개글</div>
-									<StyledTextArea rows={10} />
-								</Col>
 							</Row>
+						</Form.Item>
+						<Form.Item name="bookDescription">
+							<Col>
+								<div>도서 선정 이유 및 소개글</div>
+								<StyledTextArea rows={10} />
+							</Col>
 						</Form.Item>
 					</Col>
 				</Row>
@@ -297,7 +365,7 @@ const RegisterForm = () => {
 							label="상세설명"
 							name="description"
 							rules={[
-								{ required: true, message: "모임의 상세설명을 입력하세요." },
+								{ required: false, message: "모임의 상세설명을 입력하세요." },
 							]}
 						>
 							<StyledTextArea rows={10} />
@@ -307,12 +375,21 @@ const RegisterForm = () => {
 				<Row>
 					<Col span={16}>
 						<Form.Item label="위치">
-							<StyledInput placeholder="도로명 주소" />
-							<StyledInput placeholder="상세 주소" />
-							<MapWrapper>
-								<MapContainer />
-							</MapWrapper>
+							<Form.Item name="addressStreet">
+								<StyledInput
+									placeholder="도로명 주소"
+									onChange={onChange}
+									value={inputText}
+								/>
+							</Form.Item>
+							<Form.Item name="addressDetail">
+								<StyledInput placeholder="상세 주소" />
+							</Form.Item>
 						</Form.Item>
+						<SearchButton onClick={getAddress}>주소 검색</SearchButton>
+						<MapWrapper>
+							<MapContainer searchSpot={spot} />
+						</MapWrapper>
 					</Col>
 				</Row>
 				<ButtonRow>
