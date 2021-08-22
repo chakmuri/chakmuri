@@ -1,12 +1,17 @@
 package bookclub.chakmuri.domain;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
+@NoArgsConstructor
+@ToString
 @Table(name = "books")
 @Getter
 public class Book {
@@ -28,5 +33,13 @@ public class Book {
     @Lob
     @Column(nullable = false)
     private String imgUrl;
+
+    @Builder
+    public Book(Club club, String title, String author, String imgUrl){
+        this.club = club;
+        this.title = title;
+        this.author = author;
+        this.imgUrl = imgUrl;
+    }
 
 }

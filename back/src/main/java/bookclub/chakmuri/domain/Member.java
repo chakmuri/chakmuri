@@ -1,12 +1,17 @@
 package bookclub.chakmuri.domain;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
+@NoArgsConstructor
+@ToString
 @Table(name = "members")
 @Getter
 public class Member {
@@ -27,5 +32,11 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private ApprovalStatus approvalStatus; //승인상태 [WAITING, CONFIRMED]
 
+    @Builder
+    public Member(User user, Club club, ApprovalStatus approvalStatus){
+        this.user = user;
+        this.club = club;
+        this.approvalStatus = approvalStatus;
+    }
 
 }
