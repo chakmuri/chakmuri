@@ -15,7 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @Getter
 @Table(name = "comments")
-public class Comment {
+public class Comment extends BaseTime{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@Column(name = "comment_id")
     private Long id;
@@ -32,9 +32,7 @@ public class Comment {
     @Column(length = 500, nullable = false) @Size(max = 500)
     private String contents;
 
-    private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
 
 
     // 댓글 수정 -> setter역할 (변경감지 활용)
@@ -50,15 +48,13 @@ public class Comment {
      */
     @Builder
     public Comment(Club club, User user, String contents) {
-        this(null, club, user, contents, null, null);
+        this(null, club, user, contents);
     }
 
-    public Comment(Long id, Club club, User user, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Comment(Long id, Club club, User user, String contents) {
         this.id = id;
         this.club = club;
         this.user = user;
         this.contents = contents;
-        this.createdAt = LocalDateTime.now(); // 추후 수정 꼭 !!
-        this.updatedAt = updatedAt; // null
     }
 }

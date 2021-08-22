@@ -69,7 +69,7 @@ public class CommentController {
     // 사용자 댓글 전체 조회
     @GetMapping("/users/{userId}")
     public ResponseEntity<List<CommentResponseDto>> getUserComments(
-            @PathVariable("userId") String userId) {
+                @PathVariable("userId") String userId) {
         List<CommentResponseDto> response = commentService.findAllUserComments(userId)
                 .stream()
                 .map(CommentResponseDto::new)
