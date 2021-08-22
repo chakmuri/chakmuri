@@ -19,8 +19,8 @@ const Wrapper = styled(Card)`
 
   width: 346px;
   height: 350px;
-  border: solid 1px;
-  border-radius: 10px;
+  border: solid 1px #E5E5E5;
+  border-radius: 0px 0px 10px 10px;
 
 /* ant-desing 코드 ~~ */
 
@@ -29,7 +29,7 @@ const Wrapper = styled(Card)`
 		font-weight: bold;
 		font-size: 20px;
 		line-height: 36px;
-    margin-left: 10px; /* 임시 마진 간격 */ 
+    margin-left: 15px; /* 임시 마진 간격 */ 
 	}
 	.ant-card-meta-description { /* 한 줄 소개 */
 		font-family: Roboto;
@@ -37,20 +37,18 @@ const Wrapper = styled(Card)`
 		line-height: 36px;
 		color: black;
     margin-bottom: 45px;
-    margin-left: 10px; /* 임시 마진 간격 */
+    margin-left: 15px; /* 임시 마진 간격 */
 	}
 
   /* ~~ ant-desing 코드 */
 
-  .gatherThumbnail { /* 카드 썸네일 */
-    border-radius: 10px 10px 0px 0px;
-  }
+
 
   .container { /* 하단 */
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-end;
-    margin-left: 10px; /* 임시 마진 간격 */
+    margin-left: 15px; /* 임시 마진 간격 */
   }
 
 	.like {
@@ -58,7 +56,7 @@ const Wrapper = styled(Card)`
 		flex-direction: column;
 		align-items: center;
     cursor: pointer;
-    margin-right: 10px; /* 임시 마진 간격 */
+    margin-right: 15px; /* 임시 마진 간격 */
 	}
 `;
 
@@ -67,7 +65,7 @@ const GatherCards = (props) => {
     <Wrapper
       hoverable
         cover={
-          <img className="gatherThumbnail" src="assets/images/gatherCardThumbnail.png" alt="images" />
+          <img src="assets/images/gatherCardThumbnail.png" alt="images" />
         }
     >
       <Meta title="독서 모임 이름" description="한 줄 소개" />

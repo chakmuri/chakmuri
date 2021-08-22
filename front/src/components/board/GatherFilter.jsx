@@ -8,7 +8,7 @@ import styled from 'styled-components';
  */
 
 const Wrapper = styled.button`
-  border: solid 1px;
+  border: solid 1px #C4C4C4;
   padding: 10px;
   font-family: Roboto;
   font-style: normal;

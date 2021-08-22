@@ -13,7 +13,14 @@ const Wrapper = styled.span`
   line-height: 23px;
 
   p { 
-    display: inline-block; /* 어떻게 해야 조금 더 이쁘게 꾸밀 수 있을까...?  */
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 23px;
+    display: inline-block;
+    align-items: center;
+    text-align: center;
   }
 
   .check {
