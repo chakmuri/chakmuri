@@ -22,10 +22,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.projectlombok:lombok:1.18.20'
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//	//JUnit4 추가
+//	testImplementation("org.junit.vintage:junit-vintage-engine"){
+//		exclude group: "org.hamcrest", module: "hamcrest-core"
+//	}
 }
 
 test {
