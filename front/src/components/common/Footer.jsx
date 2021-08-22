@@ -1,11 +1,14 @@
-import React from 'react';
+import React from "react";
+import styled from "styled-components";
 
-const Footer = (props) => { // 임시 푸터
-  return (
-    <h1>= = = = = = = = = = = = = = = = = = = = = = = = = = 
-      Footer 
-      = = = = = = = = = = = = = = = = = = = = = = = = =</h1>
-  );
-}
+const StyledFooter = styled.div`
+	width: 100%;
+	height: 100px;
+	background-color: #c4c4c4;
+`;
+
+const Footer = () => {
+	return <StyledFooter />;
+};
 
 export default Footer;
