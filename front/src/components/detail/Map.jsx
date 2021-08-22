@@ -11,11 +11,11 @@ const Wrapper = styled.div`
 `;
 
 const Map = (props) => {
-  return <>
+  return (
     <Wrapper>
       <img src="assets/images/tempMap(레이아웃용-삭제예정).png" alt="asdf" />
     </Wrapper>
-  </>;
+  );
 };
 
 export default Map;

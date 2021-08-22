@@ -8,11 +8,13 @@ const Wrapper = styled.div`
 `;
 
 const Rectangle = (props) => {
-  return <>
+  return (
     <Wrapper>
-      {props.children}
+      {props.children};
     </Wrapper>
-  </>;
+  );
+
+  
 };
 
 export default Rectangle;

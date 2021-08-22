@@ -57,7 +57,7 @@ const Wrapper = styled.section`
 `;
 
 const Comments = (props) => {
-  return <>
+  return (
     <Wrapper>
       <h2 className="commentsStart">
         <img src="assets/images/icons/comments.png" alt="icon" />  이 독서모임 댓글 (50+)
@@ -73,7 +73,7 @@ const Comments = (props) => {
         <Comment />
       </div>
     </Wrapper>
-  </>;
+  );
 };
 
 export default Comments;

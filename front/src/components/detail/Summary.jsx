@@ -88,28 +88,27 @@ const Wrapper = styled.section`
 `;
 
 const Summary = (props) => {
-  return <>
-  <Wrapper>
-    <div className="summaryBox">
-      <img src="assets/images/summary.png" alt="img" />
-      <div className="clubSummary">
-        <h2 className="clupName"><img src="assets/images/icons/book.png" alt="icon" /> 독서모임 이름</h2>
-        <p><img src="assets/images/icons/people.png" alt="icon" /> 독서모임 인원</p>
-        <p><img src="assets/images/icons/schedule.png" alt="icon" /> 독서모임 일정</p>
-        <p><img src="assets/images/icons/subject.png" alt="icon" /> 독서모임 주제</p>
-        <div className="boxes">
-          <div className="likedBox">
-            <img className="heartIcon" src="assets/images/icons/heart.png" alt="icon" />
+  return (
+    <Wrapper>
+      <div className="summaryBox">
+        <img src="assets/images/summary.png" alt="img" />
+        <div className="clubSummary">
+          <h2 className="clupName"><img src="assets/images/icons/book.png" alt="icon" /> 독서모임 이름</h2>
+          <p><img src="assets/images/icons/people.png" alt="icon" /> 독서모임 인원</p>
+          <p><img src="assets/images/icons/schedule.png" alt="icon" /> 독서모임 일정</p>
+          <p><img src="assets/images/icons/subject.png" alt="icon" /> 독서모임 주제</p>
+          <div className="boxes">
+            <div className="likedBox">
+              <img className="heartIcon" src="assets/images/icons/heart.png" alt="icon" />
+            </div>
+              <Rectangle>
+                <p className="rectText">참여 신청</p>
+              </Rectangle>
           </div>
-            <Rectangle>
-              <p className="rectText">참여 신청</p>
-            </Rectangle>
         </div>
       </div>
-    </div>
-  </Wrapper>
-    
-  </>;
+    </Wrapper>
+  );
 };
 
 export default Summary;

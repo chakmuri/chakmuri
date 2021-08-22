@@ -24,13 +24,11 @@ const Wrapper = styled.div`
 
 const Main = (props) => {
   return (
-    <>
-      <Wrapper>
-        <Summary />
-        <Introduction />
-        <Comments />
-      </Wrapper>
-    </>
+    <Wrapper>
+      <Summary />
+      <Introduction />
+      <Comments />
+    </Wrapper>
   );
 };
 

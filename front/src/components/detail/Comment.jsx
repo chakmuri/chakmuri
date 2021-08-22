@@ -79,7 +79,7 @@ const Wrapper = styled.div`
 `;
 
 const Comment = (props) => {
-  return <>
+  return (
     <Wrapper>
       <img className="commentProfile" src="assets/images/icons/profile.png" alt="profile" />
       <div className="commentContainer">
@@ -101,7 +101,7 @@ const Comment = (props) => {
         </p>
       </div>
     </Wrapper>
-  </>;
+  );
 };
 
 export default Comment;
