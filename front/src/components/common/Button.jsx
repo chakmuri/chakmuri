@@ -13,7 +13,7 @@ const StyledButton = styled.button`
 	cursor: pointer;
 	padding: 10px 20px;
 	transition: all 0.3s;
-
+  
 	&:hover {
 		color: #ffffff;
 		background-color: #ff6701;
