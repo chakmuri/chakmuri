@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 const Rectangle = (props) => {
   return (
     <Wrapper>
-      {props.children};
+      {props.children}
     </Wrapper>
   );
 
