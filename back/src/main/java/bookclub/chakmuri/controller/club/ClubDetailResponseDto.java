@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ClubDetailResponseDto {    //태그와 선정도서는 따로 처리
+public class ClubDetailResponseDto {    //TODO: 선정도서 처리
 
     private Long id;                    //독서모임 아이디
     private String userId;              //독서모임 생성자 아이디
@@ -23,6 +23,7 @@ public class ClubDetailResponseDto {    //태그와 선정도서는 따로 처�
     private int maxPersonnel;           //독서모임 최대인원
     private LocalDate startDate;        //독서모임 시작일
     private LocalDate endDate;          //독서모임 종료일
+    private String tags;                //독서모임 태그
     private int likes;                  //독서모임 좋아요 수
     private String bookDescription;     //독서모임 선정도서 소개글
     private String description;         //독서모임 상세설명
@@ -32,5 +33,6 @@ public class ClubDetailResponseDto {    //태그와 선정도서는 따로 처�
 
     public ClubDetailResponseDto(Club club){
         BeanUtils.copyProperties(club, this);
+        this.userId = club.getUser().getId();
     }
 }

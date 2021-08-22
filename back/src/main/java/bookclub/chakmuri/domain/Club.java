@@ -10,15 +10,13 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @NoArgsConstructor
-@ToString(exclude = {"commentList", "tags", "bookList","memberList"})
+@ToString(exclude = {"commentList", "bookList", "memberList"})
 @Table(name = "clubs")
 @Getter
 public class Club {
@@ -33,9 +31,6 @@ public class Club {
 
     @OneToMany(mappedBy = "club")
     private List<Comment> commentList = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "clubs")
-    private Set<Tag> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "club")
     private List<Book> bookList = new ArrayList<>();
@@ -64,6 +59,8 @@ public class Club {
     @Column(nullable = false)
     private LocalDate endDate;
 
+    private String tags;        //TODO: FE에 "," 기준 split 으로 분리 요청
+
     @Column(nullable = false)
     private int minPersonnel;
 
@@ -84,10 +81,10 @@ public class Club {
     @Enumerated(EnumType.STRING)
     private ClubStatus clubStatus; // [ACTIVE, EXPIRED]
 
-    @Builder
+    @Builder    //TODO : List<Book> bookList, user 에 final 추가
     public Club(User user, String title, String contents, String imgUrl, int minPersonnel, int maxPersonnel,
-                LocalDate startDate, LocalDate endDate, int likes, String bookDescription, String description,
-                String addressDetail, String addressStreet, ClubStatus clubStatus){//Set<Tag> tags, List<Book> bookList
+                LocalDate startDate, LocalDate endDate, String tags, int likes, List<Book> bookList, String bookDescription, String description,
+                String addressDetail, String addressStreet, ClubStatus clubStatus){
         this.user = user;
         this.title = title;
         this.contents = contents;
@@ -96,13 +93,32 @@ public class Club {
         this.maxPersonnel = maxPersonnel;
         this.startDate = startDate;
         this.endDate = endDate;
-        //this.tags = tags;
+        this.tags = tags;
         this.likes = likes;
-        //this.bookList = bookList;
+        this.bookList = bookList;   //TODO: 어떻게 처리할지
         this.bookDescription = bookDescription;
         this.description = description;
         this.addressDetail = addressDetail;
         this.addressStreet = addressStreet;
         this.clubStatus = clubStatus;
+    }
+
+    public void updateClub(String title, String contents, String imgUrl,
+                           int minPersonnel, int maxPersonnel,
+                           LocalDate startDate, LocalDate endDate,
+                           String tags, String bookDescription, String description,
+                           String addressDetail, String addressStreet){
+        this.title = title;
+        this.contents = contents;
+        this.imgUrl = imgUrl;
+        this.minPersonnel = minPersonnel;
+        this.maxPersonnel = maxPersonnel;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.tags = tags;
+        this.bookDescription = bookDescription;
+        this.description = description;
+        this.addressDetail = addressDetail;
+        this.addressStreet = addressStreet;
     }
 }
