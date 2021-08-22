@@ -21,16 +21,15 @@ public class ClubController {
 
     private final ClubService clubService;
 
-    //TODO: ENTITY <-> DTO 처리 service 단으로 옮기기
+    //TODO: AWS S3 서비스 이용, pageable 설정
 
     //독서모임 생성
     @PostMapping
     public ResponseEntity createClub(
-            @RequestBody ClubCreateRequestDto clubCreateRequestDto){
-//            @RequestParam("img")MultipartFile file) throws IOException {
-        Club club = clubService.createClub(clubCreateRequestDto);
-        return new ResponseEntity("독서모임 등록이 성공적으로 완료되었습니다. (clubId: " + club.getId() + ")",
-                HttpStatus.OK);
+            @RequestBody ClubCreateRequestDto clubCreateRequestDto,
+            @RequestParam(value = "img", required = false) MultipartFile file) throws IOException {
+        Club club = clubService.createClub(clubCreateRequestDto, file);
+        return new ResponseEntity(club.toString(), HttpStatus.OK);
     }
 
     //독서모임 리스트 조회(검색조건 x)
@@ -56,11 +55,9 @@ public class ClubController {
 
     //독서모임 검색(검색조건 - 태그, 모집중 여부, 정렬, 검색 키워드)
 
-    //참여신청
-
     //독서모임 만료 로직
 
-    //사용자가 만든 독서모임 조회(TODO : 일대 다로 바꾸고, 대신 1개로 제한?)
+    //사용자가 만든 독서모임 조회
     @GetMapping("/my/{userId}")
     public ResponseEntity<ClubDetailResponseDto> getUserClub(
             @PathVariable(value = "userId") String userId) {
@@ -75,8 +72,9 @@ public class ClubController {
             @RequestBody ClubUpdateRequestDto clubUpdateRequestDto,
             @PathVariable String userId) {
         clubService.updateClub(clubUpdateRequestDto, userId);
-        return new ResponseEntity("독서모임 수정이 완료되었습니다.", HttpStatus.OK);
+        return new ResponseEntity(clubUpdateRequestDto.toString(), HttpStatus.OK);
     }
+    //TODO : 위와 같이 tostring 방식으로 응답을 보낼지, 아니면 임의로 만든 string을 반환할 지 결정
 
     // 독서모임 삭제 (my page)
     @DeleteMapping("/my/{userId}")

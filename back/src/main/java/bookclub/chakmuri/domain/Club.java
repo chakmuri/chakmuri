@@ -83,7 +83,7 @@ public class Club {
 
     @Builder    //TODO : List<Book> bookList, user 에 final 추가
     public Club(User user, String title, String contents, String imgUrl, int minPersonnel, int maxPersonnel,
-                LocalDate startDate, LocalDate endDate, String tags, int likes, String bookDescription, String description,
+                LocalDate startDate, LocalDate endDate, String tags, int likes, List<Book> bookList, String bookDescription, String description,
                 String addressDetail, String addressStreet, ClubStatus clubStatus){
         this.user = user;
         this.title = title;
@@ -95,7 +95,7 @@ public class Club {
         this.endDate = endDate;
         this.tags = tags;
         this.likes = likes;
-        //this.bookList = bookList;
+        this.bookList = bookList;   //TODO: 어떻게 처리할지
         this.bookDescription = bookDescription;
         this.description = description;
         this.addressDetail = addressDetail;

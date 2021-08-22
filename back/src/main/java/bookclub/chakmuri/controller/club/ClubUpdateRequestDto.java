@@ -4,11 +4,13 @@ import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.ClubStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
+@ToString   //TODO : 사용 여부 결정할 것
 public class ClubUpdateRequestDto {
     //TODO : clubStatus 관리 -> 만약 만료되었는데 startDate 를 변경한다면?
 

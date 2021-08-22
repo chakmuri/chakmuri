@@ -1,7 +1,6 @@
 package bookclub.chakmuri.service;
 
 import bookclub.chakmuri.controller.club.ClubCreateRequestDto;
-import bookclub.chakmuri.controller.club.ClubResponseDto;
 import bookclub.chakmuri.controller.club.ClubUpdateRequestDto;
 import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.User;
@@ -10,9 +9,10 @@ import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,10 +23,20 @@ public class ClubService {
 
     //아직 태그, 선정도서 목록 등 포함안된 것들 있어서 테스트 불가
     @Transactional
-    public Club createClub(ClubCreateRequestDto clubCreateRequestDto){
+    public Club createClub(ClubCreateRequestDto clubCreateRequestDto, MultipartFile file){
         //userId NotNull 체크 -> 없어도 됨
         //TODO : 이 유저가 만든 독서모임이 있는지 체크(한사람당 한 개)
-        //img upload 로직 짜기
+        //TODO : AWS s3 img upload 로직 짜기 (현재는 로컬 업로드)
+        if(file != null){
+            String path = "C:\\chakmuri\\back\\src\\main\\resources\\image\\";
+            String filePath = path + System.currentTimeMillis() + "_" +file.getOriginalFilename();
+            try{
+                file.transferTo(new File(filePath));
+                clubCreateRequestDto.setImgUrl(filePath);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
         Club club = clubCreateRequestDto.toEntity();
         final Club newClub = convertToClub(club, clubCreateRequestDto.getUserId());
         return clubRepository.save(newClub);
