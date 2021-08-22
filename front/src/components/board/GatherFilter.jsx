@@ -37,13 +37,13 @@ const Wrapper = styled.button`
 `;
 
 const GatherFilter = (props) => {
-  return <>
-  <Wrapper>
-    <img src="assets/images/boardFilterIcon.png" alt="icon" className="boardFilterIcon" />
-    <span className="boardFilterName">최신순</span>
-    <img src="assets/images/boardDownButton.png" alt="button" className="boardDownButton" />
-  </Wrapper>
-  </>;
+  return (
+    <Wrapper>
+      <img src="assets/images/boardFilterIcon.png" alt="icon" className="boardFilterIcon" />
+      <span className="boardFilterName">최신순</span>
+      <img src="assets/images/boardDownButton.png" alt="button" className="boardDownButton" />
+    </Wrapper>
+  );
 }
 
 export default GatherFilter;

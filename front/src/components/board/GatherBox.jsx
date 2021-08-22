@@ -30,15 +30,14 @@ const Wrapper = styled.span`
 `;
 
 const GatherBox = (props) => {
-  return <>
+  return (
     <Wrapper>
       <p>모집중</p>  
       <span className="check">
-            <img className="checkBox" src="assets/images/boardCheckBox.png" alt="checkBox"/>
+        <img className="checkBox" src="assets/images/boardCheckBox.png" alt="checkBox"/>
       </span>
-      
     </Wrapper>
-  </>;
+  );
 };
 
 export default GatherBox;

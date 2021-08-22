@@ -11,7 +11,7 @@ import Gather from '../board/Gather';
  *    1. 독서 모임 찾기 영역 -> search.jsx 컴포넌트
  *    2. N개의 독서 모임 영역 -> gather.jsx 컴포넌트
  * 
- * 영역으로 나뉩니다. 자세한 설명은 해당 컴포넌트로 ㄱㄱ
+ * 영역으로 나뉩니다. :)
  */
 
 const Wrapper = styled.section`
@@ -22,13 +22,11 @@ const Wrapper = styled.section`
 
 const Main = (props) => {
   return (
-    <>
-      <Wrapper>
-        <Search />
-        <Gather />
-      </Wrapper>
-    </>
-  )
+    <Wrapper>
+      <Search />
+      <Gather />
+    </Wrapper>
+  );
 };
 
 export default Main;

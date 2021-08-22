@@ -19,11 +19,11 @@ const Wrapper = styled.span`
 `;
 
 const Tags = (props) => {
-  return <>
+  return (
     <Wrapper>
       태그
     </Wrapper>
-  </>;
+  );
 }
 
 export default Tags;

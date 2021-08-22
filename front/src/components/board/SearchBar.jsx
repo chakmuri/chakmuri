@@ -35,15 +35,14 @@ const Wrapper = styled.div`
 `;
 
 const SearchBar = (props) => {
-  return <>
+  return (
     <Wrapper>
       <div className="searchBar">
-      <img src="assets/images/search.png" alt="search" className="search" />
-      <input type="text" placeholder="검색" className="searchInput" />
+        <img src="assets/images/search.png" alt="search" className="search" />
+        <input type="text" placeholder="검색" className="searchInput" />
       </div>
-      
     </Wrapper>
-  </>;
+  );
 };
 
 export default SearchBar;

@@ -7,9 +7,9 @@ import React from 'react';
  */
 
 const DeadlineTag = (props) => {
-  return <>
-  <img src="assets/images/deadlineTag.png" alt="label" />
-  </>;
+  return (
+    <img src="assets/images/deadlineTag.png" alt="label" />
+  );
 };
 
 export default DeadlineTag;

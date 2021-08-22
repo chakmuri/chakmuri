@@ -35,27 +35,25 @@ const ButtonWrapper = styled.div`
 
 const Search = (props) => { 
   return (
-    <>
-      <Wrapper>
-        <div className="searchLogo">
-          <img src="assets/images/boardSearchLogo.png" alt="logo" className="logo" /> 독서 모임 찾기
-        </div>
-        <SearchBar />
-        <ButtonWrapper>
-          <Button />
-          <Button />
-          <Button />
-          <Button />
-        </ButtonWrapper>
-        <ButtonWrapper>
-          <Button />
-          <Button />
-          <Button />
-          <Button />
-        </ButtonWrapper>
-      </Wrapper>
-    </>
-  )
+    <Wrapper>
+      <div className="searchLogo">
+        <img src="assets/images/boardSearchLogo.png" alt="logo" className="logo" /> 독서 모임 찾기
+      </div>
+      <SearchBar />
+      <ButtonWrapper>
+        <Button />
+        <Button />
+        <Button />
+        <Button />
+      </ButtonWrapper>
+      <ButtonWrapper>
+        <Button />
+        <Button />
+        <Button />
+        <Button />
+      </ButtonWrapper>
+    </Wrapper>
+  );
 };
 
 export default Search;

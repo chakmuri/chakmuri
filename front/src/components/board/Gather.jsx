@@ -51,8 +51,7 @@ const Cards = styled.section`
 `
 
 const Gather = (props) => {
-  return (
-    <>
+  return <>
       <Wrapper>
         <div className="gathers">
           <h2>N개의 독서 모임</h2>
@@ -77,9 +76,7 @@ const Gather = (props) => {
         <GatherCards />
         <GatherCards />
       </Cards>
-      
-    </>
-  )
+  </>;
 };
 
 export default Gather; 

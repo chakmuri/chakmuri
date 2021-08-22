@@ -61,14 +61,13 @@ const Wrapper = styled(Card)`
 `;
 
 const GatherCards = (props) => {
-  return <>
+  return (
     <Wrapper
-      hoverable
-        cover={
-          <img src="assets/images/gatherCardThumbnail.png" alt="images" />
-        }
+      cover={
+        <img src="assets/images/gatherCardThumbnail.png" alt="images" />
+      }
     >
-      <Meta title="독서 모임 이름" description="한 줄 소개" />
+    <Meta title="독서 모임 이름" description="한 줄 소개" />
       <div className="container">
         <span className="tags">
           <Tags />
@@ -80,7 +79,8 @@ const GatherCards = (props) => {
         </div>
       </div>
     </Wrapper>
-  </>
+  );
+
 };
 
 export default GatherCards;
