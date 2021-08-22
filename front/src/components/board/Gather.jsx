@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import GatherCards from '../common/gatherCards';
-import GatherFilter from './gatherFilter';
+import GatherCards from '../common/GatherCards';
+import GatherFilter from '../board/GatherFilter';
+import GatherBox from './GatherBox';
 
 /**
  * 책무리의 등록된/마감된 모든 독서 모임들을 렌더링해주는 영역입니다.
@@ -56,7 +57,7 @@ const Gather = (props) => {
         <div className="gathers">
           <h2>N개의 독서 모임</h2>
           <span className="gatherFilter">
-              모집중<img src="assets/images/boardCheckBox.png" alt="checkbox" className="boardCheckBox" />
+              <GatherBox />
               <GatherFilter />
           </span>
         </div>

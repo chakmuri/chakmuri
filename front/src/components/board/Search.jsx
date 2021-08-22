@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
-import SearchBar from './searchBar';
-import Button from '../common/button'
+import SearchBar from '../board/SearchBar';
+import Button from '../common/Button'
 
 /**
  * 독서 모임 찾기 영역입니다.

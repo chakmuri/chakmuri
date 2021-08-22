@@ -4,7 +4,7 @@ import styled from 'styled-components';
 /**
  * 이 페이지에서만 사용되는 필터 버튼입니다.
  * 
- *  최신순, 인기순, ...등(자세한 건 추가 예정)으로 필터링해서 모든 독서 모임 카드를 렌더링합니다.
+ *  최신순, 인기순(==좋아요순) 으로 필터링해서 모든 독서 모임 카드를 렌더링합니다.
  */
 
 const Wrapper = styled.button`
@@ -30,6 +30,7 @@ const Wrapper = styled.button`
   .boardDownButton {
     width: 15px;
     height: 8px;
+    margin-bottom: 5px;
     cursor: pointer; /* 일단 여기만 적용 ... */
   }
   .

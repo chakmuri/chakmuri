@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
-import Search from '../board/search';
-import Gather from '../board/gather';
+import Search from '../board/Search';
+import Gather from '../board/Gather';
 
 /**
  * Navbar, Footer을 제외한 보드 페이지의 고유한 영역입니다.
