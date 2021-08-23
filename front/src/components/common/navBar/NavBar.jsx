@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { Modal } from "antd";
+import { Modal, Menu, Dropdown } from "antd";
 import Login from "./login/Login";
+import { useEffect } from "react";
 
 const Nav = styled.nav`
 	width: 1200px;
@@ -93,10 +94,22 @@ const NavRegister = styled.div`
 	cursor: pointer;
 `;
 
+const StyledDropdownMenu = styled(Menu)`
+	.ant-dropdown-menu-item,
+	.ant-dropdown-menu-submenu-title {
+		font-family: Roboto;
+		font-size: 16px;
+		padding: 10px 20px;
+		text-align: center;
+	}
+`;
+
 const NavBar = () => {
+	const history = useHistory();
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [userImage, setUserImage] = useState("");
+	const userId = localStorage.getItem("userId");
 
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -113,6 +126,22 @@ const NavBar = () => {
 	const getUserImage = (image) => {
 		setUserImage(image);
 	};
+
+	const handleLogout = () => {
+		localStorage.removeItem("userId");
+		setIsLoggedIn(false);
+	};
+
+	const dropdownMenu = (
+		<StyledDropdownMenu>
+			<Menu.Item key="1">
+				<Link to="/myPage">마이페이지</Link>
+			</Menu.Item>
+			<Menu.Item key="2" onClick={handleLogout}>
+				로그아웃
+			</Menu.Item>
+		</StyledDropdownMenu>
+	);
 
 	return (
 		<>
@@ -138,8 +167,8 @@ const NavBar = () => {
 									<strong>책무리</strong>에서 모여보세요!
 								</Title>
 								<Login
-									getLoginStatus={getLoginStatus}
 									onCancel={handleCancel}
+									getLoginStatus={getLoginStatus}
 									getUserImage={getUserImage}
 								/>
 							</StyledModal>
@@ -158,9 +187,11 @@ const NavBar = () => {
 							<NavText>독서모임 찾기</NavText>
 						</NavLink>
 						<NavIcon>
-							<NavProfile>
-								<img src={userImage} alt="User profile" />
-							</NavProfile>
+							<Dropdown overlay={dropdownMenu} placement="bottomCenter">
+								<NavProfile>
+									<img src={userImage} alt="User profile" />
+								</NavProfile>
+							</Dropdown>
 							<NavRegister>
 								<img src="assets/images/icons/add.png" alt="Add icon" />
 							</NavRegister>

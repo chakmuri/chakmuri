@@ -49,6 +49,7 @@ const Login = ({ ...props }) => {
 
 				await axios.post("/users", user);
 			}
+			console.log(res.data);
 			localStorage.setItem("userId", res.data.id);
 			props.getLoginStatus(true);
 			props.getUserImage(res.data.imgUrl);
@@ -59,11 +60,6 @@ const Login = ({ ...props }) => {
 		} catch (err) {
 			console.log(err);
 		}
-	};
-
-	const logout = () => {
-		localStorage.removeItem("userId");
-		props.getLoginStatus(false);
 	};
 
 	const onFailure = (response) => {
@@ -89,18 +85,6 @@ const Login = ({ ...props }) => {
 				onFailure={onFailure}
 				cookiePolicy={"single_host_origin"}
 			/>
-			{/* <GoogleLogout
-				clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-				render={(renderProps) => {
-					<GoogleLoginButton
-						onClick={renderProps.onClick}
-						disabled={renderProps.disabled}
-					>
-						로그아웃
-					</GoogleLoginButton>;
-				}}
-				onLogoutSuccess={logout}
-			/> */}
 		</>
 	);
 };
