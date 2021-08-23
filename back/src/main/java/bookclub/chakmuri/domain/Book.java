@@ -9,37 +9,28 @@ import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
-@Entity
-@NoArgsConstructor
-@ToString
-@Table(name = "books")
+@Embeddable
 @Getter
 public class Book {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Column(name = "book_id")
-    private Long id;
-
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "club_id")
-    private Club club;
 
     @Column(nullable = false)
-    private String title;
+    private String bookTitle;
 
     @Column(nullable = false)
-    private String author;
+    private String bookAuthor;
 
     @Lob
     @Column(nullable = false)
-    private String imgUrl;
+    private String bookImgUrl;
 
-    @Builder
-    public Book(Club club, String title, String author, String imgUrl){
-        this.club = club;
-        this.title = title;
-        this.author = author;
-        this.imgUrl = imgUrl;
+    protected Book() {
+
+    }
+
+    public Book(String bookTitle, String bookAuthor, String bookImgUrl) {
+        this.bookTitle = bookTitle;
+        this.bookAuthor = bookAuthor;
+        this.bookImgUrl = bookImgUrl;
     }
 
 }

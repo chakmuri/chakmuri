@@ -23,7 +23,7 @@ public class ClubResponseDto {
     private int likes;                  //독서모임 좋아요 수
     private ClubStatus clubStatus;      //독서모임 모집여부
 
-    public ClubResponseDto(Club club){
+    public ClubResponseDto(Club club) {
         BeanUtils.copyProperties(club, this);
     }
 }

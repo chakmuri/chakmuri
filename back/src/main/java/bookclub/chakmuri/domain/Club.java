@@ -16,12 +16,13 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @NoArgsConstructor
-@ToString(exclude = {"commentList", "bookList", "memberList"})
+@ToString(exclude = {"commentList", "memberList"})
 @Table(name = "clubs")
 @Getter
 public class Club {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) //데이터베이스에 위임(자동생성, auto_increment)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //데이터베이스에 위임(자동생성, auto_increment)
     //@Column(name = "club_id")
     private Long id;
 
@@ -30,18 +31,20 @@ public class Club {
     private User user;
 
     @OneToMany(mappedBy = "club")
-    private List<Comment> commentList = new ArrayList<>();
+    private final List<Comment> commentList = new ArrayList<>();
+
+    @Embedded
+    private Book book;
 
     @OneToMany(mappedBy = "club")
-    private List<Book> bookList = new ArrayList<>();
+    private final List<Member> memberList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club")
-    private List<Member> memberList = new ArrayList<>();
-
-    @Column(length = 2000, nullable = false) @Size(max = 2000)
+    @Column(length = 2000, nullable = false)
+    @Size(max = 2000)
     private String description;
 
-    @Column(length = 2000) @Size(max = 2000)
+    @Column(length = 2000)
+    @Size(max = 2000)
     private String bookDescription;
 
     @Column(nullable = false)
@@ -81,10 +84,10 @@ public class Club {
     @Enumerated(EnumType.STRING)
     private ClubStatus clubStatus; // [ACTIVE, EXPIRED]
 
-    @Builder    //TODO : List<Book> bookList, user 에 final 추가
+    @Builder
     public Club(User user, String title, String contents, String imgUrl, int minPersonnel, int maxPersonnel,
-                LocalDate startDate, LocalDate endDate, String tags, int likes, List<Book> bookList, String bookDescription, String description,
-                String addressDetail, String addressStreet, ClubStatus clubStatus){
+                LocalDate startDate, LocalDate endDate, String tags, int likes, Book book, String bookDescription, String description,
+                String addressDetail, String addressStreet, ClubStatus clubStatus) {
         this.user = user;
         this.title = title;
         this.contents = contents;
@@ -95,7 +98,7 @@ public class Club {
         this.endDate = endDate;
         this.tags = tags;
         this.likes = likes;
-        this.bookList = bookList;   //TODO: 어떻게 처리할지
+        this.book = book;
         this.bookDescription = bookDescription;
         this.description = description;
         this.addressDetail = addressDetail;
@@ -106,8 +109,8 @@ public class Club {
     public void updateClub(String title, String contents, String imgUrl,
                            int minPersonnel, int maxPersonnel,
                            LocalDate startDate, LocalDate endDate,
-                           String tags, String bookDescription, String description,
-                           String addressDetail, String addressStreet){
+                           String tags, Book book, String bookDescription, String description,
+                           String addressDetail, String addressStreet) {
         this.title = title;
         this.contents = contents;
         this.imgUrl = imgUrl;
@@ -116,6 +119,7 @@ public class Club {
         this.startDate = startDate;
         this.endDate = endDate;
         this.tags = tags;
+        this.book = book;
         this.bookDescription = bookDescription;
         this.description = description;
         this.addressDetail = addressDetail;
