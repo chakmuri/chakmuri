@@ -17,7 +17,6 @@ import Gather from "../board/Gather";
 const Wrapper = styled.section`
 	width: 1200px;
 	margin: 0 auto;
-	//border: solid 1px; /* 임시 */
 `;
 
 const Main = (props) => {

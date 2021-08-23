@@ -7,26 +7,24 @@ import Button from '../common/Button'
  * 독서 모임 찾기 영역입니다.
  * 
  * 여기에서는 원하는 독서 모임의 이름을 검색하여 특정한 독서 모임을 찾을 수 있고, 검색 바 밑에 여러 가지 특정한
- * 버튼(==태그)를 누르면, 그에 맞는 태그들만 필터링해서 렌더링합니다.
+ * 버튼(==태그)를 누르면, 그에 맞는 태그들만 필터링해서 렌더링합니다. ** 최대 3개까지 가능
  */
 
-const Wrapper = styled.div`
-  .searchLogo {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 28px;
-    display: flex;
-    justify-content: center;
-  }
-
-  .logo {
-    margin-right: 8px;
-  }
+const SearchLogo = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  display: flex;
+  justify-content: center;
 `;
 
-const ButtonWrapper = styled.div`
+const SearchLogoText = styled.span`
+  margin-left: 8px;
+`;
+
+const ButtonWrapper = styled.div` /* 수정 예정 - 2021.08.23 */
   margin-top: 15px;
   margin-bottom: 15px;
   display: flex;
@@ -35,10 +33,11 @@ const ButtonWrapper = styled.div`
 
 const Search = (props) => { 
   return (
-    <Wrapper>
-      <div className="searchLogo">
-        <img src="assets/images/boardSearchLogo.png" alt="logo" className="logo" /> 독서 모임 찾기
-      </div>
+    <>
+      <SearchLogo>
+        <img src="assets/images/boardSearchLogo.png" alt="icon.png"/>
+        <SearchLogoText>독서 모임 찾기</SearchLogoText> 
+      </SearchLogo>
       <SearchBar />
       <ButtonWrapper>
         <Button />
@@ -52,7 +51,7 @@ const Search = (props) => {
         <Button />
         <Button />
       </ButtonWrapper>
-    </Wrapper>
+    </>
   );
 };
 

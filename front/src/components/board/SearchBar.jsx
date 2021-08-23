@@ -7,24 +7,27 @@ import styled from "styled-components";
  *  원하는 키워드를 입력하면 입력한 값에 해당하는 독서 모임의 제목을 렌더링해줌.
  */
 
-const Wrapper = styled.div`
+const SearchBarSection = styled.section`
 	display: flex;
 	justify-content: center;
+`;
 
-	.searchBar {
-		width: 588px;
-		height: 48px;
-		border: 1px solid;
+const SearchBarContainer = styled.div`
+	width: 588px;
+	height: 48px;
+	border: 2px solid #959595;
 
-		display: flex;
-		align-items: center;
-		margin-top: 53px;
-		margin-bottom: 25px;
+	display: flex;
+	align-items: center;
+	margin-top: 53px;
+	margin-bottom: 25px;
 
-		letter-spacing: -0.015em;
-	}
+	letter-spacing: -0.015em;
+`;
 
-	.searchInput {
+// styled.input -> 에러 발생, 따라서, styled.div 안에 input {}으로 설정함.
+const SearchBarInput = styled.div`
+	input {
 		border: none;
 		outline: none;
 		width: 540px;
@@ -36,12 +39,14 @@ const Wrapper = styled.div`
 
 const SearchBar = (props) => {
 	return (
-		<Wrapper>
-			<div className="searchBar">
-				<img src="assets/images/search.png" alt="search" className="search" />
-				<input type="text" placeholder="검색" className="searchInput" />
-			</div>
-		</Wrapper>
+		<SearchBarSection>
+			<SearchBarContainer>
+				<img src="assets/images/search.png" alt="icon.png" />
+				<SearchBarInput>
+					<input type="text" placeholder="검색" />
+				</SearchBarInput>
+			</SearchBarContainer>
+		</SearchBarSection>
 	);
 };
 
