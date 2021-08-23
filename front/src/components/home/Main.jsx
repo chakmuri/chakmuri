@@ -4,7 +4,7 @@ import ImageSlider from "./ImageSlider";
 import PopularList from "./PopularClubList";
 import NewList from "./NewClubList";
 import Button from "../common/Button";
-import FeedList from "./FeedList";
+import OnlineClubList from "./OnlineClubList";
 
 const Wrapper = styled.div`
 	width: 1200px;
@@ -32,12 +32,10 @@ const Main = () => {
 			<PopularList />
 			<Title>따끈따끈한 신규 모임</Title>
 			<NewList />
+			<Title>이 시국엔 온라인 모임</Title>
+			<OnlineClubList />
 			<MainButton>
 				<Button>독서모임 더보기</Button>
-			</MainButton>
-			<FeedList />
-			<MainButton>
-				<Button>피드 더보기</Button>
 			</MainButton>
 		</Wrapper>
 	);
