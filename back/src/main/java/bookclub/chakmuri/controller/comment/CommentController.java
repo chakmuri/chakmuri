@@ -3,6 +3,7 @@ package bookclub.chakmuri.controller.comment;
 import bookclub.chakmuri.domain.Comment;
 import bookclub.chakmuri.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,10 +57,10 @@ public class CommentController {
     }
 
     // 모임상세 댓글 전체 조회
-    @GetMapping("/clubs/{clubId}")
+    @GetMapping("/clubs/{clubId}/{page}")
     public ResponseEntity<List<CommentResponseDto>> getClubComments(
-            @PathVariable("clubId") Long clubId) {
-        List<CommentResponseDto> response = commentService.findAllClubComments(clubId)
+            @PathVariable("clubId") Long clubId, @PathVariable("page") int page){
+        List<CommentResponseDto> response = commentService.findAllClubComments(clubId, page)
                 .stream()
                 .map(CommentResponseDto::new)
                 .collect(Collectors.toList());

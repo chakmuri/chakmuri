@@ -11,6 +11,10 @@ import bookclub.chakmuri.repository.ClubRepository;
 import bookclub.chakmuri.repository.CommentRepository;
 import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,20 +38,10 @@ public class CommentService {
     // 댓글 작성
     @Transactional // readOnly = false (기본값)
     public Comment createComment(CommentCreateRequestDto commentCreateRequestDto) {
-//        checkNotNull(userId, "userId must be provided");
-//        checkNotNull(clubId, "clubId must be provided");
-
-        /**
-         *
-         private String userId; // 유저 아이디
-         private Long clubId; // 모임 페이지 번호
-         private String contents; // 댓글 내용
-         */
         Comment comment = commentCreateRequestDto.toEntity();
         String userId = commentCreateRequestDto.getUserId();
         Long clubId = commentCreateRequestDto.getClubId();
 
-        //convertToComment:
         final Comment newComment = convertToComment(comment, userId, clubId);
         return commentRepository.save(newComment);
 
@@ -70,14 +64,8 @@ public class CommentService {
     // TODO: commentId 예외처리하기, checkArgument(lectureId > 0, "lectureId must be positive number"); import 안됨.
     @Transactional
     public void updateComment(CommentUpdateRequestDto commentUpdateRequestDto, Long commentId) {
-/**
- * commentUpdateRequestDto.toEntity(),
- *                 commentId,
- *                 commentUpdateRequestDto.getUserId()
- */
-        Comment requestComment = commentUpdateRequestDto.toEntity();
         String userId = commentUpdateRequestDto.getUserId();
-        String contents = requestComment.getContents();
+        String contents = commentUpdateRequestDto.getContents();
         final User user = userRepository.findById(userId)
                 .orElseThrow();   // TODO: UserNotFoundException::new 추가하기
 
@@ -85,8 +73,6 @@ public class CommentService {
                 .orElseThrow();   // TODO: CommentNotFoundException::new 추가하기
 
         comment.changeComment(contents);
-        // commentRepository.save(comment); 해줄 필요 없다 -> 변경 감지 활용
-
     }
     @Transactional
     public void deleteComment(final Long commentId) {
@@ -101,13 +87,12 @@ public class CommentService {
 
     }
     //TODO: 존재하지 않는 모임에 대한 검증 추가
-    public List<Comment> findAllClubComments(Long clubId) {
+    public Page<Comment> findAllClubComments(Long clubId, int page) {
         final Club club = clubRepository.findById(clubId)
                 .orElseThrow(); // TODO: ClubNotFoundException::new 추가하기
 
-        return commentRepository.findAllByClubOrderByCreatedAtDesc(club);
-
-
+        PageRequest pageRequest = PageRequest.of((page-1), 5, Sort.by(Sort.Direction.DESC, "id"));
+        return commentRepository.findAllByClubId(clubId,pageRequest);
     }
 
     public List<Comment> findAllUserComments(String userId) {

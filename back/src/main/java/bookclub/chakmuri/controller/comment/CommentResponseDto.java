@@ -24,12 +24,8 @@ public class CommentResponseDto {
     public CommentResponseDto(Comment comment) {
         BeanUtils.copyProperties(comment, this);
         this.userId = comment.getUser().getId();
-//        this.commentId = comment.getId();
-//        this.createdAt = comment.getCreatedAt();
-//        this.updatedAt = comment.getUpdatedAt();
-//        this.contents = comment.getContents();
-//        this.userName = comment.getUser().getName();
-//        this.userImgUrl = comment.getUser().getImgUrl();
+        this.userName = comment.getUser().getName();
+        this.userImgUrl = comment.getUser().getImgUrl();
     }
 
 }
