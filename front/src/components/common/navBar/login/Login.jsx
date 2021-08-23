@@ -27,8 +27,7 @@ const GoogleLoginButton = styled.button`
 `;
 
 const Login = (props) => {
-	// const [loginStatus, setLoginStatus] = useState(false);
-	console.log(props);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	const onSuccess = async (response) => {
 		console.log("Login Sucess: ", response.profileObj);
@@ -50,17 +49,19 @@ const Login = (props) => {
 				console.log(user);
 
 				await axios.post("/users", user);
+				localStorage.setItem("userId", res.googleId);
+				setIsLoggedIn(true);
 				props.onCancel();
 			}
 		} catch (err) {
 			console.log(err);
 		}
-		// setLoginStatus(true);
 	};
 
-	// const logout = () => {
-	// 	setLoginStatus(false);
-	// };
+	const logout = () => {
+		localStorage.removeItem("userId");
+		setIsLoggedIn(false);
+	};
 
 	const onFailure = (response) => {
 		console.log("Login Failed: ", response);
