@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { GoogleLogin } from "react-google-login";
 import styled from "styled-components";
@@ -27,6 +28,7 @@ const GoogleLoginButton = styled.button`
 `;
 
 const Login = (props) => {
+	const history = useHistory();
 	// const [loginStatus, setLoginStatus] = useState(false);
 	console.log(props);
 
@@ -46,12 +48,12 @@ const Login = (props) => {
 					email,
 					imgUrl: imageUrl,
 				};
-
 				console.log(user);
 
 				await axios.post("/users", user);
-				props.onCancel();
 			}
+			props.onCancel();
+			history.push("/");
 		} catch (err) {
 			console.log(err);
 		}

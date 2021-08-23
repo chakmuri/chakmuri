@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Modal } from "antd";
 import Login from "./login/Login";
@@ -26,18 +27,17 @@ const NavMenu = styled.div`
 	gap: 50px;
 `;
 
-const NavLink = styled.div`
+const NavLink = styled(Link)`
 	display: flex;
 	gap: 50px;
+	color: black;
+
+	&:hover {
+		color: #ff6701;
+	}
 `;
 
-const NavBoard = styled.div`
-	font-family: Roboto;
-	font-weight: 500;
-	font-size: 20px;
-`;
-
-const NavFeed = styled.div`
+const NavText = styled.div`
 	font-family: Roboto;
 	font-weight: 500;
 	font-size: 20px;
@@ -100,13 +100,14 @@ const NavBar = () => {
 
 	return (
 		<Nav>
-			<NavLogo>
-				<img src="assets/images/logo.png" alt="Logo" />
-			</NavLogo>
+			<Link to="/">
+				<NavLogo>
+					<img src="assets/images/logo.png" alt="Logo" />
+				</NavLogo>
+			</Link>
 			<NavMenu>
-				<NavLink>
-					<NavBoard>보드</NavBoard>
-					<NavFeed>피드</NavFeed>
+				<NavLink to="/board">
+					<NavText>독서모임 찾기</NavText>
 				</NavLink>
 				<NavIcon>
 					<NavProfile onClick={showModal}>

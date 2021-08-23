@@ -1,8 +1,14 @@
 import React from "react";
 import { Row, Col } from "antd";
 import styled from "styled-components";
-import ClubCard from "../home/ClubCard";
+import GatherCard from "../common/GatherCards";
 import CustomPagination from "../common/Pagination";
+
+const ListRow = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+`;
 
 const PaginationRow = styled(Row)`
 	width: 100%;
@@ -13,20 +19,11 @@ const PaginationRow = styled(Row)`
 const LikedClubList = () => {
 	return (
 		<>
-			<Row gutter={24}>
-				<Col span={6}>
-					<ClubCard />
-				</Col>
-				<Col span={6}>
-					<ClubCard />
-				</Col>
-				<Col span={6}>
-					<ClubCard />
-				</Col>
-				<Col span={6}>
-					<ClubCard />
-				</Col>
-			</Row>
+			<ListRow>
+				<GatherCard />
+				<GatherCard />
+				<GatherCard />
+			</ListRow>
 			<PaginationRow>
 				<CustomPagination />
 			</PaginationRow>
