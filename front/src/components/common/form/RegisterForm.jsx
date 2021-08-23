@@ -133,7 +133,6 @@ const MapWrapper = styled.div`
 	margin-top: 40px;
 `;
 
-// styled-components 재사용 문제
 const FilledButton = styled(Button)`
 	& {
 		color: #ffffff;
