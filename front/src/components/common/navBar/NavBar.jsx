@@ -52,6 +52,11 @@ const NavProfile = styled.div`
 	width: 48px;
 	height: 48px;
 	cursor: pointer;
+
+	img {
+		width: 100%;
+		height: 100%;
+	}
 `;
 
 const StyledModal = styled(Modal)`
@@ -85,10 +90,13 @@ const Title = styled.div`
 const NavRegister = styled.div`
 	width: 48px;
 	height: 48px;
+	cursor: pointer;
 `;
 
-const NavBar = (props) => {
+const NavBar = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [userImage, setUserImage] = useState("");
 
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -98,35 +106,69 @@ const NavBar = (props) => {
 		setIsModalVisible(false);
 	};
 
+	const getLoginStatus = (loginStatus) => {
+		setIsLoggedIn(loginStatus);
+	};
+
+	const getUserImage = (image) => {
+		setUserImage(image);
+	};
+
 	return (
-		<Nav>
-			<Link to="/">
-				<NavLogo>
-					<img src="assets/images/logo.png" alt="Logo" />
-				</NavLogo>
-			</Link>
-			<NavMenu>
-				<NavLink to="/board">
-					<NavText>독서모임 찾기</NavText>
-				</NavLink>
-				<NavIcon>
-					<NavProfile onClick={showModal}>
-						<img src="assets/images/icons/profile.png" alt="Profile icon" />
-					</NavProfile>
-					<StyledModal visible={isModalVisible} onCancel={handleCancel}>
-						<Title>
-							지금 바로,
-							<br />
-							<strong>책무리</strong>에서 모여보세요!
-						</Title>
-						<Login onCancel={handleCancel} {...props} />
-					</StyledModal>
-					<NavRegister>
-						<img src="assets/images/icons/add.png" alt="Add icon" />
-					</NavRegister>
-				</NavIcon>
-			</NavMenu>
-		</Nav>
+		<>
+			{!isLoggedIn ? (
+				<Nav>
+					<Link to="/">
+						<NavLogo>
+							<img src="assets/images/logo.png" alt="Logo" />
+						</NavLogo>
+					</Link>
+					<NavMenu>
+						<NavLink to="/board">
+							<NavText>독서모임 찾기</NavText>
+						</NavLink>
+						<NavIcon>
+							<NavProfile onClick={showModal}>
+								<img src="assets/images/icons/profile.png" alt="Profile icon" />
+							</NavProfile>
+							<StyledModal visible={isModalVisible} onCancel={handleCancel}>
+								<Title>
+									지금 바로,
+									<br />
+									<strong>책무리</strong>에서 모여보세요!
+								</Title>
+								<Login
+									getLoginStatus={getLoginStatus}
+									onCancel={handleCancel}
+									getUserImage={getUserImage}
+								/>
+							</StyledModal>
+						</NavIcon>
+					</NavMenu>
+				</Nav>
+			) : (
+				<Nav>
+					<Link to="/">
+						<NavLogo>
+							<img src="assets/images/logo.png" alt="Logo" />
+						</NavLogo>
+					</Link>
+					<NavMenu>
+						<NavLink to="/board">
+							<NavText>독서모임 찾기</NavText>
+						</NavLink>
+						<NavIcon>
+							<NavProfile>
+								<img src={userImage} alt="User profile" />
+							</NavProfile>
+							<NavRegister>
+								<img src="assets/images/icons/add.png" alt="Add icon" />
+							</NavRegister>
+						</NavIcon>
+					</NavMenu>
+				</Nav>
+			)}
+		</>
 	);
 };
 

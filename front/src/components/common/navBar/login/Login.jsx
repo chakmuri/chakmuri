@@ -27,12 +27,11 @@ const GoogleLoginButton = styled.button`
 	position: relative;
 `;
 
-const Login = (props) => {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+const Login = ({ ...props }) => {
 	const history = useHistory();
 
 	const onSuccess = async (response) => {
-		console.log("Login Sucess: ", response.profileObj);
+		// console.log("Login Sucess: ", response.profileObj);
 		const {
 			profileObj: { googleId, email, name, imageUrl },
 		} = response;
@@ -47,14 +46,16 @@ const Login = (props) => {
 					email,
 					imgUrl: imageUrl,
 				};
-				console.log(user);
 
 				await axios.post("/users", user);
-				localStorage.setItem("userId", res.googleId);
 			}
-			setIsLoggedIn(true);
+			localStorage.setItem("userId", res.data.id);
+			props.getLoginStatus(true);
+			props.getUserImage(res.data.imgUrl);
 			props.onCancel();
 			history.push("/");
+
+			return res;
 		} catch (err) {
 			console.log(err);
 		}
@@ -62,7 +63,7 @@ const Login = (props) => {
 
 	const logout = () => {
 		localStorage.removeItem("userId");
-		setIsLoggedIn(false);
+		props.getLoginStatus(false);
 	};
 
 	const onFailure = (response) => {
