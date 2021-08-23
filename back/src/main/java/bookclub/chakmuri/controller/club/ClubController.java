@@ -1,6 +1,7 @@
 package bookclub.chakmuri.controller.club;
 
 import bookclub.chakmuri.domain.Club;
+import bookclub.chakmuri.domain.User;
 import bookclub.chakmuri.service.ClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,8 +28,15 @@ public class ClubController {
     public ResponseEntity<ClubCreateRequestDto> createClub(
             @RequestBody ClubCreateRequestDto clubCreateRequestDto,
             @RequestParam(value = "img", required = false) MultipartFile file) {
-        Club club = clubService.createClub(clubCreateRequestDto, file);
-        return new ResponseEntity("독서모임 등록이 완료되었습니다. (clubId: " + club.getId() + ")", HttpStatus.OK);
+        //이 유저가 만든 독서모임이 있는지 체크(한사람당 한 개)
+        //TODO: 502 에러가 맞는지 확인
+        if(clubService.findClubByUserId(clubCreateRequestDto.getUserId()) != null){
+            return new ResponseEntity("한 사람 당 하나의 독서모임만 생성할 수 있습니다.", HttpStatus.BAD_GATEWAY);
+        }
+        else {
+            Club club = clubService.createClub(clubCreateRequestDto, file);
+            return new ResponseEntity("독서모임 등록이 완료되었습니다. (clubId: " + club.getId() + ")", HttpStatus.OK);
+        }
     }
 
     //독서모임 리스트 조회(검색조건 x)

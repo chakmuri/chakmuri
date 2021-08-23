@@ -4,6 +4,7 @@ import bookclub.chakmuri.controller.club.ClubCreateRequestDto;
 import bookclub.chakmuri.controller.club.ClubUpdateRequestDto;
 import bookclub.chakmuri.domain.Book;
 import bookclub.chakmuri.domain.Club;
+import bookclub.chakmuri.domain.ClubStatus;
 import bookclub.chakmuri.domain.User;
 import bookclub.chakmuri.repository.ClubRepository;
 import bookclub.chakmuri.repository.UserRepository;
@@ -28,7 +29,6 @@ public class ClubService {
     @Transactional
     public Club createClub(ClubCreateRequestDto clubCreateRequestDto, MultipartFile file) {
         //userId NotNull 체크 -> 없어도 됨
-        //TODO : 이 유저가 만든 독서모임이 있는지 체크(한사람당 한 개)
         //TODO : AWS s3 img upload 로직 짜기 (현재는 로컬 업로드)
         if (file != null) {
             String path = "C:\\chakmuri\\back\\src\\main\\resources\\image\\";
@@ -42,7 +42,7 @@ public class ClubService {
         }
         Club club = clubCreateRequestDto.toEntity();
         Book book = getBookObject(clubCreateRequestDto.getBooks());
-        final Club newClub = convertToClub(club, book, clubCreateRequestDto.getUserId());
+        final Club newClub = convertToNewClub(club, book, clubCreateRequestDto.getUserId());
         return clubRepository.save(newClub);
     }
 
@@ -69,8 +69,9 @@ public class ClubService {
                 book.get("bookImgUrl").toString());
     }
 
+    //club 생성시에만 사용하는 메서드
     //파라미터로 받은 userId 값을 사용해 findById로 찾은 user 객체를 이용, 빌더로 entity를 생성하는 역할
-    private Club convertToClub(final Club club, final Book book, final String userId) {
+    private Club convertToNewClub(final Club club, final Book book, final String userId) {
         final User user = userRepository.findById(userId)
                 .orElseThrow(); // -> TODO : UserNotFoundException 만들어서 넣기
         System.out.println(user.getId());
@@ -84,13 +85,13 @@ public class ClubService {
                 .startDate(club.getStartDate())
                 .endDate(club.getEndDate())
                 .tags(club.getTags())
-                .likes(club.getLikes())
+                .likes(0)
                 .book(book)
                 .bookDescription(club.getBookDescription())
                 .description(club.getDescription())
                 .addressDetail(club.getAddressDetail())
                 .addressStreet(club.getAddressStreet())
-                .clubStatus(club.getClubStatus())
+                .clubStatus(ClubStatus.ACTIVE)
                 .build();
     }
 
