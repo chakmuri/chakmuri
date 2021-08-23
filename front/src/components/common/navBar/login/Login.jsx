@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { GoogleLogin } from "react-google-login";
 import styled from "styled-components";
@@ -28,6 +29,7 @@ const GoogleLoginButton = styled.button`
 
 const Login = (props) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const history = useHistory();
 
 	const onSuccess = async (response) => {
 		console.log("Login Sucess: ", response.profileObj);
@@ -45,14 +47,14 @@ const Login = (props) => {
 					email,
 					imgUrl: imageUrl,
 				};
-
 				console.log(user);
 
 				await axios.post("/users", user);
 				localStorage.setItem("userId", res.googleId);
-				setIsLoggedIn(true);
-				props.onCancel();
 			}
+			setIsLoggedIn(true);
+			props.onCancel();
+			history.push("/");
 		} catch (err) {
 			console.log(err);
 		}
