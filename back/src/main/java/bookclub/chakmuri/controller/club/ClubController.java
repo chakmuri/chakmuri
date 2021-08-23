@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,9 @@ public class ClubController {
     private final ClubService clubService;
 
     //TODO: AWS S3 서비스 이용, pageable 설정
+    //TODO: 독서모임 검색(검색조건 - 태그, 모집중 여부, 정렬, 검색 키워드)
+    //TODO: 독서모임 만료 로직 -> status가 expired면 참여신청 불가
+    //독서모임 시작일이 되면 expired로 변경 -> GetMapping일 때(userId로 조회 제외)
 
     //독서모임 생성
     @PostMapping
@@ -29,9 +33,9 @@ public class ClubController {
             @RequestBody ClubCreateRequestDto clubCreateRequestDto,
             @RequestParam(value = "img", required = false) MultipartFile file) {
         //이 유저가 만든 독서모임이 있는지 체크(한사람당 한 개)
-        //TODO: 502 에러가 맞는지 확인
+        //TODO: 400 에러가 맞는지 확인
         if(clubService.findClubByUserId(clubCreateRequestDto.getUserId()) != null){
-            return new ResponseEntity("한 사람 당 하나의 독서모임만 생성할 수 있습니다.", HttpStatus.BAD_GATEWAY);
+            return new ResponseEntity("한 사람 당 하나의 독서모임만 생성할 수 있습니다.", HttpStatus.BAD_REQUEST);
         }
         else {
             Club club = clubService.createClub(clubCreateRequestDto, file);
@@ -59,10 +63,6 @@ public class ClubController {
                 new ClubDetailResponseDto(clubService.findClubById(clubId))
         );
     }
-
-    //TODO: 독서모임 검색(검색조건 - 태그, 모집중 여부, 정렬, 검색 키워드)
-
-    //TODO: 독서모임 만료 로직
 
     //사용자가 만든 독서모임 조회
     @GetMapping("/my/{userId}")

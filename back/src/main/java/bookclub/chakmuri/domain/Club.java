@@ -126,4 +126,8 @@ public class Club {
         this.addressDetail = addressDetail;
         this.addressStreet = addressStreet;
     }
+
+    public void changeStatus(ClubStatus clubstatus){
+        this.clubStatus = clubstatus;
+    }
 }

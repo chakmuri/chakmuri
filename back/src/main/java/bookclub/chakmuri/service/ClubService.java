@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -96,12 +97,22 @@ public class ClubService {
     }
 
     public List<Club> findAllClubs() {
-        return clubRepository.findAll();
+        List<Club> clubs = clubRepository.findAll();
+        for(Club club : clubs){
+            if(LocalDate.now().equals(club.getStartDate())){    //독서모임 만료 처리 로직
+                club.changeStatus(ClubStatus.EXPIRED);
+            }
+        }
+        return clubs;
     }
 
     public Club findClubById(Long clubId) {
-        return clubRepository.findById(clubId)
-                .orElseThrow(); // -> TODO : ClubNotFoundException 만들기
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow();// -> TODO : ClubNotFoundException 만들기
+        if(LocalDate.now().equals(club.getStartDate())){    //독서모임 만료 처리 로직
+            club.changeStatus(ClubStatus.EXPIRED);
+        }
+        return club;
     }
 
     public Club findClubByUserId(String userId) {
