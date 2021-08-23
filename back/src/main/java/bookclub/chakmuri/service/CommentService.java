@@ -75,8 +75,9 @@ public class CommentService {
  *                 commentId,
  *                 commentUpdateRequestDto.getUserId()
  */
+        Comment requestComment = commentUpdateRequestDto.toEntity();
         String userId = commentUpdateRequestDto.getUserId();
-        String contents = commentUpdateRequestDto.getContents();
+        String contents = requestComment.getContents();
         final User user = userRepository.findById(userId)
                 .orElseThrow();   // TODO: UserNotFoundException::new 추가하기
 

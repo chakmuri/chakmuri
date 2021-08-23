@@ -3,6 +3,7 @@ package bookclub.chakmuri.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -13,13 +14,13 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @NoArgsConstructor
+@ToString
 @Getter
 @Table(name = "comments")
 public class Comment extends BaseTime{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@Column(name = "comment_id")
     private Long id;
-
 
     @JoinColumn(name = "club_id")
     @ManyToOne(fetch = LAZY)
@@ -32,9 +33,6 @@ public class Comment extends BaseTime{
     @Column(length = 500, nullable = false) @Size(max = 500)
     private String contents;
 
-
-
-
     // 댓글 수정 -> setter역할 (변경감지 활용)
     public void changeComment(String newComment) {
         this.contents = newComment;
@@ -46,13 +44,9 @@ public class Comment extends BaseTime{
      * 3. 작성 시간 (미정)
      * 4. 댓글내용
      */
+
     @Builder
     public Comment(Club club, User user, String contents) {
-        this(null, club, user, contents);
-    }
-
-    public Comment(Long id, Club club, User user, String contents) {
-        this.id = id;
         this.club = club;
         this.user = user;
         this.contents = contents;
