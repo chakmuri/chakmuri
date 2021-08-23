@@ -3,6 +3,7 @@ import Main from "../src/pages/Home";
 import Board from "../src/pages/Board";
 import Detail from "../src/pages/Detail";
 import { Switch, Route } from "react-router-dom";
+import "antd/dist/antd.css";
 
 const App = () => {
 	return (

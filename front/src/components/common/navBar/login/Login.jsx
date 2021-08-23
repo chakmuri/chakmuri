@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-// import axios from "axios";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import axios from "axios";
+import { GoogleLogin } from "react-google-login";
 import styled from "styled-components";
 import dotenv from "dotenv";
 dotenv.config();
@@ -30,32 +30,32 @@ const Login = (props) => {
 	// const [loginStatus, setLoginStatus] = useState(false);
 	console.log(props);
 
-	const onSuccess = (response) => {
+	const onSuccess = async (response) => {
 		console.log("Login Sucess: ", response.profileObj);
-		props.onCancel();
-		// const {
-		// 	profileObj: { googleId, email, name, imageUrl },
-		// } = response;
+		const {
+			profileObj: { googleId, email, name, imageUrl },
+		} = response;
 
-		// try {
-		// 	const res = await axios.get(
-		// 		`${process.env.REACT_APP_SERVER_URL}/users/${googleId}`
-		// 	);
+		try {
+			const res = await axios.get(`/users/${googleId}`);
 
-		// 	if (!res.id) {
-		// 		const user = {
-		// 			id: googleId,
-		// 			name,
-		// 			email,
-		// 			img_url: imageUrl,
-		// 		};
+			if (res.status === 204) {
+				const user = {
+					id: googleId,
+					name,
+					email,
+					imgUrl: imageUrl,
+				};
 
-		// 		await axios.post(`${process.env.REACT_APP_SERVER_URL}/users`, user);
+				console.log(user);
+
+				await axios.post("/users", user);
+				props.onCancel();
+			}
+		} catch (err) {
+			console.log(err);
+		}
 		// setLoginStatus(true);
-		// 	}
-		// } catch (err) {
-		// 	console.log(err);
-		// }
 	};
 
 	// const logout = () => {
