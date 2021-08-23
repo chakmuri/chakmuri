@@ -1,9 +1,9 @@
 import React from "react";
 import NavBar from "../components/common/navBar/NavBar";
-import Main from "../components/myPage/Main";
+import Main from "../components/detail/Main";
 import Footer from "../components/common/Footer";
 
-const MyPage = () => {
+const Detail = (props) => {
 	return (
 		<>
 			<NavBar />
@@ -13,4 +13,4 @@ const MyPage = () => {
 	);
 };
 
-export default MyPage;
+export default Detail;
