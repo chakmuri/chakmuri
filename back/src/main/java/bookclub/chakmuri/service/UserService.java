@@ -19,7 +19,7 @@ public class UserService {
 
     public User searchUser(String userId){
         return userRepository.findById(userId)
-                .orElseThrow(null);
+                .orElse(null);
     }
 
     @Transactional
