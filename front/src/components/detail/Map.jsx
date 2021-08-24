@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 const Map = (props) => {
   return (
     <Wrapper>
-      <img src="assets/images/tempMap(레이아웃용-삭제예정).png" alt="asdf" />
+      <img src="assets/images/tempMap.png" alt="asdf" />
     </Wrapper>
   );
 };
