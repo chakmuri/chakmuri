@@ -107,14 +107,15 @@ const Tag = styled.div`
 	}
 `;
 
-// const SelectedTag = styled(Tag)`
-// 	color: #ffffff;
-// 	background-color: #f98404;
-// `;
+const SelectedTag = styled(Tag)`
+	color: #ffffff;
+	background-color: #f98404;
+`;
 
 const TagContainer = styled.div`
 	display: flex;
 	gap: 10px;
+	margin-bottom: 50px;
 `;
 
 const PreviewImage = styled.img`
@@ -162,9 +163,18 @@ const RegisterForm = ({ ...props }) => {
 	const [detailAddress, setDetailAddress] = useState("");
 	const [imgFile, setImgFile] = useState(null);
 	const [preview, setPreview] = useState(null);
-	// const clubTags = [];
-	// const [tags, setTags] = useState([]);
-	// const [isSelected, setIsSelected] = useState(false);
+	const [tags, setTags] = useState([]);
+	const [isSelected, setSelected] = useState(false);
+	const clubTags = [
+		"소수정예",
+		"온라인",
+		"오프라인",
+		"온・오프라인",
+		"수도권",
+		"지방",
+		"친목",
+		"독서 외 활동",
+	];
 
 	const fullAddress = streetAddress + detailAddress;
 	const userId = localStorage.getItem("userId");
@@ -201,20 +211,7 @@ const RegisterForm = ({ ...props }) => {
 		}
 	};
 
-	// const handleTags = (e) => {
-	// 	console.log(e.target.className);
-	// 	let text = e.target.textContent;
-	// 	const index = clubTags.indexOf(text);
-	// 	if (!isSelected) {
-	// 		clubTags.splice(index, 1);
-	// 		setIsSelected(true);
-	// 		setTags(clubTags);
-	// 	} else {
-	// 		clubTags.push(text);
-	// 		setIsSelected(false);
-	// 		setTags(clubTags);
-	// 	}
-	// };
+	const handleSelectTags = (e) => {};
 
 	const sendData = async (values) => {
 		const startDate = values.date[0]._d.toISOString().substring(0, 10);
@@ -362,21 +359,16 @@ const RegisterForm = ({ ...props }) => {
 						name="tags"
 						rules={[
 							{
-								type: "string",
-								required: false,
+								type: "array",
+								required: true,
 								message: "모임의 태그를 선택하세요.",
 							},
 						]}
 					>
 						<TagContainer>
-							<Tag>소수정예</Tag>
-							<Tag>온라인</Tag>
-							<Tag>오프라인</Tag>
-							<Tag>온・오프라인</Tag>
-							<Tag>수도권</Tag>
-							<Tag>지방</Tag>
-							<Tag>친목</Tag>
-							<Tag>독서 외 활동</Tag>
+							{clubTags.map((tag, i) => (
+								<Tag key={i}>{tag}</Tag>
+							))}
 						</TagContainer>
 					</Form.Item>
 				</Row>
