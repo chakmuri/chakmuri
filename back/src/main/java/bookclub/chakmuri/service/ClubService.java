@@ -7,6 +7,7 @@ import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.ClubStatus;
 import bookclub.chakmuri.domain.User;
 import bookclub.chakmuri.repository.ClubRepository;
+import bookclub.chakmuri.repository.CommentRepository;
 import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -26,6 +27,7 @@ import java.util.List;
 public class ClubService {
     private final ClubRepository clubRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     //TODO: 독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> ??
 
@@ -161,6 +163,7 @@ public class ClubService {
     @Transactional
     public void deleteClub(String userId) {
         final Club club = findClubByUserId(userId);
+        //TODO: commentRepository.deleteAllByClubId(club.getId()); -> 독서모임 삭제 시 댓글 전부 삭제
         clubRepository.delete(club);
     }
 }
