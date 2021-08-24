@@ -13,37 +13,35 @@ import GatherBox from "./GatherBox";
  * 필터 -> 최신순, 인기순, ...등으로 독서 모임 리스트를 필터링하여 렌더링합니다.
  */
 
-const Wrapper = styled.div`
+const GatherBar = styled.article`
 	font-family: Roboto;
 	font-style: normal;
-	margin-top: 100px; /* 간격 띄우기 */
 
-	h2 {
-		display: inline;
-	}
+	margin-top: 100px;
+	margin-bottom: 40px;
 
-	.gatherFilter {
-		font-family: Roboto;
-		font-style: normal;
-		font-weight: normal;
-		font-size: 20px;
-		line-height: 23px;
-		float: right;
-		letter-spacing: -0.015em;
-	}
-
-	.boardCheckBox {
-		margin: 0px 25px 0px 5px;
-		padding-bottom: 5px;
-		cursor: pointer; /* 클릭시 boardCheckedBox로 변경 + 모집중인 카드만 표시 */
-	}
-
-	.gathers {
-		margin-bottom: 50px;
-	}
+	display: flex;
+	justify-content: space-between;
 `;
 
-const Cards = styled.section`
+const GatherBarText = styled.h2`
+	display: inline-block;
+	font-weight: 500;
+	font-size: 24px;
+	line-height: 28px;
+	display: flex;
+	align-items: center;
+	text-align: center;
+
+	letter-spacing: -0.015em;
+`;
+
+const GatherBarFilter = styled.div`
+	display: flex;
+	justify-content: space-between;
+`;
+
+const Cards = styled.section` /* 독서모임 카드 리스트가 렌더링되는 영역 */
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 50px;
@@ -52,15 +50,13 @@ const Cards = styled.section`
 const Gather = (props) => {
 	return (
 		<>
-			<Wrapper>
-				<div className="gathers">
-					<h2>N개의 독서 모임</h2>
-					<span className="gatherFilter">
-						<GatherBox />
-						<GatherFilter />
-					</span>
-				</div>
-			</Wrapper>
+			<GatherBar>
+				<GatherBarText>N개의 독서 모임</GatherBarText>
+				<GatherBarFilter>
+					<GatherBox />
+					<GatherFilter />
+				</GatherBarFilter>
+			</GatherBar>
 			<Cards>
 				<GatherCards />
 				<GatherCards />

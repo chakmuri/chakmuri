@@ -1,42 +1,45 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Checkbox } from 'antd';
 
 /**
  * 모집중 박스 컴포넌트 입니다.
  */
 
-const Wrapper = styled.span`
+const GatherBoxContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+`;
+
+const GatherBoxText = styled.span`
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
   line-height: 23px;
+`;
 
-  p { 
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 20px;
-    line-height: 23px;
-    display: inline-block;
-    align-items: center;
-    text-align: center;
+const  GatherBoxIcon = styled(Checkbox)` /* checked상태일 때, 디자인하는 방법? */
+  margin: 0px 25px 0px 5px;
+  cursor: pointer;
+
+  .ant-checkbox {
+    border: solid 5px;
   }
 
-  .check {
-    margin: 0px 25px 0px 5px;
-    cursor: pointer;
+  .ant-checkbox-checked {
+    color: #000000;
+    background-color: #FFFFFF;
   }
 `;
 
 const GatherBox = (props) => {
   return (
-    <Wrapper>
-      <p>모집중</p>  
-      <span className="check">
-        <img className="checkBox" src="assets/images/boardCheckBox.png" alt="checkBox"/>
-      </span>
-    </Wrapper>
+    <GatherBoxContainer>
+      <GatherBoxText>모집중</GatherBoxText>
+      <GatherBoxIcon />
+    </GatherBoxContainer>
   );
 };
 
