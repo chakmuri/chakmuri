@@ -4,7 +4,9 @@ import bookclub.chakmuri.domain.User;
 import lombok.*;
 
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserCreateRequestDto {
 
     private String id;

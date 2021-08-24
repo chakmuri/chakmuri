@@ -2,6 +2,7 @@ package bookclub.chakmuri.controller.user;
 
 import bookclub.chakmuri.domain.User;
 import bookclub.chakmuri.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +17,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    //유저 정보 조회
+    //유저 정보 상세 조회
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponseDto> searchUser(
             @PathVariable final String userId) {
-        return ResponseEntity.ok(
-                new UserResponseDto(userService.searchUser(userId))
-        );
+        User user = userService.searchUser(userId);
+        if(user != null){
+            return ResponseEntity.ok(
+                    new UserResponseDto(userService.searchUser(userId))
+            );
+        }
+        else{
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
     }
 
     //유저 정보 등록
