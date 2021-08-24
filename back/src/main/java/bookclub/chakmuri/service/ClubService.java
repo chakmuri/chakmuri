@@ -128,7 +128,10 @@ public class ClubService {
     @Transactional
     public void updateClub(ClubUpdateRequestDto clubUpdateRequestDto, String userId) {
         final Club club = findClubByUserId(userId);
-        Book book = getBookObject(clubUpdateRequestDto.getBooks());
+        Book book = null;
+        if(clubUpdateRequestDto.getBooks() != null){
+            book = getBookObject(clubUpdateRequestDto.getBooks());
+        }
         club.updateClub(clubUpdateRequestDto.getTitle(),
                 clubUpdateRequestDto.getContents(),
                 clubUpdateRequestDto.getImgUrl(),
