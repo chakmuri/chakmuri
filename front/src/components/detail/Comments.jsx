@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Comment from './Comment';
+import Pagination from '../common/Pagination'
 
 /**
  * 댓글 파트 컴포넌트 입니다.
@@ -24,6 +25,7 @@ const Wrapper = styled.section`
     border: 1px solid #FEA82F;
     box-sizing: border-box;
     border-radius: 10px;
+    padding-bottom: 30px;
   }
 
   .commentsInput {
@@ -71,6 +73,7 @@ const Comments = (props) => {
         <Comment />
         <Comment />
         <Comment />
+        <Pagination />
       </div>
     </Wrapper>
   );
