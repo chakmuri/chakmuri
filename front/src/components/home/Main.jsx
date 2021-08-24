@@ -19,9 +19,25 @@ const Title = styled.div`
 	margin: 60px 0 40px 0;
 `;
 
-const MainButton = styled.div`
+const ButtonRow = styled.div`
+	display: flex;
+	justify-content: center;
+`;
+
+const MainButton = styled(Button)`
 	text-align: center;
 	margin: 80px 0;
+	border-radius: 30px;
+	color: #ff6701;
+	background-color: #ffffff;
+	border: 1px solid #ff6701;
+	padding: 10px 20px;
+	transition: all 0.3s;
+
+	&:hover {
+		color: #ffffff;
+		background-color: #ff6701;
+	}
 `;
 
 const Main = () => {
@@ -34,9 +50,9 @@ const Main = () => {
 			<NewList />
 			<Title>이 시국엔 온라인 모임</Title>
 			<OnlineClubList />
-			<MainButton>
-				<Button>독서모임 더보기</Button>
-			</MainButton>
+			<ButtonRow>
+				<MainButton>독서모임 더보기</MainButton>
+			</ButtonRow>
 		</Wrapper>
 	);
 };
