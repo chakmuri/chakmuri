@@ -38,7 +38,7 @@ const Login = ({ ...props }) => {
 		try {
 			const res = await axios.get(`/users/${googleId}`);
 
-			if (res.status === 204) {
+			if (!res.id) {
 				const user = {
 					id: googleId,
 					name,
@@ -50,9 +50,9 @@ const Login = ({ ...props }) => {
 			}
 
 			console.log(res.data);
-			localStorage.setItem("userId", res.data.id);
-			props.getLoginStatus(localStorage.getItem("userId"));
-			props.getUserImage(res.data.imgUrl);
+
+			localStorage.setItem("user_id", res.data.id);
+			localStorage.setItem("user_image", res.data.imgUrl);
 			props.onCancel();
 			history.push("/");
 
