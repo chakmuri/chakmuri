@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
+const RectBox = styled.div`
   background: #F98404;
   border-radius: 5px;
   cursor: pointer;
@@ -9,9 +9,9 @@ const Wrapper = styled.div`
 
 const Rectangle = (props) => {
   return (
-    <Wrapper>
+    <RectBox>
       {props.children}
-    </Wrapper>
+    </RectBox>
   );
 
   

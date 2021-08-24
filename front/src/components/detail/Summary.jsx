@@ -10,104 +10,115 @@ import Rectangle from '../common/Rectangle';
  *  오른쪽 아래에는 좋아요 버튼과 참여신청 버튼이 있습니다.
  */
 
-const Wrapper = styled.section`
+const SummarySection = styled.section`
   border: 1.5px solid #FEA82F;
   border-radius: 10px;
+`;
 
-  .summaryBox {
-    display: flex;
-    
-  }
+const SummaryContainer = styled.div`
+  display: flex;
+`;
 
-  .clubSummary {
-    margin: 35px 70px 35px 70px;
-    display: flex;
-    flex-direction: column;
-  }
+const SummaryClubs = styled.div`
+  margin: 35px 70px 35px 70px;
+  display: flex;
+  flex-direction: column;
+`;
 
-  .clupName {
-  margin-bottom: 30px;
-
+const ClubName = styled.h2` /* 독서모임 이름 */
   font-family: Roboto;
   font-style: normal;
   font-weight: bold;
   font-size: 24px;
   line-height: 36px;
-  }
 
-    .clubSummary > p { /* 자식 p태그 */
-      font-family: Roboto;
-      font-style: normal;
-      font-weight: bold;
-      font-size: 20px;
-      line-height: 36px;
-    }
+  margin-bottom: 30px;
+`;
 
-  .boxes {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 40px;
-  }
+const ClubPeople = styled.p` /* 독서모임 인원 */
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 36px;
+`;
 
-  .likedBox {
-    display: inline-block;
-    margin-right: 10px;
+const ClubSchedule = styled.p` /* 독서모임 일정 */
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 36px;
+`;
 
-    width: 60px;
-    height: 60px;
+const ClubSubject = styled.p` /* 독서모임 주제 */
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 36px;
+`;
 
-    border: 1px solid #C4C4C4;
-    box-sizing: border-box;
-    border-radius: 5px;
+const ClubBtns = styled.article` /* 하단 버튼 영역 */
+  display: flex;
+  justify-content: space-around;
+  margin-top: 40px;
+`;
+const LikeBtn = styled.div` /* 좋아요 버튼 */
+  display: inline-block;
+  margin-right: 10px;
 
-    cursor: pointer;
-  }
+  border: 1px solid #C4C4C4;
+  box-sizing: border-box;
+  border-radius: 5px;
 
-  .heartIcon {
+  width: 60px;
+  height: 60px;
+
+  cursor: pointer;
+
+  img { /* 하트 아이콘 스타일링 */
     margin: 12px;
     width: 32px;
     height: 32px;
   }
-
-  .rectText {
-    margin: 18px 54px 18px 54px;
-
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 23px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    letter-spacing: -0.015em;
-
-    color: #FFFFFF;
-  }
-
 `;
+const EnrollText = styled.p` /* 참여 신청 텍스트 스타일링 */
+  margin: 18px 54px 18px 54px;
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.015em;
+
+  color: #FFFFFF;
+`;
+
 
 const Summary = (props) => {
   return (
-    <Wrapper>
-      <div className="summaryBox">
+    <SummarySection>
+      <SummaryContainer>
         <img src="assets/images/summary.png" alt="img" />
-        <div className="clubSummary">
-          <h2 className="clupName"><img src="assets/images/icons/book.png" alt="icon" /> 독서모임 이름</h2>
-          <p><img src="assets/images/icons/people.png" alt="icon" /> 독서모임 인원</p>
-          <p><img src="assets/images/icons/schedule.png" alt="icon" /> 독서모임 일정</p>
-          <p><img src="assets/images/icons/subject.png" alt="icon" /> 독서모임 주제</p>
-          <div className="boxes">
-            <div className="likedBox">
-              <img className="heartIcon" src="assets/images/icons/heart.png" alt="icon" />
-            </div>
+        <SummaryClubs>
+          <ClubName><img src="assets/images/icons/book.png" alt="icon" /> 독서모임 이름</ClubName>
+          <ClubPeople><img src="assets/images/icons/people.png" alt="icon" /> 독서모임 인원</ClubPeople>
+          <ClubSchedule><img src="assets/images/icons/schedule.png" alt="icon" /> 독서모임 일정</ClubSchedule>
+          <ClubSubject><img src="assets/images/icons/subject.png" alt="icon" /> 독서모임 주제</ClubSubject>
+          <ClubBtns>
+            <LikeBtn><img src="assets/images/icons/heart.png" alt="icon" /></LikeBtn>
               <Rectangle>
-                <p className="rectText">참여 신청</p>
+                <EnrollText>참여 신청</EnrollText>
               </Rectangle>
-          </div>
-        </div>
-      </div>
-    </Wrapper>
+          </ClubBtns>
+        </SummaryClubs>
+      </SummaryContainer>
+    </SummarySection>
   );
 };
 
