@@ -42,24 +42,30 @@ public class ClubService {
             }
         }
         Club club = clubCreateRequestDto.toEntity();
-        Book book = getBookObject(clubCreateRequestDto.getBooks());
+        String books = clubCreateRequestDto.getBooks();
+        Book book = null;
+        if(books != null){
+            book = getBookObject(books);
+        }
         final Club newClub = convertToNewClub(club, book, clubCreateRequestDto.getUserId());
         return clubRepository.save(newClub);
     }
 
     private static JSONObject getJSONObjectFromString(String jsonString) {
         JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObject;
+        JSONObject jsonObject = null;
         try {
             jsonObject = (JSONObject) jsonParser.parse(jsonString);
-            // jsonObject가 null일 때 프로그램 중단
-            if (jsonObject.isEmpty()) {
-                throw new RuntimeException();
-            }
+            /**
+             * jsonObject가 null일 때 프로그램 중단
+             * if (jsonObject.isEmpty()) {
+             *     throw new RuntimeException();
+             * }
+             */
 
         } catch (ParseException e) {
             e.printStackTrace();
-            throw new RuntimeException(); //-> parseException 발생 시 프로그램 중단
+            //throw new RuntimeException(); -> parseException 발생 시 프로그램 중단
         }
         return jsonObject;
     }
@@ -126,7 +132,10 @@ public class ClubService {
     @Transactional
     public void updateClub(ClubUpdateRequestDto clubUpdateRequestDto, String userId) {
         final Club club = findClubByUserId(userId);
-        Book book = getBookObject(clubUpdateRequestDto.getBooks());
+        Book book = null;
+        if(clubUpdateRequestDto.getBooks() != null){
+            book = getBookObject(clubUpdateRequestDto.getBooks());
+        }
         club.updateClub(clubUpdateRequestDto.getTitle(),
                 clubUpdateRequestDto.getContents(),
                 clubUpdateRequestDto.getImgUrl(),

@@ -1,7 +1,6 @@
 package bookclub.chakmuri.controller.club;
 
 import bookclub.chakmuri.domain.Club;
-import bookclub.chakmuri.domain.User;
 import bookclub.chakmuri.service.ClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
