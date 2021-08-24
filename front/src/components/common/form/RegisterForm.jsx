@@ -11,7 +11,6 @@ const { RangePicker } = DatePicker;
 const Wrapper = styled.div`
 	width: 1200px;
 	padding: 40px 100px;
-	border: 1px solid black;
 	margin: 0 auto;
 `;
 
@@ -100,6 +99,17 @@ const Tag = styled.div`
 	border-radius: 30px;
 	text-align: center;
 	letter-spacing: 2px;
+	cursor: pointer;
+
+	&:hover {
+		color: #ffffff;
+		background-color: #f98404;
+	}
+`;
+
+const SelectedTag = styled(Tag)`
+	color: #ffffff;
+	background-color: #f98404;
 `;
 
 const TagContainer = styled.div`
@@ -107,17 +117,11 @@ const TagContainer = styled.div`
 	gap: 10px;
 `;
 
-const PreviewImage = styled.div`
+const PreviewImage = styled.img`
 	width: 263px;
 	height: 263px;
-	border: 1px solid black;
+	border: none;
 	border-radius: 50%;
-`;
-
-const BookCover = styled.div`
-	width: 180px;
-	height: 225px;
-	background-color: #c4c4c4;
 `;
 
 const ButtonRow = styled(Row)`
@@ -152,51 +156,74 @@ const UnFilledButton = styled(Button)`
 	}
 `;
 
-const SearchButton = styled(FilledButton)`
-	& {
-		type: button;
-	}
-`;
-
 const RegisterForm = () => {
 	const [inputText, setInputText] = useState("");
-	const [spot, setSpot] = useState("");
-	// const [imgFile, setImgFile] = useState(null);
-	// const [preview, setPreview] = useState(null);
+	const [streetAddress, setStreetAddress] = useState("");
+	const [detailAddress, setDetailAddress] = useState("");
+	const [imgFile, setImgFile] = useState(null);
+	const [preview, setPreview] = useState(null);
+	// const clubTags = [];
+	// const [tags, setTags] = useState([]);
+	// const [isSelected, setIsSelected] = useState(false);
+
+	const fullAddress = streetAddress + detailAddress;
 
 	const onChange = (e) => {
 		setInputText(e.target.value);
 	};
 
-	const getAddress = (e) => {
-		e.preventDefault();
-		setSpot(inputText);
+	const getStreetAddress = () => {
+		setStreetAddress(inputText);
 		setInputText("");
-		console.log(spot);
 	};
 
-	// const handleImgChange = (e) => {
-	// 	// setImgFile(e.target.files[0]);
-	// 	console.log("image file: ", e.target.files[0]);
-	// };
+	const getDetailAddress = () => {
+		setDetailAddress(inputText);
+		setInputText("");
+	};
 
-	// const handleImgUpload = () => {
-	// 	const formData = new FormData();
-	// 	formData.append("upload_image", imgFile);
-	// 	console.log("formData: ", formData);
+	const getFullAdress = (e) => {
+		getStreetAddress();
+		getDetailAddress();
+	};
 
-	// const config = {
-	// 	headers: {
-	// 		"content-type": "multipart/form-data",
-	// 	},
-	// };
+	const handleImgChange = (e) => {
+		let file = e.target.files[0];
+		let reader = new FileReader();
 
-	// axios.post("", formData, config);
+		reader.onloadend = () => {
+			setImgFile(file);
+			setPreview(reader.result);
+		};
+		if (file) {
+			reader.readAsDataURL(file);
+		}
+	};
+
+	// const handleTags = (e) => {
+	// 	console.log(e.target.className);
+	// 	let text = e.target.textContent;
+	// 	const index = clubTags.indexOf(text);
+	// 	if (!isSelected) {
+	// 		clubTags.splice(index, 1);
+	// 		setIsSelected(true);
+	// 		setTags(clubTags);
+	// 	} else {
+	// 		clubTags.push(text);
+	// 		setIsSelected(false);
+	// 		setTags(clubTags);
+	// 	}
 	// };
 
 	const sendData = async (values) => {
 		const startDate = values.date[0]._d.toISOString().substring(0, 10);
 		const endDate = values.date[1]._d.toISOString().substring(0, 10);
+		const config = {
+			headers: {
+				"content-type": "multipart/form-data",
+			},
+		};
+
 		const data = {
 			title: values.title,
 			contents: values.contents,
@@ -208,18 +235,21 @@ const RegisterForm = () => {
 			bookDescription: values.bookDescription,
 			tags: values.tags,
 			book: values.book,
-			imgUrl: values.imgUrl,
+			imgUrl: imgFile,
+			addressStreet: values.addressStreet,
+			addressDetail: values.addressDetail,
 		};
 
 		console.log(data);
-		const res = await axios.post("/clubs", values);
+
+		const res = await axios.post("/clubs", data, config);
 		if (res.status === 200) console.log("Success");
 		else console.log("Error");
 	};
 
 	const onFinish = async (values) => {
 		console.log("form values: ", values);
-		// sendData(values);
+		sendData(values);
 	};
 
 	const onFinishFailed = (errorInfo) => {
@@ -239,7 +269,7 @@ const RegisterForm = () => {
 						<Form.Item
 							label="이름"
 							name="title"
-							rules={[{ required: false, message: "모임 이름을 입력하세요." }]}
+							rules={[{ required: true, message: "모임 이름을 입력하세요." }]}
 						>
 							<StyledInput placeholder="이름" />
 						</Form.Item>
@@ -247,7 +277,7 @@ const RegisterForm = () => {
 							label="한 줄 소개"
 							name="contents"
 							rules={[
-								{ required: false, message: "모임의 한 줄 소개를 입력하세요." },
+								{ required: true, message: "모임의 한 줄 소개를 입력하세요." },
 							]}
 						>
 							<StyledInput placeholder="한 줄 소개" />
@@ -256,25 +286,25 @@ const RegisterForm = () => {
 							label="참여 인원"
 							rules={[
 								{
-									required: false,
+									required: true,
 									message: "모임의 참여 인원을 입력하세요.",
 								},
 							]}
 						>
 							<Row>
-								<Form.Item name="minPersonnel">
-									<PersonnelRow>
-										<StyledInputNumber min={2} defaultValue={2} />
-										<span> 인 </span>
-									</PersonnelRow>
-								</Form.Item>
+								<PersonnelRow>
+									<Form.Item name="minPersonnel">
+										<StyledInputNumber min={2} placeholder={2} />
+									</Form.Item>
+									<span> 인 </span>
+								</PersonnelRow>
 								<span> ~ </span>
-								<Form.Item name="maxPersonnel">
-									<PersonnelRow>
-										<StyledInputNumber min={2} defaultValue={2} />
-										<span> 인 </span>
-									</PersonnelRow>
-								</Form.Item>
+								<PersonnelRow>
+									<Form.Item name="maxPersonnel">
+										<StyledInputNumber min={2} placeholder={2} />
+									</Form.Item>
+									<span> 인 </span>
+								</PersonnelRow>
 							</Row>
 						</Form.Item>
 						<Form.Item
@@ -283,6 +313,7 @@ const RegisterForm = () => {
 							rules={[
 								{
 									type: "array",
+									required: "true",
 									message: "모임의 진행 기간을 입력하세요.",
 								},
 							]}
@@ -293,20 +324,29 @@ const RegisterForm = () => {
 					<Col span={8}>
 						<Form.Item
 							label="사진"
-							name="imgUrl"
+							name="img"
 							rules={[
-								{
-									message: "모임의 사진을 업로드하세요.",
-								},
+								{ required: true, message: "모임의 사진을 업로드하세요." },
 							]}
 							style={{ textAlign: "center" }}
 						>
-							<Row justify="center">
-								<PreviewImage></PreviewImage>
-							</Row>
-							<input type="file" accept="image/*" />
-							<Row justify="center">
-								<FilledButton>이미지 업로드</FilledButton>
+							<Row gutter={[0, 24]} justify="center">
+								{!preview ? (
+									<PreviewImage
+										src="https://placehold.co/263x263"
+										alt="Preview image"
+									></PreviewImage>
+								) : (
+									<PreviewImage
+										src={preview}
+										alt="Preview image"
+									></PreviewImage>
+								)}
+								<input
+									type="file"
+									accept="image/*"
+									onChange={handleImgChange}
+								/>
 							</Row>
 						</Form.Item>
 					</Col>
@@ -347,7 +387,6 @@ const RegisterForm = () => {
 										<img src="assets/images/icons/add.png" alt="Add icon" />
 									</AddIcon>
 								</Col>
-								<BookCover />
 							</Row>
 						</Form.Item>
 						<Form.Item name="bookDescription">
@@ -364,7 +403,7 @@ const RegisterForm = () => {
 							label="상세설명"
 							name="description"
 							rules={[
-								{ required: false, message: "모임의 상세설명을 입력하세요." },
+								{ required: true, message: "모임의 상세설명을 입력하세요." },
 							]}
 						>
 							<StyledTextArea rows={10} />
@@ -385,15 +424,17 @@ const RegisterForm = () => {
 								<StyledInput placeholder="상세 주소" />
 							</Form.Item>
 						</Form.Item>
-						<SearchButton onClick={getAddress}>주소 검색</SearchButton>
+						<FilledButton type="button" onClick={getFullAdress}>
+							주소 검색
+						</FilledButton>
 						<MapWrapper>
-							<MapContainer searchSpot={spot} />
+							<MapContainer searchSpot={fullAddress} />
 						</MapWrapper>
 					</Col>
 				</Row>
 				<ButtonRow>
 					<FilledButton>등록</FilledButton>
-					<UnFilledButton>취소</UnFilledButton>
+					<UnFilledButton type="button">취소</UnFilledButton>
 				</ButtonRow>
 			</StyledForm>
 		</Wrapper>
