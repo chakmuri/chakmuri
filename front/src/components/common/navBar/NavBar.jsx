@@ -106,8 +106,9 @@ const StyledDropdownMenu = styled(Menu)`
 
 const NavBar = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [isLoggedIn, setLoggedIn] = useState(null);
 	const [userImage, setUserImage] = useState("");
+	console.log(isLoggedIn);
 
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -117,8 +118,8 @@ const NavBar = () => {
 		setIsModalVisible(false);
 	};
 
-	const getLoginStatus = (loginStatus) => {
-		setIsLoggedIn(loginStatus);
+	const getLoginStatus = (userId) => {
+		setLoggedIn(userId);
 	};
 
 	const getUserImage = (image) => {
@@ -127,7 +128,7 @@ const NavBar = () => {
 
 	const handleLogout = () => {
 		localStorage.removeItem("userId");
-		setIsLoggedIn(false);
+		setLoggedIn(null);
 	};
 
 	const dropdownMenu = (
@@ -166,8 +167,8 @@ const NavBar = () => {
 								</Title>
 								<Login
 									onCancel={handleCancel}
-									getLoginStatus={getLoginStatus}
 									getUserImage={getUserImage}
+									getLoginStatus={getLoginStatus}
 								/>
 							</StyledModal>
 						</NavIcon>
