@@ -24,11 +24,21 @@ const SearchLogoText = styled.span`
   margin-left: 8px;
 `;
 
-const ButtonWrapper = styled.div` /* 수정 예정 - 2021.08.23 */
-  margin-top: 15px;
+const BtnSection = styled.article`
+  width: 900px;
+  margin: auto;
+`;
+
+const BtnWrapper = styled.div`
+  margin-top: 30px;
   margin-bottom: 15px;
+  width: auto;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+`;
+
+const BtnText = styled.div`
+  width: 120px;
 `;
 
 const Search = (props) => { 
@@ -39,18 +49,36 @@ const Search = (props) => {
         <SearchLogoText>독서 모임 찾기</SearchLogoText> 
       </SearchLogo>
       <SearchBar />
-      <ButtonWrapper>
-        <Button />
-        <Button />
-        <Button />
-        <Button />
-      </ButtonWrapper>
-      <ButtonWrapper>
-        <Button />
-        <Button />
-        <Button />
-        <Button />
-      </ButtonWrapper>
+      <BtnSection>
+        <BtnWrapper>
+          <Button>
+            <BtnText>소수정예</BtnText>
+          </Button>
+          <Button>
+            <BtnText>온라인</BtnText>
+          </Button>
+          <Button>
+            <BtnText>오프라인</BtnText>
+          </Button>
+          <Button>
+            <BtnText>온・오프라인</BtnText>
+          </Button>
+        </BtnWrapper>
+        <BtnWrapper>
+          <Button>
+            <BtnText>수도권</BtnText>
+          </Button>
+          <Button>
+            <BtnText>지방</BtnText>
+          </Button>
+          <Button>
+            <BtnText>친목</BtnText>
+          </Button>
+          <Button>
+            <BtnText>독서 외 활동</BtnText>
+          </Button>
+        </BtnWrapper>
+      </BtnSection>
     </>
   );
 };

@@ -29,7 +29,6 @@ const Wrapper = styled(Card)`
 		font-weight: bold;
 		font-size: 20px;
 		line-height: 36px;
-		margin-left: 15px; /* 임시 마진 간격 */
 	}
 	.ant-card-meta-description {
 		/* 한 줄 소개 */
@@ -37,8 +36,7 @@ const Wrapper = styled(Card)`
 		font-size: 16px;
 		line-height: 36px;
 		color: black;
-		margin-bottom: 45px;
-		margin-left: 15px; /* 임시 마진 간격 */
+		margin-bottom: 15px;
 	}
 
 	/* ~~ ant-desing 코드 */
@@ -48,7 +46,6 @@ const Wrapper = styled(Card)`
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-end;
-		margin-left: 15px; /* 임시 마진 간격 */
 	}
 
 	.like {
@@ -56,7 +53,6 @@ const Wrapper = styled(Card)`
 		flex-direction: column;
 		align-items: center;
 		cursor: pointer;
-		margin-right: 15px; /* 임시 마진 간격 */
 	}
 `;
 
