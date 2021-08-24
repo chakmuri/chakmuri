@@ -9,7 +9,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
     hibernate:
-      ddl-auto: create #none #update #validate
+      ddl-auto: none #create #none #update #validate
     properties:
       hibernate:
 #        show_sql: true

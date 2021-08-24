@@ -247,7 +247,7 @@ const RegisterForm = ({ ...props }) => {
 
 		console.log(data);
 
-		const res = await axios.post("/clubs", data, formData, config);
+		const res = await axios.post("/clubs", data);
 		if (res.status === 200) console.log("Success");
 		else console.log("Error");
 	};
@@ -331,7 +331,7 @@ const RegisterForm = ({ ...props }) => {
 							label="사진"
 							name="img"
 							rules={[
-								{ required: true, message: "모임의 사진을 업로드하세요." },
+								{ required: false, message: "모임의 사진을 업로드하세요." },
 							]}
 							style={{ textAlign: "center" }}
 						>
