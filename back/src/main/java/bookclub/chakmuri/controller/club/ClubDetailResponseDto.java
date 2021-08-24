@@ -37,8 +37,10 @@ public class ClubDetailResponseDto {    //TODO: 선정도서 처리
     public ClubDetailResponseDto(Club club) {
         BeanUtils.copyProperties(club, this);
         this.userId = club.getUser().getId();
-        this.bookTitle = club.getBook().getBookTitle();
-        this.bookAuthor = club.getBook().getBookAuthor();
-        this.bookImgUrl = club.getBook().getBookImgUrl();
+        if(club.getBook()!=null){
+            this.bookTitle = club.getBook().getBookTitle();
+            this.bookAuthor = club.getBook().getBookAuthor();
+            this.bookImgUrl = club.getBook().getBookImgUrl();
+        }
     }
 }
