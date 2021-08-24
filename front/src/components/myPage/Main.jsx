@@ -6,6 +6,7 @@ import LikedClubList from "./LikedClubList";
 import JoinedClubList from "./JoinedClubList";
 import MemberList from "./MemberList";
 import PendingMemberList from "./PendingMemberList";
+import RegisterForm from "../common/form/RegisterForm";
 
 const { TabPane } = Tabs;
 
@@ -87,6 +88,7 @@ const Main = () => {
 							<MemberList />
 						</Row>
 						<MidTitle>정보 수정</MidTitle>
+						<RegisterForm />
 					</TabContainer>
 				</TabPane>
 			</StyledTabs>

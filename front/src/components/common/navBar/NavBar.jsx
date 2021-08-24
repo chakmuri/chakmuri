@@ -106,7 +106,7 @@ const StyledDropdownMenu = styled(Menu)`
 
 const NavBar = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(true);
 	const [userImage, setUserImage] = useState("");
 
 	const showModal = () => {
