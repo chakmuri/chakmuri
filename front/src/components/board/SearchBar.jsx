@@ -20,7 +20,7 @@ const SearchBarContainer = styled.div`
 	display: flex;
 	align-items: center;
 	margin-top: 53px;
-	margin-bottom: 25px;
+	margin-bottom: 40px;
 
 	letter-spacing: -0.015em;
 `;

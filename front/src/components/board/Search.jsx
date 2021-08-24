@@ -25,7 +25,7 @@ const SearchLogoText = styled.span`
 `;
 
 const BtnSection = styled.article`
-  width: 900px;
+  width: 850px;
   margin: auto;
 `;
 
