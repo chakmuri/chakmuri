@@ -19,6 +19,11 @@ const Title = styled.div`
 	margin: 60px 0 40px 0;
 `;
 
+const ButtonRow = styled.div`
+	display: flex;
+	justify-content: center;
+`;
+
 const MainButton = styled(Button)`
 	text-align: center;
 	margin: 80px 0;
@@ -45,7 +50,9 @@ const Main = () => {
 			<NewList />
 			<Title>이 시국엔 온라인 모임</Title>
 			<OnlineClubList />
-			<MainButton>독서모임 더보기</MainButton>
+			<ButtonRow>
+				<MainButton>독서모임 더보기</MainButton>
+			</ButtonRow>
 		</Wrapper>
 	);
 };
