@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Form, Input, InputNumber, Row, Col, DatePicker } from "antd";
+import { Form, Input, InputNumber, Row, Col, DatePicker, message } from "antd";
 import styled from "styled-components";
 import Button from "../Button";
 import MapContainer from "./MapContainer";
@@ -164,7 +164,7 @@ const RegisterForm = ({ ...props }) => {
 	const [imgFile, setImgFile] = useState(null);
 	const [preview, setPreview] = useState(null);
 	const [tags, setTags] = useState([]);
-	const [isSelected, setSelected] = useState(false);
+	const [toggle, setToggle] = useState(false);
 	const clubTags = [
 		"소수정예",
 		"온라인",
@@ -211,7 +211,11 @@ const RegisterForm = ({ ...props }) => {
 		}
 	};
 
-	const handleSelectTags = (e) => {};
+	const handleToggle = (e) => {
+		// let text = e.target.textContent;
+		setToggle(toggle === false ? true : false);
+		console.log(toggle);
+	};
 
 	const sendData = async (values) => {
 		const startDate = values.date[0]._d.toISOString().substring(0, 10);
@@ -244,9 +248,17 @@ const RegisterForm = ({ ...props }) => {
 
 		console.log(data);
 
-		const res = await axios.post("/clubs", data);
-		if (res.status === 200) console.log("Success");
-		else console.log("Error");
+		if (userId) {
+			message.error("이미 생성한 독서모임이 존재합니다.");
+		} else {
+			const res = await axios.post("/clubs", data);
+			if (res.status === 200) {
+				message.success("독서모임이 성공적으로 등록되었습니다!");
+				props.onCancel();
+			} else {
+				message.error("독서모임 등록에 실패하였습니다.");
+			}
+		}
 	};
 
 	const onFinish = async (values) => {
@@ -360,15 +372,23 @@ const RegisterForm = ({ ...props }) => {
 						rules={[
 							{
 								type: "array",
-								required: true,
+								required: false,
 								message: "모임의 태그를 선택하세요.",
 							},
 						]}
 					>
 						<TagContainer>
-							{clubTags.map((tag, i) => (
-								<Tag key={i}>{tag}</Tag>
-							))}
+							{clubTags.map((tag, i) => {
+								return toggle ? (
+									<Tag key={i} onClick={handleToggle}>
+										{tag}
+									</Tag>
+								) : (
+									<SelectedTag key={i} onClick={handleToggle}>
+										{tag}
+									</SelectedTag>
+								);
+							})}
 						</TagContainer>
 					</Form.Item>
 				</Row>

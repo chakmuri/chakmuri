@@ -38,7 +38,7 @@ const Login = ({ ...props }) => {
 		try {
 			const res = await axios.get(`/users/${googleId}`);
 
-			if (res.status === 204) {
+			if (!res.id) {
 				const user = {
 					id: googleId,
 					name,

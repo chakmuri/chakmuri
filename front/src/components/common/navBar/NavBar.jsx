@@ -159,7 +159,7 @@ const NavBar = () => {
 							<NavProfile onClick={showModal}>
 								<img src="assets/images/icons/profile.png" alt="Profile icon" />
 							</NavProfile>
-							<StyledModal visible={isModalVisible} onCancel={handleCancel}>
+							<StyledModal visible={isModalVisible}>
 								<Title>
 									지금 바로,
 									<br />
@@ -194,7 +194,7 @@ const NavBar = () => {
 							<NavRegister onClick={showModal}>
 								<img src="assets/images/icons/add.png" alt="Add icon" />
 							</NavRegister>
-							<StyledModal visible={isModalVisible} onCancel={handleCancel}>
+							<StyledModal visible={isModalVisible}>
 								<RegisterForm onCancel={handleCancel} />
 							</StyledModal>
 						</NavIcon>
