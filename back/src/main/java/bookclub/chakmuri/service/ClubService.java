@@ -52,12 +52,14 @@ public class ClubService {
         JSONObject jsonObject;
         try {
             jsonObject = (JSONObject) jsonParser.parse(jsonString);
+            // jsonObject가 null일 때 프로그램 중단
             if (jsonObject.isEmpty()) {
                 throw new RuntimeException();
             }
+
         } catch (ParseException e) {
             e.printStackTrace();
-            throw new RuntimeException();
+            throw new RuntimeException(); //-> parseException 발생 시 프로그램 중단
         }
         return jsonObject;
     }
@@ -74,7 +76,6 @@ public class ClubService {
     private Club convertToNewClub(final Club club, final Book book, final String userId) {
         final User user = userRepository.findById(userId)
                 .orElseThrow(); // -> TODO : UserNotFoundException 만들어서 넣기
-        System.out.println(user.getId());
         return Club.builder()
                 .user(user)
                 .title(club.getTitle())
