@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "antd";
+import { Row } from "antd";
 import styled from "styled-components";
 import GatherCard from "../common/GatherCards";
 import CustomPagination from "../common/Pagination";

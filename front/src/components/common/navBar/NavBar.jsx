@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Modal, Menu, Dropdown } from "antd";
 import Login from "./login/Login";
-import { useEffect } from "react";
+import RegisterForm from "../form/RegisterForm";
 
 const Nav = styled.nav`
 	width: 1200px;
@@ -105,11 +105,9 @@ const StyledDropdownMenu = styled(Menu)`
 `;
 
 const NavBar = () => {
-	const history = useHistory();
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [userImage, setUserImage] = useState("");
-	const userId = localStorage.getItem("userId");
 
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -192,9 +190,12 @@ const NavBar = () => {
 									<img src={userImage} alt="User profile" />
 								</NavProfile>
 							</Dropdown>
-							<NavRegister>
+							<NavRegister onClick={showModal}>
 								<img src="assets/images/icons/add.png" alt="Add icon" />
 							</NavRegister>
+							<StyledModal visible={isModalVisible} onCancel={handleCancel}>
+								<RegisterForm onCancel={handleCancel} />
+							</StyledModal>
 						</NavIcon>
 					</NavMenu>
 				</Nav>
