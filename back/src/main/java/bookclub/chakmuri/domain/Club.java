@@ -27,7 +27,7 @@ public class Club {
     private Long id;
 
     @JoinColumn(name = "user_id")
-    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = LAZY)
     private User user;
 
     @OneToMany(mappedBy = "club")

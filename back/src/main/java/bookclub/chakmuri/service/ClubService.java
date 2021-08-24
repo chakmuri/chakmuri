@@ -48,7 +48,6 @@ public class ClubService {
     }
 
     private static JSONObject getJSONObjectFromString(String jsonString) {
-        System.out.println(jsonString);
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject;
         try {
@@ -115,6 +114,7 @@ public class ClubService {
         return club;
     }
 
+    //TODO: 시작일 변경시 상태 바꾸는 로직 추가, 시작일이 오늘 날짜보다 빠를때 -> ??
     public Club findClubByUserId(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(); // -> TODO : UserNotFoundException 만들어서 넣기
