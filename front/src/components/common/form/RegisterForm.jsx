@@ -107,10 +107,10 @@ const Tag = styled.div`
 	}
 `;
 
-const SelectedTag = styled(Tag)`
-	color: #ffffff;
-	background-color: #f98404;
-`;
+// const SelectedTag = styled(Tag)`
+// 	color: #ffffff;
+// 	background-color: #f98404;
+// `;
 
 const TagContainer = styled.div`
 	display: flex;
@@ -156,7 +156,7 @@ const UnFilledButton = styled(Button)`
 	}
 `;
 
-const RegisterForm = () => {
+const RegisterForm = ({ ...props }) => {
 	const [inputText, setInputText] = useState("");
 	const [streetAddress, setStreetAddress] = useState("");
 	const [detailAddress, setDetailAddress] = useState("");
@@ -167,6 +167,7 @@ const RegisterForm = () => {
 	// const [isSelected, setIsSelected] = useState(false);
 
 	const fullAddress = streetAddress + detailAddress;
+	const userId = localStorage.getItem("userId");
 
 	const onChange = (e) => {
 		setInputText(e.target.value);
@@ -218,6 +219,10 @@ const RegisterForm = () => {
 	const sendData = async (values) => {
 		const startDate = values.date[0]._d.toISOString().substring(0, 10);
 		const endDate = values.date[1]._d.toISOString().substring(0, 10);
+		const mock_tags = "온라인, 친목";
+		const formData = new FormData();
+		formData.append("upload_image", imgFile);
+
 		const config = {
 			headers: {
 				"content-type": "multipart/form-data",
@@ -225,6 +230,7 @@ const RegisterForm = () => {
 		};
 
 		const data = {
+			userId,
 			title: values.title,
 			contents: values.contents,
 			startDate,
@@ -233,16 +239,15 @@ const RegisterForm = () => {
 			maxPersonnel: values.maxPersonnel,
 			description: values.description,
 			bookDescription: values.bookDescription,
-			tags: values.tags,
-			book: values.book,
-			imgUrl: imgFile,
+			tags: mock_tags,
+			books: values.books,
 			addressStreet: values.addressStreet,
 			addressDetail: values.addressDetail,
 		};
 
 		console.log(data);
 
-		const res = await axios.post("/clubs", data, config);
+		const res = await axios.post("/clubs", data, formData, config);
 		if (res.status === 200) console.log("Success");
 		else console.log("Error");
 	};
@@ -377,7 +382,7 @@ const RegisterForm = () => {
 				</Row>
 				<Row>
 					<Col span={16}>
-						<Form.Item label="선정도서" name="book">
+						<Form.Item label="선정도서" name="books">
 							<Row gutter={[0, 16]}>
 								<Col span={22}>
 									<StyledInput placeholder="검색" />
@@ -434,7 +439,9 @@ const RegisterForm = () => {
 				</Row>
 				<ButtonRow>
 					<FilledButton>등록</FilledButton>
-					<UnFilledButton type="button">취소</UnFilledButton>
+					<UnFilledButton type="button" onClick={props.onCancel}>
+						취소
+					</UnFilledButton>
 				</ButtonRow>
 			</StyledForm>
 		</Wrapper>
