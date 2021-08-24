@@ -42,11 +42,7 @@ public class ClubService {
             }
         }
         Club club = clubCreateRequestDto.toEntity();
-        String books = clubCreateRequestDto.getBooks();
-        Book book = null;
-        if(books != null){
-            book = getBookObject(books);
-        }
+        Book book = getBookObject(clubCreateRequestDto.getBooks());
         final Club newClub = convertToNewClub(club, book, clubCreateRequestDto.getUserId());
         return clubRepository.save(newClub);
     }
