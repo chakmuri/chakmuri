@@ -31,7 +31,6 @@ const Login = ({ ...props }) => {
 	const history = useHistory();
 
 	const onSuccess = async (response) => {
-		// console.log("Login Sucess: ", response.profileObj);
 		const {
 			profileObj: { googleId, email, name, imageUrl },
 		} = response;
@@ -49,8 +48,10 @@ const Login = ({ ...props }) => {
 
 				await axios.post("/users", user);
 			}
+
 			console.log(res.data);
 			localStorage.setItem("userId", res.data.id);
+			props.getLoginStatus(localStorage.getItem("userId"));
 			props.getUserImage(res.data.imgUrl);
 			props.onCancel();
 			history.push("/");

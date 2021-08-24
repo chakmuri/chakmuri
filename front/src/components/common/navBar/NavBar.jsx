@@ -106,9 +106,9 @@ const StyledDropdownMenu = styled(Menu)`
 
 const NavBar = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
-	const userId = localStorage.getItem("userId");
-	const [isLoggedIn, setIsLoggedIn] = useState(true);
+	const [isLoggedIn, setLoggedIn] = useState(null);
 	const [userImage, setUserImage] = useState("");
+	console.log(isLoggedIn);
 
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -118,13 +118,17 @@ const NavBar = () => {
 		setIsModalVisible(false);
 	};
 
+	const getLoginStatus = (userId) => {
+		setLoggedIn(userId);
+	};
+
 	const getUserImage = (image) => {
 		setUserImage(image);
 	};
 
 	const handleLogout = () => {
 		localStorage.removeItem("userId");
-		setIsLoggedIn("");
+		setLoggedIn(null);
 	};
 
 	const dropdownMenu = (
@@ -161,7 +165,11 @@ const NavBar = () => {
 									<br />
 									<strong>책무리</strong>에서 모여보세요!
 								</Title>
-								<Login onCancel={handleCancel} getUserImage={getUserImage} />
+								<Login
+									onCancel={handleCancel}
+									getUserImage={getUserImage}
+									getLoginStatus={getLoginStatus}
+								/>
 							</StyledModal>
 						</NavIcon>
 					</NavMenu>
