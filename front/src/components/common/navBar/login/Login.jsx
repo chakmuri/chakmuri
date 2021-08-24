@@ -51,7 +51,6 @@ const Login = ({ ...props }) => {
 			}
 			console.log(res.data);
 			localStorage.setItem("userId", res.data.id);
-			props.getLoginStatus(true);
 			props.getUserImage(res.data.imgUrl);
 			props.onCancel();
 			history.push("/");
