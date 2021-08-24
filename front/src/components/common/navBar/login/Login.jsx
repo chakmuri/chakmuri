@@ -27,13 +27,11 @@ const GoogleLoginButton = styled.button`
 	position: relative;
 `;
 
-const Login = (props) => {
+const Login = ({ ...props }) => {
 	const history = useHistory();
-	// const [loginStatus, setLoginStatus] = useState(false);
-	console.log(props);
 
 	const onSuccess = async (response) => {
-		console.log("Login Sucess: ", response.profileObj);
+		// console.log("Login Sucess: ", response.profileObj);
 		const {
 			profileObj: { googleId, email, name, imageUrl },
 		} = response;
@@ -48,21 +46,21 @@ const Login = (props) => {
 					email,
 					imgUrl: imageUrl,
 				};
-				console.log(user);
 
 				await axios.post("/users", user);
 			}
+			console.log(res.data);
+			localStorage.setItem("userId", res.data.id);
+			props.getLoginStatus(true);
+			props.getUserImage(res.data.imgUrl);
 			props.onCancel();
 			history.push("/");
+
+			return res;
 		} catch (err) {
 			console.log(err);
 		}
-		// setLoginStatus(true);
 	};
-
-	// const logout = () => {
-	// 	setLoginStatus(false);
-	// };
 
 	const onFailure = (response) => {
 		console.log("Login Failed: ", response);
@@ -87,18 +85,6 @@ const Login = (props) => {
 				onFailure={onFailure}
 				cookiePolicy={"single_host_origin"}
 			/>
-			{/* <GoogleLogout
-				clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-				render={(renderProps) => {
-					<GoogleLoginButton
-						onClick={renderProps.onClick}
-						disabled={renderProps.disabled}
-					>
-						로그아웃
-					</GoogleLoginButton>;
-				}}
-				onLogoutSuccess={logout}
-			/> */}
 		</>
 	);
 };
