@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ClubDetailResponseDto {    //TODO: 선정도서 처리
+public class ClubDetailResponseDto {
 
     private Long id;                    //독서모임 아이디
     private String userId;              //독서모임 생성자 아이디
@@ -25,7 +25,7 @@ public class ClubDetailResponseDto {    //TODO: 선정도서 처리
     private LocalDate endDate;          //독서모임 종료일
     private String tags;                //독서모임 태그
     private int likes;                  //독서모임 좋아요 수
-    private String bookTitle;           //TODO : 독서모임 선정도서
+    private String bookTitle;           //독서모임 선정도서
     private String bookAuthor;
     private String bookImgUrl;
     private String bookDescription;     //독서모임 선정도서 소개글
@@ -37,8 +37,10 @@ public class ClubDetailResponseDto {    //TODO: 선정도서 처리
     public ClubDetailResponseDto(Club club) {
         BeanUtils.copyProperties(club, this);
         this.userId = club.getUser().getId();
-        this.bookTitle = club.getBook().getBookTitle();
-        this.bookAuthor = club.getBook().getBookAuthor();
-        this.bookImgUrl = club.getBook().getBookImgUrl();
+        if(club.getBook() != null){
+            this.bookTitle = club.getBook().getBookTitle();
+            this.bookAuthor = club.getBook().getBookAuthor();
+            this.bookImgUrl = club.getBook().getBookImgUrl();
+        }
     }
 }

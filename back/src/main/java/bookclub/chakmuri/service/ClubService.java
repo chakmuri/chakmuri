@@ -7,6 +7,7 @@ import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.ClubStatus;
 import bookclub.chakmuri.domain.User;
 import bookclub.chakmuri.repository.ClubRepository;
+import bookclub.chakmuri.repository.CommentRepository;
 import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -26,6 +27,9 @@ import java.util.List;
 public class ClubService {
     private final ClubRepository clubRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
+
+    //TODO: 독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> ??
 
     @Transactional
     public Club createClub(ClubCreateRequestDto clubCreateRequestDto, MultipartFile file) {
@@ -42,7 +46,11 @@ public class ClubService {
             }
         }
         Club club = clubCreateRequestDto.toEntity();
-        Book book = getBookObject(clubCreateRequestDto.getBooks());
+        String books = clubCreateRequestDto.getBooks();
+        Book book = null;
+        if(books != null){
+            book = getBookObject(books);
+        }
         final Club newClub = convertToNewClub(club, book, clubCreateRequestDto.getUserId());
         return clubRepository.save(newClub);
     }
@@ -53,7 +61,7 @@ public class ClubService {
         try {
             jsonObject = (JSONObject) jsonParser.parse(jsonString);
             /**
-             * jsonObject가 null일 때 프로그램 중단
+             * jsonObject 가 null 일 때 프로그램 중단
              * if (jsonObject.isEmpty()) {
              *     throw new RuntimeException();
              * }
@@ -74,7 +82,7 @@ public class ClubService {
     }
 
     //club 생성시에만 사용하는 메서드
-    //파라미터로 받은 userId 값을 사용해 findById로 찾은 user 객체를 이용, 빌더로 entity를 생성하는 역할
+    //파라미터로 받은 userId 값을 사용해 findById로 찾은 user 객체를 이용, 빌더로 entity 를 생성하는 역할
     private Club convertToNewClub(final Club club, final Book book, final String userId) {
         final User user = userRepository.findById(userId)
                 .orElseThrow(); // -> TODO : UserNotFoundException 만들어서 넣기
@@ -98,33 +106,37 @@ public class ClubService {
                 .build();
     }
 
+    //독서모임 만료 처리 메서드
+    private void changeClubStatus(Club club){
+        if(LocalDate.now().isAfter(club.getStartDate())){
+            club.changeStatus(ClubStatus.EXPIRED);
+        }
+        else club.changeStatus(ClubStatus.ACTIVE);
+    }
+
     public List<Club> findAllClubs() {
         List<Club> clubs = clubRepository.findAll();
         for(Club club : clubs){
-            if(LocalDate.now().equals(club.getStartDate())){    //독서모임 만료 처리 로직
-                club.changeStatus(ClubStatus.EXPIRED);
-            }
+            changeClubStatus(club);
         }
         return clubs;
     }
 
     public Club findClubById(Long clubId) {
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow();// -> TODO : ClubNotFoundException 만들기
-        if(LocalDate.now().equals(club.getStartDate())){    //독서모임 만료 처리 로직
-            club.changeStatus(ClubStatus.EXPIRED);
-        }
+        Club club = clubRepository.findById(clubId).orElseThrow();// -> TODO : ClubNotFoundException 만들기
+        changeClubStatus(club);
         return club;
     }
 
     public Club findClubByUserId(String userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(); // -> TODO : UserNotFoundException 만들어서 넣기
-        return clubRepository.findByUser(user)
-                .orElse(null);
+        User user = userRepository.findById(userId).orElseThrow(); // -> TODO : UserNotFoundException 만들어서 넣기
+        Club club = clubRepository.findByUser(user).orElse(null);
+        if(club != null){
+            changeClubStatus(club);
+        }
+        return club;
     }
 
-    //TODO: 시작일 변경시 상태 바꾸는 로직 추가, 시작일이 오늘 날짜보다 빠를때 -> ??
     @Transactional
     public void updateClub(ClubUpdateRequestDto clubUpdateRequestDto, String userId) {
         final Club club = findClubByUserId(userId);
@@ -132,6 +144,7 @@ public class ClubService {
         if(clubUpdateRequestDto.getBooks() != null){
             book = getBookObject(clubUpdateRequestDto.getBooks());
         }
+        changeClubStatus(club);
         club.updateClub(clubUpdateRequestDto.getTitle(),
                 clubUpdateRequestDto.getContents(),
                 clubUpdateRequestDto.getImgUrl(),
@@ -150,6 +163,7 @@ public class ClubService {
     @Transactional
     public void deleteClub(String userId) {
         final Club club = findClubByUserId(userId);
+        //TODO: commentRepository.deleteAllByClubId(club.getId()); -> 독서모임 삭제 시 댓글 전부 삭제
         clubRepository.delete(club);
     }
 }

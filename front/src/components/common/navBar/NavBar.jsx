@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Modal, Menu, Dropdown } from "antd";
 import Login from "./login/Login";
 import RegisterForm from "../form/RegisterForm";
+import { useEffect } from "react";
 
 const Nav = styled.nav`
 	width: 1200px;
@@ -106,9 +107,19 @@ const StyledDropdownMenu = styled(Menu)`
 
 const NavBar = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
-	const [isLoggedIn, setLoggedIn] = useState(null);
-	const [userImage, setUserImage] = useState("");
-	console.log(isLoggedIn);
+	const userId = localStorage.getItem("user_id");
+	const userImg = localStorage.getItem("user_image");
+	const [isLoggedIn, setLoggedIn] = useState(false);
+	const [userImage, setUserImage] = useState(null);
+	console.log("login state: ", isLoggedIn);
+	console.log("userImage: ", userImage);
+
+	useEffect(() => {
+		if (userId) {
+			setLoggedIn(true);
+			setUserImage(userImg);
+		}
+	}, [userId, userImg]);
 
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -118,17 +129,11 @@ const NavBar = () => {
 		setIsModalVisible(false);
 	};
 
-	const getLoginStatus = (userId) => {
-		setLoggedIn(userId);
-	};
-
-	const getUserImage = (image) => {
-		setUserImage(image);
-	};
-
 	const handleLogout = () => {
-		localStorage.removeItem("userId");
-		setLoggedIn(null);
+		localStorage.removeItem("user_id");
+		localStorage.removeItem("user_image");
+		setLoggedIn(false);
+		setUserImage(null);
 	};
 
 	const dropdownMenu = (
@@ -165,11 +170,7 @@ const NavBar = () => {
 									<br />
 									<strong>책무리</strong>에서 모여보세요!
 								</Title>
-								<Login
-									onCancel={handleCancel}
-									getUserImage={getUserImage}
-									getLoginStatus={getLoginStatus}
-								/>
+								<Login onCancel={handleCancel} setLoggedIn={setLoggedIn} />
 							</StyledModal>
 						</NavIcon>
 					</NavMenu>
