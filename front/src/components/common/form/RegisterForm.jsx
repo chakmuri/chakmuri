@@ -90,11 +90,11 @@ const AddIcon = styled.div`
 	justify-content: flex-end;
 `;
 
-const Tag = styled.div`
+const Tag = styled.button`
 	padding: 10px 20px;
 	font-size: 16px;
-	color: #f98404;
-	background-color: #ffffff;
+	color: $(props => props.color || #f98404);
+	background-color: $(props => props.background-color || #ffffff);
 	border: 1px solid #f98404;
 	border-radius: 30px;
 	text-align: center;
@@ -105,11 +105,6 @@ const Tag = styled.div`
 		color: #ffffff;
 		background-color: #f98404;
 	}
-`;
-
-const SelectedTag = styled(Tag)`
-	color: #ffffff;
-	background-color: #f98404;
 `;
 
 const TagContainer = styled.div`
@@ -211,10 +206,9 @@ const RegisterForm = ({ ...props }) => {
 		}
 	};
 
-	const handleToggle = (e) => {
-		// let text = e.target.textContent;
-		setToggle(toggle === false ? true : false);
-		console.log(toggle);
+	const handleStyleChange = (state) => {
+		if (state === true) {
+		}
 	};
 
 	const sendData = async (values) => {
@@ -248,7 +242,8 @@ const RegisterForm = ({ ...props }) => {
 
 		console.log(data);
 
-		if (userId) {
+		const res = await axios.get("/clubs", data);
+		if (res.id === userId) {
 			message.error("이미 생성한 독서모임이 존재합니다.");
 		} else {
 			const res = await axios.post("/clubs", data);
@@ -378,17 +373,19 @@ const RegisterForm = ({ ...props }) => {
 						]}
 					>
 						<TagContainer>
-							{clubTags.map((tag, i) => {
-								return toggle ? (
-									<Tag key={i} onClick={handleToggle}>
-										{tag}
-									</Tag>
-								) : (
-									<SelectedTag key={i} onClick={handleToggle}>
-										{tag}
-									</SelectedTag>
-								);
-							})}
+							{clubTags.map((tag, i) => (
+								<Tag
+									type="button"
+									key={i}
+									onClick={() => {
+										setToggle(!toggle);
+										console.log(toggle);
+									}}
+									handleStyleChange={handleStyleChange}
+								>
+									{tag}
+								</Tag>
+							))}
 						</TagContainer>
 					</Form.Item>
 				</Row>

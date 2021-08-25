@@ -144,7 +144,7 @@ const NavBar = () => {
 
 	return (
 		<>
-			{!isLoggedIn ? (
+			{isLoggedIn ? (
 				<Nav>
 					<Link to="/">
 						<NavLogo>
