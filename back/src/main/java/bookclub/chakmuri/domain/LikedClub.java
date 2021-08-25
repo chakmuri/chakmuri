@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Getter
@@ -19,11 +19,11 @@ public class LikedClub {
     private Long id;
 
     @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = EAGER)
     private User user;
 
     @JoinColumn(name = "club_id")
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = EAGER)
     private Club club;
 
 
