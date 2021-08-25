@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col } from "antd";
-import ClubCard from "./ClubCard";
+import ClubCard from "./MainClubCard";
 
 const PopularList = () => {
 	return (

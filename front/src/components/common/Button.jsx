@@ -6,7 +6,7 @@ const StyledButton = styled.button`
 	font-family: Roboto;
 	font-weight: 500;
 	font-size: 20px;
-	padding: 7px 15px;
+	padding: 7px 15px;s
 	cursor: pointer;
 `;
 

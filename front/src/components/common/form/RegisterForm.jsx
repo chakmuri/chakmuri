@@ -3,6 +3,7 @@ import axios from "axios";
 import { Form, Input, InputNumber, Row, Col, DatePicker } from "antd";
 import styled from "styled-components";
 import Button from "../Button";
+import Tag from "../Tag";
 import MapContainer from "./MapContainer";
 
 const { TextArea } = Input;
@@ -89,28 +90,6 @@ const StyledTextArea = styled(TextArea)`
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
-`;
-
-const AddIcon = styled.div`
-	display: flex;
-	justify-content: flex-end;
-`;
-
-const Tag = styled.div`
-	padding: 10px 20px;
-	font-size: 16px;
-	color: #f98404;
-	background-color: #ffffff;
-	border: 1px solid #f98404;
-	border-radius: 30px;
-	text-align: center;
-	letter-spacing: 2px;
-	cursor: pointer;
-
-	&:hover {
-		color: #ffffff;
-		background-color: #f98404;
-	}
 `;
 
 // const SelectedTag = styled(Tag)`
