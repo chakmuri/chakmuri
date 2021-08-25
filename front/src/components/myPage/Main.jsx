@@ -9,6 +9,7 @@ import JoinedClubList from "./JoinedClubList";
 import MemberList from "./MemberList";
 import PendingMemberList from "./PendingMemberList";
 import Button from "../common/Button";
+import EditForm from "./EditForm";
 
 const { TabPane } = Tabs;
 
@@ -77,8 +78,8 @@ const DeleteBtn = styled(Button)`
 `;
 
 const Main = (props) => {
-	let history = useHistory();
-	console.log(props.params);
+	// let history = useHistory();
+	// console.log(props.params);
 	// const clubId = props.match.params.id;
 
 	// const handleDeleteClub = async () => {
@@ -118,7 +119,7 @@ const Main = (props) => {
 						<Row>
 							<TitleRow>
 								<BigTitle>내가 운영중인 독서모임</BigTitle>
-								{/* <DeleteBtn onClick={handleDeleteClub}>독서모임 삭제</DeleteBtn> */}
+								<DeleteBtn>독서모임 삭제</DeleteBtn>
 							</TitleRow>
 							<MidTitle>참여자 관리</MidTitle>
 							<SmallTitle>승인 대기자</SmallTitle>
@@ -127,7 +128,10 @@ const Main = (props) => {
 							<SmallTitle>참여자 목록</SmallTitle>
 							<MemberList />
 						</Row>
-						<MidTitle>정보 수정</MidTitle>
+						<Row>
+							<MidTitle>정보 수정</MidTitle>
+							<EditForm />
+						</Row>
 					</TabContainer>
 				</TabPane>
 			</StyledTabs>

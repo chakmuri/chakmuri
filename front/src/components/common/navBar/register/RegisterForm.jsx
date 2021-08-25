@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Form, Input, InputNumber, Row, Col, DatePicker } from "antd";
 import styled from "styled-components";
-import Button from "../Button";
-import MapContainer from "./MapContainer";
+import Button from "../../Button";
+import MapContainer from "../../MapContainer";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -124,11 +124,9 @@ const PreviewImage = styled.img`
 	border-radius: 50%;
 `;
 
-const ButtonRow = styled(Row)`
-	margin-top: 30px;
+const ButtonRow = styled.div`
 	display: flex;
-	justify-content: center;
-	gap: 88px;
+	gap: 90px;
 `;
 
 const MapWrapper = styled.div`
@@ -137,26 +135,26 @@ const MapWrapper = styled.div`
 	margin-top: 40px;
 `;
 
-const FilledButton = styled(Button)`
+const FilledBtn = styled(Button)`
 	& {
 		color: #ffffff;
-		background-color: #f98404;
+		background-color: #ff6701;
 		border: none;
 		border-radius: 6px;
 		outline: none;
 	}
 `;
 
-const UnFilledButton = styled(Button)`
+const UnFilledBtn = styled(Button)`
 	& {
-		color: #f98404;
+		color: #ff6701;
 		background-color: #ffffff;
-		border: 2px solid #f98404;
+		border: 2px solid #ff6701;
 		border-radius: 6px;
 	}
 `;
 
-const RegisterForm = ({ ...props }) => {
+const RegisterForm = (props) => {
 	const [inputText, setInputText] = useState("");
 	const [streetAddress, setStreetAddress] = useState("");
 	const [detailAddress, setDetailAddress] = useState("");
@@ -252,7 +250,7 @@ const RegisterForm = ({ ...props }) => {
 		else console.log("Error");
 	};
 
-	const onFinish = async (values) => {
+	const onFinish = (values) => {
 		console.log("form values: ", values);
 		sendData(values);
 	};
@@ -429,19 +427,19 @@ const RegisterForm = ({ ...props }) => {
 								<StyledInput placeholder="상세 주소" />
 							</Form.Item>
 						</Form.Item>
-						<FilledButton type="button" onClick={getFullAdress}>
+						<FilledBtn type="button" onClick={getFullAdress}>
 							주소 검색
-						</FilledButton>
+						</FilledBtn>
 						<MapWrapper>
 							<MapContainer searchSpot={fullAddress} />
 						</MapWrapper>
 					</Col>
 				</Row>
 				<ButtonRow>
-					<FilledButton>등록</FilledButton>
-					<UnFilledButton type="button" onClick={props.onCancel}>
+					<FilledBtn>등록</FilledBtn>
+					<UnFilledBtn type="button" onClick={props.onCancel}>
 						취소
-					</UnFilledButton>
+					</UnFilledBtn>
 				</ButtonRow>
 			</StyledForm>
 		</Wrapper>

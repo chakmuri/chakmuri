@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Modal, Menu, Dropdown } from "antd";
 import Login from "./login/Login";
-import RegisterForm from "../form/RegisterForm";
+import RegisterForm from "./register/RegisterForm";
 import { useEffect } from "react";
 
 const Nav = styled.nav`
