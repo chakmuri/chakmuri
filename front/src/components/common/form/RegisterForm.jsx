@@ -93,8 +93,8 @@ const AddIcon = styled.div`
 const Tag = styled.button`
 	padding: 10px 20px;
 	font-size: 16px;
-	color: $(props => props.color || #f98404);
-	background-color: $(props => props.background-color || #ffffff);
+	color: #f98404;
+	background-color: #ffffff;
 	border: 1px solid #f98404;
 	border-radius: 30px;
 	text-align: center;
@@ -102,6 +102,13 @@ const Tag = styled.button`
 	cursor: pointer;
 
 	&:hover {
+		color: #ffffff;
+		background-color: #f98404;
+	}
+`;
+
+const SelectedTag = styled(Tag)`
+	& {
 		color: #ffffff;
 		background-color: #f98404;
 	}
@@ -158,8 +165,8 @@ const RegisterForm = ({ ...props }) => {
 	const [detailAddress, setDetailAddress] = useState("");
 	const [imgFile, setImgFile] = useState(null);
 	const [preview, setPreview] = useState(null);
-	const [tags, setTags] = useState([]);
-	const [toggle, setToggle] = useState(false);
+	const [isSelected, setIsSelected] = useState(0);
+	const [selectedTags, setSelectedTags] = useState([]);
 	const clubTags = [
 		"소수정예",
 		"온라인",
@@ -206,10 +213,25 @@ const RegisterForm = ({ ...props }) => {
 		}
 	};
 
-	const handleStyleChange = (state) => {
-		if (state === true) {
+	const handleChangeTagStyle = (e) => {
+		setIsSelected(e.target.value);
+		console.log("isSelected ", isSelected);
+		console.log("current value ", e.target.value);
+		let tagName = e.target.innerText;
+		let index = selectedTags.indexOf(tagName);
+
+		if (isSelected) {
+			e.target.style.color = "#ffffff";
+			e.target.style.backgroundColor = "#f98404";
+			setSelectedTags([...selectedTags, tagName]);
+		} else if (selectedTags.includes(tagName)) {
+			selectedTags.splice(index, 1);
+			e.target.style.color = "#f98404";
+			e.target.style.backgroundColor = "#ffffff";
 		}
 	};
+
+	console.log(selectedTags);
 
 	const sendData = async (values) => {
 		const startDate = values.date[0]._d.toISOString().substring(0, 10);
@@ -375,13 +397,12 @@ const RegisterForm = ({ ...props }) => {
 						<TagContainer>
 							{clubTags.map((tag, i) => (
 								<Tag
-									type="button"
 									key={i}
-									onClick={() => {
-										setToggle(!toggle);
-										console.log(toggle);
+									type="button"
+									value={i}
+									onClick={(e) => {
+										handleChangeTagStyle(e);
 									}}
-									handleStyleChange={handleStyleChange}
 								>
 									{tag}
 								</Tag>
