@@ -1,14 +1,17 @@
 package bookclub.chakmuri.domain;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Table(name = "likedclubs")
 @Getter
+@NoArgsConstructor
+@Table(name = "likedclubs")
 public class LikedClub {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,11 +19,18 @@ public class LikedClub {
     private Long id;
 
     @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = LAZY)
     private User user;
 
     @JoinColumn(name = "club_id")
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = LAZY)
     private Club club;
 
+
+
+    @Builder
+    public LikedClub( User user, Club club) {
+        this.user = user;
+        this.club = club;
+    }
 }
