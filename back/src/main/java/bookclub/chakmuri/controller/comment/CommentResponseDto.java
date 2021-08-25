@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class CommentResponseDto {
 
     private Long id;
+    private Long clubId;
     private String userId;
     private String userImgUrl;
     private String userName; // 유저 이름
@@ -23,6 +24,7 @@ public class CommentResponseDto {
 
     public CommentResponseDto(Comment comment) {
         BeanUtils.copyProperties(comment, this);
+        this.clubId = comment.getClub().getId();
         this.userId = comment.getUser().getId();
         this.userName = comment.getUser().getName();
         this.userImgUrl = comment.getUser().getImgUrl();

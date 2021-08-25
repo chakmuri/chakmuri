@@ -43,10 +43,6 @@ public class Club {
     @Size(max = 2000)
     private String description;
 
-    @Column(length = 2000)
-    @Size(max = 2000)
-    private String bookDescription;
-
     @Column(nullable = false)
     private String title;
 
@@ -86,7 +82,7 @@ public class Club {
 
     @Builder
     public Club(User user, String title, String contents, String imgUrl, int minPersonnel, int maxPersonnel,
-                LocalDate startDate, LocalDate endDate, String tags, int likes, Book book, String bookDescription, String description,
+                LocalDate startDate, LocalDate endDate, String tags, int likes, Book book, String description,
                 String addressDetail, String addressStreet, ClubStatus clubStatus) {
         this.user = user;
         this.title = title;
@@ -99,7 +95,6 @@ public class Club {
         this.tags = tags;
         this.likes = likes;
         this.book = book;
-        this.bookDescription = bookDescription;
         this.description = description;
         this.addressDetail = addressDetail;
         this.addressStreet = addressStreet;
@@ -114,7 +109,7 @@ public class Club {
     public void updateClub(String title, String contents, String imgUrl,
                            int minPersonnel, int maxPersonnel,
                            LocalDate startDate, LocalDate endDate,
-                           String tags, Book book, String bookDescription, String description,
+                           String tags, Book book, String description,
                            String addressDetail, String addressStreet) {
         this.title = title;
         this.contents = contents;
@@ -125,7 +120,6 @@ public class Club {
         this.endDate = endDate;
         this.tags = tags;
         this.book = book;
-        this.bookDescription = bookDescription;
         this.description = description;
         this.addressDetail = addressDetail;
         this.addressStreet = addressStreet;

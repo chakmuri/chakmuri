@@ -1,13 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/practice?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: 1234
-
-  #    url: jdbc:mysql://chamuridb.cubzwjzl7nw9.ap-northeast-2.rds.amazonaws.com:3306/chakmuriDB
-#    username: admin
-#    password: chakmuri
+    url: jdbc:mysql://chamuridb.cubzwjzl7nw9.ap-northeast-2.rds.amazonaws.com:3306/chakmuriDB
+    username: admin
+    password: chakmuri
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
