@@ -106,6 +106,10 @@ public class Club {
         this.clubStatus = clubStatus;
     }
 
+    public void changeLikes(int likes) {
+        this.likes = likes;
+    }
+
     //TODO: 파라미터 줄이는 방법 구상
     public void updateClub(String title, String contents, String imgUrl,
                            int minPersonnel, int maxPersonnel,
