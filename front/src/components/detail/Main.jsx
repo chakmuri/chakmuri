@@ -9,7 +9,7 @@ import Comments from "./Comments";
  *
  *  1. 요약<Summary>와
  *  2. 상세 설명<Introduction> == 우리 독서 모임은 ...
- *  3. 이 독서모임 댓글(가제)
+ *  3. 이 독서모임 댓글
  *
  * 으로 나누었습니다.
  */
