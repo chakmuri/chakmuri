@@ -10,7 +10,7 @@ import Button from '../common/Button'
  * 버튼(==태그)를 누르면, 그에 맞는 태그들만 필터링해서 렌더링합니다. ** 최대 3개까지 가능
  */
 
-const SearchLogo = styled.div`
+const SearchTitle = styled.div` /* 독서 모임 찾기 */
   font-family: Roboto;
   font-style: normal;
   font-weight: bold;
@@ -20,11 +20,11 @@ const SearchLogo = styled.div`
   justify-content: center;
 `;
 
-const SearchLogoText = styled.span`
+const SearchTitleText = styled.span`
   margin-left: 8px;
 `;
 
-const BtnSection = styled.article`
+const BtnSection = styled.article` /* 태그 필터 버튼 */
   width: 850px;
   margin: auto;
 `;
@@ -37,6 +37,21 @@ const BtnWrapper = styled.div`
   justify-content: space-around;
 `;
 
+const BoardButton = styled(Button)` /* common/button.jsx에서 상속받음 */
+	text-align: center;
+	border-radius: 30px;
+	color: #ff6701;
+	background-color: #ffffff;
+	border: 1px solid #ff6701;
+	padding: 10px 20px;
+	transition: all 0.3s;
+
+	&:hover {
+		color: #ffffff;
+		background-color: #ff6701;
+	}
+`;
+
 const BtnText = styled.div`
   width: 120px;
 `;
@@ -44,39 +59,39 @@ const BtnText = styled.div`
 const Search = (props) => { 
   return (
     <>
-      <SearchLogo>
+      <SearchTitle>
         <img src="assets/images/boardSearchLogo.png" alt="icon.png"/>
-        <SearchLogoText>독서 모임 찾기</SearchLogoText> 
-      </SearchLogo>
+        <SearchTitleText>독서 모임 찾기</SearchTitleText> 
+      </SearchTitle>
       <SearchBar />
       <BtnSection>
         <BtnWrapper>
-          <Button>
+          <BoardButton>
             <BtnText>소수정예</BtnText>
-          </Button>
-          <Button>
+          </BoardButton>
+          <BoardButton>
             <BtnText>온라인</BtnText>
-          </Button>
-          <Button>
+          </BoardButton>
+          <BoardButton>
             <BtnText>오프라인</BtnText>
-          </Button>
-          <Button>
+          </BoardButton>
+          <BoardButton>
             <BtnText>온・오프라인</BtnText>
-          </Button>
+          </BoardButton>
         </BtnWrapper>
         <BtnWrapper>
-          <Button>
+          <BoardButton>
             <BtnText>수도권</BtnText>
-          </Button>
-          <Button>
+          </BoardButton>
+          <BoardButton>
             <BtnText>지방</BtnText>
-          </Button>
-          <Button>
+          </BoardButton>
+          <BoardButton>
             <BtnText>친목</BtnText>
-          </Button>
-          <Button>
+          </BoardButton>
+          <BoardButton>
             <BtnText>독서 외 활동</BtnText>
-          </Button>
+          </BoardButton>
         </BtnWrapper>
       </BtnSection>
     </>
