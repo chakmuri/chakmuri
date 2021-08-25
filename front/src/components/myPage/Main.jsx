@@ -1,11 +1,14 @@
 import React from "react";
-import { Tabs, Row, Divider } from "antd";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { Tabs, Row, Divider, message } from "antd";
 import styled from "styled-components";
 import CommentList from "./CommentList";
 import LikedClubList from "./LikedClubList";
 import JoinedClubList from "./JoinedClubList";
 import MemberList from "./MemberList";
 import PendingMemberList from "./PendingMemberList";
+import Button from "../common/Button";
 
 const { TabPane } = Tabs;
 
@@ -35,12 +38,18 @@ const StyledTabs = styled(Tabs)`
 	}
 `;
 
+const TitleRow = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 40px;
+`;
+
 const BigTitle = styled.div`
 	width: 100%;
 	font-family: Roboto;
 	font-weight: bold;
 	font-size: 24px;
-	margin-bottom: 40px;
 `;
 
 const MidTitle = styled.div`
@@ -55,7 +64,36 @@ const SmallTitle = styled.div`
 	margin-bottom: 20px;
 `;
 
-const Main = () => {
+const DeleteBtn = styled(Button)`
+	width: 140px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #ffffff;
+	background-color: #ff0000;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 6px;
+	text-align: center;
+`;
+
+const Main = (props) => {
+	let history = useHistory();
+	console.log(props.params);
+	// const clubId = props.match.params.id;
+
+	// const handleDeleteClub = async () => {
+	// 	try {
+	// 		const res = await axios.delete(`/clubs/${clubId}`);
+	// 		if (res.status === 200) {
+	// 			message.success("독서모임이 성공적으로 삭제되었습니다.");
+	// 		} else {
+	// 			message.error("독서모임 삭제에 실패하였습니다.");
+	// 		}
+	// 	} catch (err) {
+	// 		console.log(err);
+	// 	}
+	// };
+
 	return (
 		<Wrapper>
 			<StyledTabs defaultActiveKey="1">
@@ -78,7 +116,10 @@ const Main = () => {
 				<TabPane tab="독서모임" key="2">
 					<TabContainer gutter={[0, 98]}>
 						<Row>
-							<BigTitle>내가 운영중인 독서모임</BigTitle>
+							<TitleRow>
+								<BigTitle>내가 운영중인 독서모임</BigTitle>
+								{/* <DeleteBtn onClick={handleDeleteClub}>독서모임 삭제</DeleteBtn> */}
+							</TitleRow>
 							<MidTitle>참여자 관리</MidTitle>
 							<SmallTitle>승인 대기자</SmallTitle>
 							<PendingMemberList />

@@ -111,8 +111,6 @@ const NavBar = () => {
 	const userImg = localStorage.getItem("user_image");
 	const [isLoggedIn, setLoggedIn] = useState(false);
 	const [userImage, setUserImage] = useState(null);
-	console.log("login state: ", isLoggedIn);
-	console.log("userImage: ", userImage);
 
 	useEffect(() => {
 		if (userId) {
