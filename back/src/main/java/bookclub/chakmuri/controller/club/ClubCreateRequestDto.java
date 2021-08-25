@@ -20,7 +20,10 @@ public class ClubCreateRequestDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private String tags;            // TODO: string 데이터 형식 결정. 검색기능 구현하면서 바뀔 여지 있음
-    private String books;
+    private String bookTitle;
+    private String author;
+    private String publisher;
+    private int publishedAt;
     private String bookDescription;
     private String description;
     private String addressDetail;
@@ -36,7 +39,6 @@ public class ClubCreateRequestDto {
                 .startDate(startDate)
                 .endDate(endDate)
                 .tags(tags)
-                .bookDescription(bookDescription)
                 .description(description)
                 .addressDetail(addressDetail)
                 .addressStreet(addressStreet)
