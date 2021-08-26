@@ -67,57 +67,31 @@ const ClubCardContainer = styled(Row)`
 	margin-bottom: 90px;
 `;
 
-const ClubList = () => {
-	const [sortBy, setSortBy] = useState("");
-	const [isChecked, setIsChecked] = useState();
-	const [clubs, setClubs] = useState([]);
-
-	const fetchSortedData = async () => {
-		try {
-			const res = await axios.get("/clubs", {
-				params: { sortby: sortBy, tags: "", clubStatus: isChecked },
-			});
-
-			if (res.status === 200) {
-				setClubs(res.data);
-			} else {
-				message.error("데이터를 불러오는데 실패했습니다.");
-			}
-		} catch (err) {
-			console.log(err);
-		}
-	};
+const ClubList = ({ ...props }) => {
+	console.log(props);
 
 	return (
 		<Wrapper>
 			<TitleRow>
-				<Title>{clubs.totalCount}개의 독서모임</Title>
+				<Title>{props.clubs.totalCount}개의 독서모임</Title>
 				<CheckboxFilter
 					onChange={(e) => {
-						setIsChecked(e.target.checked);
+						props.setIsChecked(e.target.checked);
 					}}
 				>
 					모집중
 				</CheckboxFilter>
 				<SortFilter showSearch placeholder="정렬필터">
-					<Option
-						value="date"
-						onChange={(value) => setSortBy(value)}
-						onClick={fetchSortedData}
-					>
+					<Option value="date" onChange={(value) => props.setSortBy(value)}>
 						최신순
 					</Option>
-					<Option
-						value="like"
-						onChange={(value) => setSortBy(value)}
-						onClick={fetchSortedData}
-					>
+					<Option value="like" onChange={(value) => props.setSortBy(value)}>
 						좋아요순
 					</Option>
 				</SortFilter>
 			</TitleRow>
 			<ClubCardContainer gutter={[48, 24]}>
-				{clubs.map((club) => (
+				{props.clubs.map((club) => (
 					<Col key={club.id} span={8}>
 						<Link to={`/clubs/${club.id}`}>
 							<ClubCard club={club} />

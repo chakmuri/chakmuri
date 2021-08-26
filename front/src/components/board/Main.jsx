@@ -26,13 +26,17 @@ const PaginationRow = styled(Row)`
 
 const Main = () => {
 	const [clubs, setClubs] = useState([]);
+	const [sortBy, setSortBy] = useState("");
+	const [isChecked, setIsChecked] = useState();
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(1);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await axios.get("/clubs");
+				const res = await axios.get("/clubs", {
+					params: { sortby: sortBy, tags: "", clubStatus: isChecked },
+				});
 
 				console.log("res: ", res);
 
@@ -43,14 +47,18 @@ const Main = () => {
 			}
 		};
 		fetchData();
-	}, []);
+	}, [sortBy, isChecked, total, page]);
 
 	return (
 		<Wrapper>
 			<Title>독서모임 찾기</Title>
 			<SearchBar />
 			<TagFilter />
-			<ClubList clubs={clubs} />
+			<ClubList
+				clubs={clubs}
+				setSortBy={setSortBy}
+				setIsChecked={setIsChecked}
+			/>
 			<PaginationRow>
 				<CustomPagination
 					total={total}
