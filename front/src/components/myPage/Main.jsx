@@ -89,15 +89,45 @@ const StyledModal = styled(Modal)`
 	}
 
 	.ant-modal-body {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		gap: 48px;
+		text-align: center;
 	}
 
 	.ant-modal-footer {
 		display: none;
+	}
+`;
+
+const ModalTitle = styled.div`
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 10px;
+`;
+
+const ButtonRow = styled(Row)`
+	margin-top: 30px;
+	display: flex;
+	justify-content: center;
+	gap: 50px;
+`;
+
+const FilledBtn = styled(Button)`
+	& {
+		color: #ffffff;
+		background-color: #ff6701;
+		border: none;
+		border-radius: 6px;
+		outline: none;
+		cursor: pointer;
+	}
+`;
+
+const UnfilledBtn = styled(Button)`
+	& {
+		color: #ff6701;
+		background-color: #ffffff;
+		border: 2px solid #ff6701;
+		border-radius: 6px;
+		cursor: pointer;
 	}
 `;
 
@@ -112,7 +142,14 @@ const Main = (props) => {
 		const fetchData = async () => {
 			try {
 				const res = await axios.get(`clubs/my/${userId}`);
-				setMyClub(res.data);
+
+				console.log(res);
+
+				if (res.status === 200) {
+					setMyClub(res.data);
+				} else {
+					message.error("현재 운영중인 독서모임이 존재하지 않습니다.");
+				}
 			} catch (err) {
 				console.log(err);
 			}
@@ -130,8 +167,9 @@ const Main = (props) => {
 
 	const handleDeleteClub = async () => {
 		try {
-			const res = await axios.delete(`/clubs/${props.myClub.id}`);
-			if (res.status === 200) {
+			const res = await axios.delete(`/clubs/${myClub.id}`);
+
+			if (res) {
 				message.success("독서모임이 성공적으로 삭제되었습니다.");
 				history.push("/myPage");
 			} else {
@@ -173,10 +211,19 @@ const Main = (props) => {
 								</Text>
 							</TextBox>
 							<DeleteBtn onClick={showModal}>독서모임 삭제</DeleteBtn>
-							<StyledModal
-								visible={isModalVisible}
-								onCancel={handleCancel}
-							></StyledModal>
+							<StyledModal visible={isModalVisible} onCancel={handleCancel}>
+								<ModalTitle>정말로 독서모임을 삭제하시겠습니까?</ModalTitle>
+								<Text>
+									한 번 삭제하시면 다시 되돌릴 수 없습니다. <br /> 신중하게
+									선택하신 다음 확인 버튼을 눌러주세요.
+								</Text>
+								<ButtonRow>
+									<FilledBtn onClick={handleDeleteClub}>확인</FilledBtn>
+									<UnfilledBtn type="button" onClick={handleCancel}>
+										취소
+									</UnfilledBtn>
+								</ButtonRow>
+							</StyledModal>
 						</DeleteBtnContainer>
 					</TabContainer>
 				</TabPane>

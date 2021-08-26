@@ -121,10 +121,10 @@ const MapWrapper = styled.div`
 	margin-top: 40px;
 `;
 
-const FilledButton = styled(Button)`
+const FilledBtn = styled(Button)`
 	& {
 		color: #ffffff;
-		background-color: #f98404;
+		background-color: #ff6701;
 		border: none;
 		border-radius: 6px;
 		outline: none;
@@ -132,11 +132,11 @@ const FilledButton = styled(Button)`
 	}
 `;
 
-const UnFilledButton = styled(Button)`
+const UnfilledBtn = styled(Button)`
 	& {
-		color: #f98404;
+		color: #ff6701;
 		background-color: #ffffff;
-		border: 2px solid #f98404;
+		border: 2px solid #ff6701;
 		border-radius: 6px;
 		cursor: pointer;
 	}
@@ -149,9 +149,17 @@ const RegisterForm = ({ ...props }) => {
 	const [detailAddress, setDetailAddress] = useState("");
 	const [imgFile, setImgFile] = useState(null);
 	const [preview, setPreview] = useState(null);
-	// const clubTags = [];
-	// const [tags, setTags] = useState([]);
-	// const [isSelected, setIsSelected] = useState(false);
+	const [isSelected, setIsSelected] = useState();
+	const [selectedTags, setSelectedTags] = useState([]);
+	const tags = [
+		"온라인",
+		"오프라인",
+		"온・오프라인",
+		"수도권",
+		"지방",
+		"친목",
+		"독서 외 활동",
+	];
 
 	const fullAddress = streetAddress + detailAddress;
 	const userId = localStorage.getItem("user_id");
@@ -190,20 +198,23 @@ const RegisterForm = ({ ...props }) => {
 		}
 	};
 
-	// const handleTags = (e) => {
-	// 	console.log(e.target.className);
-	// 	let text = e.target.textContent;
-	// 	const index = clubTags.indexOf(text);
-	// 	if (!isSelected) {
-	// 		clubTags.splice(index, 1);
-	// 		setIsSelected(true);
-	// 		setTags(clubTags);
-	// 	} else {
-	// 		clubTags.push(text);
-	// 		setIsSelected(false);
-	// 		setTags(clubTags);
-	// 	}
-	// };
+	const handleSelectTags = (e) => {
+		setIsSelected(e.target.value);
+		console.log("isSelected ", isSelected);
+		console.log("current value ", e.target.value);
+		let tagName = e.target.innerText;
+		let index = selectedTags.indexOf(tagName);
+
+		if (isSelected) {
+			e.target.style.color = "#ffffff";
+			e.target.style.backgroundColor = "#f98404";
+			setSelectedTags([...selectedTags, tagName]);
+		} else if (selectedTags.includes(tagName)) {
+			selectedTags.splice(index, 1);
+			e.target.style.color = "#f98404";
+			e.target.style.backgroundColor = "#ffffff";
+		}
+	};
 
 	const sendData = async (values) => {
 		const startDate = values.date[0]._d.toISOString().substring(0, 10);
@@ -377,14 +388,11 @@ const RegisterForm = ({ ...props }) => {
 						]}
 					>
 						<TagContainer>
-							<Tag>소수정예</Tag>
-							<Tag>온라인</Tag>
-							<Tag>오프라인</Tag>
-							<Tag>온・오프라인</Tag>
-							<Tag>수도권</Tag>
-							<Tag>지방</Tag>
-							<Tag>친목</Tag>
-							<Tag>독서 외 활동</Tag>
+							{tags.map((tag, i) => (
+								<Tag type="button" key={i} value={i} onClick={handleSelectTags}>
+									{tag}
+								</Tag>
+							))}
 						</TagContainer>
 					</Form.Item>
 				</Row>
@@ -467,19 +475,19 @@ const RegisterForm = ({ ...props }) => {
 								<StyledInput placeholder="상세 주소" />
 							</Form.Item>
 						</Form.Item>
-						<FilledButton type="button" onClick={getFullAdress}>
+						<FilledBtn type="button" onClick={getFullAdress}>
 							주소 검색
-						</FilledButton>
+						</FilledBtn>
 						<MapWrapper>
 							<MapContainer searchSpot={fullAddress} />
 						</MapWrapper>
 					</Col>
 				</Row>
 				<ButtonRow>
-					<FilledButton>등록</FilledButton>
-					<UnFilledButton type="button" onClick={props.onCancel}>
+					<FilledBtn>등록</FilledBtn>
+					<UnfilledBtn type="button" onClick={props.onCancel}>
 						취소
-					</UnFilledButton>
+					</UnfilledBtn>
 				</ButtonRow>
 			</StyledForm>
 		</Wrapper>
