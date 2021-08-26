@@ -1,21 +1,21 @@
 import React from "react";
 import { Row, Col } from "antd";
-import ClubCard from "./ClubCard";
+import MainClubCard from "./MainClubCard";
 
 const NewList = () => {
 	return (
 		<Row gutter={24}>
 			<Col span={6}>
-				<ClubCard />
+				<MainClubCard />
 			</Col>
 			<Col span={6}>
-				<ClubCard />
+				<MainClubCard />
 			</Col>
 			<Col span={6}>
-				<ClubCard />
+				<MainClubCard />
 			</Col>
 			<Col span={6}>
-				<ClubCard />
+				<MainClubCard />
 			</Col>
 		</Row>
 	);

@@ -20,7 +20,10 @@ public class ClubUpdateRequestDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private String tags;
-    private String books;
+    private String bookTitle;
+    private String author;
+    private String publisher;
+    private int publishedAt;
     private String bookDescription;
     private String description;
     private String addressDetail;

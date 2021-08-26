@@ -26,9 +26,10 @@ public class ClubDetailResponseDto {
     private String tags;                //독서모임 태그
     private int likes;                  //독서모임 좋아요 수
     private String bookTitle;           //독서모임 선정도서
-    private String bookAuthor;
-    private String bookImgUrl;
-    private String bookDescription;     //독서모임 선정도서 소개글
+    private String author;
+    private String publisher;
+    private int publishedAt;
+    private String bookDescription;
     private String description;         //독서모임 상세설명
     private String addressDetail;       //독서모임 위치 상세주소
     private String addressStreet;       //독서모임 위치 도로명주소
@@ -37,10 +38,10 @@ public class ClubDetailResponseDto {
     public ClubDetailResponseDto(Club club) {
         BeanUtils.copyProperties(club, this);
         this.userId = club.getUser().getId();
-        if(club.getBook() != null){
-            this.bookTitle = club.getBook().getBookTitle();
-            this.bookAuthor = club.getBook().getBookAuthor();
-            this.bookImgUrl = club.getBook().getBookImgUrl();
-        }
+        this.bookTitle = club.getBook().getBookTitle();
+        this.author = club.getBook().getAuthor();
+        this.publisher = club.getBook().getPublisher();
+        this.publishedAt = club.getBook().getPublishedAt();
+        this.bookDescription = club.getBook().getBookDescription();
     }
 }

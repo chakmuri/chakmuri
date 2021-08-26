@@ -22,7 +22,6 @@ public class ClubController {
 
     //TODO: AWS S3 서비스 이용, pageable 설정
     //TODO: 독서모임 검색(검색조건 - 태그, 모집중 여부, 정렬, 검색 키워드)
-    //TODO: 독서모임 만료 로직 -> status가 expired면 참여신청 불가
 
     //독서모임 생성
     @PostMapping
@@ -62,7 +61,7 @@ public class ClubController {
     }
 
     //사용자가 만든 독서모임 조회
-    @GetMapping("/{userId}")
+    @GetMapping("/my/{userId}")
     public ResponseEntity<ClubDetailResponseDto> getUserClub(
             @PathVariable String userId) {
         Club club = clubService.findClubByUserId(userId);
@@ -74,7 +73,7 @@ public class ClubController {
     }
 
     // 독서모임 수정 (my page)
-    @PatchMapping("/{userId}")
+    @PatchMapping("/my/{userId}")
     public ResponseEntity<Void> updateClub(
             @RequestBody ClubUpdateRequestDto clubUpdateRequestDto,
             @PathVariable String userId) {
@@ -83,7 +82,7 @@ public class ClubController {
     }
 
     // 독서모임 삭제 (my page)
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/my/{userId}")
     public ResponseEntity<Void> deleteClub(
             @PathVariable String userId) {
         clubService.deleteClub(userId);

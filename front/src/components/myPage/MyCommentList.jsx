@@ -1,14 +1,8 @@
 import React from "react";
 import { Row } from "antd";
 import styled from "styled-components";
-import ClubCard from "../common/ClubCard";
+import MyComment from "./MyComment";
 import CustomPagination from "../common/Pagination";
-
-const ListRow = styled.div`
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-`;
 
 const PaginationRow = styled(Row)`
 	width: 100%;
@@ -16,14 +10,21 @@ const PaginationRow = styled(Row)`
 	justify-content: center;
 `;
 
-const JoinedClubList = () => {
+const MyCommentList = () => {
 	return (
 		<>
-			<ListRow>
-				<ClubCard />
-				<ClubCard />
-				<ClubCard />
-			</ListRow>
+			<Row gutter={[0, 16]}>
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+			</Row>
 			<PaginationRow>
 				<CustomPagination />
 			</PaginationRow>
@@ -31,4 +32,4 @@ const JoinedClubList = () => {
 	);
 };
 
-export default JoinedClubList;
+export default MyCommentList;

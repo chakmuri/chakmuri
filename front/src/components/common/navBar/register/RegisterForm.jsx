@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Form, Input, InputNumber, Row, Col, DatePicker } from "antd";
 import styled from "styled-components";
-import Button from "../../Button";
-import MapContainer from "../../MapContainer";
+import Button from "../Button";
+import Tag from "../Tag";
+import MapContainer from "../MapContainer";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -50,8 +51,6 @@ const StyledInputNumber = styled(InputNumber)`
 	font-family: Roboto;
 	font-weight: bold;
 	font-size: 16px;
-	width: 80px;
-	height: 40px;
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
@@ -60,6 +59,13 @@ const StyledInputNumber = styled(InputNumber)`
 const PersonnelRow = styled.div`
 	display: flex;
 	gap: 5px;
+`;
+
+const TitleRow = styled.div`
+	font-family: Roboto;
+	font-weight: bold;
+	font-size: 20px;
+	margin: 20px 0;
 `;
 
 const StyledRangePicker = styled(RangePicker)`
@@ -79,32 +85,11 @@ const StyledRangePicker = styled(RangePicker)`
 `;
 
 const StyledTextArea = styled(TextArea)`
+	font-size: 14px;
 	width: 700px;
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
-`;
-
-const AddIcon = styled.div`
-	display: flex;
-	justify-content: flex-end;
-`;
-
-const Tag = styled.div`
-	padding: 10px 20px;
-	font-size: 16px;
-	color: #f98404;
-	background-color: #ffffff;
-	border: 1px solid #f98404;
-	border-radius: 30px;
-	text-align: center;
-	letter-spacing: 2px;
-	cursor: pointer;
-
-	&:hover {
-		color: #ffffff;
-		background-color: #f98404;
-	}
 `;
 
 // const SelectedTag = styled(Tag)`
@@ -221,11 +206,11 @@ const RegisterForm = (props) => {
 		const formData = new FormData();
 		formData.append("upload_image", imgFile);
 
-		const config = {
-			headers: {
-				"content-type": "multipart/form-data",
-			},
-		};
+		// const config = {
+		// 	headers: {
+		// 		"content-type": "multipart/form-data",
+		// 	},
+		// };
 
 		const data = {
 			userId,
@@ -378,28 +363,53 @@ const RegisterForm = (props) => {
 						</TagContainer>
 					</Form.Item>
 				</Row>
-				<Row>
-					<Col span={16}>
-						<Form.Item label="선정도서" name="books">
-							<Row gutter={[0, 16]}>
-								<Col span={22}>
-									<StyledInput placeholder="검색" />
-								</Col>
-								<Col span={2}>
-									<AddIcon>
-										<img src="assets/images/icons/add.png" alt="Add icon" />
-									</AddIcon>
-								</Col>
-							</Row>
-						</Form.Item>
-						<Form.Item name="bookDescription">
-							<Col>
-								<div>도서 선정 이유 및 소개글</div>
-								<StyledTextArea rows={10} />
-							</Col>
-						</Form.Item>
-					</Col>
-				</Row>
+				<TitleRow>선정도서</TitleRow>
+				<Col span={16}>
+					<Form.Item
+						label="도서명"
+						name="bookTitle"
+						rules={[{ required: true, message: "도서명을 입력하세요." }]}
+					>
+						<StyledInput placeholder="도서명" />
+					</Form.Item>
+				</Col>
+				<Col span={16}>
+					<Form.Item
+						label="작가명"
+						name="bookAuthor"
+						rules={[{ required: true, message: "작가명을 입력하세요." }]}
+					>
+						<StyledInput placeholder="작가명" />
+					</Form.Item>
+				</Col>
+				<Col span={16}>
+					<Form.Item label="출판사" name="bookPublisher">
+						<StyledInput placeholder="작가명" />
+					</Form.Item>
+				</Col>
+				<Col span={16}>
+					<Form.Item label="출판연도" name="bookPublishedDate">
+						<StyledInputNumber placeholder={1900} />
+					</Form.Item>
+				</Col>
+				<Col span={16}>
+					<Form.Item
+						label="도서 선정 이유 및 소개글"
+						name="bookDescription"
+						rules={[
+							{
+								required: true,
+								message: "도서 선정 이유 및 소개글을 입력하세요.",
+							},
+						]}
+					>
+						<StyledTextArea
+							rows={10}
+							placeholder={"도서를 선정한 이유 및 소개글을 작성해주세요."}
+						/>
+					</Form.Item>
+				</Col>
+
 				<Row>
 					<Col span={16}>
 						<Form.Item
@@ -409,10 +419,16 @@ const RegisterForm = (props) => {
 								{ required: true, message: "모임의 상세설명을 입력하세요." },
 							]}
 						>
-							<StyledTextArea rows={10} />
+							<StyledTextArea
+								rows={10}
+								placeholder={
+									"모임의 소개글이나 공지사항 등 상세한 설명을 작성해주세요."
+								}
+							/>
 						</Form.Item>
 					</Col>
 				</Row>
+
 				<Row>
 					<Col span={16}>
 						<Form.Item label="위치">

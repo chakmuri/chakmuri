@@ -32,7 +32,7 @@ public class ClubService {
     //TODO: 독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> ??
 
     @Transactional
-    public Club createClub(ClubCreateRequestDto clubCreateRequestDto, MultipartFile file) {
+    public Club createClub(ClubCreateRequestDto requestDto, MultipartFile file) {
         //userId NotNull 체크 -> 없어도 됨
         //TODO : AWS s3 img upload 로직 짜기 (현재는 로컬 업로드)
         if (file != null) {
@@ -40,45 +40,17 @@ public class ClubService {
             String filePath = path + System.currentTimeMillis() + "_" + file.getOriginalFilename();
             try {
                 file.transferTo(new File(filePath));
-                clubCreateRequestDto.setImgUrl(filePath);
+                requestDto.setImgUrl(filePath);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        Club club = clubCreateRequestDto.toEntity();
-        String books = clubCreateRequestDto.getBooks();
-        Book book = null;
-        if(books != null){
-            book = getBookObject(books);
-        }
-        final Club newClub = convertToNewClub(club, book, clubCreateRequestDto.getUserId());
+        Club club = requestDto.toEntity();
+        Book book = new Book(requestDto.getBookTitle(), requestDto.getAuthor(),
+                requestDto.getPublisher(), requestDto.getPublishedAt(),
+                requestDto.getBookDescription());
+        final Club newClub = convertToNewClub(club, book, requestDto.getUserId());
         return clubRepository.save(newClub);
-    }
-
-    private static JSONObject getJSONObjectFromString(String jsonString) {
-        JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = (JSONObject) jsonParser.parse(jsonString);
-            /**
-             * jsonObject 가 null 일 때 프로그램 중단
-             * if (jsonObject.isEmpty()) {
-             *     throw new RuntimeException();
-             * }
-             */
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-            //throw new RuntimeException(); -> parseException 발생 시 프로그램 중단
-        }
-        return jsonObject;
-    }
-
-    private static Book getBookObject(String jsonString) {
-        JSONObject book = getJSONObjectFromString(jsonString);
-        return new Book(book.get("bookTitle").toString(),
-                book.get("bookAuthor").toString(),
-                book.get("bookImgUrl").toString());
     }
 
     //club 생성시에만 사용하는 메서드
@@ -98,7 +70,6 @@ public class ClubService {
                 .tags(club.getTags())
                 .likes(0)
                 .book(book)
-                .bookDescription(club.getBookDescription())
                 .description(club.getDescription())
                 .addressDetail(club.getAddressDetail())
                 .addressStreet(club.getAddressStreet())
@@ -138,32 +109,30 @@ public class ClubService {
     }
 
     @Transactional
-    public void updateClub(ClubUpdateRequestDto clubUpdateRequestDto, String userId) {
+    public void updateClub(ClubUpdateRequestDto requestDto, String userId) {
         final Club club = findClubByUserId(userId);
-        Book book = null;
-        if(clubUpdateRequestDto.getBooks() != null){
-            book = getBookObject(clubUpdateRequestDto.getBooks());
-        }
+        Book book = new Book(requestDto.getBookTitle(), requestDto.getAuthor(),
+                requestDto.getPublisher(), requestDto.getPublishedAt(),
+                requestDto.getBookDescription());
         changeClubStatus(club);
-        club.updateClub(clubUpdateRequestDto.getTitle(),
-                clubUpdateRequestDto.getContents(),
-                clubUpdateRequestDto.getImgUrl(),
-                clubUpdateRequestDto.getMinPersonnel(),
-                clubUpdateRequestDto.getMaxPersonnel(),
-                clubUpdateRequestDto.getStartDate(),
-                clubUpdateRequestDto.getEndDate(),
-                clubUpdateRequestDto.getTags(),
+        club.updateClub(requestDto.getTitle(),
+                requestDto.getContents(),
+                requestDto.getImgUrl(),
+                requestDto.getMinPersonnel(),
+                requestDto.getMaxPersonnel(),
+                requestDto.getStartDate(),
+                requestDto.getEndDate(),
+                requestDto.getTags(),
                 book,
-                clubUpdateRequestDto.getBookDescription(),
-                clubUpdateRequestDto.getDescription(),
-                clubUpdateRequestDto.getAddressDetail(),
-                clubUpdateRequestDto.getAddressStreet());
+                requestDto.getDescription(),
+                requestDto.getAddressDetail(),
+                requestDto.getAddressStreet());
     }
 
     @Transactional
     public void deleteClub(String userId) {
         final Club club = findClubByUserId(userId);
-        //TODO: commentRepository.deleteAllByClubId(club.getId()); -> 독서모임 삭제 시 댓글 전부 삭제
+        commentRepository.deleteAllByClubId(club.getId());
         clubRepository.delete(club);
     }
 }
