@@ -10,15 +10,14 @@ import bookclub.chakmuri.repository.ClubRepository;
 import bookclub.chakmuri.repository.CommentRepository;
 import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -85,12 +84,46 @@ public class ClubService {
         else club.changeStatus(ClubStatus.ACTIVE);
     }
 
-    public List<Club> findAllClubs() {
-        List<Club> clubs = clubRepository.findAll();
-        for(Club club : clubs){
+    private void changeAllClubStatus(){
+        List<Club> clubList = clubRepository.findAll();
+        for(Club club : clubList){
             changeClubStatus(club);
         }
-        return clubs;
+    }
+
+    //독서모임 필터링해 조회
+    public List<Club> findAllClubs(String sortBy, String tags, ClubStatus clubStatus) {
+        changeAllClubStatus();
+
+        String[] tagList = {"소수정예", "온라인", "오프라인", "온・오프라인", "수도권", "지방", "친목", "독서 외 활동"};
+
+        //sortBy 정렬
+        List<Club> clubs;
+        if(sortBy.equals("likes")) {
+            clubs = clubRepository.findAllByClubStatusOrderByLikesDesc(clubStatus);
+        }else {
+            clubs = clubRepository.findAllByClubStatusOrderByCreatedAt(clubStatus);
+        }
+
+        if(tags.isEmpty()){
+            return clubs;
+        }
+
+        //http://localhost:8080/clubs?sortBy=createdAt&tags=온라인, 친목&clubStatus=ACTIVE
+        //tag 필터링 TODO: tags에 들어가는 값이 없을 때 204가 뜨는 문제 고치기 (121번째 줄 문제)
+        List<Club> clubList = new ArrayList<>();
+        List<String> tag = Arrays.asList(tags.split(", "));
+        for(Club club : clubs){
+            System.out.println(club.getTags());//
+            List<String> originTag = Arrays.asList(club.getTags().split(", "));
+            for(String tagString : tag){
+                System.out.println(tagString);//
+                if(originTag.contains(tagString))
+                    clubList.add(club);
+            }
+        }
+
+        return clubList;
     }
 
     public Club findClubById(Long clubId) {

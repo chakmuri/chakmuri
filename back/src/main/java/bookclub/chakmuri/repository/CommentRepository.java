@@ -19,7 +19,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     void deleteAllByClubId(Long clubId);
 
-    List<Comment> findAllByUserOrderByCreatedAtDesc(User user);
+    Page<Comment> findAllByUser(User user, Pageable pageable);
 
     Page<Comment> findAllByClubId(Long clubId, Pageable pageable);
 }
