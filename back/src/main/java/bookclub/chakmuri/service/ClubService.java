@@ -8,6 +8,7 @@ import bookclub.chakmuri.domain.ClubStatus;
 import bookclub.chakmuri.domain.User;
 import bookclub.chakmuri.repository.ClubRepository;
 import bookclub.chakmuri.repository.CommentRepository;
+import bookclub.chakmuri.repository.LikedClubRepository;
 import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class ClubService {
     private final ClubRepository clubRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final LikedClubRepository likedClubRepository;
 
     //TODO: 독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> ??
 
@@ -178,6 +180,7 @@ public class ClubService {
     public void deleteClub(String userId) {
         final Club club = findClubByUserId(userId);
         commentRepository.deleteAllByClubId(club.getId());
+        likedClubRepository.deleteByClubId(club.getId());
         clubRepository.delete(club);
     }
 }
