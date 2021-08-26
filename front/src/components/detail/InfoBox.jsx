@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Row } from "antd";
 import SmallTag from "../common/SmallTag";
 
 const InfoBoxContainer = styled.div`
@@ -75,25 +74,32 @@ const LikeIcon = styled.div`
 	}
 `;
 
-const InfoBox = () => {
+const InfoBox = (props) => {
+	const tags = props.club.tags.split(",");
+
 	return (
 		<InfoBoxContainer>
 			<ClubThumbnail>
 				<img src="assets/images/thumbnail-club.png" alt="Club Thumbnail" />
 			</ClubThumbnail>
 			<ClubInfo>
-				<Title>독서모임 이름</Title>
+				<Title>{props.club.title}</Title>
 				<InfoRow>
-					<SubTitle>참여 인원</SubTitle> <Text>2인 ~ 6인</Text>
+					<SubTitle>참여 인원</SubTitle>{" "}
+					<Text>
+						{props.club.minPersonnel}인 ~ {props.club.maxPersonnel}인
+					</Text>
 				</InfoRow>
 				<InfoRow>
 					<SubTitle>진행 기간</SubTitle>{" "}
-					<Text>2021. 09. 01 - 2021. 10. 30</Text>
+					<Text>
+						{props.club.startDate} - {props.club.endDate}
+					</Text>
 				</InfoRow>
 				<TagContainer>
-					<Tag>태그</Tag>
-					<Tag>태그</Tag>
-					<Tag>태그</Tag>
+					{tags.map((tag, i) => (
+						<Tag key={i}>{tag}</Tag>
+					))}
 				</TagContainer>
 				<LikeIcon>
 					<img
