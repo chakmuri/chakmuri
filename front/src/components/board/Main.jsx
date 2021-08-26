@@ -9,7 +9,7 @@ import CustomPagination from "../common/Pagination";
 
 const Wrapper = styled.div`
 	width: 1200px;
-	margin: 0 auto;
+	margin: 60px auto;
 `;
 
 const Title = styled.div`
@@ -24,7 +24,7 @@ const PaginationRow = styled(Row)`
 	justify-content: center;
 `;
 
-const Main = (props) => {
+const Main = () => {
 	const [clubs, setClubs] = useState([]);
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(1);
@@ -32,15 +32,18 @@ const Main = (props) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await axios.get("", { params: { page: page } });
-				setClubs(res.data.clubList);
+				const res = await axios.get("/clubs");
+
+				console.log("res: ", res);
+
+				setClubs(res.data);
 				setTotal(res.data.totalCount);
 			} catch (err) {
 				console.log(err);
 			}
 		};
 		fetchData();
-	}, [page]);
+	}, []);
 
 	return (
 		<Wrapper>

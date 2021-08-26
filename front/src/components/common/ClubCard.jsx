@@ -52,6 +52,7 @@ const LikeIcon = styled.div`
 const LikeNum = styled.span``;
 
 const ClubCard = ({ ...props }) => {
+	console.log(props);
 	return (
 		<StyledCard
 			hoverable
@@ -59,10 +60,10 @@ const ClubCard = ({ ...props }) => {
 				<img src="assets/images/thumbnail-club.png" alt="Clubcard thumbnail" />
 			}
 		>
-			<Meta title={props.title} description={props.content} />
+			<Meta title={props.clubs.title} description={props.clubs.content} />
 			<CardBox>
 				<TagContainer>
-					{props.tags.map((tag, i) => (
+					{props.clubs.tags.map((tag, i) => (
 						<SmallTag key={i}>{tag}</SmallTag>
 					))}
 				</TagContainer>
@@ -71,7 +72,7 @@ const ClubCard = ({ ...props }) => {
 						src="assets/images/icons/unfilled_heart.png"
 						alt="Unfilled like icon"
 					/>
-					<LikeNum>{props.likes}</LikeNum>
+					<LikeNum>{props.clubs.likes}</LikeNum>
 				</LikeIcon>
 			</CardBox>
 		</StyledCard>

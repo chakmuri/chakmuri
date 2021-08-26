@@ -149,8 +149,8 @@ const RegisterForm = ({ ...props }) => {
 	const [detailAddress, setDetailAddress] = useState("");
 	const [imgFile, setImgFile] = useState(null);
 	const [preview, setPreview] = useState(null);
-	const [isSelected, setIsSelected] = useState();
-	const [selectedTags, setSelectedTags] = useState([]);
+	// const [isSelected, setIsSelected] = useState();
+	// const [selectedTags, setSelectedTags] = useState([]);
 	const tags = [
 		"온라인",
 		"오프라인",
@@ -198,23 +198,23 @@ const RegisterForm = ({ ...props }) => {
 		}
 	};
 
-	const handleSelectTags = (e) => {
-		setIsSelected(e.target.value);
-		console.log("isSelected ", isSelected);
-		console.log("current value ", e.target.value);
-		let tagName = e.target.innerText;
-		let index = selectedTags.indexOf(tagName);
+	// const handleSelectTags = (e) => {
+	// 	setIsSelected(e.target.value);
+	// 	console.log("isSelected ", isSelected);
+	// 	console.log("current value ", e.target.value);
+	// 	let tagName = e.target.innerText;
+	// 	let index = selectedTags.indexOf(tagName);
 
-		if (isSelected) {
-			e.target.style.color = "#ffffff";
-			e.target.style.backgroundColor = "#f98404";
-			setSelectedTags([...selectedTags, tagName]);
-		} else if (selectedTags.includes(tagName)) {
-			selectedTags.splice(index, 1);
-			e.target.style.color = "#f98404";
-			e.target.style.backgroundColor = "#ffffff";
-		}
-	};
+	// 	if (isSelected) {
+	// 		e.target.style.color = "#ffffff";
+	// 		e.target.style.backgroundColor = "#f98404";
+	// 		setSelectedTags([...selectedTags, tagName]);
+	// 	} else if (selectedTags.includes(tagName)) {
+	// 		selectedTags.splice(index, 1);
+	// 		e.target.style.color = "#f98404";
+	// 		e.target.style.backgroundColor = "#ffffff";
+	// 	}
+	// };
 
 	const sendData = async (values) => {
 		const startDate = values.date[0]._d.toISOString().substring(0, 10);
@@ -223,11 +223,11 @@ const RegisterForm = ({ ...props }) => {
 		const formData = new FormData();
 		formData.append("upload_image", imgFile);
 
-		const config = {
-			headers: {
-				"content-type": "multipart/form-data",
-			},
-		};
+		// const config = {
+		// 	headers: {
+		// 		"content-type": "multipart/form-data",
+		// 	},
+		// };
 
 		const data = {
 			userId,
@@ -251,7 +251,7 @@ const RegisterForm = ({ ...props }) => {
 		console.log(data);
 
 		try {
-			const res = await axios.get(`clubs/my/${userId}`);
+			const res = await axios.get(`clubs/users/${userId}`);
 			console.log(res);
 
 			if (!res.data.id) {
@@ -259,7 +259,6 @@ const RegisterForm = ({ ...props }) => {
 
 				if (res.status === 204) {
 					message.success("독서모임이 성공적으로 등록되었습니다!");
-					registerForm.resetFields();
 					props.onCancel();
 				} else message.error("독서모임 등록에 실패했습니다.");
 			} else {
@@ -389,7 +388,7 @@ const RegisterForm = ({ ...props }) => {
 					>
 						<TagContainer>
 							{tags.map((tag, i) => (
-								<Tag type="button" key={i} value={i} onClick={handleSelectTags}>
+								<Tag type="button" key={i} value={i}>
 									{tag}
 								</Tag>
 							))}

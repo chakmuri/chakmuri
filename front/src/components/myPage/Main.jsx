@@ -136,19 +136,18 @@ const Main = (props) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [myClub, setMyClub] = useState({});
 	const userId = localStorage.getItem("user_id");
-	console.log(userId);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await axios.get(`clubs/my/${userId}`);
+				const res = await axios.get(`/clubs/users/${userId}`);
 
 				console.log(res);
 
-				if (res.status === 200) {
-					setMyClub(res.data);
-				} else {
+				if (!res.data) {
 					message.error("현재 운영중인 독서모임이 존재하지 않습니다.");
+				} else {
+					setMyClub(res.data);
 				}
 			} catch (err) {
 				console.log(err);
@@ -167,11 +166,10 @@ const Main = (props) => {
 
 	const handleDeleteClub = async () => {
 		try {
-			const res = await axios.delete(`/clubs/${myClub.id}`);
+			const res = await axios.delete(`/clubs/users/${userId}`);
 
 			if (res) {
 				message.success("독서모임이 성공적으로 삭제되었습니다.");
-				history.push("/myPage");
 			} else {
 				message.error("독서모임 삭제에 실패하였습니다.");
 			}

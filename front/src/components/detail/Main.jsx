@@ -12,6 +12,7 @@ const Wrapper = styled.div`
 `;
 
 const Main = (props) => {
+	console.log(props);
 	const [club, setClub] = useState({});
 	let history = useHistory();
 	const clubId = props.match.params.id;

@@ -42,7 +42,7 @@ const Login = ({ ...props }) => {
 
 			console.log(res);
 
-			if (!res) {
+			if (!res.data) {
 				const user = {
 					id: googleId,
 					name,
@@ -56,7 +56,6 @@ const Login = ({ ...props }) => {
 			localStorage.setItem("user_id", res.data.id);
 			localStorage.setItem("user_image", res.data.imgUrl);
 			props.onCancel();
-			history.push("/");
 
 			return res;
 		} catch (err) {

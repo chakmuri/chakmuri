@@ -1,6 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Checkbox, Select } from "antd";
+import { Row, Col, Checkbox, Select } from "antd";
 import ClubCard from "../common/ClubCard";
 
 const { Option } = Select;
@@ -61,21 +62,12 @@ const SortFilter = styled(Select)`
 	}
 `;
 
-const ClubCardContainer = styled.div`
+const ClubCardContainer = styled(Row)`
 	margin-bottom: 90px;
 `;
 
-const ListRow = styled.div`
-	display: flex;
-	justify-content: space-evenly;
-	margin-bottom: 40px;
-
-	&:last-of-type {
-		margin-bottom: 0;
-	}
-`;
-
 const ClubList = (props) => {
+	console.log(props);
 	return (
 		<Wrapper>
 			<TitleRow>
@@ -86,22 +78,14 @@ const ClubList = (props) => {
 					<Option value="like">좋아요순</Option>
 				</SortFilter>
 			</TitleRow>
-			<ClubCardContainer>
-				<ListRow>
-					<ClubCard />
-					<ClubCard />
-					<ClubCard />
-				</ListRow>
-				<ListRow>
-					<ClubCard />
-					<ClubCard />
-					<ClubCard />
-				</ListRow>
-				<ListRow>
-					<ClubCard />
-					<ClubCard />
-					<ClubCard />
-				</ListRow>
+			<ClubCardContainer gutter={[48, 24]}>
+				{props.clubs.map((club) => (
+					<Col key={club.id} span={8}>
+						<Link to={`/clubs/${club.id}`}>
+							<ClubCard club={club} />
+						</Link>
+					</Col>
+				))}
 			</ClubCardContainer>
 		</Wrapper>
 	);
