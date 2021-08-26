@@ -3,9 +3,6 @@ import { Tabs, Row, Divider } from "antd";
 import styled from "styled-components";
 import CommentList from "./CommentList";
 import LikedClubList from "./LikedClubList";
-import JoinedClubList from "./JoinedClubList";
-import MemberList from "./MemberList";
-import PendingMemberList from "./PendingMemberList";
 
 const { TabPane } = Tabs;
 
@@ -50,43 +47,54 @@ const MidTitle = styled.div`
 	margin-bottom: 20px;
 `;
 
-const SmallTitle = styled.div`
+const LargeText = styled.div`
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 15px;
+`;
+
+const Text = styled.div`
+	font-size: 16px;
+`;
+
+const DeleteBtnContainer = styled.div`
 	width: 100%;
-	margin-bottom: 20px;
+	border: 1px solid #c4c4c4;
+	border-radius: 5px;
+	padding: 25px;
 `;
 
 const Main = () => {
 	return (
 		<Wrapper>
 			<StyledTabs defaultActiveKey="1">
-				<TabPane tab="내 활동" key="1">
+				<TabPane tab="내 댓글" key="1">
 					<TabContainer gutter={[0, 98]}>
 						<Row>
 							<BigTitle>내가 쓴 댓글</BigTitle>
 							<CommentList />
 						</Row>
+					</TabContainer>
+				</TabPane>
+				<TabPane tab="좋아요한 독서모임" key="2">
+					<TabContainer gutter={[0, 98]}>
 						<Row>
 							<BigTitle>내가 좋아요한 독서모임</BigTitle>
 							<LikedClubList />
 						</Row>
-						<Row>
-							<BigTitle>내가 참여중인 독서모임</BigTitle>
-							<JoinedClubList />
-						</Row>
 					</TabContainer>
 				</TabPane>
-				<TabPane tab="독서모임" key="2">
+				<TabPane tab="독서모임 관리" key="3">
 					<TabContainer gutter={[0, 98]}>
-						<Row>
-							<BigTitle>내가 운영중인 독서모임</BigTitle>
-							<MidTitle>참여자 관리</MidTitle>
-							<SmallTitle>승인 대기자</SmallTitle>
-							<PendingMemberList />
-							<Divider />
-							<SmallTitle>참여자 목록</SmallTitle>
-							<MemberList />
-						</Row>
 						<MidTitle>정보 수정</MidTitle>
+						<Divider />
+						<DeleteBtnContainer>
+							<LargeText>독서모임 삭제하기</LargeText>
+							<Text>
+								한 번 독서모임을 삭제하면 복구할 수 없습니다. 신중하게
+								결정해주세요!
+							</Text>
+						</DeleteBtnContainer>
 					</TabContainer>
 				</TabPane>
 			</StyledTabs>

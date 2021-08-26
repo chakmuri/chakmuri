@@ -17,6 +17,13 @@ const CommentList = () => {
 				<Comment />
 				<Comment />
 				<Comment />
+				<Comment />
+				<Comment />
+				<Comment />
+				<Comment />
+				<Comment />
+				<Comment />
+				<Comment />
 			</Row>
 			<PaginationRow>
 				<CustomPagination />

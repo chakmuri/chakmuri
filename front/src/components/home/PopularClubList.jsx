@@ -1,21 +1,21 @@
 import React from "react";
 import { Row, Col } from "antd";
-import ClubCard from "./MainClubCard";
+import MainClubCard from "./MainClubCard";
 
 const PopularList = () => {
 	return (
 		<Row gutter={24}>
 			<Col span={6}>
-				<ClubCard />
+				<MainClubCard />
 			</Col>
 			<Col span={6}>
-				<ClubCard />
+				<MainClubCard />
 			</Col>
 			<Col span={6}>
-				<ClubCard />
+				<MainClubCard />
 			</Col>
 			<Col span={6}>
-				<ClubCard />
+				<MainClubCard />
 			</Col>
 		</Row>
 	);
