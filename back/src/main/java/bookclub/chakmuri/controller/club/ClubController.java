@@ -1,6 +1,7 @@
 package bookclub.chakmuri.controller.club;
 
 import bookclub.chakmuri.domain.Club;
+import bookclub.chakmuri.domain.ClubStatus;
 import bookclub.chakmuri.service.ClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -41,8 +42,11 @@ public class ClubController {
 
     //독서모임 리스트 조회(검색조건 x)
     @GetMapping
-    public ResponseEntity<List<ClubResponseDto>> getClubs() {
-        List<ClubResponseDto> clubResponseDtoList = clubService.findAllClubs()
+    public ResponseEntity<List<ClubResponseDto>> getClubs(
+            @RequestParam(value = "sortBy") String sortBy,
+            @RequestParam(value = "tags") String tags,
+            @RequestParam(value = "clubStatus") ClubStatus clubStatus) {
+        List<ClubResponseDto> clubResponseDtoList = clubService.findAllClubs(sortBy, tags, clubStatus)
                 .stream()
                 .map(ClubResponseDto::new)  //조회한 클럽 리스트 항목 하나하나를 ClubResponseDto와 매핑해 줌
                 .collect(Collectors.toList());  //스트림에서 작업한 결과를 담은 리스트로 반환
