@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Form, Input, InputNumber, Row, Col, DatePicker } from "antd";
+import { Form, Input, InputNumber, Row, Col, DatePicker, message } from "antd";
 import styled from "styled-components";
 import Button from "../common/Button";
 import MapContainer from "../common/MapContainer";
@@ -40,7 +40,6 @@ const StyledForm = styled(Form)`
 
 const StyledInput = styled(Input)`
 	font-family: Roboto;
-	font-weight: bold;
 	font-size: 16px;
 	height: 48px;
 	background-color: #f6f6f6;
@@ -65,6 +64,13 @@ const PersonnelRow = styled.div`
 	gap: 5px;
 `;
 
+const TitleRow = styled.div`
+	font-family: Roboto;
+	font-weight: bold;
+	font-size: 20px;
+	margin: 20px 0;
+`;
+
 const StyledRangePicker = styled(RangePicker)`
 	height: 48px;
 	background-color: #f6f6f6;
@@ -82,15 +88,11 @@ const StyledRangePicker = styled(RangePicker)`
 `;
 
 const StyledTextArea = styled(TextArea)`
+	font-size: 16px;
 	width: 700px;
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
-`;
-
-const AddIcon = styled.div`
-	display: flex;
-	justify-content: flex-end;
 `;
 
 const Tag = styled.div`
@@ -149,32 +151,18 @@ const FilledBtn = styled(Button)`
 	}
 `;
 
-const EditForm = (props) => {
+const EditForm = ({ ...props }) => {
 	const [inputText, setInputText] = useState("");
 	const [streetAddress, setStreetAddress] = useState("");
 	const [detailAddress, setDetailAddress] = useState("");
 	const [imgFile, setImgFile] = useState(null);
 	const [preview, setPreview] = useState(null);
-	const [club, setClub] = useState({});
-	// const clubTags = [];
-	// const [tags, setTags] = useState([]);
+	const [startDate, setStartDate] = useState("");
+	const [endDate, setEndDate] = useState("");
 	// const [isSelected, setIsSelected] = useState(false);
-
-	const userId = localStorage.getItem("userId");
+	// const [tags, setTags] = useState([]);
+	// const clubTags = [];
 	const fullAddress = streetAddress + detailAddress;
-
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const res = await axios.get(`clubs/user/${userId}`);
-				setClub(res.data);
-				setPreview(res.data.imgUrl);
-			} catch (err) {
-				console.log(err);
-			}
-		};
-		fetchData();
-	}, [userId]);
 
 	const onChange = (e) => {
 		setInputText(e.target.value);
@@ -224,8 +212,9 @@ const EditForm = (props) => {
 	// };
 
 	const sendData = async (values) => {
-		const startDate = values.date[0]._d.toISOString().substring(0, 10);
-		const endDate = values.date[1]._d.toISOString().substring(0, 10);
+		const mock_edit_tags = "지방, 독서 외 활동";
+		setStartDate(values.date[0]._d.toISOString().substring(0, 10));
+		setEndDate(values.date[1]._d.toISOString().substring(0, 10));
 		const formData = new FormData();
 		formData.append("upload_image", imgFile);
 
@@ -244,17 +233,27 @@ const EditForm = (props) => {
 			maxPersonnel: values.maxPersonnel,
 			description: values.description,
 			bookDescription: values.bookDescription,
-			tags: values.tags,
-			books: values.books,
+			tags: mock_edit_tags,
 			addressStreet: values.addressStreet,
 			addressDetail: values.addressDetail,
+			bookTitle: values.bookTitle,
+			author: values.bookAuthor,
+			publisher: values.bookPublisher,
+			publishedAt: values.bookPublishedDate,
 		};
 
 		console.log(data);
+		console.log(props.myClub.id);
 
-		const res = await axios.patch(`clubs/${club.id}`, data);
-		if (res.status === 200) console.log("Success");
-		else console.log("Error");
+		try {
+			const res = await axios.patch(`clubs/${props.myClub.id}`, data);
+
+			if (res.status === 200)
+				message.success("독서모임이 성공적으로 수정되었습니다!");
+			else message.error("독서모임 수정에 실패했습니다.");
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	const onFinish = async (values) => {
@@ -277,7 +276,7 @@ const EditForm = (props) => {
 				<Row gutter={32}>
 					<Col span={16}>
 						<Form.Item
-							initialValue={club.title}
+							initialValue={props.myClub.title}
 							label="이름"
 							name="title"
 							rules={[{ required: true, message: "모임 이름을 입력하세요." }]}
@@ -285,7 +284,7 @@ const EditForm = (props) => {
 							<StyledInput placeholder="이름" />
 						</Form.Item>
 						<Form.Item
-							initialValue={club.contents}
+							initialValue={props.myClub.contents}
 							label="한 줄 소개"
 							name="contents"
 							rules={[
@@ -307,7 +306,7 @@ const EditForm = (props) => {
 								<PersonnelRow>
 									<Form.Item
 										name="minPersonnel"
-										initialValue={club.minPersonnel}
+										initialValue={props.myClub.minPersonnel}
 									>
 										<StyledInputNumber min={2} placeholder={2} />
 									</Form.Item>
@@ -317,7 +316,7 @@ const EditForm = (props) => {
 								<PersonnelRow>
 									<Form.Item
 										name="maxPersonnel"
-										initialValue={club.maxPersonnel}
+										initialValue={props.myClub.maxPersonnel}
 									>
 										<StyledInputNumber min={2} placeholder={2} />
 									</Form.Item>
@@ -326,7 +325,7 @@ const EditForm = (props) => {
 							</Row>
 						</Form.Item>
 						<Form.Item
-							initialValue={[club.startDate, club.endDate]}
+							// initialValue={[props.myClub.startDate, props.myClub.endDate]}
 							label="진행 기간"
 							name="date"
 							rules={[
@@ -394,53 +393,88 @@ const EditForm = (props) => {
 						</TagContainer>
 					</Form.Item>
 				</Row>
-				<Row>
-					<Col span={16}>
-						<Form.Item label="선정도서" name="books">
-							<Row gutter={[0, 16]}>
-								<Col span={22}>
-									<StyledInput placeholder="검색" />
-								</Col>
-								<Col span={2}>
-									<AddIcon>
-										<img src="assets/images/icons/add.png" alt="Add icon" />
-									</AddIcon>
-								</Col>
-							</Row>
-						</Form.Item>
-						<Form.Item name="bookDescription">
-							<Col>
-								<div>도서 선정 이유 및 소개글</div>
-								<StyledTextArea rows={10} />
-							</Col>
-						</Form.Item>
-					</Col>
-				</Row>
+				<TitleRow>선정도서</TitleRow>
+				<Col span={16}>
+					<Form.Item
+						label="도서명"
+						name="bookTitle"
+						rules={[{ required: true, message: "도서명을 입력하세요." }]}
+					>
+						<StyledInput placeholder="도서명" />
+					</Form.Item>
+				</Col>
+				<Col span={16}>
+					<Form.Item
+						label="작가명"
+						name="bookAuthor"
+						rules={[{ required: true, message: "작가명을 입력하세요." }]}
+					>
+						<StyledInput placeholder="작가명" />
+					</Form.Item>
+				</Col>
+				<Col span={16}>
+					<Form.Item label="출판사" name="bookPublisher">
+						<StyledInput placeholder="작가명" />
+					</Form.Item>
+				</Col>
+				<Col span={16}>
+					<Form.Item label="출판연도" name="bookPublishedDate">
+						<StyledInputNumber placeholder={1900} />
+					</Form.Item>
+				</Col>
+				<Col span={16}>
+					<Form.Item
+						label="도서 선정 이유 및 소개글"
+						name="bookDescription"
+						rules={[
+							{
+								required: true,
+								message: "도서 선정 이유 및 소개글을 입력하세요.",
+							},
+						]}
+					>
+						<StyledTextArea
+							rows={10}
+							placeholder={"도서를 선정한 이유 및 소개글을 작성해주세요."}
+						/>
+					</Form.Item>
+				</Col>
+
 				<Row>
 					<Col span={16}>
 						<Form.Item
-							initialValue={club.description}
 							label="상세설명"
 							name="description"
 							rules={[
 								{ required: true, message: "모임의 상세설명을 입력하세요." },
 							]}
 						>
-							<StyledTextArea rows={10} />
+							<StyledTextArea
+								rows={10}
+								placeholder={
+									"모임의 소개글이나 공지사항 등 상세한 설명을 작성해주세요."
+								}
+							/>
 						</Form.Item>
 					</Col>
 				</Row>
 				<Row>
 					<Col span={16}>
 						<Form.Item label="위치">
-							<Form.Item name="addressStreet" initialValue={club.addressStreet}>
+							<Form.Item
+								name="addressStreet"
+								initialValue={props.myClub.addressStreet}
+							>
 								<StyledInput
 									placeholder="도로명 주소"
 									onChange={onChange}
 									value={inputText}
 								/>
 							</Form.Item>
-							<Form.Item name="addressDetail" initialValue={club.addressDetail}>
+							<Form.Item
+								name="addressDetail"
+								initialValue={props.myClub.addressDetail}
+							>
 								<StyledInput placeholder="상세 주소" />
 							</Form.Item>
 						</Form.Item>

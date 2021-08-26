@@ -35,10 +35,14 @@ const Login = ({ ...props }) => {
 			profileObj: { googleId, email, name, imageUrl },
 		} = response;
 
+		console.log("google res ", response);
+
 		try {
 			const res = await axios.get(`/users/${googleId}`);
 
-			if (!res.id) {
+			console.log(res);
+
+			if (!res) {
 				const user = {
 					id: googleId,
 					name,

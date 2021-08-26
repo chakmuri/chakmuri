@@ -38,7 +38,6 @@ const StyledForm = styled(Form)`
 
 const StyledInput = styled(Input)`
 	font-family: Roboto;
-	font-weight: bold;
 	font-size: 16px;
 	height: 48px;
 	background-color: #f6f6f6;
@@ -85,7 +84,7 @@ const StyledRangePicker = styled(RangePicker)`
 `;
 
 const StyledTextArea = styled(TextArea)`
-	font-size: 14px;
+	font-size: 16px;
 	width: 700px;
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
@@ -230,7 +229,6 @@ const RegisterForm = ({ ...props }) => {
 			description: values.description,
 			bookDescription: values.bookDescription,
 			tags: mock_tags,
-			books: values.books,
 			addressStreet: values.addressStreet,
 			addressDetail: values.addressDetail,
 			bookTitle: values.bookTitle,
@@ -248,7 +246,7 @@ const RegisterForm = ({ ...props }) => {
 			if (!res.data.id) {
 				await axios.post("/clubs", data);
 
-				if (res.status === 200) {
+				if (res.status === 204) {
 					message.success("독서모임이 성공적으로 등록되었습니다!");
 					registerForm.resetFields();
 					props.onCancel();

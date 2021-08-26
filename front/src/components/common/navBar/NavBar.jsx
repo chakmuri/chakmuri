@@ -61,6 +61,27 @@ const NavProfile = styled.div`
 	}
 `;
 
+const Title = styled.div`
+	font-size: 26px;
+	white-space: pre-wrap;
+`;
+
+const NavRegister = styled.div`
+	width: 48px;
+	height: 48px;
+	cursor: pointer;
+`;
+
+const StyledDropdownMenu = styled(Menu)`
+	.ant-dropdown-menu-item,
+	.ant-dropdown-menu-submenu-title {
+		font-family: Roboto;
+		font-size: 16px;
+		padding: 10px 20px;
+		text-align: center;
+	}
+`;
+
 const StyledModal = styled(Modal)`
 	display: flex;
 	justify-content: center;
@@ -81,27 +102,6 @@ const StyledModal = styled(Modal)`
 
 	.ant-modal-footer {
 		display: none;
-	}
-`;
-
-const Title = styled.div`
-	font-size: 26px;
-	white-space: pre-wrap;
-`;
-
-const NavRegister = styled.div`
-	width: 48px;
-	height: 48px;
-	cursor: pointer;
-`;
-
-const StyledDropdownMenu = styled(Menu)`
-	.ant-dropdown-menu-item,
-	.ant-dropdown-menu-submenu-title {
-		font-family: Roboto;
-		font-size: 16px;
-		padding: 10px 20px;
-		text-align: center;
 	}
 `;
 

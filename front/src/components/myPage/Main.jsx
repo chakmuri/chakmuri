@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { Tabs, Row, Divider, message } from "antd";
+import { Tabs, Row, Divider, message, Modal } from "antd";
 import styled from "styled-components";
 import MyCommentList from "./MyCommentList";
 import LikedClubList from "./LikedClubList";
@@ -78,23 +78,69 @@ const DeleteBtn = styled(Button)`
 	flex: 0.1;
 `;
 
-const Main = (props) => {
-	// let history = useHistory();
-	// console.log(props.params);
-	// const clubId = props.match.params.id;
+const StyledModal = styled(Modal)`
+	display: flex;
+	justify-content: center;
 
-	// const handleDeleteClub = async () => {
-	// 	try {
-	// 		const res = await axios.delete(`/clubs/${clubId}`);
-	// 		if (res.status === 200) {
-	// 			message.success("독서모임이 성공적으로 삭제되었습니다.");
-	// 		} else {
-	// 			message.error("독서모임 삭제에 실패하였습니다.");
-	// 		}
-	// 	} catch (err) {
-	// 		console.log(err);
-	// 	}
-	// };
+	.ant-modal-content {
+		padding: 30px 55px;
+		display: flex;
+		align-items: center;
+	}
+
+	.ant-modal-body {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 48px;
+	}
+
+	.ant-modal-footer {
+		display: none;
+	}
+`;
+
+const Main = (props) => {
+	let history = useHistory();
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [myClub, setMyClub] = useState({});
+	const userId = localStorage.getItem("user_id");
+	console.log(userId);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const res = await axios.get(`clubs/my/${userId}`);
+				setMyClub(res.data);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		fetchData();
+	}, [userId]);
+
+	const showModal = () => {
+		setIsModalVisible(true);
+	};
+
+	const handleCancel = () => {
+		setIsModalVisible(false);
+	};
+
+	const handleDeleteClub = async () => {
+		try {
+			const res = await axios.delete(`/clubs/${props.myClub.id}`);
+			if (res.status === 200) {
+				message.success("독서모임이 성공적으로 삭제되었습니다.");
+				history.push("/myPage");
+			} else {
+				message.error("독서모임 삭제에 실패하였습니다.");
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	return (
 		<Wrapper>
@@ -116,7 +162,7 @@ const Main = (props) => {
 				<TabPane tab="독서모임 관리" key="3">
 					<TabContainer gutter={[0, 16]}>
 						<MidTitle>정보 수정</MidTitle>
-						<EditForm />
+						<EditForm myClub={myClub} />
 						<Divider />
 						<DeleteBtnContainer>
 							<TextBox>
@@ -126,7 +172,11 @@ const Main = (props) => {
 									결정해주세요!
 								</Text>
 							</TextBox>
-							<DeleteBtn>독서모임 삭제</DeleteBtn>
+							<DeleteBtn onClick={showModal}>독서모임 삭제</DeleteBtn>
+							<StyledModal
+								visible={isModalVisible}
+								onCancel={handleCancel}
+							></StyledModal>
 						</DeleteBtnContainer>
 					</TabContainer>
 				</TabPane>
