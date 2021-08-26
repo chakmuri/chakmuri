@@ -40,13 +40,15 @@ public class ClubController {
         }
     }
 
+//    , @RequestParam(value = "page") int page
     //독서모임 리스트 조회(검색조건 x)
     @GetMapping
     public ResponseEntity<List<ClubResponseDto>> getClubs(
             @RequestParam(value = "sortBy") String sortBy,
             @RequestParam(value = "tags") String tags,
-            @RequestParam(value = "clubStatus") ClubStatus clubStatus) {
-        List<ClubResponseDto> clubResponseDtoList = clubService.findAllClubs(sortBy, tags, clubStatus)
+            @RequestParam(value = "clubStatus") ClubStatus clubStatus,
+            @RequestParam(value = "keyword") String keyword) {
+        List<ClubResponseDto> clubResponseDtoList = clubService.findAllClubs(sortBy, tags, clubStatus, keyword)
                 .stream()
                 .map(ClubResponseDto::new)  //조회한 클럽 리스트 항목 하나하나를 ClubResponseDto와 매핑해 줌
                 .collect(Collectors.toList());  //스트림에서 작업한 결과를 담은 리스트로 반환

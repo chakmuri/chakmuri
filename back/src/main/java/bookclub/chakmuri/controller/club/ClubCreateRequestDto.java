@@ -19,7 +19,7 @@ public class ClubCreateRequestDto {
     private int maxPersonnel;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String tags;            // TODO: string 데이터 형식 결정. 검색기능 구현하면서 바뀔 여지 있음
+    private String tags;
     private String bookTitle;
     private String author;
     private String publisher;

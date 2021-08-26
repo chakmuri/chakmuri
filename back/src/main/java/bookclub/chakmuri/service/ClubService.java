@@ -32,7 +32,6 @@ public class ClubService {
 
     @Transactional
     public Club createClub(ClubCreateRequestDto requestDto, MultipartFile file) {
-        //userId NotNull 체크 -> 없어도 됨
         //TODO : AWS s3 img upload 로직 짜기 (현재는 로컬 업로드)
         if (file != null) {
             String path = "C:\\chakmuri\\back\\src\\main\\resources\\image\\";
@@ -78,7 +77,7 @@ public class ClubService {
 
     //독서모임 만료 처리 메서드
     private void changeClubStatus(Club club){
-        if(LocalDate.now().isAfter(club.getStartDate())){
+        if(LocalDate.now().isAfter(club.getEndDate())){
             club.changeStatus(ClubStatus.EXPIRED);
         }
         else club.changeStatus(ClubStatus.ACTIVE);
@@ -91,13 +90,12 @@ public class ClubService {
         }
     }
 
-    //독서모임 필터링해 조회
-    public List<Club> findAllClubs(String sortBy, String tags, ClubStatus clubStatus) {
+    //독서모임 검색조건 조회
+    public List<Club> findAllClubs(String sortBy, String tags, ClubStatus clubStatus, String keyword) {
+        //클럽 모집 여부 상태 확인
         changeAllClubStatus();
 
-        String[] tagList = {"소수정예", "온라인", "오프라인", "온・오프라인", "수도권", "지방", "친목", "독서 외 활동"};
-
-        //sortBy 정렬
+        //sortBy 정렬, 모집중 여부 포함
         List<Club> clubs;
         if(sortBy.equals("likes")) {
             clubs = clubRepository.findAllByClubStatusOrderByLikesDesc(clubStatus);
@@ -105,25 +103,39 @@ public class ClubService {
             clubs = clubRepository.findAllByClubStatusOrderByCreatedAt(clubStatus);
         }
 
-        if(tags.isEmpty()){
+        //tag와 keyword 값 확인 -> 둘 다 없으면 sortBy만 적용해서 리턴
+        if(tags.isEmpty() && keyword.isEmpty()){
             return clubs;
         }
 
-        //http://localhost:8080/clubs?sortBy=createdAt&tags=온라인, 친목&clubStatus=ACTIVE
-        //tag 필터링 TODO: tags에 들어가는 값이 없을 때 204가 뜨는 문제 고치기 (121번째 줄 문제)
-        List<Club> clubList = new ArrayList<>();
-        List<String> tag = Arrays.asList(tags.split(", "));
-        for(Club club : clubs){
-            System.out.println(club.getTags());//
-            List<String> originTag = Arrays.asList(club.getTags().split(", "));
-            for(String tagString : tag){
-                System.out.println(tagString);//
-                if(originTag.contains(tagString))
-                    clubList.add(club);
+        //keyword 필터링 -> clubs 항목들의 제목이 keyword 를 포함하고 있는가
+        List<Club> clubSortedByKeyword = new ArrayList<>();
+
+        if(keyword.isEmpty())
+            clubSortedByKeyword = clubs;
+        else {
+            for(Club club: clubs){
+                if(club.getTitle().contains(keyword)) {
+                    clubSortedByKeyword.add(club);
+                }
             }
         }
 
-        return clubList;
+        if(tags.isEmpty())
+            return clubSortedByKeyword;
+
+        //tag 필터링
+        List<Club> clubSortedByTags = new ArrayList<>();
+        List<String> tag = Arrays.asList(tags.split(", "));
+        for(Club club : clubSortedByKeyword){
+            List<String> originTag = Arrays.asList(club.getTags().split(", "));
+            for(String tagString : tag){
+                if(originTag.contains(tagString))
+                    clubSortedByTags.add(club);
+            }
+        }
+
+        return clubSortedByTags;
     }
 
     public Club findClubById(Long clubId) {
