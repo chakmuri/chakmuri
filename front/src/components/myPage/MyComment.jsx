@@ -36,7 +36,7 @@ const CommentBtn = styled.button`
 	cursor: pointer;
 `;
 
-const Comment = () => {
+const MyComment = () => {
 	return (
 		<CommentBar>
 			<CommentProfileIcon>
@@ -48,4 +48,4 @@ const Comment = () => {
 	);
 };
 
-export default Comment;
+export default MyComment;

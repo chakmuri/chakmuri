@@ -4,7 +4,7 @@ import { Form, Input, InputNumber, Row, Col, DatePicker } from "antd";
 import styled from "styled-components";
 import Button from "../Button";
 import Tag from "../Tag";
-import MapContainer from "./MapContainer";
+import MapContainer from "../MapContainer";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -208,11 +208,11 @@ const RegisterForm = ({ ...props }) => {
 		const formData = new FormData();
 		formData.append("upload_image", imgFile);
 
-		const config = {
-			headers: {
-				"content-type": "multipart/form-data",
-			},
-		};
+		// const config = {
+		// 	headers: {
+		// 		"content-type": "multipart/form-data",
+		// 	},
+		// };
 
 		const data = {
 			userId,

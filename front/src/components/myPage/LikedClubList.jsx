@@ -1,7 +1,7 @@
 import React from "react";
 import { Row } from "antd";
 import styled from "styled-components";
-import GatherCard from "../common/GatherCards";
+import ClubCard from "../common/ClubCard";
 import CustomPagination from "../common/Pagination";
 
 const ListRow = styled.div`
@@ -20,9 +20,9 @@ const LikedClubList = () => {
 	return (
 		<>
 			<ListRow>
-				<GatherCard />
-				<GatherCard />
-				<GatherCard />
+				<ClubCard />
+				<ClubCard />
+				<ClubCard />
 			</ListRow>
 			<PaginationRow>
 				<CustomPagination />

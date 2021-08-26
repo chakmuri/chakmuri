@@ -1,7 +1,7 @@
 import React from "react";
 import { Row } from "antd";
 import styled from "styled-components";
-import Comment from "./Comment";
+import MyComment from "./MyComment";
 import CustomPagination from "../common/Pagination";
 
 const PaginationRow = styled(Row)`
@@ -10,13 +10,20 @@ const PaginationRow = styled(Row)`
 	justify-content: center;
 `;
 
-const CommentList = () => {
+const MyCommentList = () => {
 	return (
 		<>
 			<Row gutter={[0, 16]}>
-				<Comment />
-				<Comment />
-				<Comment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
+				<MyComment />
 			</Row>
 			<PaginationRow>
 				<CustomPagination />
@@ -25,4 +32,4 @@ const CommentList = () => {
 	);
 };
 
-export default CommentList;
+export default MyCommentList;
