@@ -3,6 +3,7 @@ package bookclub.chakmuri.controller.comment;
 import bookclub.chakmuri.domain.Comment;
 import bookclub.chakmuri.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,13 +61,16 @@ public class CommentController {
     @GetMapping("/clubs/{clubId}")
     public ResponseEntity<List<CommentResponseDto>> getClubComments(
             @PathVariable("clubId") Long clubId, @RequestParam("page") int page){
+        Long totalCount = commentService.getTotalCount(clubId, page);
         List<CommentResponseDto> response = commentService.findAllClubComments(clubId, page)
                 .stream()
                 .map(CommentResponseDto::new)
                 .collect(Collectors.toList());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("totalCount", commentService.getTotalCount(clubId, page).toString());
-        return new ResponseEntity<>(response, httpHeaders, getStatusCode(response));
+        CommentPageResponseDto pageResponseDto = new CommentPageResponseDto(totalCount, response);
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.set("totalCount", commentService.getTotalCount(clubId, page).toString());
+//        return new ResponseEntity<>(response, httpHeaders, getStatusCode(response));
+        return new ResponseEntity(pageResponseDto, HttpStatus.OK);
     }
 
     // 사용자 댓글 전체 조회
