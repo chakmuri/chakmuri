@@ -88,26 +88,22 @@ public class CommentService {
     }
     //TODO: 존재하지 않는 모임에 대한 검증 추가
     public Page<Comment> findAllClubComments(Long clubId, int page) {
-        return commentRepository.findAllByClubId(clubId, getPageRequest(clubId, page));
-    }
-
-    public Long getTotalCount(Long clubId, int page){
-        return commentRepository.findAllByClubId(clubId, getPageRequest(clubId, page))
-                .getTotalElements();
-    }
-
-    private PageRequest getPageRequest(Long clubId, int page){
         final Club club = clubRepository.findById(clubId)
                 .orElseThrow(); // TODO: ClubNotFoundException::new 추가하기
 
-        return PageRequest.of((page-1), 5, Sort.by(Sort.Direction.DESC, "id"));
+        PageRequest pageRequest = PageRequest.of((page - 1), 5, Sort.by(Sort.Direction.DESC, "id"));
+        return commentRepository.findAllByClubId(clubId, pageRequest);
     }
 
-    public List<Comment> findAllUserComments(String userId) {
+    public Long getTotalCount(Page<Comment> commentPage){
+        return commentPage.getTotalElements();
+    }
+
+    public Page<Comment> findAllUserComments(String userId, int page) {
         User user = userRepository.findById(userId)
                 .orElseThrow();// TODO: UserNotFoundException::new 추가하기
-
-        return commentRepository.findAllByUserOrderByCreatedAtDesc(user);
+        PageRequest pageRequest = PageRequest.of((page - 1), 10, Sort.by(Sort.Direction.DESC, "id"));
+        return commentRepository.findAllByUser(user, pageRequest);
     }
 
     @Transactional
