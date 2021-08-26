@@ -36,25 +36,11 @@ const StyledTabs = styled(Tabs)`
 	}
 `;
 
-const TitleRow = styled.div`
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 40px;
-`;
-
-const BigTitle = styled.div`
-	width: 100%;
-	font-family: Roboto;
-	font-weight: bold;
-	font-size: 24px;
-`;
-
 const MidTitle = styled.div`
 	width: 100%;
 	font-family: Roboto;
 	font-size: 20px;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 `;
 
 const LargeText = styled.div`
@@ -67,23 +53,29 @@ const Text = styled.div`
 	font-size: 16px;
 `;
 
+const TextBox = styled.div`
+	flex: 1;
+`;
+
 const DeleteBtnContainer = styled.div`
 	width: 100%;
 	border: 1px solid #c4c4c4;
 	border-radius: 5px;
 	padding: 25px;
+	display: flex;
 `;
 
 const DeleteBtn = styled(Button)`
 	width: 140px;
-	font-size: 16px;
+	font-size: 18px;
 	font-weight: bold;
 	color: #ffffff;
 	background-color: #ff0000;
 	border: none;
-	padding: 10px 20px;
+	padding: 0 20px;
 	border-radius: 6px;
 	text-align: center;
+	flex: 0.1;
 `;
 
 const Main = (props) => {
@@ -110,7 +102,6 @@ const Main = (props) => {
 				<TabPane tab="내 댓글" key="1">
 					<TabContainer gutter={[0, 98]}>
 						<Row>
-							<BigTitle>내가 쓴 댓글</BigTitle>
 							<MyCommentList />
 						</Row>
 					</TabContainer>
@@ -118,22 +109,24 @@ const Main = (props) => {
 				<TabPane tab="좋아요한 독서모임" key="2">
 					<TabContainer gutter={[0, 98]}>
 						<Row>
-							<BigTitle>내가 좋아요한 독서모임</BigTitle>
 							<LikedClubList />
 						</Row>
 					</TabContainer>
 				</TabPane>
 				<TabPane tab="독서모임 관리" key="3">
-					<TabContainer gutter={[0, 98]}>
+					<TabContainer gutter={[0, 16]}>
 						<MidTitle>정보 수정</MidTitle>
 						<EditForm />
 						<Divider />
 						<DeleteBtnContainer>
-							<LargeText>독서모임 삭제하기</LargeText>
-							<Text>
-								한 번 독서모임을 삭제하면 복구할 수 없습니다. 신중하게
-								결정해주세요!
-							</Text>
+							<TextBox>
+								<LargeText>독서모임 삭제하기</LargeText>
+								<Text>
+									한 번 독서모임을 삭제하면 복구할 수 없습니다. 신중하게
+									결정해주세요!
+								</Text>
+							</TextBox>
+							<DeleteBtn>독서모임 삭제</DeleteBtn>
 						</DeleteBtnContainer>
 					</TabContainer>
 				</TabPane>

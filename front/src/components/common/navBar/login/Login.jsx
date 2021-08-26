@@ -49,8 +49,6 @@ const Login = ({ ...props }) => {
 				await axios.post("/users", user);
 			}
 
-			console.log(res.data);
-
 			localStorage.setItem("user_id", res.data.id);
 			localStorage.setItem("user_image", res.data.imgUrl);
 			props.onCancel();

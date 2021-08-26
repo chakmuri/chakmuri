@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Form, Input, InputNumber, Row, Col, DatePicker } from "antd";
+import { Form, Input, InputNumber, Row, Col, DatePicker, message } from "antd";
 import styled from "styled-components";
 import Button from "../../Button";
 import Tag from "../../Tag";
@@ -109,9 +109,11 @@ const PreviewImage = styled.img`
 	border-radius: 50%;
 `;
 
-const ButtonRow = styled.div`
+const ButtonRow = styled(Row)`
+	margin-top: 30px;
 	display: flex;
-	gap: 90px;
+	justify-content: center;
+	gap: 88px;
 `;
 
 const MapWrapper = styled.div`
@@ -120,26 +122,29 @@ const MapWrapper = styled.div`
 	margin-top: 40px;
 `;
 
-const FilledBtn = styled(Button)`
+const FilledButton = styled(Button)`
 	& {
 		color: #ffffff;
-		background-color: #ff6701;
+		background-color: #f98404;
 		border: none;
 		border-radius: 6px;
 		outline: none;
+		cursor: pointer;
 	}
 `;
 
-const UnFilledBtn = styled(Button)`
+const UnFilledButton = styled(Button)`
 	& {
-		color: #ff6701;
+		color: #f98404;
 		background-color: #ffffff;
-		border: 2px solid #ff6701;
+		border: 2px solid #f98404;
 		border-radius: 6px;
+		cursor: pointer;
 	}
 `;
 
-const RegisterForm = (props) => {
+const RegisterForm = ({ ...props }) => {
+	const [registerForm] = Form.useForm();
 	const [inputText, setInputText] = useState("");
 	const [streetAddress, setStreetAddress] = useState("");
 	const [detailAddress, setDetailAddress] = useState("");
@@ -150,7 +155,9 @@ const RegisterForm = (props) => {
 	// const [isSelected, setIsSelected] = useState(false);
 
 	const fullAddress = streetAddress + detailAddress;
-	const userId = localStorage.getItem("userId");
+	const userId = localStorage.getItem("user_id");
+
+	registerForm.resetFields();
 
 	const onChange = (e) => {
 		setInputText(e.target.value);
@@ -206,11 +213,11 @@ const RegisterForm = (props) => {
 		const formData = new FormData();
 		formData.append("upload_image", imgFile);
 
-		// const config = {
-		// 	headers: {
-		// 		"content-type": "multipart/form-data",
-		// 	},
-		// };
+		const config = {
+			headers: {
+				"content-type": "multipart/form-data",
+			},
+		};
 
 		const data = {
 			userId,
@@ -226,16 +233,35 @@ const RegisterForm = (props) => {
 			books: values.books,
 			addressStreet: values.addressStreet,
 			addressDetail: values.addressDetail,
+			bookTitle: values.bookTitle,
+			author: values.bookAuthor,
+			publisher: values.bookPublisher,
+			publishedAt: values.bookPublishedDate,
 		};
 
 		console.log(data);
 
-		const res = await axios.post("/clubs", data);
-		if (res.status === 200) console.log("Success");
-		else console.log("Error");
+		try {
+			const res = await axios.get(`clubs/my/${userId}`);
+			console.log(res);
+
+			if (!res.data.id) {
+				await axios.post("/clubs", data);
+
+				if (res.status === 200) {
+					message.success("독서모임이 성공적으로 등록되었습니다!");
+					registerForm.resetFields();
+					props.onCancel();
+				} else message.error("독서모임 등록에 실패했습니다.");
+			} else {
+				message.error("이미 등록한 독서모임이 존재합니다.");
+			}
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
-	const onFinish = (values) => {
+	const onFinish = async (values) => {
 		console.log("form values: ", values);
 		sendData(values);
 	};
@@ -247,6 +273,7 @@ const RegisterForm = (props) => {
 	return (
 		<Wrapper>
 			<StyledForm
+				form={registerForm}
 				name="registerForm"
 				layout="vertical"
 				onFinish={onFinish}
@@ -428,7 +455,6 @@ const RegisterForm = (props) => {
 						</Form.Item>
 					</Col>
 				</Row>
-
 				<Row>
 					<Col span={16}>
 						<Form.Item label="위치">
@@ -443,19 +469,19 @@ const RegisterForm = (props) => {
 								<StyledInput placeholder="상세 주소" />
 							</Form.Item>
 						</Form.Item>
-						<FilledBtn type="button" onClick={getFullAdress}>
+						<FilledButton type="button" onClick={getFullAdress}>
 							주소 검색
-						</FilledBtn>
+						</FilledButton>
 						<MapWrapper>
 							<MapContainer searchSpot={fullAddress} />
 						</MapWrapper>
 					</Col>
 				</Row>
 				<ButtonRow>
-					<FilledBtn>등록</FilledBtn>
-					<UnFilledBtn type="button" onClick={props.onCancel}>
+					<FilledButton>등록</FilledButton>
+					<UnFilledButton type="button" onClick={props.onCancel}>
 						취소
-					</UnFilledBtn>
+					</UnFilledButton>
 				</ButtonRow>
 			</StyledForm>
 		</Wrapper>
