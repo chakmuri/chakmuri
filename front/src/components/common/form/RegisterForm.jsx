@@ -4,7 +4,7 @@ import { Form, Input, InputNumber, Row, Col, DatePicker } from "antd";
 import styled from "styled-components";
 import Button from "../Button";
 import Tag from "../Tag";
-import MapContainer from "./MapContainer";
+import MapContainer from "../MapContainer";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;

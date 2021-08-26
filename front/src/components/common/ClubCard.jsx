@@ -74,8 +74,8 @@ const ClubCard = () => {
 				<div className="like">
 					<img
 						className="button-like"
-						src="assets/images/icons/heart.png"
-						alt="Unfilled Heart"
+						src="assets/images/icons/unfilled_heart.png"
+						alt="Unfilled like icon"
 					/>
 					<span>9,999</span>
 				</div>

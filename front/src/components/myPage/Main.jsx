@@ -1,7 +1,7 @@
 import React from "react";
 import { Tabs, Row, Divider } from "antd";
 import styled from "styled-components";
-import CommentList from "./CommentList";
+import MyCommentList from "./MyCommentList";
 import LikedClubList from "./LikedClubList";
 
 const { TabPane } = Tabs;
@@ -72,7 +72,7 @@ const Main = () => {
 					<TabContainer gutter={[0, 98]}>
 						<Row>
 							<BigTitle>내가 쓴 댓글</BigTitle>
-							<CommentList />
+							<MyCommentList />
 						</Row>
 					</TabContainer>
 				</TabPane>
