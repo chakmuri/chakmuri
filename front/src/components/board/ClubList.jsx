@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
-import { Checkbox, Select } from "antd";
+import { Checkbox, Select, message } from "antd";
 import ClubCard from "../common/ClubCard";
 
 const { Option } = Select;
@@ -76,14 +77,52 @@ const ListRow = styled.div`
 `;
 
 const ClubList = () => {
+	const [sortBy, setSortBy] = useState("");
+	const [isChecked, setIsChecked] = useState();
+	const [clubs, setClubs] = useState([]);
+
+	const fetchSortedData = async () => {
+		try {
+			const res = await axios.get("", {
+				params: { sortBy: sortBy, isChecked: isChecked },
+			});
+
+			if (res.status === 200) {
+				setClubs(res.data);
+			} else {
+				message.error("데이터를 불러오는데 실패했습니다.");
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	return (
 		<Wrapper>
 			<TitleRow>
 				<Title>N개의 독서모임</Title>
-				<CheckboxFilter>모집중</CheckboxFilter>
+				<CheckboxFilter
+					onChange={(e) => {
+						setIsChecked(e.target.checked);
+					}}
+				>
+					모집중
+				</CheckboxFilter>
 				<SortFilter showSearch placeholder="정렬필터">
-					<Option value="new">최신순</Option>
-					<Option value="like">좋아요순</Option>
+					<Option
+						value="date"
+						onChange={(value) => setSortBy(value)}
+						onClick={fetchSortedData}
+					>
+						최신순
+					</Option>
+					<Option
+						value="like"
+						onChange={(value) => setSortBy(value)}
+						onClick={fetchSortedData}
+					>
+						좋아요순
+					</Option>
 				</SortFilter>
 			</TitleRow>
 			<ClubCardContainer>
