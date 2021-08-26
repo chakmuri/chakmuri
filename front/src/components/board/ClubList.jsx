@@ -83,8 +83,8 @@ const ClubList = () => {
 
 	const fetchSortedData = async () => {
 		try {
-			const res = await axios.get("", {
-				params: { sortBy: sortBy, isChecked: isChecked },
+			const res = await axios.get("/clubs", {
+				params: { sortby: sortBy, tags: "", clubStatus: isChecked },
 			});
 
 			if (res.status === 200) {
