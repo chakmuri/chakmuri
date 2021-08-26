@@ -1,29 +1,27 @@
 import React from "react";
 import styled from "styled-components";
-import Search from "../board/Search";
-import Gather from "../board/Gather";
+import TagFilter from "./TagFilter";
+import SearchBar from "./SearchBar";
+import ClubList from "./ClubList";
 
-/**
- * Navbar, Footer을 제외한 보드 페이지의 고유한 영역입니다.
- *
- * 여기 보드 페이지는 크게
- *
- *    1. 독서 모임 찾기 영역 -> search.jsx 컴포넌트
- *    2. N개의 독서 모임 영역 -> gather.jsx 컴포넌트
- *
- * 영역으로 나뉩니다. :)
- */
-
-const Wrapper = styled.section`
+const Wrapper = styled.div`
 	width: 1200px;
 	margin: 0 auto;
+`;
+
+const Title = styled.div`
+	font-size: 26px;
+	font-weight: bold;
+	text-align: center;
 `;
 
 const Main = (props) => {
 	return (
 		<Wrapper>
-			<Search />
-			<Gather />
+			<Title>독서모임 찾기</Title>
+			<SearchBar />
+			<TagFilter />
+			<ClubList />
 		</Wrapper>
 	);
 };

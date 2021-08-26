@@ -1,19 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Row, Col } from "antd";
-import SearchBar from "../board/SearchBar";
-import Button from "../common/Button";
 import Tag from "../common/Tag";
-
-const SearchLogoText = styled.div`
-	font-family: Roboto;
-	font-style: normal;
-	font-weight: bold;
-	font-size: 26px;
-	display: flex;
-	justify-content: center;
-	margin-left: 8px;
-`;
 
 const TagContainer = styled.div`
 	width: 850px;
@@ -24,19 +12,9 @@ const TagContainer = styled.div`
 	gap: 30px;
 `;
 
-const BtnWrapper = styled.div`
-	margin-top: 30px;
-	margin-bottom: 15px;
-	width: auto;
-	display: flex;
-	justify-content: space-around;
-`;
-
 const Search = (props) => {
 	return (
 		<>
-			<SearchLogoText>독서 모임 찾기</SearchLogoText>
-			<SearchBar />
 			<TagContainer>
 				<Row gutter={32}>
 					<Col span={6}>

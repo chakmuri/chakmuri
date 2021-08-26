@@ -208,11 +208,11 @@ const RegisterForm = ({ ...props }) => {
 		const formData = new FormData();
 		formData.append("upload_image", imgFile);
 
-		const config = {
-			headers: {
-				"content-type": "multipart/form-data",
-			},
-		};
+		// const config = {
+		// 	headers: {
+		// 		"content-type": "multipart/form-data",
+		// 	},
+		// };
 
 		const data = {
 			userId,
