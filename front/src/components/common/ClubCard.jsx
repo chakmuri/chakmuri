@@ -29,33 +29,27 @@ const StyledCard = styled(Card)`
 		line-height: 36px;
 		color: black;
 	}
-
-	.box {
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-end;
-		margin-bottom: 0;
-
-		.like {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-		}
-	}
-
-	.tag {
-		margin-right: 10px;
-	}
 `;
 
-const StyledTag = styled(Tag)`
-	font-family: Roboto;
-	font-weight: bold;
-	font-size: 12px;
-	color: #ffffff;
-	padding: 3px 15px;
-	border-radius: 30px;
+const CardBox = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	margin-bottom: 0;
 `;
+
+const TagContainer = styled.div`
+	display: flex;
+	gap: 5px;
+`;
+
+const LikeIcon = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+
+const LikeNum = styled.span``;
 
 const ClubCard = () => {
 	return (
@@ -66,20 +60,19 @@ const ClubCard = () => {
 			}
 		>
 			<Meta title="독서모임 이름" description="한 줄 소개" />
-			<div className="box">
-				<div className="tags">
+			<CardBox>
+				<TagContainer>
 					<SmallTag>태그</SmallTag>
 					<SmallTag>태그</SmallTag>
-				</div>
-				<div className="like">
+				</TagContainer>
+				<LikeIcon>
 					<img
-						className="button-like"
 						src="assets/images/icons/unfilled_heart.png"
 						alt="Unfilled like icon"
 					/>
-					<span>9,999</span>
-				</div>
-			</div>
+					<LikeNum>9,999</LikeNum>
+				</LikeIcon>
+			</CardBox>
 		</StyledCard>
 	);
 };
