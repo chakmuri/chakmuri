@@ -75,11 +75,11 @@ const ListRow = styled.div`
 	}
 `;
 
-const ClubList = () => {
+const ClubList = (props) => {
 	return (
 		<Wrapper>
 			<TitleRow>
-				<Title>N개의 독서모임</Title>
+				<Title>{props.clubs.totalCount}개의 독서모임</Title>
 				<CheckboxFilter>모집중</CheckboxFilter>
 				<SortFilter showSearch placeholder="정렬필터">
 					<Option value="new">최신순</Option>
