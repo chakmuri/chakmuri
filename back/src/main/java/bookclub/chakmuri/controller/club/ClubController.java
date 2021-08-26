@@ -65,7 +65,7 @@ public class ClubController {
     }
 
     //사용자가 만든 독서모임 조회
-    @GetMapping("/my/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<ClubDetailResponseDto> getUserClub(
             @PathVariable String userId) {
         Club club = clubService.findClubByUserId(userId);
@@ -77,7 +77,7 @@ public class ClubController {
     }
 
     // 독서모임 수정 (my page)
-    @PatchMapping("/my/{userId}")
+    @PatchMapping("/users/{userId}")
     public ResponseEntity<Void> updateClub(
             @RequestBody ClubUpdateRequestDto clubUpdateRequestDto,
             @PathVariable String userId) {
@@ -86,7 +86,7 @@ public class ClubController {
     }
 
     // 독서모임 삭제 (my page)
-    @DeleteMapping("/my/{userId}")
+    @DeleteMapping("/users/{userId}")
     public ResponseEntity<Void> deleteClub(
             @PathVariable String userId) {
         clubService.deleteClub(userId);
