@@ -8,6 +8,9 @@ import bookclub.chakmuri.repository.ClubRepository;
 import bookclub.chakmuri.repository.LikedClubRepository;
 import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,11 +53,13 @@ public class LikedClubService {
     }
 
     @Transactional(readOnly = true)
-    public List<LikedClub> findAllUserLikedClubs(String userId) {
+    public Page<LikedClub> findAllUserLikedClubs(String userId, int page) {
 
         final User user = userRepository.findById(userId)
                 .orElseThrow();
-        return likedClubRepository.findAllByUser(user);
+        PageRequest pageRequest = PageRequest.of((page - 1), 10, Sort.by(Sort.Direction.DESC, "id"));
+
+        return likedClubRepository.findAllLikedClubsByUser(user, pageRequest);
 
     }
 }

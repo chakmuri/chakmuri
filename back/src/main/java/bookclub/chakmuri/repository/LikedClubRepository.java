@@ -2,6 +2,8 @@ package bookclub.chakmuri.repository;
 
 import bookclub.chakmuri.domain.LikedClub;
 import bookclub.chakmuri.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +14,6 @@ public interface LikedClubRepository extends JpaRepository<LikedClub, Long> {
 
     List<LikedClub> findAllByUser(User user);
     void deleteByClubId(Long clubId);
+
+    Page<LikedClub> findAllLikedClubsByUser(User user, Pageable pageable);
 }
