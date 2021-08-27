@@ -38,7 +38,7 @@ public class LikedClubController {
     }
 
     // 사용자가 등록한 좋아요 모임 조회
-    @GetMapping("/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<List<LikedClubResponseDto>> getUserLikedClubs(
             @PathVariable("userId") String userId) {
         return ResponseEntity.ok(

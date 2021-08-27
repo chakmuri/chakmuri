@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 public class ClubUpdateRequestDto {
-    //TODO : clubStatus 관리 -> 만약 만료되었는데 startDate 를 변경한다면?
+    //TODO : clubStatus 관리 -> 만약 만료되었는데 endDate 를 변경한다면?
 
     private String title;
     private String contents;

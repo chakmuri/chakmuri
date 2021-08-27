@@ -58,7 +58,7 @@ public class Club {
     @Column(nullable = false)
     private LocalDate endDate;
 
-    private String tags;        //TODO: FE에 "," 기준 split 으로 분리 요청
+    private String tags;
 
     @Column(nullable = false)
     private int minPersonnel;
