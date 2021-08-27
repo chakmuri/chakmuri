@@ -1,16 +1,18 @@
 package bookclub.chakmuri.service;
 
+import aj.org.objectweb.asm.Label;
 import bookclub.chakmuri.controller.club.ClubCreateRequestDto;
 import bookclub.chakmuri.controller.club.ClubUpdateRequestDto;
-import bookclub.chakmuri.domain.Book;
-import bookclub.chakmuri.domain.Club;
-import bookclub.chakmuri.domain.ClubStatus;
-import bookclub.chakmuri.domain.User;
+import bookclub.chakmuri.domain.*;
 import bookclub.chakmuri.repository.ClubRepository;
 import bookclub.chakmuri.repository.CommentRepository;
 import bookclub.chakmuri.repository.LikedClubRepository;
 import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -93,27 +95,30 @@ public class ClubService {
     }
 
     //독서모임 검색조건 조회
+    //param 으로 아예 tags 나 keyword 를 포함하지 않을 수도 있기 때문에 ==null 로 비교
     public List<Club> findAllClubs(String sortBy, String tags, ClubStatus clubStatus, String keyword) {
         //클럽 모집 여부 상태 확인
         changeAllClubStatus();
 
-        //sortBy 정렬, 모집중 여부 포함
+        //sortBy 정렬
         List<Club> clubs;
-        if(sortBy.equals("likes")) {
-            clubs = clubRepository.findAllByClubStatusOrderByLikesDesc(clubStatus);
-        }else {
-            clubs = clubRepository.findAllByClubStatusOrderByCreatedAt(clubStatus);
+        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
+        clubs = clubRepository.findAll(sort);
+
+        //모집중 만 필터링
+        if(clubStatus != null){
+            clubs.removeIf(club -> club.getClubStatus().equals(ClubStatus.EXPIRED));
         }
 
         //tag와 keyword 값 확인 -> 둘 다 없으면 sortBy만 적용해서 리턴
-        if(tags.isEmpty() && keyword.isEmpty()){
+        if(tags == null && keyword == null){
             return clubs;
         }
 
         //keyword 필터링 -> clubs 항목들의 제목이 keyword 를 포함하고 있는가
         List<Club> clubSortedByKeyword = new ArrayList<>();
 
-        if(keyword.isEmpty())
+        if(keyword == null)
             clubSortedByKeyword = clubs;
         else {
             for(Club club: clubs){
@@ -123,10 +128,11 @@ public class ClubService {
             }
         }
 
-        if(tags.isEmpty())
+        if(tags == null)
             return clubSortedByKeyword;
 
         //tag 필터링
+        //TODO: 태그 여러 개 적용해서 조회 시 항목이 중복에서 출력되는 문제 해결
         List<Club> clubSortedByTags = new ArrayList<>();
         List<String> tag = Arrays.asList(tags.split(", "));
         for(Club club : clubSortedByKeyword){
