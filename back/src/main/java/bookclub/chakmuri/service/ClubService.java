@@ -1,15 +1,18 @@
 package bookclub.chakmuri.service;
 
+import aj.org.objectweb.asm.Label;
 import bookclub.chakmuri.controller.club.ClubCreateRequestDto;
 import bookclub.chakmuri.controller.club.ClubUpdateRequestDto;
-import bookclub.chakmuri.domain.Book;
-import bookclub.chakmuri.domain.Club;
-import bookclub.chakmuri.domain.ClubStatus;
-import bookclub.chakmuri.domain.User;
+import bookclub.chakmuri.domain.*;
 import bookclub.chakmuri.repository.ClubRepository;
 import bookclub.chakmuri.repository.CommentRepository;
+import bookclub.chakmuri.repository.LikedClubRepository;
 import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,12 +30,12 @@ public class ClubService {
     private final ClubRepository clubRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final LikedClubRepository likedClubRepository;
 
     //TODO: 독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> ??
 
     @Transactional
     public Club createClub(ClubCreateRequestDto requestDto, MultipartFile file) {
-        //userId NotNull 체크 -> 없어도 됨
         //TODO : AWS s3 img upload 로직 짜기 (현재는 로컬 업로드)
         if (file != null) {
             String path = "C:\\chakmuri\\back\\src\\main\\resources\\image\\";
@@ -78,7 +81,7 @@ public class ClubService {
 
     //독서모임 만료 처리 메서드
     private void changeClubStatus(Club club){
-        if(LocalDate.now().isAfter(club.getStartDate())){
+        if(LocalDate.now().isAfter(club.getEndDate())){
             club.changeStatus(ClubStatus.EXPIRED);
         }
         else club.changeStatus(ClubStatus.ACTIVE);
@@ -91,39 +94,56 @@ public class ClubService {
         }
     }
 
-    //독서모임 필터링해 조회
-    public List<Club> findAllClubs(String sortBy, String tags, ClubStatus clubStatus) {
+    //독서모임 검색조건 조회
+    //param 으로 아예 tags 나 keyword 를 포함하지 않을 수도 있기 때문에 ==null 로 비교
+    public List<Club> findAllClubs(String sortBy, String tags, ClubStatus clubStatus, String keyword) {
+        //클럽 모집 여부 상태 확인
         changeAllClubStatus();
-
-        String[] tagList = {"소수정예", "온라인", "오프라인", "온・오프라인", "수도권", "지방", "친목", "독서 외 활동"};
 
         //sortBy 정렬
         List<Club> clubs;
-        if(sortBy.equals("likes")) {
-            clubs = clubRepository.findAllByClubStatusOrderByLikesDesc(clubStatus);
-        }else {
-            clubs = clubRepository.findAllByClubStatusOrderByCreatedAt(clubStatus);
+        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
+        clubs = clubRepository.findAll(sort);
+
+        //모집중 만 필터링
+        if(clubStatus != null){
+            clubs.removeIf(club -> club.getClubStatus().equals(ClubStatus.EXPIRED));
         }
 
-        if(tags.isEmpty()){
+        //tag와 keyword 값 확인 -> 둘 다 없으면 sortBy만 적용해서 리턴
+        if(tags == null && keyword == null){
             return clubs;
         }
 
-        //http://localhost:8080/clubs?sortBy=createdAt&tags=온라인, 친목&clubStatus=ACTIVE
-        //tag 필터링 TODO: tags에 들어가는 값이 없을 때 204가 뜨는 문제 고치기 (121번째 줄 문제)
-        List<Club> clubList = new ArrayList<>();
-        List<String> tag = Arrays.asList(tags.split(", "));
-        for(Club club : clubs){
-            System.out.println(club.getTags());//
-            List<String> originTag = Arrays.asList(club.getTags().split(", "));
-            for(String tagString : tag){
-                System.out.println(tagString);//
-                if(originTag.contains(tagString))
-                    clubList.add(club);
+        //keyword 필터링 -> clubs 항목들의 제목이 keyword 를 포함하고 있는가
+        List<Club> clubSortedByKeyword = new ArrayList<>();
+
+        if(keyword == null)
+            clubSortedByKeyword = clubs;
+        else {
+            for(Club club: clubs){
+                if(club.getTitle().contains(keyword)) {
+                    clubSortedByKeyword.add(club);
+                }
             }
         }
 
-        return clubList;
+        if(tags == null)
+            return clubSortedByKeyword;
+
+        //tag 필터링
+        //TODO: 태그 여러 개 적용해서 조회 시 항목이 중복에서 출력되는 문제 해결
+        List<Club> clubSortedByTags = new ArrayList<>();
+        List<String> tag = Arrays.asList(tags.split(", "));
+        for(Club club : clubSortedByKeyword){
+            List<String> originTag = Arrays.asList(club.getTags().split(", "));
+            for(String tagString : tag){
+                if(originTag.contains(tagString))
+                    clubSortedByTags.add(club);
+            }
+        }
+
+        return clubSortedByTags;
     }
 
     public Club findClubById(Long clubId) {
@@ -166,6 +186,7 @@ public class ClubService {
     public void deleteClub(String userId) {
         final Club club = findClubByUserId(userId);
         commentRepository.deleteAllByClubId(club.getId());
+        likedClubRepository.deleteByClubId(club.getId());
         clubRepository.delete(club);
     }
 }

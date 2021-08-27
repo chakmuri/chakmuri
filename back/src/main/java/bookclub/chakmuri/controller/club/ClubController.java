@@ -1,9 +1,16 @@
 package bookclub.chakmuri.controller.club;
 
+import bookclub.chakmuri.controller.comment.CommentPageResponseDto;
 import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.ClubStatus;
+import bookclub.chakmuri.domain.Comment;
 import bookclub.chakmuri.service.ClubService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,19 +47,27 @@ public class ClubController {
         }
     }
 
+
     //독서모임 리스트 조회(검색조건 x)
     @GetMapping
-    public ResponseEntity<List<ClubResponseDto>> getClubs(
+    public ResponseEntity<ClubPageResponseDto> getClubs(
             @RequestParam(value = "sortBy") String sortBy,
-            @RequestParam(value = "tags") String tags,
-            @RequestParam(value = "clubStatus") ClubStatus clubStatus) {
-        List<ClubResponseDto> clubResponseDtoList = clubService.findAllClubs(sortBy, tags, clubStatus)
+            @RequestParam(value = "tags", required = false) String tags,
+            @RequestParam(value = "clubStatus", required = false) ClubStatus clubStatus,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @PageableDefault(sort = "id",direction = Sort.Direction.DESC,size = 9) Pageable pageable) {
+        List<Club> allClubs = clubService.findAllClubs(sortBy, tags, clubStatus, keyword);
+        //TODO: index 관련 수정하기 // subList(fromIndex, toIndex) // page=0부터 동작하는 것 수정할 것
+        int start = (int)pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), allClubs.size());
+        Page<Club> page = new PageImpl<>(allClubs.subList(start, end), pageable, allClubs.size());
+        List<ClubResponseDto> clubResponseDtoList = page
                 .stream()
                 .map(ClubResponseDto::new)  //조회한 클럽 리스트 항목 하나하나를 ClubResponseDto와 매핑해 줌
                 .collect(Collectors.toList());  //스트림에서 작업한 결과를 담은 리스트로 반환
         //Collectors.joining(delimeter, prefix, suffix)로 스트링으로 조합할 수 있음
-        return new ResponseEntity<>(clubResponseDtoList, getStatusCode(clubResponseDtoList));
-        //getStatusCode -> 검색 결과가 없습니다(204) 포함
+        ClubPageResponseDto pageResponseDto = new ClubPageResponseDto((long)allClubs.size(), clubResponseDtoList);
+        return new ResponseEntity(pageResponseDto, HttpStatus.OK);
     }
 
     //독서모임 상세조회
