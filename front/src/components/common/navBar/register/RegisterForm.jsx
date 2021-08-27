@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Button from "../../Button";
 import Tag from "../../Tag";
 import MapContainer from "../../MapContainer";
+import { useEffect } from "react";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -91,11 +92,6 @@ const StyledTextArea = styled(TextArea)`
 	border-radius: 5px;
 `;
 
-// const SelectedTag = styled(Tag)`
-// 	color: #ffffff;
-// 	background-color: #f98404;
-// `;
-
 const TagContainer = styled.div`
 	display: flex;
 	gap: 10px;
@@ -149,8 +145,7 @@ const RegisterForm = ({ ...props }) => {
 	const [detailAddress, setDetailAddress] = useState("");
 	const [imgFile, setImgFile] = useState(null);
 	const [preview, setPreview] = useState(null);
-	// const [isSelected, setIsSelected] = useState();
-	// const [selectedTags, setSelectedTags] = useState([]);
+	const [selectedTags, setSelectedTags] = useState([]);
 	const tags = [
 		"온라인",
 		"오프라인",
@@ -164,7 +159,7 @@ const RegisterForm = ({ ...props }) => {
 	const fullAddress = streetAddress + detailAddress;
 	const userId = localStorage.getItem("user_id");
 
-	registerForm.resetFields();
+	// registerForm.resetFields();
 
 	const onChange = (e) => {
 		setInputText(e.target.value);
@@ -198,28 +193,26 @@ const RegisterForm = ({ ...props }) => {
 		}
 	};
 
-	// const handleSelectTags = (e) => {
-	// 	setIsSelected(e.target.value);
-	// 	console.log("isSelected ", isSelected);
-	// 	console.log("current value ", e.target.value);
-	// 	let tagName = e.target.innerText;
-	// 	let index = selectedTags.indexOf(tagName);
+	const handleSelectTags = (e) => {
+		let tagName = e.target.innerText;
+		let index = selectedTags.indexOf(tagName);
 
-	// 	if (isSelected) {
-	// 		e.target.style.color = "#ffffff";
-	// 		e.target.style.backgroundColor = "#f98404";
-	// 		setSelectedTags([...selectedTags, tagName]);
-	// 	} else if (selectedTags.includes(tagName)) {
-	// 		selectedTags.splice(index, 1);
-	// 		e.target.style.color = "#f98404";
-	// 		e.target.style.backgroundColor = "#ffffff";
-	// 	}
-	// };
+		if (selectedTags.includes(tagName)) {
+			selectedTags.splice(index, 1);
+		} else {
+			setSelectedTags([...selectedTags, tagName]);
+		}
+	};
+
+	useEffect(() => {
+		console.log(selectedTags);
+	}, [selectedTags]);
 
 	const sendData = async (values) => {
 		const startDate = values.date[0]._d.toISOString().substring(0, 10);
 		const endDate = values.date[1]._d.toISOString().substring(0, 10);
-		const mock_tags = "온라인, 친목";
+		const sendTags = selectedTags.join(", ");
+		// const mock_tags = "온라인, 친목";
 		const formData = new FormData();
 		formData.append("upload_image", imgFile);
 
@@ -239,7 +232,7 @@ const RegisterForm = ({ ...props }) => {
 			maxPersonnel: values.maxPersonnel,
 			description: values.description,
 			bookDescription: values.bookDescription,
-			tags: mock_tags,
+			tags: sendTags,
 			addressStreet: values.addressStreet,
 			addressDetail: values.addressDetail,
 			bookTitle: values.bookTitle,
@@ -254,7 +247,7 @@ const RegisterForm = ({ ...props }) => {
 			const res = await axios.get(`clubs/users/${userId}`);
 			console.log(res);
 
-			if (!res.data.id) {
+			if (!res.data) {
 				await axios.post("/clubs", data);
 
 				if (res.status === 204) {
@@ -388,7 +381,13 @@ const RegisterForm = ({ ...props }) => {
 					>
 						<TagContainer>
 							{tags.map((tag, i) => (
-								<Tag type="button" key={i} value={i}>
+								<Tag
+									type="button"
+									key={i}
+									value={i}
+									onClick={handleSelectTags}
+									selected={selectedTags.includes(tag) ? true : false}
+								>
 									{tag}
 								</Tag>
 							))}

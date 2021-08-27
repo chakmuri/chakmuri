@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import styled from "styled-components";
-import { Row, Col, Checkbox, Select, message } from "antd";
+import { Row, Col, Checkbox, Select } from "antd";
 import ClubCard from "../common/ClubCard";
 
 const { Option } = Select;
@@ -68,26 +67,24 @@ const ClubCardContainer = styled(Row)`
 `;
 
 const ClubList = ({ ...props }) => {
-	console.log(props);
-
 	return (
 		<Wrapper>
 			<TitleRow>
-				<Title>{props.clubs.totalCount}개의 독서모임</Title>
+				<Title>{props.totalCount}개의 독서모임</Title>
 				<CheckboxFilter
 					onChange={(e) => {
-						props.setIsChecked(e.target.checked);
+						props.setClubStatus(e.target.checked ? "ACTIVE" : "");
 					}}
 				>
 					모집중
 				</CheckboxFilter>
-				<SortFilter showSearch placeholder="정렬필터">
-					<Option value="date" onChange={(value) => props.setSortBy(value)}>
-						최신순
-					</Option>
-					<Option value="like" onChange={(value) => props.setSortBy(value)}>
-						좋아요순
-					</Option>
+				<SortFilter
+					showSearch
+					placeholder="정렬필터"
+					onChange={(value) => props.setSortBy(value)}
+				>
+					<Option value="createdAt">최신순</Option>
+					<Option value="likes">좋아요순</Option>
 				</SortFilter>
 			</TitleRow>
 			<ClubCardContainer gutter={[48, 24]}>

@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.div`
-	font-size: 26px;
+	font-size: 30px;
 	font-weight: bold;
 	text-align: center;
 `;
@@ -26,38 +26,52 @@ const PaginationRow = styled(Row)`
 
 const Main = () => {
 	const [clubs, setClubs] = useState([]);
-	const [sortBy, setSortBy] = useState("");
-	const [isChecked, setIsChecked] = useState();
+	const [sortBy, setSortBy] = useState("createdAt");
+	const [clubStatus, setClubStatus] = useState("");
+	const [selectedTags, setSelectedTags] = useState([]);
+	const [keyword, setKeyword] = useState("");
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(1);
+
+	const sendTags = selectedTags.join(", ");
+	console.log("sendTags: ", sendTags);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const res = await axios.get("/clubs", {
-					params: { sortby: sortBy, tags: "", clubStatus: isChecked },
+					params: {
+						sortBy: sortBy,
+						tags: sendTags,
+						clubStatus: clubStatus,
+						keyword: keyword,
+						page: page,
+					},
 				});
 
 				console.log("res: ", res);
 
-				setClubs(res.data);
+				setClubs(res.data.clubList);
 				setTotal(res.data.totalCount);
 			} catch (err) {
 				console.log(err);
 			}
 		};
 		fetchData();
-	}, [sortBy, isChecked, total, page]);
+	}, [sortBy, clubStatus, sendTags, keyword, total, page]);
 
 	return (
 		<Wrapper>
 			<Title>독서모임 찾기</Title>
-			<SearchBar />
-			<TagFilter />
+			<SearchBar setKeyword={setKeyword} />
+			<TagFilter
+				selectedTags={selectedTags}
+				setSelectedTags={setSelectedTags}
+			/>
 			<ClubList
 				clubs={clubs}
 				setSortBy={setSortBy}
-				setIsChecked={setIsChecked}
+				setClubStatus={setClubStatus}
 			/>
 			<PaginationRow>
 				<CustomPagination
