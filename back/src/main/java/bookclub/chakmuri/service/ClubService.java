@@ -96,7 +96,7 @@ public class ClubService {
 
     //독서모임 검색조건 조회
     //param 으로 아예 tags 나 keyword 를 포함하지 않을 수도 있기 때문에 ==null 로 비교
-    public List<Club> findAllClubs(String sortBy, String tags, ClubStatus clubStatus, String keyword) {
+    public List<Club> findAllClubs(String sortBy, String tags, String clubStatus, String keyword) {
         //클럽 모집 여부 상태 확인
         changeAllClubStatus();
 
@@ -106,19 +106,19 @@ public class ClubService {
         clubs = clubRepository.findAll(sort);
 
         //모집중 만 필터링
-        if(clubStatus != null){
+        if(clubStatus.isEmpty()){
             clubs.removeIf(club -> club.getClubStatus().equals(ClubStatus.EXPIRED));
         }
 
         //tag와 keyword 값 확인 -> 둘 다 없으면 sortBy만 적용해서 리턴
-        if(tags == null && keyword == null){
+        if(tags.isEmpty() && keyword.isEmpty()){
             return clubs;
         }
 
         //keyword 필터링 -> clubs 항목들의 제목이 keyword 를 포함하고 있는가
         List<Club> clubSortedByKeyword = new ArrayList<>();
 
-        if(keyword == null)
+        if(keyword.isEmpty())
             clubSortedByKeyword = clubs;
         else {
             for(Club club: clubs){
@@ -128,7 +128,7 @@ public class ClubService {
             }
         }
 
-        if(tags == null)
+        if(tags.isEmpty())
             return clubSortedByKeyword;
 
         //tag 필터링
