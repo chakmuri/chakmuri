@@ -37,7 +37,7 @@ public class CommentController {
         commentService.updateComment(commentUpdateRequestDto, commentId);
 
         return new ResponseEntity(
-                "댓글이 성공적으로 수정되었습니다. comment: " + commentId + ")",
+                "댓글이 성공적으로 수정되었습니다. (commentId: " + commentId + ")",
                 HttpStatus.OK
         );
 
@@ -49,17 +49,17 @@ public class CommentController {
             @PathVariable("commentId") Long commentId) {
         commentService.deleteComment(commentId);
         return new ResponseEntity(
-                "댓글이 성공적으로 삭제되었습니다. comment: " + commentId + ")",
+                "댓글이 성공적으로 삭제되었습니다. (commentId: " + commentId + ")",
                 HttpStatus.OK
         );
     }
 
     // 모임상세 댓글 전체 조회
     @GetMapping("/clubs/{clubId}")
-    public ResponseEntity<List<CommentResponseDto>> getClubComments(
+    public ResponseEntity<CommentPageResponseDto> getClubComments(
             @PathVariable("clubId") Long clubId, @RequestParam("page") int page){
         Page<Comment> allClubComments = commentService.findAllClubComments(clubId, page);
-        Long totalCount = commentService.getTotalCount(allClubComments);
+        Long totalCount = allClubComments.getTotalElements();
         List<CommentResponseDto> response = allClubComments
                 .stream()
                 .map(CommentResponseDto::new)
@@ -70,10 +70,10 @@ public class CommentController {
 
     // 사용자 댓글 전체 조회
     @GetMapping("/users/{userId}")
-    public ResponseEntity<List<CommentResponseDto>> getUserComments(
+    public ResponseEntity<CommentPageResponseDto> getUserComments(
                 @PathVariable("userId") String userId, @RequestParam("page") int page) {
         Page<Comment> allClubComments = commentService.findAllUserComments(userId, page);
-        Long totalCount = commentService.getTotalCount(allClubComments);
+        Long totalCount = allClubComments.getTotalElements();
         List<CommentResponseDto> response = allClubComments
                 .stream()
                 .map(CommentResponseDto::new)
@@ -83,14 +83,14 @@ public class CommentController {
     }
 
     // 댓글 전체 삭제
-    @DeleteMapping
-    public ResponseEntity<Void> deleteAllComment() {
-        commentService.deleteAll();
-        return new ResponseEntity(
-                "댓글이 모두 삭제되었습니다.",
-                HttpStatus.OK
-        );
-
-    }
+//    @DeleteMapping
+//    public ResponseEntity<Void> deleteAllComment() {
+//        commentService.deleteAll();
+//        return new ResponseEntity(
+//                "댓글이 모두 삭제되었습니다.",
+//                HttpStatus.OK
+//        );
+//
+//    }
 
 }

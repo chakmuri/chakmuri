@@ -11,5 +11,5 @@ import java.util.List;
 public interface LikedClubRepository extends JpaRepository<LikedClub, Long> {
 
     List<LikedClub> findAllByUser(User user);
-
+    void deleteByClubId(Long clubId);
 }

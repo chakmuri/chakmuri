@@ -95,10 +95,6 @@ public class CommentService {
         return commentRepository.findAllByClubId(clubId, pageRequest);
     }
 
-    public Long getTotalCount(Page<Comment> commentPage){
-        return commentPage.getTotalElements();
-    }
-
     public Page<Comment> findAllUserComments(String userId, int page) {
         User user = userRepository.findById(userId)
                 .orElseThrow();// TODO: UserNotFoundException::new 추가하기
