@@ -60,6 +60,7 @@ const Main = () => {
 		fetchData();
 	}, [sortBy, clubStatus, sendTags, keyword, total, page]);
 
+	console.log("clubs: ", clubs);
 	return (
 		<Wrapper>
 			<Title>독서모임 찾기</Title>

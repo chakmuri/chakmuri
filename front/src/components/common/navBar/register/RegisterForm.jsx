@@ -216,11 +216,11 @@ const RegisterForm = ({ ...props }) => {
 		const formData = new FormData();
 		formData.append("upload_image", imgFile);
 
-		// const config = {
-		// 	headers: {
-		// 		"content-type": "multipart/form-data",
-		// 	},
-		// };
+		const config = {
+			headers: {
+				"content-type": "multipart/form-data",
+			},
+		};
 
 		const data = {
 			userId,
@@ -244,11 +244,11 @@ const RegisterForm = ({ ...props }) => {
 		console.log(data);
 
 		try {
-			const res = await axios.get(`clubs/users/${userId}`);
+			const res = await axios.get(`/clubs/users/${userId}`);
 			console.log(res);
 
 			if (!res.data) {
-				await axios.post("/clubs", data);
+				const res = await axios.post("/clubs", data);
 
 				if (res.status === 204) {
 					message.success("독서모임이 성공적으로 등록되었습니다!");

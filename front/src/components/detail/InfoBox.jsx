@@ -74,7 +74,7 @@ const LikeIcon = styled.div`
 	}
 `;
 
-const InfoBox = (props) => {
+const InfoBox = ({ ...props }) => {
 	const tags = props.club.tags.split(",");
 
 	return (
@@ -97,7 +97,7 @@ const InfoBox = (props) => {
 					</Text>
 				</InfoRow>
 				<TagContainer>
-					{tags.map((tag, i) => (
+					{tags.split(", ").map((tag, i) => (
 						<Tag key={i}>{tag}</Tag>
 					))}
 				</TagContainer>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import InfoBox from "./InfoBox";
@@ -12,15 +11,16 @@ const Wrapper = styled.div`
 `;
 
 const Main = (props) => {
-	console.log(props);
+	console.log("props: ", props);
 	const [club, setClub] = useState({});
-	let history = useHistory();
 	const clubId = props.match.params.id;
+	console.log("clubId: ", clubId);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const res = await axios.get(`club/${clubId}`);
+				console.log("res: ", res);
 				setClub(res.data);
 			} catch (err) {
 				console.log(err);
