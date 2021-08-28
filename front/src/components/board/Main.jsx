@@ -71,7 +71,8 @@ const SortFilter = styled(Select)`
 	}
 `;
 
-const ClubCardContainer = styled.div`
+const CardContainer = styled(Row)`
+	width: 100%;
 	margin-bottom: 90px;
 `;
 
@@ -92,7 +93,6 @@ const Main = () => {
 	const [like, setLike] = useState(false);
 	const userId = localStorage.getItem("user_id");
 	const sendTags = selectedTags.join(", ");
-	console.log("sendTags: ", sendTags);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -107,8 +107,6 @@ const Main = () => {
 					},
 				});
 
-				console.log("res: ", res);
-
 				setClubs(res.data.clubList);
 				setTotal(res.data.totalCount);
 			} catch (err) {
@@ -117,8 +115,6 @@ const Main = () => {
 		};
 		fetchData();
 	}, [sortBy, clubStatus, sendTags, keyword, total, page]);
-
-	console.log("clubs: ", clubs);
 
 	const handleLike = async (club) => {
 		const data = {
@@ -157,15 +153,15 @@ const Main = () => {
 					<Option value="likes">좋아요순</Option>
 				</SortFilter>
 			</TitleRow>
-			<ClubCardContainer gutter={[48, 24]}>
+			<CardContainer justify="space-between" gutter={[0, 48]}>
 				{clubs.map((club) => (
 					<Col key={club.id} span={8}>
-						<Link to={`/clubs/${club.id}`}>
+						<Link to={`/detail/${club.id}`}>
 							<ClubCard club={club} onClick={handleLike} />
 						</Link>
 					</Col>
 				))}
-			</ClubCardContainer>
+			</CardContainer>
 			<PaginationRow>
 				<CustomPagination
 					total={total}

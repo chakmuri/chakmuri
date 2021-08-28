@@ -21,7 +21,6 @@ const StyledCard = styled(Card)`
 		font-family: Roboto;
 		font-weight: bold;
 		font-size: 22px;
-		line-height: 36px;
 	}
 
 	.ant-card-meta-description {
@@ -62,8 +61,8 @@ const ClubCard = ({ ...props }) => {
 		>
 			<Meta title={props.club.title} description={props.club.contents} />
 			<TagContainer>
-				{props.club.tags.split(", ").map((tag) => (
-					<SmallTag>{tag}</SmallTag>
+				{props.club.tags.split(", ").map((tag, i) => (
+					<SmallTag key={i}>{tag}</SmallTag>
 				))}
 			</TagContainer>
 			<LikeIcon>

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Row, Col } from "antd";
+import { Row, Col, message } from "antd";
 import Tag from "../common/Tag";
 import { useEffect } from "react";
 
@@ -11,6 +11,10 @@ const TagContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 30px;
+`;
+
+const BoardTag = styled(Tag)`
+	width: 200px;
 `;
 
 const Search = (props) => {
@@ -31,20 +35,24 @@ const Search = (props) => {
 
 		if (props.selectedTags.includes(tagName)) {
 			props.selectedTags.splice(index, 1);
+			props.setSelectedTags([...props.selectedTags]);
 		} else {
 			props.setSelectedTags([...props.selectedTags, tagName]);
 		}
 	};
 
-	useEffect(() => console.log(props.selectedTags), [props.selectedTags]);
+	useEffect(() => {
+		console.log(props.selectedTags);
+		console.log(props.selectedTags.length);
+	}, [props.selectedTags]);
 
 	return (
 		<>
 			<TagContainer>
-				<Row gutter={[32, 24]}>
+				<Row gutter={[32, 32]}>
 					{tags.map((tag, i) => (
 						<Col span={6}>
-							<Tag
+							<BoardTag
 								type="button"
 								key={i}
 								value={i}
@@ -52,7 +60,7 @@ const Search = (props) => {
 								selected={props.selectedTags.includes(tag) ? true : false}
 							>
 								{tag}
-							</Tag>
+							</BoardTag>
 						</Col>
 					))}
 				</Row>

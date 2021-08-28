@@ -51,27 +51,39 @@ const Main = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const createdAtRes = await axios.get("/clubs", {
-				params: { sortby: "createdAt" },
+				params: {
+					sortBy: "createdAt",
+					tags: "",
+					clubStatus: "",
+					keyword: "",
+					page: 1,
+				},
 			});
 			setSortByCreatedAtClubs(createdAtRes.data.clubList);
 
 			const likesRes = await axios.get("/clubs", {
-				params: { sortby: "likes" },
+				params: {
+					sortBy: "likes",
+					tags: "",
+					clubStatus: "",
+					keyword: "",
+					page: 1,
+				},
 			});
 			setsortByLikesClubs(likesRes.data.clubList);
 		};
 		fetchData();
 	}, []);
 
-	const handleLike = async (club) => {
+	const handleLike = async (id) => {
 		const data = {
-			clubId: club.id,
+			clubId: id,
 			userId: userId,
 		};
 		await axios.post("/likedClubs", data);
 		setLike(!like);
 
-		if (like === false) await axios.delete(`likedClubs/${data.clubId}`);
+		if (like === false) await axios.delete(`/likedClubs/${data.clubId}`);
 	};
 
 	return (
@@ -82,8 +94,10 @@ const Main = () => {
 				{sortByLikesClubs
 					.filter((club, i) => i < 4)
 					.map((club) => (
-						<Col span={6}>
-							<MainClubCard club={club} like={like} onClick={handleLike} />
+						<Col key={club.id} span={6}>
+							<Link to={`/clubs/${club.id}`}>
+								<MainClubCard club={club} like={like} onClick={handleLike} />
+							</Link>
 						</Col>
 					))}
 			</Row>
@@ -92,8 +106,10 @@ const Main = () => {
 				{sortByCreatedAtClubs
 					.filter((club, i) => i < 4)
 					.map((club) => (
-						<Col span={6}>
-							<MainClubCard club={club} like={like} onClick={handleLike} />
+						<Col key={club.id} span={6}>
+							<Link to={`/detail/${club.id}`}>
+								<MainClubCard club={club} like={like} handleLike={handleLike} />
+							</Link>
 						</Col>
 					))}
 			</Row>
