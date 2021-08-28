@@ -93,7 +93,6 @@ const Main = () => {
 	const [like, setLike] = useState(false);
 	const userId = localStorage.getItem("user_id");
 	const sendTags = selectedTags.join(", ");
-	console.log("sendTags: ", sendTags);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -108,8 +107,6 @@ const Main = () => {
 					},
 				});
 
-				console.log("res: ", res);
-
 				setClubs(res.data.clubList);
 				setTotal(res.data.totalCount);
 			} catch (err) {
@@ -118,8 +115,6 @@ const Main = () => {
 		};
 		fetchData();
 	}, [sortBy, clubStatus, sendTags, keyword, total, page]);
-
-	console.log("clubs: ", clubs);
 
 	const handleLike = async (club) => {
 		const data = {

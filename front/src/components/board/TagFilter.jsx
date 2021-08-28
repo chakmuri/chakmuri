@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Row, Col } from "antd";
+import { Row, Col, message } from "antd";
 import Tag from "../common/Tag";
 import { useEffect } from "react";
 
@@ -34,13 +34,17 @@ const Search = (props) => {
 		let index = props.selectedTags.indexOf(tagName);
 
 		if (props.selectedTags.includes(tagName)) {
-			props.setSelectedTags(props.selectedTags.splice(index, 1));
+			props.selectedTags.splice(index, 1);
+			props.setSelectedTags([...props.selectedTags]);
 		} else {
 			props.setSelectedTags([...props.selectedTags, tagName]);
 		}
 	};
 
-	useEffect(() => console.log(props.selectedTags), [props.selectedTags]);
+	useEffect(() => {
+		console.log(props.selectedTags);
+		console.log(props.selectedTags.length);
+	}, [props.selectedTags]);
 
 	return (
 		<>

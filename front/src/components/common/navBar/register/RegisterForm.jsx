@@ -199,6 +199,10 @@ const RegisterForm = ({ ...props }) => {
 
 		if (selectedTags.includes(tagName)) {
 			selectedTags.splice(index, 1);
+			setSelectedTags([...selectedTags]);
+		} else if (selectedTags.length === 3) {
+			selectedTags.splice(index, 1);
+			message.error("태그는 최대 3개까지 선택 가능합니다!");
 		} else {
 			setSelectedTags([...selectedTags, tagName]);
 		}
@@ -206,6 +210,7 @@ const RegisterForm = ({ ...props }) => {
 
 	useEffect(() => {
 		console.log(selectedTags);
+		console.log(selectedTags.length);
 	}, [selectedTags]);
 
 	const sendData = async (values) => {
