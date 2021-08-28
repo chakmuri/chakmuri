@@ -74,24 +74,36 @@ const CmtText = styled.p`
 const Comment = (props) => {
 	return (
 		<CmtContainer>
-			<img src="assets/images/icons/profile.png" alt="profile" />
+			<img src={props.comment.userImgUrl} alt="User profile" />
 			<CmtBox>
-				<CmtWriter>작성자</CmtWriter>
-				<CmtDate>yyyy-mm-dd hh:mm:ss</CmtDate>
-				<CmtUpdateCheck>(수정됨)</CmtUpdateCheck>
-				<CmtUpdate>수정</CmtUpdate>
-				<CmtDelete>삭제</CmtDelete>
-				<CmtText>
-					"Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-					accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
-					ab illo inventore veritatis et quasi architecto beatae vitae dicta
-					sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-					aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos
-					qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui
-					dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed
-					quia non numquam eius modi tempora incidunt ut labore et dolore magnam
-					aliquam quaerat voluptatem.
-				</CmtText>
+				<CmtWriter>{props.comment.userName}</CmtWriter>
+				<CmtDate>
+					{props.comment.updatedAt
+						? props.comment.updatedAt
+						: props.comment.createdAt}
+				</CmtDate>
+				<CmtUpdateCheck>
+					{props.comment.updatedAt ? "(수정됨)" : ""}
+				</CmtUpdateCheck>
+				{props.comment.userId === props.userId ? (
+					<CmtUpdate
+						onClick={() => props.handleUpdateComment(props.comment.id)}
+					>
+						수정
+					</CmtUpdate>
+				) : (
+					""
+				)}
+				{props.comment.userId === props.userId ? (
+					<CmtDelete
+						onClick={() => props.handleDeleteComment(props.comment.id)}
+					>
+						삭제
+					</CmtDelete>
+				) : (
+					""
+				)}
+				<CmtText>{props.comment.contents}</CmtText>
 			</CmtBox>
 		</CmtContainer>
 	);
