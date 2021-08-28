@@ -65,7 +65,12 @@ const ClubCard = ({ ...props }) => {
 					<SmallTag key={i}>{tag}</SmallTag>
 				))}
 			</TagContainer>
-			<LikeIcon>
+			<LikeIcon
+				onClick={(e) => {
+					e.stopPropagation();
+					props.handleLike(props.club.id);
+				}}
+			>
 				{props.like ? (
 					<img
 						src="assets/images/icons/filled_heart.png"

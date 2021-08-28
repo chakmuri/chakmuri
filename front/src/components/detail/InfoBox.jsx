@@ -101,11 +101,18 @@ const InfoBox = ({ ...props }) => {
 						<Tag key={i}>{tag}</Tag>
 					))}
 				</TagContainer>
-				<LikeIcon>
-					<img
-						src="assets/images/icons/unfilled_heart.png"
-						alt="Unfilled like icon"
-					/>
+				<LikeIcon onClick={props.handleLike(props.club.id)}>
+					{props.like ? (
+						<img
+							src="assets/images/icons/filled_heart.png"
+							alt="Filled like icon"
+						></img>
+					) : (
+						<img
+							src="assets/images/icons/unfilled_heart.png"
+							alt="Unfilled like icon"
+						/>
+					)}
 				</LikeIcon>
 			</ClubInfo>
 		</InfoBoxContainer>

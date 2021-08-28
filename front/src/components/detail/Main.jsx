@@ -72,6 +72,7 @@ const Main = (props) => {
 	const [postComment, setPostComment] = useState("");
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(1);
+	const [like, setLike] = useState(false);
 	const clubId = props.match.params.id;
 	const userId = localStorage.getItem("user_id");
 	const userImg = localStorage.getItem("user_image");
@@ -90,6 +91,7 @@ const Main = (props) => {
 				});
 
 				setComments(commentRes.data.commentList);
+				setTotal(commentRes.data.totalCount);
 			} catch (err) {
 				console.log(err);
 			}
@@ -151,9 +153,20 @@ const Main = (props) => {
 		}
 	};
 
+	const handleLike = async (id) => {
+		const data = {
+			clubId: id,
+			userId: userId,
+		};
+		await axios.post("/likedClubs", data);
+		setLike(!like);
+
+		if (like === false) await axios.delete(`likedClubs/${data.clubId}`);
+	};
+
 	return (
 		<Wrapper>
-			<InfoBox club={club} />
+			<InfoBox club={club} handleLike={handleLike} />
 			<DetailInfo club={club} />
 			<CmtContainer>
 				<TitleRow>

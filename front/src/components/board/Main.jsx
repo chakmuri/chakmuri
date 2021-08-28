@@ -109,16 +109,24 @@ const Main = () => {
 
 				setClubs(res.data.clubList);
 				setTotal(res.data.totalCount);
+
+				const likedClubsRes = await axios.get(`/likedClubs/users/${userId}`);
+				const likedClubs = likedClubsRes.data.likedClubList;
+
+				// 이미 좋아요한 독서모임인지 확인
+				if (clubs.filter((club) => likedClubs.includes(club))) {
+					setLike(true);
+				}
 			} catch (err) {
 				console.log(err);
 			}
 		};
 		fetchData();
-	}, [sortBy, clubStatus, sendTags, keyword, total, page]);
+	}, [sortBy, clubStatus, sendTags, keyword, total, page, userId, clubs]);
 
-	const handleLike = async (club) => {
+	const handleLike = async (id) => {
 		const data = {
-			clubId: club.id,
+			clubId: id,
 			userId: userId,
 		};
 		await axios.post("/likedClubs", data);
@@ -157,7 +165,7 @@ const Main = () => {
 				{clubs.map((club) => (
 					<Col key={club.id} span={8}>
 						<Link to={`/detail/${club.id}`}>
-							<ClubCard club={club} onClick={handleLike} />
+							<ClubCard club={club} onClick={handleLike} like={like} />
 						</Link>
 					</Col>
 				))}

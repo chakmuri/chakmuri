@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Tabs, Row, Divider, message, Modal } from "antd";
+import { Tabs, Row, Col, Divider, message, Modal } from "antd";
 import styled from "styled-components";
 import MyComment from "./MyComment";
-import CustomPagination from "../common/Pagination";
-import LikedClubList from "./LikedClubList";
-import Button from "../common/Button";
 import EditForm from "./EditForm";
+import ClubCard from "../common/ClubCard";
+import CustomPagination from "../common/Pagination";
+import Button from "../common/Button";
 
 const { TabPane } = Tabs;
 
@@ -97,6 +97,12 @@ const StyledModal = styled(Modal)`
 	}
 `;
 
+const ListRow = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+`;
+
 const ModalTitle = styled.div`
 	font-size: 20px;
 	font-weight: bold;
@@ -140,9 +146,12 @@ const PaginationRow = styled(Row)`
 const Main = (props) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [myClub, setMyClub] = useState({});
+	const [likedClubs, setLikedClubs] = useState([]);
 	const [myComments, setMyComments] = useState([]);
-	const [total, setTotal] = useState(0);
-	const [page, setPage] = useState(1);
+	const [myCommentsTotal, setMyCommentsTotal] = useState(0);
+	const [myCommentsPage, setMyCommentsPage] = useState(1);
+	const [likedClubsTotal, setLikedClubsTotal] = useState(0);
+	const [likedClubsPage, setMyLikedClubsPage] = useState(1);
 	const userId = localStorage.getItem("user_id");
 
 	useEffect(() => {
@@ -158,22 +167,32 @@ const Main = (props) => {
 					setMyClub(res.data);
 				}
 
-				const commentRes = await axios.get(`comments/user/${userId}`, {
-					params: { page: page },
+				const commentRes = await axios.get(`/comments/user/${userId}`, {
+					params: { page: myCommentsPage },
 				});
 
 				if (!commentRes.data) {
 					message.error("내가 쓴 댓글이 존재하지 않습니다.");
 				} else {
 					setMyComments(res.data.commentList);
-					setTotal(res.data.totalCount);
+					setMyCommentsTotal(res.data.totalCount);
+				}
+
+				const likedClubsRes = await axios.get(`/likedClubs/users/${userId}`, {
+					params: { page: likedClubsPage },
+				});
+				if (!likedClubsRes.data) {
+					message.error("내가 좋아요한 모임이 존재하지 않습니다.");
+				} else {
+					setLikedClubs(likedClubsRes.data.likedClubList);
+					setLikedClubsTotal(likedClubsRes.data.totalCount);
 				}
 			} catch (err) {
 				console.log(err);
 			}
 		};
 		fetchData();
-	}, [userId, page]);
+	}, [userId, myCommentsPage, likedClubsPage]);
 
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -218,19 +237,31 @@ const Main = (props) => {
 						</Row>
 						<PaginationRow>
 							<CustomPagination
-								total={total}
+								total={myCommentsTotal}
 								pageSize={10}
-								current={page}
-								onChange={(page) => setPage(page)}
+								current={myCommentsPage}
+								onChange={(page) => setMyCommentsPage(page)}
 							/>
 						</PaginationRow>
 					</TabContainer>
 				</TabPane>
 				<TabPane tab="좋아요한 독서모임" key="2">
 					<TabContainer gutter={[0, 98]}>
-						<Row>
-							<LikedClubList />
-						</Row>
+						<ListRow>
+							{likedClubs.map((likedClub) => (
+								<Col key={likedClub.id} span={8}>
+									<ClubCard />
+								</Col>
+							))}
+						</ListRow>
+						<PaginationRow>
+							<CustomPagination
+								total={likedClubsTotal}
+								pageSize={9}
+								current={likedClubsPage}
+								onChange={(page) => setMyLikedClubsPage(page)}
+							/>
+						</PaginationRow>
 					</TabContainer>
 				</TabPane>
 				<TabPane tab="독서모임 관리" key="3">
