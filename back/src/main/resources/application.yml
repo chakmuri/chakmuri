@@ -26,3 +26,18 @@ logging:
       hibernate:
         SQL: DEBUG
         type: TRACE
+    com: #failed to connect to service endpoint 오류가 뜨지 않게 함
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
+
+cloud:
+  aws:
+    s3:
+      bucket: chakmuri-bucket
+    region:
+      static: ap-northeast-2
+    credentials:
+      instance-profile: true
+    stack:
+      auto: false

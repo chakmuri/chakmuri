@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,16 +48,21 @@ public class ClubService {
             }
         }
         Club club = requestDto.toEntity();
+        String startDateString = requestDto.getStartDate();
+        String endDateString = requestDto.getEndDate();
+        LocalDate startDate = LocalDate.parse(startDateString, DateTimeFormatter.ISO_DATE);
+        LocalDate endDate = LocalDate.parse(endDateString, DateTimeFormatter.ISO_DATE);
         Book book = new Book(requestDto.getBookTitle(), requestDto.getAuthor(),
                 requestDto.getPublisher(), requestDto.getPublishedAt(),
                 requestDto.getBookDescription());
-        final Club newClub = convertToNewClub(club, book, requestDto.getUserId());
+        final Club newClub = convertToNewClub(club, book, requestDto.getUserId(), startDate, endDate);
         return clubRepository.save(newClub);
     }
 
     //club 생성시에만 사용하는 메서드
     //파라미터로 받은 userId 값을 사용해 findById로 찾은 user 객체를 이용, 빌더로 entity 를 생성하는 역할
-    private Club convertToNewClub(final Club club, final Book book, final String userId) {
+    private Club convertToNewClub(final Club club, final Book book, final String userId,
+                                  LocalDate startDate, LocalDate endDate) {
         final User user = userRepository.findById(userId)
                 .orElseThrow(); // -> TODO : UserNotFoundException 만들어서 넣기
         return Club.builder()
@@ -66,8 +72,8 @@ public class ClubService {
                 .imgUrl(club.getImgUrl())
                 .minPersonnel(club.getMinPersonnel())
                 .maxPersonnel(club.getMaxPersonnel())
-                .startDate(club.getStartDate())
-                .endDate(club.getEndDate())
+                .startDate(startDate)
+                .endDate(endDate)
                 .tags(club.getTags())
                 .likes(0)
                 .book(book)
