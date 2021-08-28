@@ -52,17 +52,16 @@ public class ClubController {
     @GetMapping
     public ResponseEntity<ClubPageResponseDto> getClubs(
             @RequestParam(value = "sortBy") String sortBy,
-            @RequestParam(value = "tags", required = false) String tags,
-            @RequestParam(value = "clubStatus", required = false) ClubStatus clubStatus,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @PageableDefault(sort = "id",direction = Sort.Direction.DESC,size = 9) Pageable pageable) {
+            @RequestParam(value = "tags") String tags,
+            @RequestParam(value = "clubStatus") String clubStatus,
+            @RequestParam(value = "keyword") String keyword,
+            @PageableDefault(direction = Sort.Direction.DESC, size = 9) Pageable pageable) {
         List<Club> allClubs = clubService.findAllClubs(sortBy, tags, clubStatus, keyword);
-        //TODO: index 관련 수정하기 // subList(fromIndex, toIndex) // page=0부터 동작하는 것 수정할 것
+        //page=0부터 동작하는 게 default이지만, yml 설정을 통해 1부터 시작하게 할 수 있음. 그러나 여전히 0이어도 동작은 한다.
         int start = (int)pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), allClubs.size());
         Page<Club> page = new PageImpl<>(allClubs.subList(start, end), pageable, allClubs.size());
-        List<ClubResponseDto> clubResponseDtoList = page
-                .stream()
+        List<ClubResponseDto> clubResponseDtoList = page.stream()
                 .map(ClubResponseDto::new)  //조회한 클럽 리스트 항목 하나하나를 ClubResponseDto와 매핑해 줌
                 .collect(Collectors.toList());  //스트림에서 작업한 결과를 담은 리스트로 반환
         //Collectors.joining(delimeter, prefix, suffix)로 스트링으로 조합할 수 있음

@@ -8,6 +8,10 @@ import bookclub.chakmuri.repository.ClubRepository;
 import bookclub.chakmuri.repository.LikedClubRepository;
 import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LikedClubService {
     private final LikedClubRepository likedClubRepository;
     private final UserRepository userRepository;
@@ -28,15 +33,21 @@ public class LikedClubService {
                 .orElseThrow();
         final Club club = clubRepository.findById(likedClubRequestDto.getClubId())
                 .orElseThrow();
+        log.info("findById 결과값 {}", likedClubRepository.findById(likedClubRequestDto.getClubId()));
+        if (likedClubRepository.findById(likedClubRequestDto.getClubId()).isEmpty()) {
+            club.changeLikes(club.getLikes() + 1); // 좋아요 버튼 클릭된 상태
 
-        club.changeLikes(club.getLikes() + 1); // 좋아요 버튼 클릭된 상태
+            LikedClub postLikedClub = LikedClub.builder()
+                    .user(user)
+                    .club(club)
+                    .build();
+            return likedClubRepository.save(postLikedClub);
+        }
 
-        LikedClub postLikedClub = LikedClub.builder()
-                .user(user)
-                .club(club)
-                .build();
-        return likedClubRepository.save(postLikedClub);
+        return null;
+
     }
+
 
     @Transactional
     public void deleteLikedClub(Long likeClubId) {
@@ -50,11 +61,10 @@ public class LikedClubService {
     }
 
     @Transactional(readOnly = true)
-    public List<LikedClub> findAllUserLikedClubs(String userId) {
-
+    public Page<LikedClub> findAllUserLikedClubs(String userId, int page) {
         final User user = userRepository.findById(userId)
                 .orElseThrow();
-        return likedClubRepository.findAllByUser(user);
-
+        PageRequest pageRequest = PageRequest.of((page - 1), 9, Sort.by(Sort.Direction.DESC, "id"));
+        return likedClubRepository.findAllByUser(user, pageRequest);
     }
 }
