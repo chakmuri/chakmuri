@@ -13,6 +13,10 @@ const TagContainer = styled.div`
 	gap: 30px;
 `;
 
+const BoardTag = styled(Tag)`
+	width: 200px;
+`;
+
 const Search = (props) => {
 	const tags = [
 		"소수정예",
@@ -41,10 +45,10 @@ const Search = (props) => {
 	return (
 		<>
 			<TagContainer>
-				<Row gutter={[32, 24]}>
+				<Row gutter={[32, 32]}>
 					{tags.map((tag, i) => (
 						<Col span={6}>
-							<Tag
+							<BoardTag
 								type="button"
 								key={i}
 								value={i}
@@ -52,7 +56,7 @@ const Search = (props) => {
 								selected={props.selectedTags.includes(tag) ? true : false}
 							>
 								{tag}
-							</Tag>
+							</BoardTag>
 						</Col>
 					))}
 				</Row>

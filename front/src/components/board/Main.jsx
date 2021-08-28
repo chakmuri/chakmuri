@@ -71,7 +71,8 @@ const SortFilter = styled(Select)`
 	}
 `;
 
-const ClubCardContainer = styled.div`
+const CardContainer = styled(Row)`
+	width: 100%;
 	margin-bottom: 90px;
 `;
 
@@ -157,7 +158,7 @@ const Main = () => {
 					<Option value="likes">좋아요순</Option>
 				</SortFilter>
 			</TitleRow>
-			<ClubCardContainer gutter={[48, 24]}>
+			<CardContainer justify="space-between" gutter={[0, 48]}>
 				{clubs.map((club) => (
 					<Col key={club.id} span={8}>
 						<Link to={`/clubs/${club.id}`}>
@@ -165,7 +166,7 @@ const Main = () => {
 						</Link>
 					</Col>
 				))}
-			</ClubCardContainer>
+			</CardContainer>
 			<PaginationRow>
 				<CustomPagination
 					total={total}
