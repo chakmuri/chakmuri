@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Modal, Menu, Dropdown } from "antd";
 import Login from "./login/Login";
-import RegisterForm from "../form/RegisterForm";
+import RegisterForm from "./register/RegisterForm";
 import { useEffect } from "react";
 
 const Nav = styled.nav`
@@ -61,6 +61,27 @@ const NavProfile = styled.div`
 	}
 `;
 
+const Title = styled.div`
+	font-size: 26px;
+	white-space: pre-wrap;
+`;
+
+const NavRegister = styled.div`
+	width: 48px;
+	height: 48px;
+	cursor: pointer;
+`;
+
+const StyledDropdownMenu = styled(Menu)`
+	.ant-dropdown-menu-item,
+	.ant-dropdown-menu-submenu-title {
+		font-family: Roboto;
+		font-size: 16px;
+		padding: 10px 20px;
+		text-align: center;
+	}
+`;
+
 const StyledModal = styled(Modal)`
 	display: flex;
 	justify-content: center;
@@ -84,35 +105,12 @@ const StyledModal = styled(Modal)`
 	}
 `;
 
-const Title = styled.div`
-	font-size: 26px;
-	white-space: pre-wrap;
-`;
-
-const NavRegister = styled.div`
-	width: 48px;
-	height: 48px;
-	cursor: pointer;
-`;
-
-const StyledDropdownMenu = styled(Menu)`
-	.ant-dropdown-menu-item,
-	.ant-dropdown-menu-submenu-title {
-		font-family: Roboto;
-		font-size: 16px;
-		padding: 10px 20px;
-		text-align: center;
-	}
-`;
-
 const NavBar = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const userId = localStorage.getItem("user_id");
 	const userImg = localStorage.getItem("user_image");
 	const [isLoggedIn, setLoggedIn] = useState(false);
 	const [userImage, setUserImage] = useState(null);
-	console.log("login state: ", isLoggedIn);
-	console.log("userImage: ", userImage);
 
 	useEffect(() => {
 		if (userId) {

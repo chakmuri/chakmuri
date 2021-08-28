@@ -34,40 +34,29 @@ const MapWrapper = styled.div`
 	margin-top: 40px;
 `;
 
-const DetailInfo = () => {
+const DetailInfo = (props) => {
 	return (
 		<DetailInfoContainer>
 			<Title>상세 설명</Title>
 			<TextBox>
-				<SubTitle>한 줄 소개</SubTitle>
-				<Contents>
-					"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-					eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-					minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip ex ea commodo consequat. Duis aute irure dolor in
-					reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-					pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-					culpa qui officia deserunt mollit anim id est laborum."
-				</Contents>
+				<SubTitle>{props.club.contents}</SubTitle>
+				<Contents>{props.club.description}</Contents>
 			</TextBox>
 			<Divider />
 			<Title>선정 도서</Title>
 			<TextBox>
-				<SubTitle>도서 정보</SubTitle>
-				<Contents>
-					"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-					eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-					minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip ex ea commodo consequat. Duis aute irure dolor in
-					reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-					pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-					culpa qui officia deserunt mollit anim id est laborum."
-				</Contents>
+				<SubTitle>
+					{props.club.bookTitle}, {props.club.author}, {props.club.publisher},{" "}
+					{props.club.publishedAt}{" "}
+				</SubTitle>
+				<Contents>{props.club.bookDescription}</Contents>
 			</TextBox>
 			<Divider />
 			<Title>모임 장소</Title>
 			<MapWrapper>
-				<MapContainer />
+				<MapContainer
+					searchSpot={props.club.addressStreet + props.club.addressDetail}
+				/>
 			</MapWrapper>
 		</DetailInfoContainer>
 	);

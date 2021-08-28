@@ -35,10 +35,14 @@ const Login = ({ ...props }) => {
 			profileObj: { googleId, email, name, imageUrl },
 		} = response;
 
+		console.log("google res ", response);
+
 		try {
 			const res = await axios.get(`/users/${googleId}`);
 
-			if (!res.id) {
+			console.log(res);
+
+			if (!res) {
 				const user = {
 					id: googleId,
 					name,
@@ -48,8 +52,6 @@ const Login = ({ ...props }) => {
 
 				await axios.post("/users", user);
 			}
-
-			console.log(res.data);
 
 			localStorage.setItem("user_id", res.data.id);
 			localStorage.setItem("user_image", res.data.imgUrl);

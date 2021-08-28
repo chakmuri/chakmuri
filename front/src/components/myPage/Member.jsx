@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Button from "../common/Button";
 
 const MemberBar = styled.div`
 	width: 1200px;
@@ -29,16 +30,14 @@ const MemberEmail = styled.div`
 	flex: 1;
 `;
 
-const MemberBtn = styled.button`
+const MemberBtn = styled(Button)`
 	font-size: 16px;
 	font-weight: bold;
 	color: #ffffff;
 	background-color: #ff6701;
 	border: none;
 	border-radius: 6px;
-	padding: 10px 20px;
 	margin-right: 55px;
-	cursor: pointer;
 `;
 
 const Member = () => {
