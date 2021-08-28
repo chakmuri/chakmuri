@@ -152,7 +152,7 @@ const FilledBtn = styled(Button)`
 	}
 `;
 
-const EditForm = (props) => {
+const EditForm = ({ ...props }) => {
 	const [inputText, setInputText] = useState("");
 	const [streetAddress, setStreetAddress] = useState("");
 	const [detailAddress, setDetailAddress] = useState("");
@@ -160,9 +160,7 @@ const EditForm = (props) => {
 	const [preview, setPreview] = useState(null);
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
-	// const [isSelected, setIsSelected] = useState(false);
-	// const [tags, setTags] = useState([]);
-	// const clubTags = [];
+
 	const fullAddress = streetAddress + detailAddress;
 	const userId = localStorage.getItem("user_id");
 
@@ -197,21 +195,6 @@ const EditForm = (props) => {
 			reader.readAsDataURL(file);
 		}
 	};
-
-	// const handleTags = (e) => {
-	// 	console.log(e.target.className);
-	// 	let text = e.target.textContent;
-	// 	const index = clubTags.indexOf(text);
-	// 	if (!isSelected) {
-	// 		clubTags.splice(index, 1);
-	// 		setIsSelected(true);
-	// 		setTags(clubTags);
-	// 	} else {
-	// 		clubTags.push(text);
-	// 		setIsSelected(false);
-	// 		setTags(clubTags);
-	// 	}
-	// };
 
 	const sendData = async (values) => {
 		const mock_edit_tags = "지방, 독서 외 활동";
@@ -327,10 +310,10 @@ const EditForm = (props) => {
 							</Row>
 						</Form.Item>
 						<Form.Item
-							initialValue={moment([
-								props.myClub.startDate,
-								props.myClub.endDate,
-							])}
+							initialValue={[
+								moment(props.myClub.startDate),
+								moment(props.myClub.endDate),
+							]}
 							label="진행 기간"
 							name="date"
 							rules={[
