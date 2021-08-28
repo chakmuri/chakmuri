@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const CommentBar = styled.div`
@@ -36,14 +37,16 @@ const CommentBtn = styled.button`
 	cursor: pointer;
 `;
 
-const MyComment = () => {
+const MyComment = ({ ...props }) => {
 	return (
 		<CommentBar>
 			<CommentProfileIcon>
-				<img src="assets/images/icons/profile.png" alt="Profile icon" />
+				<img src={props.myComment.userImgUrl} alt="Profile icon" />
 			</CommentProfileIcon>
-			<CommentText>comment text</CommentText>
-			<CommentBtn>보기</CommentBtn>
+			<CommentText>{props.myComment.contents}</CommentText>
+			<Link to={`/detail/${props.myComment.clubId}`}>
+				<CommentBtn>보기</CommentBtn>
+			</Link>
 		</CommentBar>
 	);
 };

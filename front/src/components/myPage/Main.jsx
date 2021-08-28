@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { Tabs, Row, Divider, message, Modal } from "antd";
 import styled from "styled-components";
@@ -139,7 +138,6 @@ const PaginationRow = styled(Row)`
 `;
 
 const Main = (props) => {
-	let history = useHistory();
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [myClub, setMyClub] = useState({});
 	const [myComments, setMyComments] = useState([]);
@@ -164,7 +162,7 @@ const Main = (props) => {
 					params: { page: page },
 				});
 
-				if (!res.data) {
+				if (!commentRes.data) {
 					message.error("내가 쓴 댓글이 존재하지 않습니다.");
 				} else {
 					setMyComments(res.data.commentList);
@@ -212,9 +210,11 @@ const Main = (props) => {
 				<TabPane tab="내 댓글" key="1">
 					<TabContainer gutter={[0, 98]}>
 						<Row gutter={[0, 16]}>
-							<Row>
-								<MyComment />
-							</Row>
+							{myComments.map((comment) => (
+								<Row key={comment.id}>
+									<MyComment myComment={comment} />
+								</Row>
+							))}
 						</Row>
 						<PaginationRow>
 							<CustomPagination
