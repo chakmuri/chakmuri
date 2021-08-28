@@ -31,6 +31,7 @@ public class ClubService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final LikedClubRepository likedClubRepository;
+    private final S3Service s3Service;
 
     //TODO: 독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> ??
 
@@ -38,11 +39,9 @@ public class ClubService {
     public Club createClub(ClubCreateRequestDto requestDto, MultipartFile file) {
         //TODO : AWS s3 img upload 로직 짜기 (현재는 로컬 업로드)
         if (file != null) {
-            String path = "C:\\chakmuri\\back\\src\\main\\resources\\image\\";
-            String filePath = path + System.currentTimeMillis() + "_" + file.getOriginalFilename();
             try {
-                file.transferTo(new File(filePath));
-                requestDto.setImgUrl(filePath);
+                String imgPath = s3Service.upload(file);
+                requestDto.setImgUrl(imgPath);
             } catch (Exception e) {
                 e.printStackTrace();
             }
