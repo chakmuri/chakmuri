@@ -24,7 +24,12 @@ public class LikedClubController {
     public ResponseEntity<LikedClubResponseDto> createLikedClub(
             @RequestBody LikedClubCreateRequestDto likedClubRequestDto) {
 
-        likedClubService.createLikedClub(likedClubRequestDto);
+        if(likedClubService.createLikedClub(likedClubRequestDto) == null) {
+            return new ResponseEntity(
+                    "이미 좋아요한 독서모임 입니다.", HttpStatus.OK
+            );
+        }
+
         return new ResponseEntity(
                 "정상적으로 등록됐습니다.", HttpStatus.OK
         );
