@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Form, Input, InputNumber, Row, Col, DatePicker, message } from "antd";
 import styled from "styled-components";
+import moment from "moment";
 import Button from "../common/Button";
 import MapContainer from "../common/MapContainer";
 
@@ -151,7 +152,7 @@ const FilledBtn = styled(Button)`
 	}
 `;
 
-const EditForm = ({ ...props }) => {
+const EditForm = (props) => {
 	const [inputText, setInputText] = useState("");
 	const [streetAddress, setStreetAddress] = useState("");
 	const [detailAddress, setDetailAddress] = useState("");
@@ -163,6 +164,7 @@ const EditForm = ({ ...props }) => {
 	// const [tags, setTags] = useState([]);
 	// const clubTags = [];
 	const fullAddress = streetAddress + detailAddress;
+	const userId = localStorage.getItem("user_id");
 
 	const onChange = (e) => {
 		setInputText(e.target.value);
@@ -246,7 +248,7 @@ const EditForm = ({ ...props }) => {
 		console.log(props.myClub.id);
 
 		try {
-			const res = await axios.patch(`clubs/${props.myClub.id}`, data);
+			const res = await axios.patch(`/clubs/users/${userId}`, data);
 
 			if (res.status === 200)
 				message.success("독서모임이 성공적으로 수정되었습니다!");
@@ -305,8 +307,8 @@ const EditForm = ({ ...props }) => {
 							<Row>
 								<PersonnelRow>
 									<Form.Item
-										name="minPersonnel"
 										initialValue={props.myClub.minPersonnel}
+										name="minPersonnel"
 									>
 										<StyledInputNumber min={2} placeholder={2} />
 									</Form.Item>
@@ -315,8 +317,8 @@ const EditForm = ({ ...props }) => {
 								<span> ~ </span>
 								<PersonnelRow>
 									<Form.Item
-										name="maxPersonnel"
 										initialValue={props.myClub.maxPersonnel}
+										name="maxPersonnel"
 									>
 										<StyledInputNumber min={2} placeholder={2} />
 									</Form.Item>
@@ -325,7 +327,10 @@ const EditForm = ({ ...props }) => {
 							</Row>
 						</Form.Item>
 						<Form.Item
-							// initialValue={[props.myClub.startDate, props.myClub.endDate]}
+							initialValue={moment([
+								props.myClub.startDate,
+								props.myClub.endDate,
+							])}
 							label="진행 기간"
 							name="date"
 							rules={[
@@ -396,6 +401,7 @@ const EditForm = ({ ...props }) => {
 				<TitleRow>선정도서</TitleRow>
 				<Col span={16}>
 					<Form.Item
+						initialValue={props.myClub.bookTitle}
 						label="도서명"
 						name="bookTitle"
 						rules={[{ required: true, message: "도서명을 입력하세요." }]}
@@ -405,6 +411,7 @@ const EditForm = ({ ...props }) => {
 				</Col>
 				<Col span={16}>
 					<Form.Item
+						initialValue={props.myClub.author}
 						label="작가명"
 						name="bookAuthor"
 						rules={[{ required: true, message: "작가명을 입력하세요." }]}
@@ -413,17 +420,26 @@ const EditForm = ({ ...props }) => {
 					</Form.Item>
 				</Col>
 				<Col span={16}>
-					<Form.Item label="출판사" name="bookPublisher">
+					<Form.Item
+						initialValue={props.myClub.publisher}
+						label="출판사"
+						name="bookPublisher"
+					>
 						<StyledInput placeholder="작가명" />
 					</Form.Item>
 				</Col>
 				<Col span={16}>
-					<Form.Item label="출판연도" name="bookPublishedDate">
+					<Form.Item
+						initialValue={props.myClub.publishedAt}
+						label="출판연도"
+						name="bookPublishedDate"
+					>
 						<StyledInputNumber placeholder={1900} />
 					</Form.Item>
 				</Col>
 				<Col span={16}>
 					<Form.Item
+						initialValue={props.myClub.bookDescription}
 						label="도서 선정 이유 및 소개글"
 						name="bookDescription"
 						rules={[
@@ -443,6 +459,7 @@ const EditForm = ({ ...props }) => {
 				<Row>
 					<Col span={16}>
 						<Form.Item
+							initialValue={props.myClub.description}
 							label="상세설명"
 							name="description"
 							rules={[

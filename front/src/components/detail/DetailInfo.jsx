@@ -34,7 +34,7 @@ const MapWrapper = styled.div`
 	margin-top: 40px;
 `;
 
-const DetailInfo = (props) => {
+const DetailInfo = ({ ...props }) => {
 	return (
 		<DetailInfoContainer>
 			<Title>상세 설명</Title>
@@ -55,7 +55,7 @@ const DetailInfo = (props) => {
 			<Title>모임 장소</Title>
 			<MapWrapper>
 				<MapContainer
-					searchSpot={props.club.addressStreet + props.club.addressDetail}
+					searchSpot={props.club.addressStreet + " " + props.club.addressDetail}
 				/>
 			</MapWrapper>
 		</DetailInfoContainer>

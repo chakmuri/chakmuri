@@ -40,9 +40,10 @@ const Login = ({ ...props }) => {
 		try {
 			const res = await axios.get(`/users/${googleId}`);
 
-			console.log(res);
+			console.log("login res: ", res.status);
 
-			if (!res) {
+			if (res.status === 204) {
+				console.log("status code 204");
 				const user = {
 					id: googleId,
 					name,
@@ -50,15 +51,20 @@ const Login = ({ ...props }) => {
 					imgUrl: imageUrl,
 				};
 
+				console.log(user.id);
+				console.log(user.imgUrl);
+
 				await axios.post("/users", user);
+				await axios.get(`users/${user.id}`);
+
+				localStorage.setItem("user_id", user.id);
+				localStorage.setItem("user_image", user.imgUrl);
+				props.onCancel();
+			} else {
+				localStorage.setItem("user_id", res.data.id);
+				localStorage.setItem("user_image", res.data.imgUrl);
+				props.onCancel();
 			}
-
-			localStorage.setItem("user_id", res.data.id);
-			localStorage.setItem("user_image", res.data.imgUrl);
-			props.onCancel();
-			history.push("/");
-
-			return res;
 		} catch (err) {
 			console.log(err);
 		}

@@ -19,7 +19,11 @@ const StyledSearchBar = styled(Search)`
 	}
 `;
 
-const SearchBar = () => {
+const SearchBar = (props) => {
+	const onSearch = (value) => {
+		console.log(value);
+		props.setKeyword(value);
+	};
 	return (
 		<SearchBarContainer>
 			<StyledSearchBar
@@ -27,6 +31,7 @@ const SearchBar = () => {
 				enterButton
 				size="large"
 				placeholder="독서모임 검색"
+				onSearch={onSearch}
 			/>
 		</SearchBarContainer>
 	);

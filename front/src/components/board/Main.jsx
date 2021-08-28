@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
-import { Checkbox, Select } from "antd";
+import { Row, Col, Checkbox, Select } from "antd";
 import TagFilter from "./TagFilter";
 import SearchBar from "./SearchBar";
+import CustomPagination from "../common/Pagination";
 import ClubCard from "../common/ClubCard";
 
 const { Option } = Select;
 
 const Wrapper = styled.div`
 	width: 1200px;
-	margin: 0 auto;
+	margin: 60px auto;
 `;
 
 const MainTitle = styled.div`
@@ -18,7 +20,6 @@ const MainTitle = styled.div`
 	font-weight: bold;
 	text-align: center;
 `;
-
 const TitleRow = styled.div`
 	display: flex;
 	align-items: center;
@@ -74,20 +75,50 @@ const ClubCardContainer = styled.div`
 	margin-bottom: 90px;
 `;
 
-const ListRow = styled.div`
-	display: flex;
-	justify-content: space-evenly;
-	margin-bottom: 40px;
-
-	&:last-of-type {
-		margin-bottom: 0;
-	}
+const PaginationRow = styled(Row)`
+	width: 100%;
+	margin-top: 48px;
+	justify-content: center;
 `;
 
-const Main = (props) => {
+const Main = () => {
 	const [clubs, setClubs] = useState([]);
+	const [sortBy, setSortBy] = useState("createdAt");
+	const [clubStatus, setClubStatus] = useState("");
+	const [selectedTags, setSelectedTags] = useState([]);
+	const [keyword, setKeyword] = useState("");
+	const [total, setTotal] = useState(0);
+	const [page, setPage] = useState(1);
 	const [like, setLike] = useState(false);
 	const userId = localStorage.getItem("user_id");
+	const sendTags = selectedTags.join(", ");
+	console.log("sendTags: ", sendTags);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const res = await axios.get("/clubs", {
+					params: {
+						sortBy: sortBy,
+						tags: sendTags,
+						clubStatus: clubStatus,
+						keyword: keyword,
+						page: page,
+					},
+				});
+
+				console.log("res: ", res);
+
+				setClubs(res.data.clubList);
+				setTotal(res.data.totalCount);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		fetchData();
+	}, [sortBy, clubStatus, sendTags, keyword, total, page]);
+
+	console.log("clubs: ", clubs);
 
 	const handleLike = async (club) => {
 		const data = {
@@ -103,33 +134,46 @@ const Main = (props) => {
 	return (
 		<Wrapper>
 			<MainTitle>독서모임 찾기</MainTitle>
-			<SearchBar />
-			<TagFilter />
+			<SearchBar setKeyword={setKeyword} />
+			<TagFilter
+				selectedTags={selectedTags}
+				setSelectedTags={setSelectedTags}
+			/>
 			<TitleRow>
-				<Title>N개의 독서모임</Title>
-				<CheckboxFilter>모집중</CheckboxFilter>
-				<SortFilter showSearch placeholder="정렬필터">
-					<Option value="new">최신순</Option>
-					<Option value="like">좋아요순</Option>
+				<Title>{clubs.totalCount}개의 독서모임</Title>
+				<CheckboxFilter
+					onChange={(e) => {
+						setClubStatus(e.target.checked ? "ACTIVE" : "");
+					}}
+				>
+					모집중
+				</CheckboxFilter>
+				<SortFilter
+					showSearch
+					placeholder="정렬필터"
+					onChange={(value) => setSortBy(value)}
+				>
+					<Option value="createdAt">최신순</Option>
+					<Option value="likes">좋아요순</Option>
 				</SortFilter>
 			</TitleRow>
-			<ClubCardContainer>
-				<ListRow>
-					<ClubCard onClick={handleLike} />
-					<ClubCard />
-					<ClubCard />
-				</ListRow>
-				<ListRow>
-					<ClubCard />
-					<ClubCard />
-					<ClubCard />
-				</ListRow>
-				<ListRow>
-					<ClubCard />
-					<ClubCard />
-					<ClubCard />
-				</ListRow>
+			<ClubCardContainer gutter={[48, 24]}>
+				{clubs.map((club) => (
+					<Col key={club.id} span={8}>
+						<Link to={`/clubs/${club.id}`}>
+							<ClubCard club={club} onClick={handleLike} />
+						</Link>
+					</Col>
+				))}
 			</ClubCardContainer>
+			<PaginationRow>
+				<CustomPagination
+					total={total}
+					pageSize={9}
+					current={page}
+					onChange={(page) => setPage(page)}
+				/>
+			</PaginationRow>
 		</Wrapper>
 	);
 };

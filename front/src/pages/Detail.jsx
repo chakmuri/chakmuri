@@ -3,7 +3,7 @@ import NavBar from "../components/common/navBar/NavBar";
 import Main from "../components/detail/Main";
 import Footer from "../components/common/Footer";
 
-const Detail = (props) => {
+const Detail = () => {
 	return (
 		<>
 			<NavBar />

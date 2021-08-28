@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Card, Tag } from "antd";
+import { Card } from "antd";
 import SmallTag from "../common/SmallTag";
 
 const { Meta } = Card;
