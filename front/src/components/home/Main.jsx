@@ -51,12 +51,24 @@ const Main = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const createdAtRes = await axios.get("/clubs", {
-				params: { sortby: "createdAt" },
+				params: {
+					sortby: "createdAt",
+					tags: "",
+					clubStatus: "",
+					keyword: "",
+					page: 1,
+				},
 			});
 			setSortByCreatedAtClubs(createdAtRes.data.clubList);
 
 			const likesRes = await axios.get("/clubs", {
-				params: { sortby: "likes" },
+				params: {
+					sortby: "likes",
+					tags: "",
+					clubStatus: "",
+					keyword: "",
+					page: 1,
+				},
 			});
 			setsortByLikesClubs(likesRes.data.clubList);
 		};
