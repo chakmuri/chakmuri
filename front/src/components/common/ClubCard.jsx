@@ -62,15 +62,22 @@ const ClubCard = ({ ...props }) => {
 		>
 			<Meta title={props.club.title} description={props.club.contents} />
 			<TagContainer>
-				{props.club.tags.split(", ").map((tag, i) => (
-					<SmallTag key={i}>{tag}</SmallTag>
+				{props.club.tags.split(", ").map((tag) => (
+					<SmallTag>{tag}</SmallTag>
 				))}
 			</TagContainer>
 			<LikeIcon>
-				<img
-					src="assets/images/icons/unfilled_heart.png"
-					alt="Unfilled like icon"
-				/>
+				{props.like ? (
+					<img
+						src="assets/images/icons/filled_heart.png"
+						alt="Filled like icon"
+					></img>
+				) : (
+					<img
+						src="assets/images/icons/unfilled_heart.png"
+						alt="Unfilled like icon"
+					/>
+				)}
 				<LikeNum>{props.club.likes}</LikeNum>
 			</LikeIcon>
 		</StyledCard>
