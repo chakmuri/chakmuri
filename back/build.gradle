@@ -25,6 +25,7 @@ dependencies {
 	implementation 'org.projectlombok:lombok:1.18.20'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1'
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
