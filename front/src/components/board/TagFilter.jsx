@@ -34,7 +34,7 @@ const Search = (props) => {
 		let index = props.selectedTags.indexOf(tagName);
 
 		if (props.selectedTags.includes(tagName)) {
-			props.selectedTags.splice(index, 1);
+			props.setSelectedTags(props.selectedTags.splice(index, 1));
 		} else {
 			props.setSelectedTags([...props.selectedTags, tagName]);
 		}

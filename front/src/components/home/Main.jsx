@@ -52,7 +52,7 @@ const Main = () => {
 		const fetchData = async () => {
 			const createdAtRes = await axios.get("/clubs", {
 				params: {
-					sortby: "createdAt",
+					sortBy: "createdAt",
 					tags: "",
 					clubStatus: "",
 					keyword: "",
@@ -63,7 +63,7 @@ const Main = () => {
 
 			const likesRes = await axios.get("/clubs", {
 				params: {
-					sortby: "likes",
+					sortBy: "likes",
 					tags: "",
 					clubStatus: "",
 					keyword: "",
@@ -75,15 +75,15 @@ const Main = () => {
 		fetchData();
 	}, []);
 
-	const handleLike = async (club) => {
+	const handleLike = async (id) => {
 		const data = {
-			clubId: club.id,
+			clubId: id,
 			userId: userId,
 		};
 		await axios.post("/likedClubs", data);
 		setLike(!like);
 
-		if (like === false) await axios.delete(`likedClubs/${data.clubId}`);
+		if (like === false) await axios.delete(`/likedClubs/${data.clubId}`);
 	};
 
 	return (
@@ -94,8 +94,10 @@ const Main = () => {
 				{sortByLikesClubs
 					.filter((club, i) => i < 4)
 					.map((club) => (
-						<Col span={6}>
-							<MainClubCard club={club} like={like} onClick={handleLike} />
+						<Col key={club.id} span={6}>
+							<Link to={`/clubs/${club.id}`}>
+								<MainClubCard club={club} like={like} onClick={handleLike} />
+							</Link>
 						</Col>
 					))}
 			</Row>
@@ -104,8 +106,10 @@ const Main = () => {
 				{sortByCreatedAtClubs
 					.filter((club, i) => i < 4)
 					.map((club) => (
-						<Col span={6}>
-							<MainClubCard club={club} like={like} onClick={handleLike} />
+						<Col key={club.id} span={6}>
+							<Link to={`/detail/${club.id}`}>
+								<MainClubCard club={club} like={like} handleLike={handleLike} />
+							</Link>
 						</Col>
 					))}
 			</Row>

@@ -161,7 +161,7 @@ const Main = () => {
 			<CardContainer justify="space-between" gutter={[0, 48]}>
 				{clubs.map((club) => (
 					<Col key={club.id} span={8}>
-						<Link to={`/clubs/${club.id}`}>
+						<Link to={`/detail/${club.id}`}>
 							<ClubCard club={club} onClick={handleLike} />
 						</Link>
 					</Col>

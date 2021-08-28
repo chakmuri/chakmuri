@@ -13,40 +13,44 @@ const StyledCard = styled(Card)`
 
 	.ant-card-body {
 		height: 160px;
-		padding-bottom: 0;
+		padding: 20px;
+		position: relative;
 	}
 
 	.ant-card-meta-title {
 		font-family: Roboto;
 		font-weight: bold;
-		font-size: 22px;
-		line-height: 36px;
+		font-size: 20px;
 	}
 
 	.ant-card-meta-description {
 		font-family: Roboto;
-		font-size: 16px;
-		line-height: 36px;
+		font-size: 14px;
 		color: black;
 	}
 `;
 
-const CardBox = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-end;
-	margin-bottom: 0;
-`;
-
 const TagContainer = styled.div`
 	display: flex;
-	gap: 5px;
+	gap: 3px;
+
+	position: absolute;
+	bottom: 20px;
+`;
+
+const MainTag = styled(SmallTag)`
+	font-size: 10px;
+	padding: 3px 8px;
 `;
 
 const LikeIcon = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+
+	position: absolute;
+	right: 10px;
+	bottom: 20px;
 `;
 
 const LikeNum = styled.span``;
@@ -60,27 +64,30 @@ const MainClubCard = ({ ...props }) => {
 			}
 		>
 			<Meta title={props.club.title} description={props.club.contents} />
-			<CardBox>
-				<TagContainer>
-					{props.club.tags.map((tag) => (
-						<SmallTag>{tag}</SmallTag>
-					))}
-				</TagContainer>
-				<LikeIcon onClick={props.onClick}>
-					{props.like ? (
-						<img
-							src="assets/images/icons/filled_heart.png"
-							alt="Filled like icon"
-						></img>
-					) : (
-						<img
-							src="assets/images/icons/unfilled_heart.png"
-							alt="Unfilled like icon"
-						/>
-					)}
-					<LikeNum>{props.club.likes}</LikeNum>
-				</LikeIcon>
-			</CardBox>
+			<TagContainer>
+				{props.club.tags.split(", ").map((tag, i) => (
+					<MainTag key={i}>{tag}</MainTag>
+				))}
+			</TagContainer>
+			<LikeIcon
+				onClick={(e) => {
+					e.stopPropagation();
+					props.handleLike(props.club.id);
+				}}
+			>
+				{props.like ? (
+					<img
+						src="assets/images/icons/filled_heart.png"
+						alt="Filled like icon"
+					></img>
+				) : (
+					<img
+						src="assets/images/icons/unfilled_heart.png"
+						alt="Unfilled like icon"
+					/>
+				)}
+				<LikeNum>{props.club.likes}</LikeNum>
+			</LikeIcon>
 		</StyledCard>
 	);
 };
