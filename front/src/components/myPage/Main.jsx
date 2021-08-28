@@ -3,7 +3,8 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { Tabs, Row, Divider, message, Modal } from "antd";
 import styled from "styled-components";
-import MyCommentList from "./MyCommentList";
+import MyComment from "./MyComment";
+import CustomPagination from "../common/Pagination";
 import LikedClubList from "./LikedClubList";
 import Button from "../common/Button";
 import EditForm from "./EditForm";
@@ -131,10 +132,19 @@ const UnfilledBtn = styled(Button)`
 	}
 `;
 
+const PaginationRow = styled(Row)`
+	width: 100%;
+	margin-top: 48px;
+	justify-content: center;
+`;
+
 const Main = (props) => {
 	let history = useHistory();
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [myClub, setMyClub] = useState({});
+	const [myComments, setMyComments] = useState([]);
+	const [total, setTotal] = useState(0);
+	const [page, setPage] = useState(1);
 	const userId = localStorage.getItem("user_id");
 
 	useEffect(() => {
@@ -149,12 +159,23 @@ const Main = (props) => {
 				} else {
 					setMyClub(res.data);
 				}
+
+				const commentRes = await axios.get(`comments/user/${userId}`, {
+					params: { page: page },
+				});
+
+				if (!res.data) {
+					message.error("내가 쓴 댓글이 존재하지 않습니다.");
+				} else {
+					setMyComments(res.data.commentList);
+					setTotal(res.data.totalCount);
+				}
 			} catch (err) {
 				console.log(err);
 			}
 		};
 		fetchData();
-	}, [userId]);
+	}, [userId, page]);
 
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -190,9 +211,19 @@ const Main = (props) => {
 			<StyledTabs defaultActiveKey="1">
 				<TabPane tab="내 댓글" key="1">
 					<TabContainer gutter={[0, 98]}>
-						<Row>
-							<MyCommentList />
+						<Row gutter={[0, 16]}>
+							<Row>
+								<MyComment />
+							</Row>
 						</Row>
+						<PaginationRow>
+							<CustomPagination
+								total={total}
+								pageSize={10}
+								current={page}
+								onChange={(page) => setPage(page)}
+							/>
+						</PaginationRow>
 					</TabContainer>
 				</TabPane>
 				<TabPane tab="좋아요한 독서모임" key="2">
