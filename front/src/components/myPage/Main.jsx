@@ -166,12 +166,19 @@ const Main = (props) => {
 
 	const handleDeleteClub = async () => {
 		try {
-			const res = await axios.delete(`/clubs/users/${userId}`);
+			const res = await axios.get(`/clubs/users/${userId}`);
 
-			if (res) {
-				message.success("독서모임이 성공적으로 삭제되었습니다.");
+			if (res.data) {
+				const deleteRes = await axios.delete(`/clubs/users/${userId}`);
+
+				if (deleteRes.status === 200) {
+					message.success("독서모임이 성공적으로 삭제되었습니다.");
+					handleCancel();
+				} else {
+					message.error("독서모임 삭제에 실패하였습니다.");
+				}
 			} else {
-				message.error("독서모임 삭제에 실패하였습니다.");
+				message.error("현재 운영중인 독서모임이 존재하지 않습니다.");
 			}
 		} catch (err) {
 			console.log(err);
