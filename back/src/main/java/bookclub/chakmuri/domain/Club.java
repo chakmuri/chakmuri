@@ -19,7 +19,7 @@ import static javax.persistence.FetchType.LAZY;
 @ToString(exclude = {"commentList", "memberList"})
 @Table(name = "clubs")
 @Getter
-public class Club {
+public class Club extends BaseTime{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //데이터베이스에 위임(자동생성, auto_increment)
@@ -71,10 +71,6 @@ public class Club {
     private String addressStreet;
 
     private int likes;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

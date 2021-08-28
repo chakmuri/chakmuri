@@ -15,6 +15,11 @@ spring:
 #        show_sql: true
         format_sql: true
 
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+
 logging:
   level:
     org:

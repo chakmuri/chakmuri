@@ -26,8 +26,6 @@ public class LikedClub {
     @ManyToOne(fetch = EAGER)
     private Club club;
 
-
-
     @Builder
     public LikedClub( User user, Club club) {
         this.user = user;
