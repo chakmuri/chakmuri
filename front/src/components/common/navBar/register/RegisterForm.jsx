@@ -144,8 +144,8 @@ const UnfilledBtn = styled(Button)`
 const RegisterForm = ({ ...props }) => {
 	const [registerForm] = Form.useForm();
 	const [inputText, setInputText] = useState("");
-	const [streetAddress, setStreetAddress] = useState("");
-	const [detailAddress, setDetailAddress] = useState("");
+	const [addressStreet, setAddressStreet] = useState("");
+	const [addressDetail, setAddressDetail] = useState("");
 	const [imgFile, setImgFile] = useState(null);
 	const [preview, setPreview] = useState(null);
 	const [selectedTags, setSelectedTags] = useState([]);
@@ -159,8 +159,10 @@ const RegisterForm = ({ ...props }) => {
 		"독서 외 활동",
 	];
 
-	const fullAddress = streetAddress + detailAddress;
+	const fullAddress = addressStreet + addressDetail;
 	const userId = localStorage.getItem("user_id");
+
+	console.log("imgFile: ", imgFile);
 
 	// registerForm.resetFields();
 
@@ -168,19 +170,19 @@ const RegisterForm = ({ ...props }) => {
 		setInputText(e.target.value);
 	};
 
-	const getStreetAddress = () => {
-		setStreetAddress(inputText);
+	const getaddressStreet = () => {
+		setAddressStreet(inputText);
 		setInputText("");
 	};
 
-	const getDetailAddress = () => {
-		setDetailAddress(inputText);
+	const getaddressDetail = () => {
+		setAddressDetail(inputText);
 		setInputText("");
 	};
 
 	const getFullAdress = (e) => {
-		getStreetAddress();
-		getDetailAddress();
+		getaddressStreet();
+		getaddressDetail();
 	};
 
 	const handleImgChange = (e) => {
@@ -218,7 +220,7 @@ const RegisterForm = ({ ...props }) => {
 		const formData = new FormData();
 
 		if (!values.minPersonnel || !values.maxPersonnel) {
-			message.error("침여인원을 입력해주세요.");
+			message.error("참여인원을 입력해주세요.");
 			return;
 		}
 
@@ -239,32 +241,31 @@ const RegisterForm = ({ ...props }) => {
 		formData.append("endDate", endDate);
 		formData.append("minPersonnel", values.minPersonnel);
 		formData.append("maxPersonnel", values.maxPersonnel);
-		formData.append("imgUrl", imgFile);
+		formData.append("img", imgFile);
 		formData.append("tags", sendTags);
 		formData.append("bookTitle", values.bookTitle);
 		formData.append("author", values.bookAuthor);
 		formData.append("publisher", values.bookPublisher);
 		formData.append("publishedAt", values.bookPublishedDate);
+		formData.append("bookDescription", values.bookDescription);
 		formData.append("description", values.description);
 		formData.append("addressStreet", values.addressStreet);
 		formData.append("addressDetail", values.addressDetail);
 
-		console.log(formData);
-
-		const config = {
-			headers: {
-				"content-type": "multipart/form-data",
-			},
-		};
+		// const config = {
+		// 	headers: {
+		// 		"content-type": "multipart/form-data",
+		// 	},
+		// };
 
 		try {
 			const res = await axios.get(`/clubs/users/${userId}`);
 			console.log(res);
 
 			if (!res.data) {
-				const res = await axios.post("/clubs", formData, config);
+				const res = await axios.post("/clubs", formData);
 
-				if (res.status === 204) {
+				if (res.status === 200) {
 					message.success("독서모임이 성공적으로 등록되었습니다!");
 					props.onCancel();
 				} else message.error("독서모임 등록에 실패했습니다.");
@@ -387,7 +388,6 @@ const RegisterForm = ({ ...props }) => {
 						name="tags"
 						rules={[
 							{
-								type: "array",
 								required: false,
 								message: "모임의 태그를 선택하세요.",
 							},
