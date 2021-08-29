@@ -17,8 +17,8 @@ public class ClubUpdateRequestDto {
     private String imgUrl;
     private int minPersonnel;
     private int maxPersonnel;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
     private String tags;
     private String bookTitle;
     private String author;
