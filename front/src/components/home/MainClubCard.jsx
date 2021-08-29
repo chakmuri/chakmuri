@@ -38,15 +38,17 @@ const StyledCard = styled(Card)`
 
 const TagContainer = styled.div`
 	display: flex;
-	gap: 3px;
+	gap: 5px;
 
 	position: absolute;
 	bottom: 20px;
 `;
 
 const MainTag = styled(SmallTag)`
-	font-size: 10px;
-	padding: 3px 8px;
+	& {
+		font-size: 12px;
+		padding: 5px 10px;
+	}
 `;
 
 const LikeIcon = styled.div`

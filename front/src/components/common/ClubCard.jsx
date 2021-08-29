@@ -38,10 +38,17 @@ const StyledCard = styled(Card)`
 
 const TagContainer = styled.div`
 	display: flex;
-	gap: 3px;
+	gap: 5px;
 
 	position: absolute;
 	bottom: 25px;
+`;
+
+const ClubTag = styled(SmallTag)`
+	& {
+		font-size: 14px;
+		padding: 7px 13px;
+	}
 `;
 
 const LikeIcon = styled.div`
@@ -66,7 +73,7 @@ const ClubCard = ({ ...props }) => {
 			<Meta title={props.club.title} description={props.club.contents} />
 			<TagContainer>
 				{props.club.tags.split(", ").map((tag, i) => (
-					<SmallTag key={i}>{tag}</SmallTag>
+					<ClubTag key={i}>{tag}</ClubTag>
 				))}
 			</TagContainer>
 			<LikeIcon
