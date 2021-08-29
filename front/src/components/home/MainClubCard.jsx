@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Card } from "antd";
 import SmallTag from "../common/SmallTag";
+import unfilledHeart from "../../images/icons/unfilled_heart.png";
+import filledHeart from "../../images/icons/filled_heart.png";
 
 const { Meta } = Card;
 
@@ -47,6 +49,7 @@ const LikeIcon = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	cursor: pointer;
 
 	position: absolute;
 	right: 10px;
@@ -59,9 +62,7 @@ const MainClubCard = ({ ...props }) => {
 	return (
 		<StyledCard
 			hoverable
-			cover={
-				<img src="assets/images/thumbnail-club.png" alt="Clubcard thumbnail" />
-			}
+			cover={<img src={props.club.imgUrl} alt="Clubcard thumbnail" />}
 		>
 			<Meta title={props.club.title} description={props.club.contents} />
 			<TagContainer>
@@ -76,15 +77,9 @@ const MainClubCard = ({ ...props }) => {
 				}}
 			>
 				{props.like ? (
-					<img
-						src="assets/images/icons/filled_heart.png"
-						alt="Filled like icon"
-					></img>
+					<img src={filledHeart} alt="Filled like icon"></img>
 				) : (
-					<img
-						src="assets/images/icons/unfilled_heart.png"
-						alt="Unfilled like icon"
-					/>
+					<img src={unfilledHeart} alt="Unfilled like icon" />
 				)}
 				<LikeNum>{props.club.likes}</LikeNum>
 			</LikeIcon>

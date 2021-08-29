@@ -246,16 +246,17 @@ const RegisterForm = ({ ...props }) => {
 			publishedAt: values.bookPublishedDate,
 		};
 
-		console.log(data);
+		console.log("도로명 주소 데이터 타입: ", typeof data.addressStreet);
+		console.log("상세 주소 데이터 타입", typeof data.addressDetail);
 
 		try {
 			const res = await axios.get(`/clubs/users/${userId}`);
 			console.log(res);
 
-			if (!res.data) {
-				const res = await axios.post("/clubs", data);
+			if (res.status === 204) {
+				const registerRes = await axios.post("/clubs", data);
 
-				if (res.status === 204) {
+				if (registerRes.status === 200) {
 					message.success("독서모임이 성공적으로 등록되었습니다!");
 					props.onCancel();
 				} else message.error("독서모임 등록에 실패했습니다.");

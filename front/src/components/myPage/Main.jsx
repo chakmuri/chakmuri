@@ -5,7 +5,7 @@ import styled from "styled-components";
 import MyComment from "./MyComment";
 import EditForm from "./EditForm";
 import ClubCard from "../common/ClubCard";
-import CustomPagination from "../common/Pagination";
+import Pagination from "../common/Pagination";
 import Button from "../common/Button";
 
 const { TabPane } = Tabs;
@@ -236,7 +236,7 @@ const Main = (props) => {
 							))}
 						</Row>
 						<PaginationRow>
-							<CustomPagination
+							<Pagination
 								total={myCommentsTotal}
 								pageSize={10}
 								current={myCommentsPage}
@@ -255,7 +255,7 @@ const Main = (props) => {
 							))}
 						</ListRow>
 						<PaginationRow>
-							<CustomPagination
+							<Pagination
 								total={likedClubsTotal}
 								pageSize={9}
 								current={likedClubsPage}

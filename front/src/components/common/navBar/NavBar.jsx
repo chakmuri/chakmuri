@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Modal, Menu, Dropdown } from "antd";
 import Login from "./login/Login";
 import RegisterForm from "./register/RegisterForm";
-import { useEffect } from "react";
+import logo from "../../../images/logo.png";
+import profile from "../../../images/icons/profile.png";
+import add from "../../../images/icons/add.png";
 
 const Nav = styled.nav`
 	width: 1200px;
@@ -151,7 +153,7 @@ const NavBar = () => {
 				<Nav>
 					<Link to="/">
 						<NavLogo>
-							<img src="assets/images/logo.png" alt="Logo" />
+							<img src={logo} alt="Logo" />
 						</NavLogo>
 					</Link>
 					<NavMenu>
@@ -160,7 +162,7 @@ const NavBar = () => {
 						</NavLink>
 						<NavIcon>
 							<NavProfile onClick={showModal}>
-								<img src="assets/images/icons/profile.png" alt="Profile icon" />
+								<img src={profile} alt="Profile icon" />
 							</NavProfile>
 							<StyledModal visible={isModalVisible} onCancel={handleCancel}>
 								<Title>
@@ -177,7 +179,7 @@ const NavBar = () => {
 				<Nav>
 					<Link to="/">
 						<NavLogo>
-							<img src="assets/images/logo.png" alt="Logo" />
+							<img src={logo} alt="Logo" />
 						</NavLogo>
 					</Link>
 					<NavMenu>
@@ -191,7 +193,7 @@ const NavBar = () => {
 								</NavProfile>
 							</Dropdown>
 							<NavRegister onClick={showModal}>
-								<img src="assets/images/icons/add.png" alt="Add icon" />
+								<img src={add} alt="Add icon" />
 							</NavRegister>
 							<StyledModal visible={isModalVisible} onCancel={handleCancel}>
 								<RegisterForm onCancel={handleCancel} />
