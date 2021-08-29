@@ -13,6 +13,10 @@ const StyledCard = styled(Card)`
 	border: 2px solid #e5e5e5;
 	border-radius: 10px;
 
+	.ant-card-cover img {
+		height: 190px;
+	}
+
 	.ant-card-body {
 		height: 190px;
 		padding: 20px;
