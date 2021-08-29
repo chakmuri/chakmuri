@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +38,7 @@ public class ClubService {
 
     @Transactional
     public Club createClub(ClubCreateRequestDto requestDto, MultipartFile file) {
-        //TODO : AWS s3 img upload 로직 짜기 (현재는 로컬 업로드)
+        //TODO : AWS s3 img upload 로직 짜기
         if (file != null) {
             try {
                 String imgPath = s3Service.upload(file);
@@ -47,16 +48,21 @@ public class ClubService {
             }
         }
         Club club = requestDto.toEntity();
+        String startDateString = requestDto.getStartDate();
+        String endDateString = requestDto.getEndDate();
+        LocalDate startDate = LocalDate.parse(startDateString, DateTimeFormatter.ISO_DATE);
+        LocalDate endDate = LocalDate.parse(endDateString, DateTimeFormatter.ISO_DATE);
         Book book = new Book(requestDto.getBookTitle(), requestDto.getAuthor(),
                 requestDto.getPublisher(), requestDto.getPublishedAt(),
                 requestDto.getBookDescription());
-        final Club newClub = convertToNewClub(club, book, requestDto.getUserId());
+        final Club newClub = convertToNewClub(club, book, requestDto.getUserId(), startDate, endDate);
         return clubRepository.save(newClub);
     }
 
     //club 생성시에만 사용하는 메서드
     //파라미터로 받은 userId 값을 사용해 findById로 찾은 user 객체를 이용, 빌더로 entity 를 생성하는 역할
-    private Club convertToNewClub(final Club club, final Book book, final String userId) {
+    private Club convertToNewClub(final Club club, final Book book, final String userId,
+                                  LocalDate startDate, LocalDate endDate) {
         final User user = userRepository.findById(userId)
                 .orElseThrow(); // -> TODO : UserNotFoundException 만들어서 넣기
         return Club.builder()
@@ -66,8 +72,8 @@ public class ClubService {
                 .imgUrl(club.getImgUrl())
                 .minPersonnel(club.getMinPersonnel())
                 .maxPersonnel(club.getMaxPersonnel())
-                .startDate(club.getStartDate())
-                .endDate(club.getEndDate())
+                .startDate(startDate)
+                .endDate(endDate)
                 .tags(club.getTags())
                 .likes(0)
                 .book(book)
@@ -131,7 +137,7 @@ public class ClubService {
             return clubSortedByKeyword;
 
         //tag 필터링
-        //TODO: 태그 여러 개 적용해서 조회 시 항목이 중복에서 출력되는 문제 해결
+        //TODO: 태그 여러 개 적용해서 조회 시 항목이 중복해서 출력되는 문제 해결
         List<Club> clubSortedByTags = new ArrayList<>();
         List<String> tag = Arrays.asList(tags.split(", "));
         for(Club club : clubSortedByKeyword){

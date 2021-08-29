@@ -17,8 +17,8 @@ public class ClubCreateRequestDto {
     private String imgUrl;
     private int minPersonnel;
     private int maxPersonnel;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
     private String tags;
     private String bookTitle;
     private String author;
@@ -36,8 +36,6 @@ public class ClubCreateRequestDto {
                 .imgUrl(imgUrl)
                 .minPersonnel(minPersonnel)
                 .maxPersonnel(maxPersonnel)
-                .startDate(startDate)
-                .endDate(endDate)
                 .tags(tags)
                 .description(description)
                 .addressDetail(addressDetail)

@@ -1,9 +1,6 @@
 package bookclub.chakmuri.controller.club;
 
-import bookclub.chakmuri.controller.comment.CommentPageResponseDto;
 import bookclub.chakmuri.domain.Club;
-import bookclub.chakmuri.domain.ClubStatus;
-import bookclub.chakmuri.domain.Comment;
 import bookclub.chakmuri.service.ClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,8 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static bookclub.chakmuri.util.Utils.getStatusCode;
-
 @RestController
 @RequestMapping("/clubs")
 @RequiredArgsConstructor
@@ -34,8 +29,8 @@ public class ClubController {
     //독서모임 생성
     @PostMapping
     public ResponseEntity<ClubCreateRequestDto> createClub(
-            @RequestBody ClubCreateRequestDto clubCreateRequestDto,
-            @RequestParam(value = "img", required = false) MultipartFile file) {
+            ClubCreateRequestDto clubCreateRequestDto,
+            @RequestParam(value = "img") MultipartFile file) {
         //이 유저가 만든 독서모임이 있는지 체크(한사람당 한 개)
         //400 에러 -> 잘못된 요청
         if(clubService.findClubByUserId(clubCreateRequestDto.getUserId()) != null){
