@@ -244,9 +244,9 @@ const RegisterForm = ({ ...props }) => {
 		formData.append("img", imgFile);
 		formData.append("tags", sendTags);
 		formData.append("bookTitle", values.bookTitle);
-		formData.append("author", values.bookAuthor);
-		formData.append("publisher", values.bookPublisher);
-		formData.append("publishedAt", values.bookPublishedDate);
+		formData.append("author", values.author);
+		formData.append("publisher", values.publisher);
+		formData.append("publishedAt", values.publishedAt);
 		formData.append("bookDescription", values.bookDescription);
 		formData.append("description", values.description);
 		formData.append("addressStreet", values.addressStreet);
@@ -420,19 +420,19 @@ const RegisterForm = ({ ...props }) => {
 				<Col span={16}>
 					<Form.Item
 						label="작가명"
-						name="bookAuthor"
+						name="author"
 						rules={[{ required: true, message: "작가명을 입력하세요." }]}
 					>
 						<StyledInput placeholder="작가명" />
 					</Form.Item>
 				</Col>
 				<Col span={16}>
-					<Form.Item label="출판사" name="bookPublisher">
+					<Form.Item label="출판사" name="publisher">
 						<StyledInput placeholder="작가명" />
 					</Form.Item>
 				</Col>
 				<Col span={16}>
-					<Form.Item label="출판연도" name="bookPublishedDate">
+					<Form.Item label="출판연도" name="publishedAt">
 						<StyledInputNumber placeholder={1900} />
 					</Form.Item>
 				</Col>

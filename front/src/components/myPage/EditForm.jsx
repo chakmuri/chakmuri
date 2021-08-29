@@ -246,9 +246,9 @@ const EditForm = ({ ...props }) => {
 		formData.append("maxPersonnel", values.maxPersonnel);
 		formData.append("tags", sendTags);
 		formData.append("bookTitle", values.bookTitle);
-		formData.append("author", values.bookAuthor);
-		formData.append("publisher", values.bookPublisher);
-		formData.append("publishedAt", values.bookPublishedDate);
+		formData.append("author", values.author);
+		formData.append("publisher", values.publisher);
+		formData.append("publishedAt", values.publishedA);
 		formData.append("bookDescription", values.bookDescription);
 		formData.append("description", values.description);
 		formData.append("addressStreet", values.addressStreet);
