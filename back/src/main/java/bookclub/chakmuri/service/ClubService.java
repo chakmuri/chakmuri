@@ -20,9 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -137,8 +135,7 @@ public class ClubService {
             return clubSortedByKeyword;
 
         //tag 필터링
-        //TODO: 태그 여러 개 적용해서 조회 시 항목이 중복해서 출력되는 문제 해결
-        List<Club> clubSortedByTags = new ArrayList<>();
+        Set<Club> clubSortedByTags = new HashSet<>();
         List<String> tag = Arrays.asList(tags.split(", "));
         for(Club club : clubSortedByKeyword){
             List<String> originTag = Arrays.asList(club.getTags().split(", "));
@@ -148,7 +145,7 @@ public class ClubService {
             }
         }
 
-        return clubSortedByTags;
+        return new ArrayList<>(clubSortedByTags);
     }
 
     public Club findClubById(Long clubId) {
@@ -167,8 +164,18 @@ public class ClubService {
     }
 
     @Transactional
-    public void updateClub(ClubUpdateRequestDto requestDto, String userId) {
+    public void updateClub(ClubUpdateRequestDto requestDto, String userId, MultipartFile file) {
         final Club club = findClubByUserId(userId);
+        if (file != null) {
+            try {
+                String imgPath = s3Service.upload(file);
+                requestDto.setImgUrl(imgPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        LocalDate startDate = LocalDate.parse(requestDto.getStartDate(), DateTimeFormatter.ISO_DATE);
+        LocalDate endDate = LocalDate.parse(requestDto.getEndDate(), DateTimeFormatter.ISO_DATE);
         Book book = new Book(requestDto.getBookTitle(), requestDto.getAuthor(),
                 requestDto.getPublisher(), requestDto.getPublishedAt(),
                 requestDto.getBookDescription());
@@ -178,8 +185,8 @@ public class ClubService {
                 requestDto.getImgUrl(),
                 requestDto.getMinPersonnel(),
                 requestDto.getMaxPersonnel(),
-                requestDto.getStartDate(),
-                requestDto.getEndDate(),
+                startDate,
+                endDate,
                 requestDto.getTags(),
                 book,
                 requestDto.getDescription(),

@@ -86,12 +86,17 @@ public class ClubController {
     }
 
     // 독서모임 수정 (my page)
-    @PatchMapping("/users/{userId}")
+    @PutMapping("/users/{userId}")
     public ResponseEntity<Void> updateClub(
-            @RequestBody ClubUpdateRequestDto clubUpdateRequestDto,
-            @PathVariable String userId) {
-        clubService.updateClub(clubUpdateRequestDto, userId);
-        return new ResponseEntity("독서모임 수정이 완료되었습니다.", HttpStatus.OK);
+            ClubUpdateRequestDto clubUpdateRequestDto,
+            @PathVariable String userId,
+            @RequestParam(value = "img", required = false) MultipartFile file) {
+        try{
+            clubService.updateClub(clubUpdateRequestDto, userId, file);
+            return new ResponseEntity("독서모임 수정이 완료되었습니다.", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // 독서모임 삭제 (my page)

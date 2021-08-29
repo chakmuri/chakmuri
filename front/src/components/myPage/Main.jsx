@@ -31,8 +31,13 @@ const StyledTabs = styled(Tabs)`
 		font-weight: bold;
 	}
 
+	.ant-tabs-tab:hover {
+		color: #fa9423;
+	}
+
 	.ant-tabs-ink-bar {
 		border: 2px solid #fa9423;
+		background-color: #fa9423;
 	}
 `;
 
