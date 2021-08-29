@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
 import axios from "axios";
 import { Form, Input, InputNumber, Row, Col, DatePicker, message } from "antd";
 import styled from "styled-components";
 import moment from "moment";
 import Button from "../common/Button";
+import Tag from "../common/Tag";
 import MapContainer from "../common/MapContainer";
 
 const { TextArea } = Input;
@@ -72,6 +72,10 @@ const TitleRow = styled.div`
 	margin: 20px 0;
 `;
 
+const TagRow = styled(Row)`
+	margin-top: 20px;
+`;
+
 const StyledRangePicker = styled(RangePicker)`
 	height: 48px;
 	background-color: #f6f6f6;
@@ -94,23 +98,6 @@ const StyledTextArea = styled(TextArea)`
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
-`;
-
-const Tag = styled.div`
-	padding: 10px 20px;
-	font-size: 16px;
-	color: #f98404;
-	background-color: #ffffff;
-	border: 1px solid #f98404;
-	border-radius: 30px;
-	text-align: center;
-	letter-spacing: 2px;
-	cursor: pointer;
-
-	&:hover {
-		color: #ffffff;
-		background-color: #f98404;
-	}
 `;
 
 const TagContainer = styled.div`
@@ -148,11 +135,16 @@ const FilledBtn = styled(Button)`
 `;
 
 const EditForm = ({ ...props }) => {
+	const [editForm] = Form.useForm();
 	const [inputText, setInputText] = useState("");
-	const [streetAddress, setStreetAddress] = useState("");
-	const [detailAddress, setDetailAddress] = useState("");
-	const [imgFile, setImgFile] = useState(null);
-	const [preview, setPreview] = useState(null);
+	const [streetAddress, setStreetAddress] = useState(
+		props.myClub.addressStreet
+	);
+	const [detailAddress, setDetailAddress] = useState(
+		props.myClub.addressDetail
+	);
+	const [imgFile, setImgFile] = useState(props.myClub.imgUrl);
+	const [preview, setPreview] = useState(props.myClub.imgUrl);
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
 	const myClubTags = props.myClub.tags.split(", ");
@@ -168,7 +160,8 @@ const EditForm = ({ ...props }) => {
 		"독서 외 활동",
 	];
 
-	const fullAddress = streetAddress + detailAddress;
+	const fullAddress = streetAddress + " " + detailAddress;
+
 	const userId = localStorage.getItem("user_id");
 
 	const onChange = (e) => {
@@ -219,11 +212,10 @@ const EditForm = ({ ...props }) => {
 	};
 
 	const sendData = async (values) => {
-		const mock_edit_tags = "지방, 독서 외 활동";
 		setStartDate(values.date[0]._d.toISOString().substring(0, 10));
 		setEndDate(values.date[1]._d.toISOString().substring(0, 10));
+		const sendTags = selectedTags.join(", ");
 		const formData = new FormData();
-		formData.append("upload_image", imgFile);
 
 		const config = {
 			headers: {
@@ -231,26 +223,103 @@ const EditForm = ({ ...props }) => {
 			},
 		};
 
-		const data = {
-			title: values.title,
-			contents: values.contents,
-			startDate,
-			endDate,
-			minPersonnel: values.minPersonnel,
-			maxPersonnel: values.maxPersonnel,
-			description: values.description,
-			bookDescription: values.bookDescription,
-			tags: mock_edit_tags,
-			addressStreet: values.addressStreet,
-			addressDetail: values.addressDetail,
-			bookTitle: values.bookTitle,
-			author: values.bookAuthor,
-			publisher: values.bookPublisher,
-			publishedAt: values.bookPublishedDate,
-		};
+		if (!values.minPersonnel || !values.maxPersonnel) {
+			message.error("침여인원을 입력해주세요.");
+			return;
+		}
+
+		if (!imgFile) {
+			message.error("사진을 등록해주세요.");
+			return;
+		}
+
+		if (!sendTags) {
+			message.error("태그를 선택해주세요.");
+			return;
+		}
+
+		formData.append("title", values.title);
+		formData.append("contents", values.contents);
+		formData.append("startDate", startDate);
+		formData.append("endDate", endDate);
+		formData.append("minPersonnel", values.minPersonnel);
+		formData.append("maxPersonnel", values.maxPersonnel);
+		formData.append("tags", sendTags);
+		formData.append("bookTitle", values.bookTitle);
+		formData.append("author", values.bookAuthor);
+		formData.append("publisher", values.bookPublisher);
+		formData.append("publishedAt", values.bookPublishedDate);
+		formData.append("bookDescription", values.bookDescription);
+		formData.append("description", values.description);
+		formData.append("addressStreet", values.addressStreet);
+		formData.append("addressDetail", values.addressDetail);
+
+		if (props.myClub.imgUrl !== imgFile) {
+			formData.append("img", imgFile);
+		}
+
+		// if (props.myClub.title !== values.title) {
+		// 	formData.append("title", values.title);
+		// }
+
+		// if (props.myClub.contents !== values.contents) {
+		// 	formData.append("contents", values.contents);
+		// }
+
+		// if (props.myClub.startDate !== values.startDate) {
+		// 	formData.append("startDate", startDate);
+		// }
+
+		// if (props.myClub.endDate !== values.endDate) {
+		// 	formData.append("endDate", endDate);
+		// }
+
+		// if (props.myClub.minPersonnel !== values.minPersonnel) {
+		// 	formData.append("minPersonnel", values.minPersonnel);
+		// }
+
+		// if (props.myClub.maxPersonnel !== values.maxPersonnel) {
+		// 	formData.append("maxPersonnel", values.maxPersonnel);
+		// }
+
+		// if (props.myClub.tags !== sendTags) {
+		// 	formData.append("tags", sendTags);
+		// }
+
+		// if (props.myClub.bookTitle !== values.bookTitle) {
+		// 	formData.append("bookTitle", values.bookTitle);
+		// }
+
+		// if (props.myClub.author !== values.author) {
+		// 	formData.append("author", values.author);
+		// }
+
+		// if (props.myClub.publisher !== values.publisher) {
+		// 	formData.append("publisher", values.publisher);
+		// }
+
+		// if (props.myClub.publishedAt !== values.publishedAt) {
+		// 	formData.append("publishedAt", values.publishedAt);
+		// }
+
+		// if (props.myClub.bookDescription !== values.bookDescription) {
+		// 	formData.append("bookDescription", values.bookDescription);
+		// }
+
+		// if (props.myClub.description !== values.description) {
+		// 	formData.append("description", values.description);
+		// }
+
+		// if (props.myClub.addressStreet !== values.addressStreet) {
+		// 	formData.append("addressStreet", values.addressStreet);
+		// }
+
+		// if (props.myClub.addressDetail !== values.addressDetail) {
+		// 	formData.append("addressDetail", values.addressDetail);
+		// }
 
 		try {
-			const res = await axios.patch(`/clubs/users/${userId}`, data);
+			const res = await axios.put(`/clubs/users/${userId}`, formData, config);
 
 			if (res.status === 200)
 				message.success("독서모임이 성공적으로 수정되었습니다!");
@@ -272,7 +341,8 @@ const EditForm = ({ ...props }) => {
 	return (
 		<Wrapper>
 			<StyledForm
-				name="registerForm"
+				form={editForm}
+				name="editForm"
 				layout="vertical"
 				onFinish={onFinish}
 				onFinishFailed={onFinishFailed}
@@ -376,14 +446,13 @@ const EditForm = ({ ...props }) => {
 						</Form.Item>
 					</Col>
 				</Row>
-				<Row>
+				<TagRow>
 					<Form.Item
-						label="태그"
+						label="태그 (최대 3개까지 선택 가능)"
 						name="tags"
 						rules={[
 							{
-								type: "string",
-								required: false,
+								type: "array",
 								message: "모임의 태그를 선택하세요.",
 							},
 						]}
@@ -402,7 +471,7 @@ const EditForm = ({ ...props }) => {
 							))}
 						</TagContainer>
 					</Form.Item>
-				</Row>
+				</TagRow>
 				<TitleRow>선정도서</TitleRow>
 				<Col span={16}>
 					<Form.Item
@@ -418,7 +487,7 @@ const EditForm = ({ ...props }) => {
 					<Form.Item
 						initialValue={props.myClub.author}
 						label="작가명"
-						name="bookAuthor"
+						name="author"
 						rules={[{ required: true, message: "작가명을 입력하세요." }]}
 					>
 						<StyledInput placeholder="작가명" />
@@ -428,7 +497,7 @@ const EditForm = ({ ...props }) => {
 					<Form.Item
 						initialValue={props.myClub.publisher}
 						label="출판사"
-						name="bookPublisher"
+						name="publisher"
 					>
 						<StyledInput placeholder="작가명" />
 					</Form.Item>
@@ -437,7 +506,7 @@ const EditForm = ({ ...props }) => {
 					<Form.Item
 						initialValue={props.myClub.publishedAt}
 						label="출판연도"
-						name="bookPublishedDate"
+						name="publishedAt"
 					>
 						<StyledInputNumber placeholder={1900} />
 					</Form.Item>
