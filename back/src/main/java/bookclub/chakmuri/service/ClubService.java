@@ -111,7 +111,7 @@ public class ClubService {
         clubs = clubRepository.findAll(sort);
 
         //모집중 만 필터링
-        if(clubStatus.isEmpty()){
+        if(!clubStatus.isEmpty()){
             clubs.removeIf(club -> club.getClubStatus().equals(ClubStatus.EXPIRED));
         }
 
