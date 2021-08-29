@@ -113,11 +113,6 @@ const Tag = styled.div`
 	}
 `;
 
-// const SelectedTag = styled(Tag)`
-// 	color: #ffffff;
-// 	background-color: #f98404;
-// `;
-
 const TagContainer = styled.div`
 	display: flex;
 	gap: 10px;
@@ -160,6 +155,18 @@ const EditForm = ({ ...props }) => {
 	const [preview, setPreview] = useState(null);
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
+	const myClubTags = props.myClub.tags.split(", ");
+	const [selectedTags, setSelectedTags] = useState(myClubTags);
+
+	const tags = [
+		"온라인",
+		"오프라인",
+		"온・오프라인",
+		"수도권",
+		"지방",
+		"친목",
+		"독서 외 활동",
+	];
 
 	const fullAddress = streetAddress + detailAddress;
 	const userId = localStorage.getItem("user_id");
@@ -196,6 +203,21 @@ const EditForm = ({ ...props }) => {
 		}
 	};
 
+	const handleSelectTags = (e) => {
+		let tagName = e.target.innerText;
+		let index = selectedTags.indexOf(tagName);
+
+		if (selectedTags.includes(tagName)) {
+			selectedTags.splice(index, 1);
+			setSelectedTags([...selectedTags]);
+		} else if (selectedTags.length === 3) {
+			selectedTags.splice(index, 1);
+			message.error("태그는 최대 3개까지 선택 가능합니다!");
+		} else {
+			setSelectedTags([...selectedTags, tagName]);
+		}
+	};
+
 	const sendData = async (values) => {
 		const mock_edit_tags = "지방, 독서 외 활동";
 		setStartDate(values.date[0]._d.toISOString().substring(0, 10));
@@ -226,9 +248,6 @@ const EditForm = ({ ...props }) => {
 			publisher: values.bookPublisher,
 			publishedAt: values.bookPublishedDate,
 		};
-
-		console.log(data);
-		console.log(props.myClub.id);
 
 		try {
 			const res = await axios.patch(`/clubs/users/${userId}`, data);
@@ -370,14 +389,17 @@ const EditForm = ({ ...props }) => {
 						]}
 					>
 						<TagContainer>
-							<Tag>소수정예</Tag>
-							<Tag>온라인</Tag>
-							<Tag>오프라인</Tag>
-							<Tag>온・오프라인</Tag>
-							<Tag>수도권</Tag>
-							<Tag>지방</Tag>
-							<Tag>친목</Tag>
-							<Tag>독서 외 활동</Tag>
+							{tags.map((tag, i) => (
+								<Tag
+									type="button"
+									key={i}
+									value={i}
+									onClick={handleSelectTags}
+									selected={selectedTags.includes(tag) ? true : false}
+								>
+									{tag}
+								</Tag>
+							))}
 						</TagContainer>
 					</Form.Item>
 				</Row>
