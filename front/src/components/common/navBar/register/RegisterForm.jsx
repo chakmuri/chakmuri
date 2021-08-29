@@ -5,7 +5,6 @@ import styled from "styled-components";
 import Button from "../../Button";
 import Tag from "../../Tag";
 import MapContainer from "../../MapContainer";
-import { useEffect } from "react";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -23,7 +22,7 @@ const StyledForm = styled(Form)`
 	}
 
 	.ant-form-item {
-		margin-bottom: 14px;
+		margin-bottom: 20px;
 	}
 
 	.ant-input:focus,
@@ -65,7 +64,7 @@ const TitleRow = styled.div`
 	font-family: Roboto;
 	font-weight: bold;
 	font-size: 20px;
-	margin: 20px 0;
+	margin: 30px 0;
 `;
 
 const StyledRangePicker = styled(RangePicker)`
@@ -102,6 +101,10 @@ const PreviewImage = styled.img`
 	height: 263px;
 	border: none;
 	border-radius: 50%;
+`;
+
+const TagRow = styled(Row)`
+	margin-top: 20px;
 `;
 
 const ButtonRow = styled(Row)`
@@ -141,8 +144,8 @@ const UnfilledBtn = styled(Button)`
 const RegisterForm = ({ ...props }) => {
 	const [registerForm] = Form.useForm();
 	const [inputText, setInputText] = useState("");
-	const [streetAddress, setStreetAddress] = useState("");
-	const [detailAddress, setDetailAddress] = useState("");
+	const [addressStreet, setAddressStreet] = useState("");
+	const [addressDetail, setAddressDetail] = useState("");
 	const [imgFile, setImgFile] = useState(null);
 	const [preview, setPreview] = useState(null);
 	const [selectedTags, setSelectedTags] = useState([]);
@@ -156,8 +159,10 @@ const RegisterForm = ({ ...props }) => {
 		"독서 외 활동",
 	];
 
-	const fullAddress = streetAddress + detailAddress;
+	const fullAddress = addressStreet + addressDetail;
 	const userId = localStorage.getItem("user_id");
+
+	console.log("imgFile: ", imgFile);
 
 	// registerForm.resetFields();
 
@@ -165,19 +170,19 @@ const RegisterForm = ({ ...props }) => {
 		setInputText(e.target.value);
 	};
 
-	const getStreetAddress = () => {
-		setStreetAddress(inputText);
+	const getaddressStreet = () => {
+		setAddressStreet(inputText);
 		setInputText("");
 	};
 
-	const getDetailAddress = () => {
-		setDetailAddress(inputText);
+	const getaddressDetail = () => {
+		setAddressDetail(inputText);
 		setInputText("");
 	};
 
 	const getFullAdress = (e) => {
-		getStreetAddress();
-		getDetailAddress();
+		getaddressStreet();
+		getaddressDetail();
 	};
 
 	const handleImgChange = (e) => {
@@ -208,54 +213,59 @@ const RegisterForm = ({ ...props }) => {
 		}
 	};
 
-	useEffect(() => {
-		console.log(selectedTags);
-		console.log(selectedTags.length);
-	}, [selectedTags]);
-
 	const sendData = async (values) => {
 		const startDate = values.date[0]._d.toISOString().substring(0, 10);
 		const endDate = values.date[1]._d.toISOString().substring(0, 10);
 		const sendTags = selectedTags.join(", ");
-		// const mock_tags = "온라인, 친목";
 		const formData = new FormData();
-		formData.append("upload_image", imgFile);
 
-		const config = {
-			headers: {
-				"content-type": "multipart/form-data",
-			},
-		};
+		if (!values.minPersonnel || !values.maxPersonnel) {
+			message.error("참여인원을 입력해주세요.");
+			return;
+		}
 
-		const data = {
-			userId,
-			title: values.title,
-			contents: values.contents,
-			startDate,
-			endDate,
-			minPersonnel: values.minPersonnel,
-			maxPersonnel: values.maxPersonnel,
-			description: values.description,
-			bookDescription: values.bookDescription,
-			tags: sendTags,
-			addressStreet: values.addressStreet,
-			addressDetail: values.addressDetail,
-			bookTitle: values.bookTitle,
-			author: values.bookAuthor,
-			publisher: values.bookPublisher,
-			publishedAt: values.bookPublishedDate,
-		};
+		if (!imgFile) {
+			message.error("사진을 등록해주세요.");
+			return;
+		}
 
-		console.log(data);
+		if (!sendTags) {
+			message.error("태그를 선택해주세요.");
+			return;
+		}
+
+		formData.append("userId", userId);
+		formData.append("title", values.title);
+		formData.append("contents", values.contents);
+		formData.append("startDate", startDate);
+		formData.append("endDate", endDate);
+		formData.append("minPersonnel", values.minPersonnel);
+		formData.append("maxPersonnel", values.maxPersonnel);
+		formData.append("img", imgFile);
+		formData.append("tags", sendTags);
+		formData.append("bookTitle", values.bookTitle);
+		formData.append("author", values.bookAuthor);
+		formData.append("publisher", values.bookPublisher);
+		formData.append("publishedAt", values.bookPublishedDate);
+		formData.append("bookDescription", values.bookDescription);
+		formData.append("description", values.description);
+		formData.append("addressStreet", values.addressStreet);
+		formData.append("addressDetail", values.addressDetail);
+
+		// const config = {
+		// 	headers: {
+		// 		"content-type": "multipart/form-data",
+		// 	},
+		// };
 
 		try {
 			const res = await axios.get(`/clubs/users/${userId}`);
 			console.log(res);
 
 			if (!res.data) {
-				const res = await axios.post("/clubs", data);
+				const res = await axios.post("/clubs", formData);
 
-				if (res.status === 204) {
+				if (res.status === 200) {
 					message.success("독서모임이 성공적으로 등록되었습니다!");
 					props.onCancel();
 				} else message.error("독서모임 등록에 실패했습니다.");
@@ -372,13 +382,12 @@ const RegisterForm = ({ ...props }) => {
 						</Form.Item>
 					</Col>
 				</Row>
-				<Row>
+				<TagRow>
 					<Form.Item
-						label="태그"
+						label="태그 (최대 3개까지 선택 가능)"
 						name="tags"
 						rules={[
 							{
-								type: "string",
 								required: false,
 								message: "모임의 태그를 선택하세요.",
 							},
@@ -398,7 +407,7 @@ const RegisterForm = ({ ...props }) => {
 							))}
 						</TagContainer>
 					</Form.Item>
-				</Row>
+				</TagRow>
 				<TitleRow>선정도서</TitleRow>
 				<Col span={16}>
 					<Form.Item
@@ -445,7 +454,6 @@ const RegisterForm = ({ ...props }) => {
 						/>
 					</Form.Item>
 				</Col>
-
 				<Row>
 					<Col span={16}>
 						<Form.Item
