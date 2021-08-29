@@ -147,9 +147,9 @@ const EditForm = ({ ...props }) => {
 	const [preview, setPreview] = useState(props.myClub.imgUrl);
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
-	const myClubTags = props.myClub.tags.split(", ");
-	const [selectedTags, setSelectedTags] = useState(myClubTags);
-
+	const [selectedTags, setSelectedTags] = useState(
+		props.myClub.tags ? props.myClub.tags.split(", ") : []
+	);
 	const tags = [
 		"온라인",
 		"오프라인",
@@ -224,7 +224,7 @@ const EditForm = ({ ...props }) => {
 		};
 
 		if (!values.minPersonnel || !values.maxPersonnel) {
-			message.error("침여인원을 입력해주세요.");
+			message.error("참여인원을 입력해주세요.");
 			return;
 		}
 
@@ -248,7 +248,10 @@ const EditForm = ({ ...props }) => {
 		formData.append("bookTitle", values.bookTitle);
 		formData.append("author", values.author);
 		formData.append("publisher", values.publisher);
-		formData.append("publishedAt", values.publishedA);
+		formData.append(
+			"publishedAt",
+			values.publishedAt === 0 ? "미정" : values.publishedAt
+		);
 		formData.append("bookDescription", values.bookDescription);
 		formData.append("description", values.description);
 		formData.append("addressStreet", values.addressStreet);

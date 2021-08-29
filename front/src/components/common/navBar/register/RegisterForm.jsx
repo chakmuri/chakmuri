@@ -432,7 +432,7 @@ const RegisterForm = ({ ...props }) => {
 					</Form.Item>
 				</Col>
 				<Col span={16}>
-					<Form.Item label="출판연도" name="publishedAt">
+					<Form.Item initialValue={0} label="출판연도" name="publishedAt">
 						<StyledInputNumber placeholder={1900} />
 					</Form.Item>
 				</Col>
