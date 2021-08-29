@@ -20,9 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -137,8 +135,7 @@ public class ClubService {
             return clubSortedByKeyword;
 
         //tag 필터링
-        //TODO: 태그 여러 개 적용해서 조회 시 항목이 중복해서 출력되는 문제 해결
-        List<Club> clubSortedByTags = new ArrayList<>();
+        Set<Club> clubSortedByTags = new HashSet<>();
         List<String> tag = Arrays.asList(tags.split(", "));
         for(Club club : clubSortedByKeyword){
             List<String> originTag = Arrays.asList(club.getTags().split(", "));
@@ -148,7 +145,7 @@ public class ClubService {
             }
         }
 
-        return clubSortedByTags;
+        return new ArrayList<>(clubSortedByTags);
     }
 
     public Club findClubById(Long clubId) {
