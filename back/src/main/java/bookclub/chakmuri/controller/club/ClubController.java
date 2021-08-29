@@ -86,11 +86,11 @@ public class ClubController {
     }
 
     // 독서모임 수정 (my page)
-    @PatchMapping("/users/{userId}")
+    @PutMapping("/users/{userId}")
     public ResponseEntity<Void> updateClub(
             ClubUpdateRequestDto clubUpdateRequestDto,
             @PathVariable String userId,
-            @RequestParam(value = "img") MultipartFile file) {
+            @RequestParam(value = "img", required = false) MultipartFile file) {
         try{
             clubService.updateClub(clubUpdateRequestDto, userId, file);
             return new ResponseEntity("독서모임 수정이 완료되었습니다.", HttpStatus.OK);
