@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { GoogleLogin } from "react-google-login";
 import styled from "styled-components";
+import google from "../../../../images/icons/google.png";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -84,7 +85,7 @@ const Login = ({ ...props }) => {
 						disabled={renderProps.disabled}
 					>
 						<GoogleIcon>
-							<img src="assets/images/icons/google.png" alt="Google icon" />
+							<img src={google} alt="Google icon" />
 						</GoogleIcon>
 						구글로 로그인
 					</GoogleLoginButton>
