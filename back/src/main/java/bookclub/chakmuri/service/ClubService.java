@@ -164,8 +164,18 @@ public class ClubService {
     }
 
     @Transactional
-    public void updateClub(ClubUpdateRequestDto requestDto, String userId) {
+    public void updateClub(ClubUpdateRequestDto requestDto, String userId, MultipartFile file) {
         final Club club = findClubByUserId(userId);
+        if (file != null) {
+            try {
+                String imgPath = s3Service.upload(file);
+                requestDto.setImgUrl(imgPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        LocalDate startDate = LocalDate.parse(requestDto.getStartDate(), DateTimeFormatter.ISO_DATE);
+        LocalDate endDate = LocalDate.parse(requestDto.getEndDate(), DateTimeFormatter.ISO_DATE);
         Book book = new Book(requestDto.getBookTitle(), requestDto.getAuthor(),
                 requestDto.getPublisher(), requestDto.getPublishedAt(),
                 requestDto.getBookDescription());
@@ -175,8 +185,8 @@ public class ClubService {
                 requestDto.getImgUrl(),
                 requestDto.getMinPersonnel(),
                 requestDto.getMaxPersonnel(),
-                requestDto.getStartDate(),
-                requestDto.getEndDate(),
+                startDate,
+                endDate,
                 requestDto.getTags(),
                 book,
                 requestDto.getDescription(),
