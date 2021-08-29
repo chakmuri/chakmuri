@@ -82,7 +82,7 @@ const PaginationRow = styled(Row)`
 	justify-content: center;
 `;
 
-const Main = () => {
+const Main = ({ ...props }) => {
 	const [clubs, setClubs] = useState([]);
 	const [sortBy, setSortBy] = useState("createdAt");
 	const [clubStatus, setClubStatus] = useState("");
@@ -110,19 +110,19 @@ const Main = () => {
 				setClubs(res.data.clubList);
 				setTotal(res.data.totalCount);
 
-				const likedClubsRes = await axios.get(`/likedClubs/users/${userId}`);
-				const likedClubs = likedClubsRes.data.likedClubList;
+				// const likedClubsRes = await axios.get(`/likedClubs/users/${userId}`);
+				// const likedClubs = likedClubsRes.data.likedClubList;
 
-				// 이미 좋아요한 독서모임인지 확인
-				if (clubs.filter((club) => likedClubs.includes(club))) {
-					setLike(true);
-				}
+				// // 이미 좋아요한 독서모임인지 확인
+				// if (clubs.filter((club) => likedClubs.includes(club))) {
+				// 	setLike(true);
+				// }
 			} catch (err) {
 				console.log(err);
 			}
 		};
 		fetchData();
-	}, [sortBy, clubStatus, sendTags, keyword, total, page, userId, clubs]);
+	}, [page, total, clubStatus, keyword, sendTags, sortBy]);
 
 	const handleLike = async (id) => {
 		const data = {
@@ -144,7 +144,7 @@ const Main = () => {
 				setSelectedTags={setSelectedTags}
 			/>
 			<TitleRow>
-				<Title>{clubs.totalCount}개의 독서모임</Title>
+				<Title>{total}개의 독서모임</Title>
 				<CheckboxFilter
 					onChange={(e) => {
 						setClubStatus(e.target.checked ? "ACTIVE" : "");

@@ -1,32 +1,36 @@
 import React from "react";
 import styled from "styled-components";
+import Button from "../common/Button";
 
 const CmtContainer = styled.div`
-	width: 816px;
-	margin: 0px 102px 30px 78px;
 	display: flex;
-	text-align: left;
+	justify-content: center;
+`;
+
+const ProfileIcon = styled.div`
+	width: 48px;
+	height: 48px;
 
 	img {
-		width: 50px;
-		height: 50px;
+		border-radius: 50%;
+		width: 100%;
+		height: 100%;
 	}
 `;
 
 const CmtBox = styled.div`
 	width: 758px;
-	display: inline-block;
+	background-color: #f6f6f6;
 	border-radius: 10px;
 	margin-left: 8px;
-	background: #f6f6f6;
-	font-family: Roboto;
-	padding: 20px 25px 25px 25px;
+	padding: 20px;
+	position: relative;
 `;
 
 const CmtWriter = styled.span`
+	font-family: Roboto;
 	font-weight: bold;
 	font-size: 20px;
-	line-height: 23px;
 	margin-right: 5px;
 `;
 
@@ -48,49 +52,75 @@ const CmtUpdateCheck = styled.span`
 const CmtUpdate = styled.span`
 	font-size: 14px;
 	color: #959595;
-
-	margin-left: 350px;
 	cursor: pointer;
+	position: absolute;
+	right: 10%;
 `;
 
 const CmtDelete = styled.span`
 	font-size: 14px;
 	color: #ff0000;
-
-	margin-left: 20px;
 	cursor: pointer;
+	position: absolute;
+	right: 5%;
 `;
 
-const CmtText = styled.p`
+const CmtText = styled.div`
 	font-family: Roboto;
-	font-style: normal;
-	font-weight: normal;
 	font-size: 14px;
-	line-height: 16px;
-	letter-spacing: -0.015em;
-	margin: 10px 0px 0px 0px;
+	padding: 5px 0;
+`;
+
+const CmtInput = styled.input`
+	width: 80%;
+	font-family: Roboto;
+	font-size: 14px;
+	padding: 3px 5px;
+	border: 1px solid black;
+	border-radius: 2px;
+	outline: none;
+`;
+
+const ConfirmBtn = styled(Button)`
+	& {
+		font-size: 14px;
+		color: #ffffff;
+		background-color: #ff6701;
+		padding: 6px 10px;
+		border-radius: 5px;
+		margin-left: 15px;
+	}
+`;
+
+const CancelBtn = styled(Button)`
+	& {
+		font-size: 14px;
+		background-color: #ffffff;
+		color: #ff6701;
+		padding: 6px 10px;
+		border: 1px solid #ff6701;
+		border-radius: 5px;
+		margin-left: 15px;
+	}
 `;
 
 const Comment = (props) => {
+	const createdAt = new Date(props.comment.createdAt).toLocaleString();
+	const updatedAt = new Date(props.comment.updatedAt).toLocaleString();
+
 	return (
 		<CmtContainer>
-			<img src={props.comment.userImgUrl} alt="User profile" />
+			<ProfileIcon>
+				<img src={props.comment.userImgUrl} alt="User profile" />
+			</ProfileIcon>
 			<CmtBox>
 				<CmtWriter>{props.comment.userName}</CmtWriter>
-				<CmtDate>
-					{props.comment.updatedAt
-						? props.comment.updatedAt
-						: props.comment.createdAt}
-				</CmtDate>
+				<CmtDate>{createdAt !== updatedAt ? updatedAt : createdAt}</CmtDate>
 				<CmtUpdateCheck>
-					{props.comment.updatedAt ? "(수정됨)" : ""}
+					{createdAt !== updatedAt ? "(수정됨)" : ""}
 				</CmtUpdateCheck>
 				{props.comment.userId === props.userId ? (
-					<CmtUpdate
-						onClick={() => props.handleUpdateComment(props.comment.id)}
-					>
-						수정
-					</CmtUpdate>
+					<CmtUpdate onClick={() => props.setEditable(true)}>수정</CmtUpdate>
 				) : (
 					""
 				)}
@@ -103,7 +133,29 @@ const Comment = (props) => {
 				) : (
 					""
 				)}
-				<CmtText>{props.comment.contents}</CmtText>
+				<CmtText>
+					{props.comment.userId === props.userId ? (
+						<>
+							<CmtInput
+								value={props.comment.contents}
+								onChange={(e) => props.setUpdateComment(e.target.value)}
+							/>
+							<ConfirmBtn
+								onClick={() => {
+									props.handleUpdateComment();
+									props.setEditable(false);
+								}}
+							>
+								확인
+							</ConfirmBtn>
+							<CancelBtn onClick={() => props.setEditable(false)}>
+								취소
+							</CancelBtn>
+						</>
+					) : (
+						props.comment.contents
+					)}
+				</CmtText>
 			</CmtBox>
 		</CmtContainer>
 	);

@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import SmallTag from "../common/SmallTag";
+import unfilledHeart from "../../images/icons/unfilled_heart.png";
+import filledHeart from "../../images/icons/filled_heart.png";
 
 const InfoBoxContainer = styled.div`
 	width: 100%;
@@ -67,6 +69,7 @@ const LikeIcon = styled.div`
 	position: absolute;
 	top: 20px;
 	right: 20px;
+	cursor: pointer;
 
 	img {
 		width: 100%;
@@ -75,12 +78,12 @@ const LikeIcon = styled.div`
 `;
 
 const InfoBox = ({ ...props }) => {
-	const tags = props.club.tags.split(",");
+	// const tags = props.club.tags.split(", ");
 
 	return (
 		<InfoBoxContainer>
 			<ClubThumbnail>
-				<img src="assets/images/thumbnail-club.png" alt="Club Thumbnail" />
+				<img src={props.club.imgUrl} alt="Club Thumbnail" />
 			</ClubThumbnail>
 			<ClubInfo>
 				<Title>{props.club.title}</Title>
@@ -97,21 +100,19 @@ const InfoBox = ({ ...props }) => {
 					</Text>
 				</InfoRow>
 				<TagContainer>
-					{tags.split(", ").map((tag, i) => (
+					{/* {tags.split(", ").map((tag, i) => (
 						<Tag key={i}>{tag}</Tag>
-					))}
+					))} */}
 				</TagContainer>
-				<LikeIcon onClick={props.handleLike(props.club.id)}>
+				<LikeIcon
+					onClick={() => {
+						props.handleLike(props.club.id);
+					}}
+				>
 					{props.like ? (
-						<img
-							src="assets/images/icons/filled_heart.png"
-							alt="Filled like icon"
-						></img>
+						<img src={filledHeart} alt="Filled like icon"></img>
 					) : (
-						<img
-							src="assets/images/icons/unfilled_heart.png"
-							alt="Unfilled like icon"
-						/>
+						<img src={unfilledHeart} alt="Unfilled like icon" />
 					)}
 				</LikeIcon>
 			</ClubInfo>

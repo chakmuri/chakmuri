@@ -13,7 +13,7 @@ const App = () => {
 			<Switch>
 				<Route exact path="/" component={Home} />
 				<Route exact path="/board" component={Board} />
-				<Route exact path="/detail:id" component={Detail} />
+				<Route exact path="/detail/:id" component={Detail} />
 				<Route exact path="/myPage" component={MyPage} />
 			</Switch>
 		</ScrollToTop>

@@ -14,8 +14,8 @@ const StyledPagination = styled(Pagination)`
 	}
 `;
 
-const CustomPagination = () => {
-	return <StyledPagination />;
+const CustomPagination = (props) => {
+	return <StyledPagination {...props} />;
 };
 
 export default CustomPagination;

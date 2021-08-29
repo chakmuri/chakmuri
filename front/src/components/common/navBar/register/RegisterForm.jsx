@@ -260,9 +260,8 @@ const RegisterForm = ({ ...props }) => {
 
 		try {
 			const res = await axios.get(`/clubs/users/${userId}`);
-			console.log(res);
 
-			if (!res.data) {
+			if (res.data === 204) {
 				const res = await axios.post("/clubs", formData);
 
 				if (res.status === 200) {

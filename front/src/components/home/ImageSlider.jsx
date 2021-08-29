@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import Slider from "react-slick";
+import banner1 from "../../images/banner-1.png";
+import banner2 from "../../images/banner-2.png";
+import banner3 from "../../images/banner-3.png";
+import banner4 from "../../images/banner-4.png";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -28,12 +32,7 @@ const Image = styled.img`
 	height: 100%;
 `;
 
-const banners = [
-	"assets/images/banner-1.png",
-	"assets/images/banner-2.png",
-	"assets/images/banner-3.png",
-	"assets/images/banner-4.png",
-];
+const banners = [banner1, banner2, banner3, banner4];
 
 export default class ImageSlider extends Component {
 	render() {
