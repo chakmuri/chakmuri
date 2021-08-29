@@ -95,7 +95,7 @@ const Main = () => {
 					.filter((club, i) => i < 4)
 					.map((club) => (
 						<Col key={club.id} span={6}>
-							<Link to={`/clubs/${club.id}`}>
+							<Link to={`/detail/${club.id}`}>
 								<MainClubCard club={club} like={like} onClick={handleLike} />
 							</Link>
 						</Col>
