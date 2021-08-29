@@ -106,7 +106,6 @@ const InfoBox = ({ ...props }) => {
 				</TagContainer>
 				<LikeIcon
 					onClick={() => {
-						console.log("like");
 						props.handleLike(props.club.id);
 					}}
 				>
