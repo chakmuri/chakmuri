@@ -149,7 +149,7 @@ const PaginationRow = styled(Row)`
 	justify-content: center;
 `;
 
-const Main = (props) => {
+const Main = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [myClub, setMyClub] = useState();
 	const [likedClubs, setLikedClubs] = useState();
@@ -158,43 +158,41 @@ const Main = (props) => {
 	const [myCommentsPage, setMyCommentsPage] = useState(1);
 	const [likedClubsTotal, setLikedClubsTotal] = useState(0);
 	const [likedClubsPage, setMyLikedClubsPage] = useState(1);
+	const [like, setLike] = useState();
 	const userId = localStorage.getItem("user_id");
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await axios.get(`/clubs/users/${userId}`);
-
-				console.log(res);
-
-				setMyClub(res.data);
-
-				const commentRes = await axios.get(`/comments/user/${userId}`, {
+				const res = await axios.get(`/comments/users/${userId}`, {
 					params: { page: myCommentsPage },
 				});
 
-				if (!commentRes.data) {
-					message.error("내가 쓴 댓글이 존재하지 않습니다.");
-				} else {
-					setMyComments(res.data.commentList);
-					setMyCommentsTotal(res.data.totalCount);
-				}
+				setMyComments(res.data.commentList);
+				setMyCommentsTotal(res.data.totalCount);
+			} catch (err) {
+				console.log(err);
+			}
 
-				const likedClubsRes = await axios.get(`/likedClubs/users/${userId}`, {
+			try {
+				const res = await axios.get(`/likedClubs/users/${userId}`, {
 					params: { page: likedClubsPage },
 				});
-				if (!likedClubsRes.data) {
-					message.error("내가 좋아요한 모임이 존재하지 않습니다.");
-				} else {
-					setLikedClubs(likedClubsRes.data.likedClubList);
-					setLikedClubsTotal(likedClubsRes.data.totalCount);
-				}
+				setLikedClubs(res.data.likedClubList);
+				setLikedClubsTotal(res.data.totalCount);
+			} catch (err) {
+				console.log(err);
+			}
+
+			try {
+				const res = await axios.get(`/clubs/users/${userId}`);
+				setMyClub(res.data);
 			} catch (err) {
 				console.log(err);
 			}
 		};
 		fetchData();
-	}, [userId, myCommentsPage, likedClubsPage]);
+	}, [myCommentsPage, likedClubsPage, userId]);
 
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -222,6 +220,20 @@ const Main = (props) => {
 			}
 		} catch (err) {
 			console.log(err);
+		}
+	};
+
+	const handleLike = async (id) => {
+		const data = {
+			clubId: Number(id),
+			userId: userId,
+		};
+		await axios.post("/likedClubs", data);
+		setLike(id);
+
+		if (like) {
+			await axios.delete(`/likedClubs/${Number(id)}`);
+			setLike();
 		}
 	};
 
@@ -257,7 +269,11 @@ const Main = (props) => {
 							<ListRow>
 								{likedClubs.map((likedClub) => (
 									<Col key={likedClub.id} span={8}>
-										<ClubCard />
+										<ClubCard
+											club={likedClub}
+											like={likedClub.id}
+											handleLike={handleLike}
+										/>
 									</Col>
 								))}
 							</ListRow>
