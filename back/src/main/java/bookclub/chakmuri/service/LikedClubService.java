@@ -46,11 +46,11 @@ public class LikedClubService {
 
 
     @Transactional
-    public void deleteLikedClub(Long likeClubId) {
-        LikedClub likedClub = likedClubRepository.findById(likeClubId)
-                .orElseThrow(); //TODO: exception 추가
+    public void deleteLikedClub(Long clubId, String userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        Club club = clubRepository.findById(clubId).orElseThrow();
+        LikedClub likedClub = likedClubRepository.findByClubAndUser(club, user); //TODO: exception 추가
 
-        Club club = likedClub.getClub();
         club.changeLikes(club.getLikes() -1); // 좋아요 취소
 
         likedClubRepository.delete(likedClub);
