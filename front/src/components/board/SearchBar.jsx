@@ -22,7 +22,13 @@ const StyledSearchBar = styled(Search)`
 const SearchBar = (props) => {
 	const onSearch = (value) => {
 		props.setKeyword(value);
+		value = "";
 	};
+
+	const onReset = () => {
+		props.setKeyword("");
+	};
+
 	return (
 		<SearchBarContainer>
 			<StyledSearchBar
@@ -31,6 +37,10 @@ const SearchBar = (props) => {
 				size="large"
 				placeholder="독서모임 검색"
 				onSearch={onSearch}
+				onPressEnter={(e) => {
+					props.setKeyword(e.target.value);
+					onReset();
+				}}
 			/>
 		</SearchBarContainer>
 	);

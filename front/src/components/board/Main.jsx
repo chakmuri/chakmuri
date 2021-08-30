@@ -19,6 +19,7 @@ const MainTitle = styled.div`
 	font-size: 26px;
 	font-weight: bold;
 	text-align: center;
+	cursor: pointer;
 `;
 const TitleRow = styled.div`
 	display: flex;
@@ -116,7 +117,7 @@ const Main = () => {
 
 				// // 이미 좋아요한 독서모임인지 확인
 				// if (clubs.filter((club) => likedClubs.includes(club))) {
-				// 	setLike(true);
+				// 	setLike(club.id);
 				// }
 			} catch (err) {
 				console.log(err);
@@ -127,19 +128,24 @@ const Main = () => {
 
 	const handleLike = async (id) => {
 		const data = {
-			clubId: id,
+			clubId: Number(id),
 			userId: userId,
 		};
 		await axios.post("/likedClubs", data);
-		setLike(!like);
+		setLike(id);
 
-		if (like === false) await axios.delete(`likedClubs/${data.clubId}`);
+		if (like) {
+			await axios.delete(`likedClubs/${data.clubId}`);
+			setLike();
+		}
 	};
 
 	return (
 		<Wrapper>
-			<MainTitle>독서모임 찾기</MainTitle>
-			<SearchBar setKeyword={setKeyword} />
+			<MainTitle onClick={() => window.location.reload()}>
+				독서모임 찾기
+			</MainTitle>
+			<SearchBar keyword={keyword} setKeyword={setKeyword} />
 			<TagFilter
 				selectedTags={selectedTags}
 				setSelectedTags={setSelectedTags}
