@@ -2,6 +2,7 @@ package bookclub.chakmuri.controller.likedclub;
 
 import bookclub.chakmuri.domain.LikedClub;
 import bookclub.chakmuri.service.LikedClubService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,27 +12,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/likedClubs")
 public class LikedClubController {
 
-    private LikedClubService likedClubService;
-
-    public LikedClubController(LikedClubService likedClubService) {
-        this.likedClubService = likedClubService;
-    }
+    private final LikedClubService likedClubService;
 
     @PostMapping
     public ResponseEntity<LikedClubResponseDto> createLikedClub(
             @RequestBody LikedClubCreateRequestDto likedClubRequestDto) {
-
-        if(likedClubService.createLikedClub(likedClubRequestDto) == null) {
-            return new ResponseEntity(
-                    "이미 좋아요한 독서모임 입니다.", HttpStatus.OK
-            );
-        }
+        LikedClub likedClub = likedClubService.createLikedClub(likedClubRequestDto);
 
         return new ResponseEntity(
-                "정상적으로 등록됐습니다.", HttpStatus.OK
+                "정상적으로 등록됐습니다. (likedClubId: " + likedClub.getId() + ")", HttpStatus.OK
         );
     }
 

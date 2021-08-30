@@ -36,7 +36,6 @@ public class ClubService {
 
     @Transactional
     public Club createClub(ClubCreateRequestDto requestDto, MultipartFile file) {
-        //TODO : AWS s3 img upload 로직 짜기
         if (file != null) {
             try {
                 String imgPath = s3Service.upload(file);
