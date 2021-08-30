@@ -53,6 +53,9 @@ const Text = styled.div`
 `;
 
 const TagContainer = styled.div`
+	display: flex;
+	gap: 10px;
+
 	margin-top: 40px;
 `;
 
@@ -64,8 +67,8 @@ const Tag = styled(SmallTag)`
 `;
 
 const LikeIcon = styled.div`
-	width: 30px;
-	height: 30px;
+	width: 28px;
+	height: 28px;
 	position: absolute;
 	top: 20px;
 	right: 20px;
@@ -73,12 +76,13 @@ const LikeIcon = styled.div`
 
 	img {
 		width: 100%;
-		height: 100%;
 	}
 `;
 
 const InfoBox = ({ ...props }) => {
-	// const tags = props.club.tags.split(", ");
+	console.log("InfoBox props: ", props);
+	if (!props.club) return <></>;
+	const tags = props.club.tags.split(", ");
 
 	return (
 		<InfoBoxContainer>
@@ -100,16 +104,16 @@ const InfoBox = ({ ...props }) => {
 					</Text>
 				</InfoRow>
 				<TagContainer>
-					{/* {tags.split(", ").map((tag, i) => (
+					{tags.map((tag, i) => (
 						<Tag key={i}>{tag}</Tag>
-					))} */}
+					))}
 				</TagContainer>
 				<LikeIcon
 					onClick={() => {
-						props.handleLike(props.club.id);
+						props.handleLike();
 					}}
 				>
-					{props.like ? (
+					{props.like === props.club.id ? (
 						<img src={filledHeart} alt="Filled like icon"></img>
 					) : (
 						<img src={unfilledHeart} alt="Unfilled like icon" />

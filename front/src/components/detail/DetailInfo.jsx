@@ -35,6 +35,8 @@ const MapWrapper = styled.div`
 `;
 
 const DetailInfo = ({ ...props }) => {
+	console.log("props: ", props);
+	if (!props.club) return <></>;
 	return (
 		<DetailInfoContainer>
 			<Title>상세 설명</Title>
@@ -47,8 +49,8 @@ const DetailInfo = ({ ...props }) => {
 			<TextBox>
 				<SubTitle>
 					{props.club.bookTitle}, {props.club.author},{" "}
-					{props.club.publisher ? props.club.publisher : "미정"},{" "}
-					{props.club.publishedAt ? props.club.publishedAt : "미정"}{" "}
+					{props.club.publisher === undefined ? props.club.publisher : "미정"},{" "}
+					{props.club.publishedAt === "0" ? props.club.publishedAt : "미정"}{" "}
 				</SubTitle>
 				<Contents>{props.club.bookDescription}</Contents>
 			</TextBox>

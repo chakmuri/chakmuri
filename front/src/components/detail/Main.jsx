@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { Row, message } from "antd";
@@ -88,39 +87,47 @@ const PaginationRow = styled(Row)`
 	justify-content: center;
 `;
 
-const Main = ({ ...props }) => {
-	let history = useHistory();
-	const [club, setClub] = useState({});
-	const [comments, setComments] = useState([]);
+const Main = (props) => {
+	const [club, setClub] = useState();
+	const [comments, setComments] = useState();
 	const [postComment, setPostComment] = useState("");
 	const [updateComment, setUpdateComment] = useState("");
-	const [editable, setEditable] = useState(false);
+	const [editable, setEditable] = useState();
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(1);
-	const [like, setLike] = useState(false);
-	const clubId = props.match.params.id;
+	const [like, setLike] = useState();
+	const clubId = Number(props.match.params.id);
 	const userId = localStorage.getItem("user_id");
 	const userImg = localStorage.getItem("user_image");
 
+	console.log("clubId: ", clubId);
+	console.log("Main props: ", props);
+
 	useEffect(() => {
-		const fetchClubData = async () => {
+		console.log("api call check");
+		const fetchData = async () => {
 			try {
 				const res = await axios.get(`/clubs/${clubId}`);
 
+				console.log("res: ", res.data);
+
 				setClub(res.data);
-
-				const cmtRes = await axios.get(`/comments/clubs/${clubId}`, {
-					params: { page: page },
-				});
-
-				setComments(cmtRes.data.commentList);
-				setTotal(cmtRes.data.totalCount);
 			} catch (err) {
 				console.log(err);
 			}
 		};
-		fetchClubData();
-	}, [clubId, page]);
+		fetchData();
+		fetchCmtData();
+	}, [userImg, total, page]);
+
+	const fetchCmtData = async () => {
+		const res = await axios.get(`/comments/clubs/${clubId}`, {
+			params: { page: page },
+		});
+
+		setComments(res.data.commentList);
+		setTotal(res.data.totalCount);
+	};
 
 	const handlePostComment = async () => {
 		const data = {
@@ -139,18 +146,20 @@ const Main = ({ ...props }) => {
 			}
 		} catch (err) {
 			console.log(err);
+		} finally {
+			fetchCmtData();
 		}
 	};
 
 	const handleUpdateComment = async (id) => {
 		const data = {
 			clubId: clubId,
-			userId: Number(userId),
+			userId: userId,
 			contents: updateComment,
 		};
 
 		try {
-			const res = await axios.patch(`/comments/${id}`, data);
+			const res = await axios.put(`/comments/${id}`, data);
 
 			if (res.status === 200) {
 				message.success("댓글이 성공적으로 수정되었습니다.");
@@ -159,6 +168,8 @@ const Main = ({ ...props }) => {
 			}
 		} catch (err) {
 			console.log(err);
+		} finally {
+			fetchCmtData();
 		}
 	};
 
@@ -173,19 +184,22 @@ const Main = ({ ...props }) => {
 			}
 		} catch (err) {
 			console.log(err);
+		} finally {
+			fetchCmtData();
 		}
 	};
 
-	const handleLike = async (id) => {
-		console.log("handleLike");
+	const handleLike = async () => {
 		const data = {
-			clubId: id,
+			clubId: Number(clubId),
 			userId: userId,
 		};
 		await axios.post("/likedClubs", data);
-		setLike(!like);
-
-		if (like === false) await axios.delete(`likedClubs/${data.clubId}`);
+		setLike(data.clubId);
+		if (like) {
+			await axios.delete(`/likedClubs/${clubId}`);
+			setLike();
+		}
 	};
 
 	const onReset = () => {
@@ -194,7 +208,7 @@ const Main = ({ ...props }) => {
 
 	return (
 		<Wrapper>
-			<InfoBox club={club} handleLike={handleLike} />
+			<InfoBox club={club} like={like} handleLike={handleLike} />
 			<DetailInfo club={club} />
 			<TitleRow>
 				<Title>댓글 ({total})</Title>
@@ -216,7 +230,7 @@ const Main = ({ ...props }) => {
 						}}
 					/>
 					<CmtPost
-						onClick={(e) => {
+						onClick={() => {
 							handlePostComment();
 							onReset();
 						}}
@@ -231,10 +245,10 @@ const Main = ({ ...props }) => {
 									key={comment.id}
 									comment={comment}
 									userId={userId}
-									setUpdateComment={() => setUpdateComment()}
+									setUpdateComment={setUpdateComment}
 									editable={editable}
 									setEditable={setEditable}
-									handleUpdateComment={() => handleUpdateComment()}
+									handleUpdateComment={handleUpdateComment}
 									handleDeleteComment={handleDeleteComment}
 								/>
 						  ))
