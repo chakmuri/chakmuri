@@ -33,26 +33,22 @@ public class LikedClubService {
                 .orElseThrow();
         final Club club = clubRepository.findById(likedClubRequestDto.getClubId())
                 .orElseThrow();
-        log.info("findById 결과값 {}", likedClubRepository.findById(likedClubRequestDto.getClubId()));
-        if (likedClubRepository.findById(likedClubRequestDto.getClubId()).isEmpty()) {
-            club.changeLikes(club.getLikes() + 1); // 좋아요 버튼 클릭된 상태
 
-            LikedClub postLikedClub = LikedClub.builder()
-                    .user(user)
-                    .club(club)
-                    .build();
-            return likedClubRepository.save(postLikedClub);
-        }
+        club.changeLikes(club.getLikes() + 1); // 좋아요 버튼 클릭된 상태
 
-        return null;
+        LikedClub postLikedClub = LikedClub.builder()
+                .user(user)
+                .club(club)
+                .build();
 
+        return likedClubRepository.save(postLikedClub);
     }
 
 
     @Transactional
     public void deleteLikedClub(Long likeClubId) {
         LikedClub likedClub = likedClubRepository.findById(likeClubId)
-                .orElseThrow();
+                .orElseThrow(); //TODO: exception 추가
 
         Club club = likedClub.getClub();
         club.changeLikes(club.getLikes() -1); // 좋아요 취소
