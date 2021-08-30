@@ -34,6 +34,10 @@ public class LikedClubService {
         final Club club = clubRepository.findById(likedClubRequestDto.getClubId())
                 .orElseThrow();
 
+        if(likedClubRepository.findByClubAndUser(club, user) != null){
+            return null;
+        }
+
         club.changeLikes(club.getLikes() + 1); // 좋아요 버튼 클릭된 상태
 
         LikedClub postLikedClub = LikedClub.builder()
