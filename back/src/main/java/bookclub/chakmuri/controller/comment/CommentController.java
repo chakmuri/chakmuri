@@ -30,7 +30,7 @@ public class CommentController {
     }
 
     // 댓글 수정
-    @PatchMapping("/{commentId}")
+    @PutMapping("/{commentId}")
     public ResponseEntity<Void> updateComment(
             @RequestBody CommentUpdateRequestDto commentUpdateRequestDto,
             @PathVariable("commentId") Long commentId) {
