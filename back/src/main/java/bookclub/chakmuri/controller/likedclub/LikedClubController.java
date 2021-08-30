@@ -28,10 +28,11 @@ public class LikedClubController {
         );
     }
 
-    @DeleteMapping("/{likeClubId}")
+    @DeleteMapping
     public ResponseEntity<Void> deleteLikedClub(
-            @PathVariable("likeClubId") Long likeClubId) {
-        likedClubService.deleteLikedClub(likeClubId);
+            @RequestParam("clubId") Long clubId,
+            @RequestParam("userId") String userId) {
+        likedClubService.deleteLikedClub(clubId, userId);
         return new ResponseEntity(
                 "정상적으로 삭제되었습니다.", HttpStatus.OK
         );
