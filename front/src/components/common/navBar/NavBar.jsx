@@ -111,8 +111,8 @@ const NavBar = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const userId = localStorage.getItem("user_id");
 	const userImg = localStorage.getItem("user_image");
-	const [isLoggedIn, setLoggedIn] = useState(false);
 	const [userImage, setUserImage] = useState(null);
+	const [isLoggedIn, setLoggedIn] = useState(false);
 
 	useEffect(() => {
 		if (userId) {
