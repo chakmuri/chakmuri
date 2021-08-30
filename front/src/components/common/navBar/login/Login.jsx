@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { GoogleLogin } from "react-google-login";
 import styled from "styled-components";
@@ -29,31 +28,21 @@ const GoogleLoginButton = styled.button`
 `;
 
 const Login = ({ ...props }) => {
-	const history = useHistory();
-
 	const onSuccess = async (response) => {
 		const {
 			profileObj: { googleId, email, name, imageUrl },
 		} = response;
 
-		console.log("google res ", response);
-
 		try {
 			const res = await axios.get(`/users/${googleId}`);
 
-			console.log("login res: ", res.status);
-
 			if (res.status === 204) {
-				console.log("status code 204");
 				const user = {
 					id: googleId,
 					name,
 					email,
 					imgUrl: imageUrl,
 				};
-
-				console.log(user.id);
-				console.log(user.imgUrl);
 
 				await axios.post("/users", user);
 				await axios.get(`users/${user.id}`);

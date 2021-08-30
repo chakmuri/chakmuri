@@ -1,7 +1,8 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { Card } from "antd";
-import SmallTag from "./SmallTag";
+import { Card, Skeleton } from "antd";
+import SmallTag from "../common/SmallTag";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
 import filledHeart from "../../images/icons/filled_heart.png";
 
@@ -12,6 +13,10 @@ const StyledCard = styled(Card)`
 	height: 380px;
 	border: 2px solid #e5e5e5;
 	border-radius: 10px;
+
+	.ant-card-cover img {
+		height: 190px;
+	}
 
 	.ant-card-body {
 		height: 190px;
@@ -34,10 +39,17 @@ const StyledCard = styled(Card)`
 
 const TagContainer = styled.div`
 	display: flex;
-	gap: 3px;
+	gap: 5px;
 
 	position: absolute;
 	bottom: 25px;
+`;
+
+const ClubTag = styled(SmallTag)`
+	& {
+		font-size: 14px;
+		padding: 7px 13px;
+	}
 `;
 
 const LikeIcon = styled.div`
@@ -53,25 +65,34 @@ const LikeIcon = styled.div`
 
 const LikeNum = styled.span``;
 
-const ClubCard = ({ ...props }) => {
+const LikedClubCard = ({ ...props }) => {
+	let history = useHistory();
+
 	return (
 		<StyledCard
 			hoverable
-			cover={<img src={props.club.imgUrl} alt="Clubcard thumbnail" />}
+			cover={
+				props.club.imgUrl ? (
+					<img src={props.club.imgUrl} alt="Clubcard thumbnail" />
+				) : (
+					<Skeleton.Image />
+				)
+			}
+			onClick={() => history.push(`/detail/${props.club.id}`)}
 		>
 			<Meta title={props.club.title} description={props.club.contents} />
 			<TagContainer>
 				{props.club.tags.split(", ").map((tag, i) => (
-					<SmallTag key={i}>{tag}</SmallTag>
+					<ClubTag key={i}>{tag}</ClubTag>
 				))}
 			</TagContainer>
 			<LikeIcon
 				onClick={(e) => {
 					e.stopPropagation();
-					props.handleLike(props.club.id);
+					props.handleLikeDelete(props.club.clubId);
 				}}
 			>
-				{props.like ? (
+				{props.like === props.club.clubId ? (
 					<img src={filledHeart} alt="Filled like icon"></img>
 				) : (
 					<img src={unfilledHeart} alt="Unfilled like icon" />
@@ -82,4 +103,4 @@ const ClubCard = ({ ...props }) => {
 	);
 };
 
-export default ClubCard;
+export default LikedClubCard;

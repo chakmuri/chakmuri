@@ -147,22 +147,20 @@ const EditForm = ({ ...props }) => {
 	const [preview, setPreview] = useState(props.myClub.imgUrl);
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
-	const myClubTags = props.myClub.tags.split(", ");
-	const [selectedTags, setSelectedTags] = useState(myClubTags);
-
+	const [selectedTags, setSelectedTags] = useState(
+		props.myClub.tags ? props.myClub.tags.split(", ") : []
+	);
+	const userId = localStorage.getItem("user_id");
+	const fullAddress = streetAddress + " " + detailAddress;
 	const tags = [
 		"온라인",
 		"오프라인",
-		"온・오프라인",
+		"온/오프라인",
 		"수도권",
 		"지방",
 		"친목",
 		"독서 외 활동",
 	];
-
-	const fullAddress = streetAddress + " " + detailAddress;
-
-	const userId = localStorage.getItem("user_id");
 
 	const onChange = (e) => {
 		setInputText(e.target.value);
@@ -216,7 +214,6 @@ const EditForm = ({ ...props }) => {
 		setEndDate(values.date[1]._d.toISOString().substring(0, 10));
 		const sendTags = selectedTags.join(", ");
 		const formData = new FormData();
-
 		const config = {
 			headers: {
 				"content-type": "multipart/form-data",
@@ -224,7 +221,7 @@ const EditForm = ({ ...props }) => {
 		};
 
 		if (!values.minPersonnel || !values.maxPersonnel) {
-			message.error("침여인원을 입력해주세요.");
+			message.error("참여인원을 입력해주세요.");
 			return;
 		}
 
@@ -246,9 +243,12 @@ const EditForm = ({ ...props }) => {
 		formData.append("maxPersonnel", values.maxPersonnel);
 		formData.append("tags", sendTags);
 		formData.append("bookTitle", values.bookTitle);
-		formData.append("author", values.bookAuthor);
-		formData.append("publisher", values.bookPublisher);
-		formData.append("publishedAt", values.bookPublishedDate);
+		formData.append("author", values.author);
+		formData.append("publisher", values.publisher);
+		formData.append(
+			"publishedAt",
+			values.publishedAt === 0 ? "미정" : values.publishedAt
+		);
 		formData.append("bookDescription", values.bookDescription);
 		formData.append("description", values.description);
 		formData.append("addressStreet", values.addressStreet);
@@ -256,67 +256,9 @@ const EditForm = ({ ...props }) => {
 
 		if (props.myClub.imgUrl !== imgFile) {
 			formData.append("img", imgFile);
+		} else {
+			formData.append("img", props.myClub.imgUrl);
 		}
-
-		// if (props.myClub.title !== values.title) {
-		// 	formData.append("title", values.title);
-		// }
-
-		// if (props.myClub.contents !== values.contents) {
-		// 	formData.append("contents", values.contents);
-		// }
-
-		// if (props.myClub.startDate !== values.startDate) {
-		// 	formData.append("startDate", startDate);
-		// }
-
-		// if (props.myClub.endDate !== values.endDate) {
-		// 	formData.append("endDate", endDate);
-		// }
-
-		// if (props.myClub.minPersonnel !== values.minPersonnel) {
-		// 	formData.append("minPersonnel", values.minPersonnel);
-		// }
-
-		// if (props.myClub.maxPersonnel !== values.maxPersonnel) {
-		// 	formData.append("maxPersonnel", values.maxPersonnel);
-		// }
-
-		// if (props.myClub.tags !== sendTags) {
-		// 	formData.append("tags", sendTags);
-		// }
-
-		// if (props.myClub.bookTitle !== values.bookTitle) {
-		// 	formData.append("bookTitle", values.bookTitle);
-		// }
-
-		// if (props.myClub.author !== values.author) {
-		// 	formData.append("author", values.author);
-		// }
-
-		// if (props.myClub.publisher !== values.publisher) {
-		// 	formData.append("publisher", values.publisher);
-		// }
-
-		// if (props.myClub.publishedAt !== values.publishedAt) {
-		// 	formData.append("publishedAt", values.publishedAt);
-		// }
-
-		// if (props.myClub.bookDescription !== values.bookDescription) {
-		// 	formData.append("bookDescription", values.bookDescription);
-		// }
-
-		// if (props.myClub.description !== values.description) {
-		// 	formData.append("description", values.description);
-		// }
-
-		// if (props.myClub.addressStreet !== values.addressStreet) {
-		// 	formData.append("addressStreet", values.addressStreet);
-		// }
-
-		// if (props.myClub.addressDetail !== values.addressDetail) {
-		// 	formData.append("addressDetail", values.addressDetail);
-		// }
 
 		try {
 			const res = await axios.put(`/clubs/users/${userId}`, formData, config);
@@ -330,7 +272,6 @@ const EditForm = ({ ...props }) => {
 	};
 
 	const onFinish = async (values) => {
-		console.log("form values: ", values);
 		sendData(values);
 	};
 
@@ -495,7 +436,9 @@ const EditForm = ({ ...props }) => {
 				</Col>
 				<Col span={16}>
 					<Form.Item
-						initialValue={props.myClub.publisher}
+						initialValue={
+							props.myClub.publisher === undefined ? "" : props.myClub.publisher
+						}
 						label="출판사"
 						name="publisher"
 					>
@@ -554,7 +497,11 @@ const EditForm = ({ ...props }) => {
 						<Form.Item label="위치">
 							<Form.Item
 								name="addressStreet"
-								initialValue={props.myClub.addressStreet}
+								initialValue={
+									props.myClub.addressStreet === undefined
+										? ""
+										: props.myClub.addressStreet
+								}
 							>
 								<StyledInput
 									placeholder="도로명 주소"
@@ -564,7 +511,11 @@ const EditForm = ({ ...props }) => {
 							</Form.Item>
 							<Form.Item
 								name="addressDetail"
-								initialValue={props.myClub.addressDetail}
+								initialValue={
+									props.myClub.addressDetail === undefined
+										? ""
+										: props.myClub.addressDetail
+								}
 							>
 								<StyledInput placeholder="상세 주소" />
 							</Form.Item>

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Modal, Menu, Dropdown } from "antd";
 import Login from "./login/Login";
 import RegisterForm from "./register/RegisterForm";
-import logo from "../../../images/logo.png";
+import logo from "../../../images/icons/logo.png";
 import profile from "../../../images/icons/profile.png";
 import add from "../../../images/icons/add.png";
 
@@ -19,9 +19,25 @@ const Nav = styled.nav`
 `;
 
 const NavLogo = styled.div`
-	width: 122px;
-	height: 32px;
-	margin-left: 15px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+`;
+
+const LogoIcon = styled.div`
+	width: 26px;
+	height: 26px;
+
+	img {
+		width: 100%;
+	}
+`;
+
+const LogoTitle = styled.div`
+	font-family: Roboto;
+	font-weight: bold;
+	font-size: 30px;
+	color: #f98404;
 `;
 
 const NavMenu = styled.div`
@@ -111,8 +127,8 @@ const NavBar = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const userId = localStorage.getItem("user_id");
 	const userImg = localStorage.getItem("user_image");
-	const [isLoggedIn, setLoggedIn] = useState(false);
 	const [userImage, setUserImage] = useState(null);
+	const [isLoggedIn, setLoggedIn] = useState(false);
 
 	useEffect(() => {
 		if (userId) {
@@ -153,7 +169,10 @@ const NavBar = () => {
 				<Nav>
 					<Link to="/">
 						<NavLogo>
-							<img src={logo} alt="Logo" />
+							<LogoIcon>
+								<img src={logo} alt="Logo" />
+							</LogoIcon>
+							<LogoTitle>책무리</LogoTitle>
 						</NavLogo>
 					</Link>
 					<NavMenu>
@@ -179,7 +198,10 @@ const NavBar = () => {
 				<Nav>
 					<Link to="/">
 						<NavLogo>
-							<img src={logo} alt="Logo" />
+							<LogoIcon>
+								<img src={logo} alt="Logo" />
+							</LogoIcon>
+							<LogoTitle>책무리</LogoTitle>
 						</NavLogo>
 					</Link>
 					<NavMenu>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { Row, message } from "antd";
@@ -7,6 +6,7 @@ import InfoBox from "./InfoBox";
 import DetailInfo from "./DetailInfo";
 import Comment from "./Comment";
 import Button from "../common/Button";
+import Spin from "../common/Spin";
 import Pagination from "../common/Pagination";
 import profile from "../../images/icons/profile.png";
 
@@ -88,39 +88,59 @@ const PaginationRow = styled(Row)`
 	justify-content: center;
 `;
 
-const Main = ({ ...props }) => {
-	let history = useHistory();
-	const [club, setClub] = useState({});
-	const [comments, setComments] = useState([]);
+const SpinContainer = styled.div`
+	width: 100%;
+	height: 80vh;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
+const Main = (props) => {
+	const [club, setClub] = useState();
+	const [comments, setComments] = useState();
 	const [postComment, setPostComment] = useState("");
 	const [updateComment, setUpdateComment] = useState("");
-	const [editable, setEditable] = useState(false);
+	const [editable, setEditable] = useState();
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(1);
-	const [like, setLike] = useState(false);
-	const clubId = props.match.params.id;
+	const [like, setLike] = useState();
+	const [loading, setLoading] = useState(true);
+	const clubId = Number(props.match.params.id);
 	const userId = localStorage.getItem("user_id");
 	const userImg = localStorage.getItem("user_image");
 
+	console.log("clubId: ", clubId);
+	console.log("Main props: ", props);
+
 	useEffect(() => {
-		const fetchClubData = async () => {
+		console.log("api call check");
+		const fetchData = async () => {
 			try {
 				const res = await axios.get(`/clubs/${clubId}`);
 
+				console.log("res: ", res.data);
+
 				setClub(res.data);
 
-				const cmtRes = await axios.get(`/comments/clubs/${clubId}`, {
-					params: { page: page },
-				});
-
-				setComments(cmtRes.data.commentList);
-				setTotal(cmtRes.data.totalCount);
+				setLoading(false);
 			} catch (err) {
 				console.log(err);
 			}
 		};
-		fetchClubData();
-	}, [clubId, page]);
+		fetchData();
+		fetchCmtData();
+	}, [userImg, total, page]);
+
+	const fetchCmtData = async () => {
+		const res = await axios.get(`/comments/clubs/${clubId}`, {
+			params: { page: page },
+		});
+
+		setComments(res.data.commentList);
+		setTotal(res.data.totalCount);
+	};
 
 	const handlePostComment = async () => {
 		const data = {
@@ -139,18 +159,19 @@ const Main = ({ ...props }) => {
 			}
 		} catch (err) {
 			console.log(err);
+		} finally {
+			fetchCmtData();
 		}
 	};
 
 	const handleUpdateComment = async (id) => {
 		const data = {
-			clubId: clubId,
-			userId: Number(userId),
+			userId: userId,
 			contents: updateComment,
 		};
 
 		try {
-			const res = await axios.patch(`/comments/${id}`, data);
+			const res = await axios.put(`/comments/${id}`, data);
 
 			if (res.status === 200) {
 				message.success("댓글이 성공적으로 수정되었습니다.");
@@ -159,6 +180,8 @@ const Main = ({ ...props }) => {
 			}
 		} catch (err) {
 			console.log(err);
+		} finally {
+			fetchCmtData();
 		}
 	};
 
@@ -173,19 +196,35 @@ const Main = ({ ...props }) => {
 			}
 		} catch (err) {
 			console.log(err);
+		} finally {
+			fetchCmtData();
 		}
 	};
 
-	const handleLike = async (id) => {
-		console.log("handleLike");
+	const handleLike = async () => {
 		const data = {
-			clubId: id,
+			clubId: Number(clubId),
 			userId: userId,
 		};
-		await axios.post("/likedClubs", data);
-		setLike(!like);
 
-		if (like === false) await axios.delete(`likedClubs/${data.clubId}`);
+		try {
+			await axios.post("/likedClubs", data);
+			setLike(data.clubId);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const handleDeleteLike = async (id) => {
+		try {
+			await axios.delete("/likedClubs", {
+				params: { userId: userId, clubId: Number(id) },
+			});
+		} catch (err) {
+			console.log(err);
+		}
+
+		setLike();
 	};
 
 	const onReset = () => {
@@ -194,61 +233,74 @@ const Main = ({ ...props }) => {
 
 	return (
 		<Wrapper>
-			<InfoBox club={club} handleLike={handleLike} />
-			<DetailInfo club={club} />
-			<TitleRow>
-				<Title>댓글 ({total})</Title>
-			</TitleRow>
-			<CmtContainer>
-				<InputBox>
-					<ProfileIcon>
-						{userImg ? (
-							<img src={userImg} alt="User profile" />
-						) : (
-							<img src={profile} alt="User profile icon" />
-						)}
-					</ProfileIcon>
-					<StyledInput
-						value={postComment}
-						placeholder="댓글을 입력하세요..."
-						onChange={(e) => {
-							setPostComment(e.target.value);
-						}}
+			{loading ? (
+				<SpinContainer>
+					<Spin />
+				</SpinContainer>
+			) : (
+				<>
+					<InfoBox
+						club={club}
+						like={like}
+						handleLike={handleLike}
+						handleDeleteLike={handleDeleteLike}
 					/>
-					<CmtPost
-						onClick={(e) => {
-							handlePostComment();
-							onReset();
-						}}
-					>
-						등록
-					</CmtPost>
-				</InputBox>
-				<ListRow>
-					{comments
-						? comments.map((comment) => (
-								<Comment
-									key={comment.id}
-									comment={comment}
-									userId={userId}
-									setUpdateComment={() => setUpdateComment()}
-									editable={editable}
-									setEditable={setEditable}
-									handleUpdateComment={() => handleUpdateComment()}
-									handleDeleteComment={handleDeleteComment}
-								/>
-						  ))
-						: ""}
-				</ListRow>
-			</CmtContainer>
-			<PaginationRow>
-				<Pagination
-					total={total}
-					pageSize={5}
-					current={page}
-					onChange={(page) => setPage(page)}
-				/>
-			</PaginationRow>
+					<DetailInfo club={club} />
+					<TitleRow>
+						<Title>댓글 ({total})</Title>
+					</TitleRow>
+					<CmtContainer>
+						<InputBox>
+							<ProfileIcon>
+								{userImg ? (
+									<img src={userImg} alt="User profile" />
+								) : (
+									<img src={profile} alt="User profile icon" />
+								)}
+							</ProfileIcon>
+							<StyledInput
+								value={postComment}
+								placeholder="댓글을 입력하세요..."
+								onChange={(e) => {
+									setPostComment(e.target.value);
+								}}
+							/>
+							<CmtPost
+								onClick={() => {
+									handlePostComment();
+									onReset();
+								}}
+							>
+								등록
+							</CmtPost>
+						</InputBox>
+						<ListRow>
+							{comments
+								? comments.map((comment) => (
+										<Comment
+											key={comment.id}
+											comment={comment}
+											userId={userId}
+											setUpdateComment={setUpdateComment}
+											editable={editable}
+											setEditable={setEditable}
+											handleUpdateComment={handleUpdateComment}
+											handleDeleteComment={handleDeleteComment}
+										/>
+								  ))
+								: ""}
+						</ListRow>
+					</CmtContainer>
+					<PaginationRow>
+						<Pagination
+							total={total}
+							pageSize={5}
+							current={page}
+							onChange={(page) => setPage(page)}
+						/>
+					</PaginationRow>
+				</>
+			)}
 		</Wrapper>
 	);
 };

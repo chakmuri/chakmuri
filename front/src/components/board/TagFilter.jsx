@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Row, Col, message } from "antd";
+import { Row, Col } from "antd";
 import Tag from "../common/Tag";
-import { useEffect } from "react";
 
 const TagContainer = styled.div`
 	width: 850px;
@@ -22,7 +21,7 @@ const Search = (props) => {
 		"소수정예",
 		"온라인",
 		"오프라인",
-		"온・오프라인",
+		"온/오프라인",
 		"수도권",
 		"지방",
 		"친목",
@@ -41,17 +40,12 @@ const Search = (props) => {
 		}
 	};
 
-	useEffect(() => {
-		console.log(props.selectedTags);
-		console.log(props.selectedTags.length);
-	}, [props.selectedTags]);
-
 	return (
 		<>
 			<TagContainer>
 				<Row gutter={[32, 32]}>
 					{tags.map((tag, i) => (
-						<Col span={6}>
+						<Col key={i} span={6}>
 							<BoardTag
 								type="button"
 								key={i}

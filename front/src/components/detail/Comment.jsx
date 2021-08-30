@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Input } from "antd";
 import Button from "../common/Button";
 
 const CmtContainer = styled.div`
@@ -71,7 +72,7 @@ const CmtText = styled.div`
 	padding: 5px 0;
 `;
 
-const CmtInput = styled.input`
+const CmtInput = styled(Input)`
 	width: 80%;
 	font-family: Roboto;
 	font-size: 14px;
@@ -120,7 +121,9 @@ const Comment = (props) => {
 					{createdAt !== updatedAt ? "(수정됨)" : ""}
 				</CmtUpdateCheck>
 				{props.comment.userId === props.userId ? (
-					<CmtUpdate onClick={() => props.setEditable(true)}>수정</CmtUpdate>
+					<CmtUpdate onClick={() => props.setEditable(props.comment.id)}>
+						수정
+					</CmtUpdate>
 				) : (
 					""
 				)}
@@ -134,23 +137,24 @@ const Comment = (props) => {
 					""
 				)}
 				<CmtText>
-					{props.comment.userId === props.userId ? (
+					{props.editable === props.comment.id ? (
 						<>
 							<CmtInput
-								value={props.comment.contents}
-								onChange={(e) => props.setUpdateComment(e.target.value)}
+								defaultValue={props.comment.contents}
+								onChange={(e) => {
+									console.log(e.target.value);
+									props.setUpdateComment(e.target.value);
+								}}
 							/>
 							<ConfirmBtn
 								onClick={() => {
-									props.handleUpdateComment();
-									props.setEditable(false);
+									props.handleUpdateComment(props.comment.id);
+									props.setEditable();
 								}}
 							>
 								확인
 							</ConfirmBtn>
-							<CancelBtn onClick={() => props.setEditable(false)}>
-								취소
-							</CancelBtn>
+							<CancelBtn onClick={() => props.setEditable()}>취소</CancelBtn>
 						</>
 					) : (
 						props.comment.contents

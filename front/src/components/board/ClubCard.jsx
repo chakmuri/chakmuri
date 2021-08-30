@@ -3,24 +3,24 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { Card, Skeleton } from "antd";
 import SmallTag from "../common/SmallTag";
-import ExpiredTag from "../common/ExpiredTag";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
 import filledHeart from "../../images/icons/filled_heart.png";
+import ExpiredTag from "../common/ExpiredTag";
 
 const { Meta } = Card;
 
 const StyledCard = styled(Card)`
-	width: 282px;
-	height: 320px;
+	width: 340px;
+	height: 380px;
 	border: 2px solid #e5e5e5;
 	border-radius: 10px;
 
 	.ant-card-cover img {
-		height: 160px;
+		height: 190px;
 	}
 
 	.ant-card-body {
-		height: 160px;
+		height: 190px;
 		padding: 20px;
 		position: relative;
 	}
@@ -28,12 +28,12 @@ const StyledCard = styled(Card)`
 	.ant-card-meta-title {
 		font-family: Roboto;
 		font-weight: bold;
-		font-size: 20px;
+		font-size: 22px;
 	}
 
 	.ant-card-meta-description {
 		font-family: Roboto;
-		font-size: 14px;
+		font-size: 16px;
 		color: black;
 	}
 
@@ -45,13 +45,13 @@ const TagContainer = styled.div`
 	gap: 5px;
 
 	position: absolute;
-	bottom: 20px;
+	bottom: 25px;
 `;
 
-const MainTag = styled(SmallTag)`
+const ClubTag = styled(SmallTag)`
 	& {
-		font-size: 12px;
-		padding: 5px 10px;
+		font-size: 14px;
+		padding: 7px 13px;
 	}
 `;
 
@@ -62,25 +62,25 @@ const LikeIcon = styled.div`
 	cursor: pointer;
 
 	position: absolute;
-	right: 10px;
-	bottom: 20px;
+	right: 20px;
+	bottom: 25px;
 `;
 
 const ClubExpiredTag = styled(ExpiredTag)`
 	& {
-		font-size: 14px;
-		padding: 3px;
-
+		font-size: 16px;
+		padding: 5px;
 		position: absolute;
-		top: 8%;
-		right: 5%;
+		top: 5%;
+		right: 3%;
 	}
 `;
 
 const LikeNum = styled.span``;
 
-const MainClubCard = ({ ...props }) => {
+const ClubCard = ({ ...props }) => {
 	let history = useHistory();
+
 	return (
 		<StyledCard
 			hoverable
@@ -101,7 +101,7 @@ const MainClubCard = ({ ...props }) => {
 			)}
 			<TagContainer>
 				{props.club.tags.split(", ").map((tag, i) => (
-					<MainTag key={i}>{tag}</MainTag>
+					<ClubTag key={i}>{tag}</ClubTag>
 				))}
 			</TagContainer>
 			<LikeIcon
@@ -111,7 +111,7 @@ const MainClubCard = ({ ...props }) => {
 				}}
 			>
 				{props.likedClubs.includes(props.club.id) ? (
-					<img src={filledHeart} alt="Filled like icon" />
+					<img src={filledHeart} alt="Filled like icon"></img>
 				) : (
 					<img src={unfilledHeart} alt="Unfilled like icon" />
 				)}
@@ -121,4 +121,4 @@ const MainClubCard = ({ ...props }) => {
 	);
 };
 
-export default MainClubCard;
+export default ClubCard;

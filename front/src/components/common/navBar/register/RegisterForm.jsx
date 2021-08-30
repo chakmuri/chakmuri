@@ -152,7 +152,7 @@ const RegisterForm = ({ ...props }) => {
 	const tags = [
 		"온라인",
 		"오프라인",
-		"온・오프라인",
+		"온/오프라인",
 		"수도권",
 		"지방",
 		"친목",
@@ -161,10 +161,6 @@ const RegisterForm = ({ ...props }) => {
 
 	const fullAddress = addressStreet + addressDetail;
 	const userId = localStorage.getItem("user_id");
-
-	console.log("imgFile: ", imgFile);
-
-	// registerForm.resetFields();
 
 	const onChange = (e) => {
 		setInputText(e.target.value);
@@ -218,6 +214,11 @@ const RegisterForm = ({ ...props }) => {
 		const endDate = values.date[1]._d.toISOString().substring(0, 10);
 		const sendTags = selectedTags.join(", ");
 		const formData = new FormData();
+		const config = {
+			headers: {
+				"content-type": "multipart/form-data",
+			},
+		};
 
 		if (!values.minPersonnel || !values.maxPersonnel) {
 			message.error("참여인원을 입력해주세요.");
@@ -244,33 +245,27 @@ const RegisterForm = ({ ...props }) => {
 		formData.append("img", imgFile);
 		formData.append("tags", sendTags);
 		formData.append("bookTitle", values.bookTitle);
-		formData.append("author", values.bookAuthor);
-		formData.append("publisher", values.bookPublisher);
-		formData.append("publishedAt", values.bookPublishedDate);
+		formData.append("author", values.author);
+		formData.append("publisher", values.publisher);
+		formData.append("publishedAt", values.publishedAt);
 		formData.append("bookDescription", values.bookDescription);
 		formData.append("description", values.description);
 		formData.append("addressStreet", values.addressStreet);
 		formData.append("addressDetail", values.addressDetail);
 
-		// const config = {
-		// 	headers: {
-		// 		"content-type": "multipart/form-data",
-		// 	},
-		// };
-
 		try {
 			const res = await axios.get(`/clubs/users/${userId}`);
 
-			if (res.data === 204) {
-				const res = await axios.post("/clubs", formData);
+			if (res.status === 204) {
+				const res = await axios.post("/clubs", formData, config);
 
 				if (res.status === 200) {
 					message.success("독서모임이 성공적으로 등록되었습니다!");
 					props.onCancel();
-				} else message.error("독서모임 등록에 실패했습니다.");
-			} else {
-				message.error("이미 등록한 독서모임이 존재합니다.");
-			}
+				} else {
+					message.error("독서모임 등록에 실패했습니다.");
+				}
+			} else if (res.data) message.error("이미 등록한 독서모임이 존재합니다.");
 		} catch (err) {
 			console.log(err);
 		}
@@ -420,19 +415,19 @@ const RegisterForm = ({ ...props }) => {
 				<Col span={16}>
 					<Form.Item
 						label="작가명"
-						name="bookAuthor"
+						name="author"
 						rules={[{ required: true, message: "작가명을 입력하세요." }]}
 					>
 						<StyledInput placeholder="작가명" />
 					</Form.Item>
 				</Col>
 				<Col span={16}>
-					<Form.Item label="출판사" name="bookPublisher">
+					<Form.Item label="출판사" name="publisher">
 						<StyledInput placeholder="작가명" />
 					</Form.Item>
 				</Col>
 				<Col span={16}>
-					<Form.Item label="출판연도" name="bookPublishedDate">
+					<Form.Item initialValue={0} label="출판연도" name="publishedAt">
 						<StyledInputNumber placeholder={1900} />
 					</Form.Item>
 				</Col>

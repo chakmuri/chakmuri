@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
-import { Row, Col, Checkbox, Select } from "antd";
+import { Row, Col, Checkbox, Select, message } from "antd";
 import TagFilter from "./TagFilter";
 import SearchBar from "./SearchBar";
-import CustomPagination from "../common/Pagination";
-import ClubCard from "../common/ClubCard";
+import Pagination from "../common/Pagination";
+import ClubCard from "./ClubCard";
+import Spin from "../common/Spin";
 
 const { Option } = Select;
 
 const Wrapper = styled.div`
 	width: 1200px;
-	margin: 60px auto;
+	margin: 90px auto;
 `;
 
 const MainTitle = styled.div`
 	font-size: 26px;
 	font-weight: bold;
 	text-align: center;
+	cursor: pointer;
 `;
 const TitleRow = styled.div`
 	display: flex;
@@ -71,113 +72,154 @@ const SortFilter = styled(Select)`
 	}
 `;
 
-const CardContainer = styled(Row)`
-	width: 100%;
-	margin-bottom: 90px;
-`;
-
 const PaginationRow = styled(Row)`
 	width: 100%;
-	margin-top: 48px;
+	margin-top: 90px;
 	justify-content: center;
 `;
 
-const Main = ({ ...props }) => {
-	const [clubs, setClubs] = useState([]);
+const SpinContainer = styled.div`
+	width: 100%;
+	height: 80vh;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
+const Main = () => {
+	const [clubs, setClubs] = useState();
 	const [sortBy, setSortBy] = useState("createdAt");
 	const [clubStatus, setClubStatus] = useState("");
 	const [selectedTags, setSelectedTags] = useState([]);
 	const [keyword, setKeyword] = useState("");
+	const [likedClubs, setLikedClubs] = useState([]);
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(1);
-	const [like, setLike] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const userId = localStorage.getItem("user_id");
-	const sendTags = selectedTags.join(", ");
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const res = await axios.get("/clubs", {
-					params: {
-						sortBy: sortBy,
-						tags: sendTags,
-						clubStatus: clubStatus,
-						keyword: keyword,
-						page: page,
-					},
-				});
-
-				setClubs(res.data.clubList);
-				setTotal(res.data.totalCount);
-
-				// const likedClubsRes = await axios.get(`/likedClubs/users/${userId}`);
-				// const likedClubs = likedClubsRes.data.likedClubList;
-
-				// // 이미 좋아요한 독서모임인지 확인
-				// if (clubs.filter((club) => likedClubs.includes(club))) {
-				// 	setLike(true);
-				// }
-			} catch (err) {
-				console.log(err);
-			}
-		};
 		fetchData();
-	}, [page, total, clubStatus, keyword, sendTags, sortBy]);
+		setLoading(false);
+	}, [page, total, clubStatus, selectedTags, keyword, sortBy]);
 
-	const handleLike = async (id) => {
-		const data = {
-			clubId: id,
-			userId: userId,
-		};
-		await axios.post("/likedClubs", data);
-		setLike(!like);
+	const fetchData = async () => {
+		const sendTags = selectedTags.join(", ");
 
-		if (like === false) await axios.delete(`likedClubs/${data.clubId}`);
+		try {
+			const res = await axios.get("/clubs", {
+				params: {
+					sortBy: sortBy,
+					tags: sendTags,
+					clubStatus: clubStatus,
+					keyword: keyword,
+					page: page,
+				},
+			});
+
+			setClubs(res.data.clubList);
+			setTotal(res.data.totalCount);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const handleLikedClubs = (clubId) => {
+		let index = likedClubs.indexOf(clubId);
+
+		if (likedClubs.includes(clubId)) {
+			likedClubs.splice(index, 1);
+			setLikedClubs([...likedClubs]);
+			handleLikeDelete(clubId);
+		} else {
+			setLikedClubs([...likedClubs, clubId]);
+			handleLikePost(clubId);
+		}
+	};
+
+	const handleLikePost = async (clubId) => {
+		try {
+			await axios.post("/likedClubs", {
+				clubId: Number(clubId),
+				userId: userId,
+			});
+		} catch (err) {
+			message.error("이미 좋아요한 독서모임입니다.");
+		} finally {
+			fetchData();
+		}
+	};
+
+	const handleLikeDelete = async (clubId) => {
+		try {
+			axios.delete("/likedClubs", {
+				params: { userId: userId, clubId: Number(clubId) },
+			});
+		} catch (err) {
+			console.log(err);
+		} finally {
+			fetchData();
+		}
 	};
 
 	return (
 		<Wrapper>
-			<MainTitle>독서모임 찾기</MainTitle>
-			<SearchBar setKeyword={setKeyword} />
-			<TagFilter
-				selectedTags={selectedTags}
-				setSelectedTags={setSelectedTags}
-			/>
-			<TitleRow>
-				<Title>{total}개의 독서모임</Title>
-				<CheckboxFilter
-					onChange={(e) => {
-						setClubStatus(e.target.checked ? "ACTIVE" : "");
-					}}
-				>
-					모집중
-				</CheckboxFilter>
-				<SortFilter
-					showSearch
-					placeholder="정렬필터"
-					onChange={(value) => setSortBy(value)}
-				>
-					<Option value="createdAt">최신순</Option>
-					<Option value="likes">좋아요순</Option>
-				</SortFilter>
-			</TitleRow>
-			<CardContainer justify="space-between" gutter={[0, 48]}>
-				{clubs.map((club) => (
-					<Col key={club.id} span={8}>
-						<Link to={`/detail/${club.id}`}>
-							<ClubCard club={club} onClick={handleLike} like={like} />
-						</Link>
-					</Col>
-				))}
-			</CardContainer>
-			<PaginationRow>
-				<CustomPagination
-					total={total}
-					pageSize={9}
-					current={page}
-					onChange={(page) => setPage(page)}
-				/>
-			</PaginationRow>
+			{loading ? (
+				<SpinContainer>
+					<Spin />
+				</SpinContainer>
+			) : (
+				<>
+					<MainTitle onClick={() => window.location.reload()}>
+						독서모임 찾기
+					</MainTitle>
+					<SearchBar keyword={keyword} setKeyword={setKeyword} />
+					<TagFilter
+						selectedTags={selectedTags}
+						setSelectedTags={setSelectedTags}
+					/>
+					<TitleRow>
+						<Title>{total}개의 독서모임</Title>
+						<CheckboxFilter
+							onChange={(e) => {
+								setClubStatus(e.target.checked ? "ACTIVE" : "");
+							}}
+						>
+							모집중
+						</CheckboxFilter>
+						<SortFilter
+							showSearch
+							placeholder="정렬필터"
+							onChange={(value) => setSortBy(value)}
+						>
+							<Option value="createdAt">최신순</Option>
+							<Option value="likes">좋아요순</Option>
+						</SortFilter>
+					</TitleRow>
+					<Row gutter={[90, 70]}>
+						{clubs
+							? clubs.map((club) => (
+									<Col key={club.id}>
+										<ClubCard
+											club={club}
+											likedClubs={likedClubs}
+											handleLikedClubs={handleLikedClubs}
+										/>
+									</Col>
+							  ))
+							: ""}
+					</Row>
+					<PaginationRow>
+						<Pagination
+							total={total}
+							pageSize={9}
+							current={page}
+							onChange={(page) => setPage(page)}
+						/>
+					</PaginationRow>
+				</>
+			)}
 		</Wrapper>
 	);
 };

@@ -47,8 +47,8 @@ const DetailInfo = ({ ...props }) => {
 			<TextBox>
 				<SubTitle>
 					{props.club.bookTitle}, {props.club.author},{" "}
-					{props.club.publisher ? props.club.publisher : "미정"},{" "}
-					{props.club.publishedAt ? props.club.publishedAt : "미정"}{" "}
+					{props.club.publisher === undefined ? props.club.publisher : "없음"},{" "}
+					{props.club.publishedAt === "0" ? props.club.publishedAt : "없음"}{" "}
 				</SubTitle>
 				<Contents>{props.club.bookDescription}</Contents>
 			</TextBox>
