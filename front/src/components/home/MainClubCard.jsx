@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { Card } from "antd";
 import SmallTag from "../common/SmallTag";
@@ -65,10 +66,16 @@ const LikeIcon = styled.div`
 const LikeNum = styled.span``;
 
 const MainClubCard = ({ ...props }) => {
+	console.log("MainClubCard props: ", props);
+	let history = useHistory();
 	return (
 		<StyledCard
 			hoverable
 			cover={<img src={props.club.imgUrl} alt="Clubcard thumbnail" />}
+			onClick={() => {
+				console.log("LINK");
+				history.push(`/detail/${props.club.id}`);
+			}}
 		>
 			<Meta title={props.club.title} description={props.club.contents} />
 			<TagContainer>
@@ -82,7 +89,7 @@ const MainClubCard = ({ ...props }) => {
 					props.handleLike(props.club.id);
 				}}
 			>
-				{props.like ? (
+				{props.like === props.club.id ? (
 					<img src={filledHeart} alt="Filled like icon"></img>
 				) : (
 					<img src={unfilledHeart} alt="Unfilled like icon" />

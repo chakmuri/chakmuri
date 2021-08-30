@@ -45,7 +45,7 @@ const MainButton = styled(Button)`
 const Main = () => {
 	const [sortByCreatedAtClubs, setSortByCreatedAtClubs] = useState([]);
 	const [sortByLikesClubs, setsortByLikesClubs] = useState([]);
-	const [like, setLike] = useState(false);
+	const [like, setLike] = useState();
 	const userId = localStorage.getItem("user_id");
 
 	useEffect(() => {
@@ -73,17 +73,22 @@ const Main = () => {
 			setsortByLikesClubs(likesRes.data.clubList);
 		};
 		fetchData();
-	}, []);
+	}, [like]);
 
 	const handleLike = async (id) => {
+		console.log("likedClubId: ", id);
+
 		const data = {
 			clubId: id,
 			userId: userId,
 		};
 		await axios.post("/likedClubs", data);
-		setLike(!like);
+		setLike(id);
 
-		if (like === false) await axios.delete(`/likedClubs/${data.clubId}`);
+		if (like) {
+			await axios.delete(`/likedClubs/${id}`);
+			setLike();
+		}
 	};
 
 	return (
@@ -95,9 +100,7 @@ const Main = () => {
 					.filter((club, i) => i < 4)
 					.map((club) => (
 						<Col key={club.id} span={6}>
-							<Link to={`/detail/${club.id}`}>
-								<MainClubCard club={club} like={like} onClick={handleLike} />
-							</Link>
+							<MainClubCard club={club} like={like} handleLike={handleLike} />
 						</Col>
 					))}
 			</Row>
@@ -107,9 +110,7 @@ const Main = () => {
 					.filter((club, i) => i < 4)
 					.map((club) => (
 						<Col key={club.id} span={6}>
-							<Link to={`/detail/${club.id}`}>
-								<MainClubCard club={club} like={like} handleLike={handleLike} />
-							</Link>
+							<MainClubCard club={club} like={like} handleLike={handleLike} />
 						</Col>
 					))}
 			</Row>
