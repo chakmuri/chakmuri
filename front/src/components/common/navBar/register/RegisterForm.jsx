@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Button from "../../Button";
 import Tag from "../../Tag";
 import MapContainer from "../../MapContainer";
+import { useEffect } from "react";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -162,9 +163,9 @@ const RegisterForm = ({ ...props }) => {
 	const fullAddress = addressStreet + addressDetail;
 	const userId = localStorage.getItem("user_id");
 
-	console.log("imgFile: ", imgFile);
-
-	// registerForm.resetFields();
+	useEffect(() => {
+		registerForm.resetFields();
+	});
 
 	const onChange = (e) => {
 		setInputText(e.target.value);
@@ -252,25 +253,19 @@ const RegisterForm = ({ ...props }) => {
 		formData.append("addressStreet", values.addressStreet);
 		formData.append("addressDetail", values.addressDetail);
 
-		// const config = {
-		// 	headers: {
-		// 		"content-type": "multipart/form-data",
-		// 	},
-		// };
-
 		try {
 			const res = await axios.get(`/clubs/users/${userId}`);
 
-			if (res.data === 204) {
+			if (res.status === 204) {
 				const res = await axios.post("/clubs", formData);
 
 				if (res.status === 200) {
 					message.success("독서모임이 성공적으로 등록되었습니다!");
 					props.onCancel();
-				} else message.error("독서모임 등록에 실패했습니다.");
-			} else {
-				message.error("이미 등록한 독서모임이 존재합니다.");
-			}
+				} else {
+					message.error("독서모임 등록에 실패했습니다.");
+				}
+			} else if (res.data) message.error("이미 등록한 독서모임이 존재합니다.");
 		} catch (err) {
 			console.log(err);
 		}
