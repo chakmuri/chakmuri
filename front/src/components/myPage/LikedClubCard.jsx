@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { Card } from "antd";
-import SmallTag from "./SmallTag";
+import SmallTag from "../common/SmallTag";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
 import filledHeart from "../../images/icons/filled_heart.png";
 
@@ -65,7 +65,7 @@ const LikeIcon = styled.div`
 
 const LikeNum = styled.span``;
 
-const ClubCard = ({ ...props }) => {
+const LikedClubCard = ({ ...props }) => {
 	let history = useHistory();
 
 	return (
@@ -83,10 +83,10 @@ const ClubCard = ({ ...props }) => {
 			<LikeIcon
 				onClick={(e) => {
 					e.stopPropagation();
-					props.handleLikedClubs(props.club.id);
+					props.handleDeleteLike(props.club.clubId);
 				}}
 			>
-				{props.likedClubs.includes(props.club.id) ? (
+				{props.like === props.club.clubId ? (
 					<img src={filledHeart} alt="Filled like icon"></img>
 				) : (
 					<img src={unfilledHeart} alt="Unfilled like icon" />
@@ -97,4 +97,4 @@ const ClubCard = ({ ...props }) => {
 	);
 };
 
-export default ClubCard;
+export default LikedClubCard;

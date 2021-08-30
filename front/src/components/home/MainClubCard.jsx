@@ -66,16 +66,12 @@ const LikeIcon = styled.div`
 const LikeNum = styled.span``;
 
 const MainClubCard = ({ ...props }) => {
-	console.log("MainClubCard props: ", props);
 	let history = useHistory();
 	return (
 		<StyledCard
 			hoverable
 			cover={<img src={props.club.imgUrl} alt="Clubcard thumbnail" />}
-			onClick={() => {
-				console.log("LINK");
-				history.push(`/detail/${props.club.id}`);
-			}}
+			onClick={() => history.push(`/detail/${props.club.id}`)}
 		>
 			<Meta title={props.club.title} description={props.club.contents} />
 			<TagContainer>
@@ -86,11 +82,11 @@ const MainClubCard = ({ ...props }) => {
 			<LikeIcon
 				onClick={(e) => {
 					e.stopPropagation();
-					props.handleLike(props.club.id);
+					props.handleLikedClubs(props.club.id);
 				}}
 			>
-				{props.like === props.club.id ? (
-					<img src={filledHeart} alt="Filled like icon"></img>
+				{props.likedClubs.includes(props.club.id) ? (
+					<img src={filledHeart} alt="Filled like icon" />
 				) : (
 					<img src={unfilledHeart} alt="Unfilled like icon" />
 				)}

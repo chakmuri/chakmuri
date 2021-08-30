@@ -163,10 +163,6 @@ const RegisterForm = ({ ...props }) => {
 	const fullAddress = addressStreet + addressDetail;
 	const userId = localStorage.getItem("user_id");
 
-	useEffect(() => {
-		registerForm.resetFields();
-	});
-
 	const onChange = (e) => {
 		setInputText(e.target.value);
 	};
@@ -219,6 +215,11 @@ const RegisterForm = ({ ...props }) => {
 		const endDate = values.date[1]._d.toISOString().substring(0, 10);
 		const sendTags = selectedTags.join(", ");
 		const formData = new FormData();
+		const config = {
+			headers: {
+				"content-type": "multipart/form-data",
+			},
+		};
 
 		if (!values.minPersonnel || !values.maxPersonnel) {
 			message.error("참여인원을 입력해주세요.");
@@ -257,7 +258,7 @@ const RegisterForm = ({ ...props }) => {
 			const res = await axios.get(`/clubs/users/${userId}`);
 
 			if (res.status === 204) {
-				const res = await axios.post("/clubs", formData);
+				const res = await axios.post("/clubs", formData, config);
 
 				if (res.status === 200) {
 					message.success("독서모임이 성공적으로 등록되었습니다!");

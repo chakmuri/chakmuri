@@ -80,7 +80,6 @@ const LikeIcon = styled.div`
 `;
 
 const InfoBox = ({ ...props }) => {
-	console.log("InfoBox props: ", props);
 	if (!props.club) return <></>;
 	const tags = props.club.tags.split(", ");
 
@@ -110,7 +109,9 @@ const InfoBox = ({ ...props }) => {
 				</TagContainer>
 				<LikeIcon
 					onClick={() => {
-						props.handleLike();
+						props.like
+							? props.handleDeleteLike(props.club.id)
+							: props.handleLike(props.club.id);
 					}}
 				>
 					{props.like === props.club.id ? (

@@ -4,7 +4,7 @@ import { Tabs, Row, Col, Divider, message, Modal } from "antd";
 import styled from "styled-components";
 import MyComment from "./MyComment";
 import EditForm from "./EditForm";
-import ClubCard from "../common/ClubCard";
+import LikedClubCard from "./LikedClubCard";
 import Pagination from "../common/Pagination";
 import Button from "../common/Button";
 import NotFound from "../common/NotFound";
@@ -103,10 +103,8 @@ const StyledModal = styled(Modal)`
 	}
 `;
 
-const ListRow = styled.div`
+const CardContainer = styled(Row)`
 	width: 100%;
-	display: flex;
-	justify-content: space-between;
 `;
 
 const ModalTitle = styled.div`
@@ -145,7 +143,6 @@ const UnfilledBtn = styled(Button)`
 
 const PaginationRow = styled(Row)`
 	width: 100%;
-	margin-top: 48px;
 	justify-content: center;
 `;
 
@@ -157,8 +154,7 @@ const Main = () => {
 	const [myCommentsTotal, setMyCommentsTotal] = useState(0);
 	const [myCommentsPage, setMyCommentsPage] = useState(1);
 	const [likedClubsTotal, setLikedClubsTotal] = useState(0);
-	const [likedClubsPage, setMyLikedClubsPage] = useState(1);
-	const [like, setLike] = useState();
+	const [likedClubsPage, setLikedClubsPage] = useState(1);
 	const userId = localStorage.getItem("user_id");
 
 	useEffect(() => {
@@ -170,29 +166,27 @@ const Main = () => {
 
 				setMyComments(res.data.commentList);
 				setMyCommentsTotal(res.data.totalCount);
-			} catch (err) {
-				console.log(err);
-			}
 
-			try {
-				const res = await axios.get(`/likedClubs/users/${userId}`, {
+				const likedClubsRes = await axios.get(`/likedClubs/users/${userId}`, {
 					params: { page: likedClubsPage },
 				});
-				setLikedClubs(res.data.likedClubList);
-				setLikedClubsTotal(res.data.totalCount);
-			} catch (err) {
-				console.log(err);
-			}
+				setLikedClubs(likedClubsRes.data.likedClubList);
+				setLikedClubsTotal(likedClubsRes.data.totalCount);
 
-			try {
-				const res = await axios.get(`/clubs/users/${userId}`);
-				setMyClub(res.data);
+				const myClubRes = await axios.get(`/clubs/users/${userId}`);
+				setMyClub(myClubRes.data);
 			} catch (err) {
 				console.log(err);
 			}
+			fetchData();
 		};
-		fetchData();
-	}, [myCommentsPage, likedClubsPage, userId]);
+	}, [likedClubsPage, likedClubsTotal, myCommentsPage, myCommentsTotal]);
+
+	const fetchLikedClubsData = async () => {
+		await axios.get(`/likedClubs/users/${userId}`, {
+			params: { page: likedClubsPage },
+		});
+	};
 
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -223,17 +217,20 @@ const Main = () => {
 		}
 	};
 
-	const handleLike = async (id) => {
-		const data = {
-			clubId: Number(id),
-			userId: userId,
-		};
-		await axios.post("/likedClubs", data);
-		setLike(id);
+	const handleDeleteLike = async (id) => {
+		console.log("delete id: ", id);
+		try {
+			const res = await axios.delete("/likedClubs", {
+				params: { userId: userId, clubId: Number(id) },
+			});
 
-		if (like) {
-			await axios.delete(`/likedClubs/${Number(id)}`);
-			setLike();
+			if (res.status === 400) {
+				message.error("이미 좋아요 취소한 모임입니다.");
+			}
+		} catch (err) {
+			console.log(err);
+		} finally {
+			fetchLikedClubsData();
 		}
 	};
 
@@ -266,23 +263,23 @@ const Main = () => {
 				<TabPane tab="좋아요한 독서모임" key="2">
 					{likedClubs ? (
 						<TabContainer gutter={[0, 98]}>
-							<ListRow>
+							<CardContainer gutter={[48, 48]}>
 								{likedClubs.map((likedClub) => (
 									<Col key={likedClub.id} span={8}>
-										<ClubCard
+										<LikedClubCard
 											club={likedClub}
-											like={likedClub.id}
-											handleLike={handleLike}
+											handleDeleteLike={handleDeleteLike}
+											like={likedClub.clubId}
 										/>
 									</Col>
 								))}
-							</ListRow>
+							</CardContainer>
 							<PaginationRow>
 								<Pagination
 									total={likedClubsTotal}
 									pageSize={9}
 									current={likedClubsPage}
-									onChange={(page) => setMyLikedClubsPage(page)}
+									onChange={(page) => setLikedClubsPage(page)}
 								/>
 							</PaginationRow>
 						</TabContainer>

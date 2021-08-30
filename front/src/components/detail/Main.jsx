@@ -153,7 +153,6 @@ const Main = (props) => {
 
 	const handleUpdateComment = async (id) => {
 		const data = {
-			clubId: clubId,
 			userId: userId,
 			contents: updateComment,
 		};
@@ -194,12 +193,25 @@ const Main = (props) => {
 			clubId: Number(clubId),
 			userId: userId,
 		};
-		await axios.post("/likedClubs", data);
-		setLike(data.clubId);
-		if (like) {
-			await axios.delete(`/likedClubs/${clubId}`);
-			setLike();
+
+		try {
+			await axios.post("/likedClubs", data);
+			setLike(data.clubId);
+		} catch (err) {
+			console.log(err);
 		}
+	};
+
+	const handleDeleteLike = async (id) => {
+		try {
+			const res = await axios.delete("/likedClubs", {
+				params: { userId: userId, clubId: Number(id) },
+			});
+		} catch (err) {
+			console.log(err);
+		}
+
+		setLike();
 	};
 
 	const onReset = () => {
@@ -208,7 +220,12 @@ const Main = (props) => {
 
 	return (
 		<Wrapper>
-			<InfoBox club={club} like={like} handleLike={handleLike} />
+			<InfoBox
+				club={club}
+				like={like}
+				handleLike={handleLike}
+				handleDeleteLike={handleDeleteLike}
+			/>
 			<DetailInfo club={club} />
 			<TitleRow>
 				<Title>댓글 ({total})</Title>

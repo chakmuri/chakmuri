@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Row, Col } from "antd";
+import { Row, Col, message } from "antd";
 import styled from "styled-components";
 import ImageSlider from "./ImageSlider";
 import Button from "../common/Button";
@@ -45,8 +45,12 @@ const MainButton = styled(Button)`
 const Main = () => {
 	const [sortByCreatedAtClubs, setSortByCreatedAtClubs] = useState([]);
 	const [sortByLikesClubs, setsortByLikesClubs] = useState([]);
-	const [like, setLike] = useState();
+	const [likedClubs, setLikedClubs] = useState([]);
 	const userId = localStorage.getItem("user_id");
+
+	useEffect(() => {
+		console.log("likedClubs: ", likedClubs);
+	});
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -73,23 +77,38 @@ const Main = () => {
 			setsortByLikesClubs(likesRes.data.clubList);
 		};
 		fetchData();
-	}, [like]);
+	}, [likedClubs]);
 
-	const handleLike = async (id) => {
-		console.log("likedClubId: ", id);
+	const handleLikedClubs = (clubId) => {
+		let index = likedClubs.indexOf(clubId);
 
-		const data = {
-			clubId: id,
-			userId: userId,
-		};
-		await axios.post("/likedClubs", data);
-		setLike(id);
+		if (likedClubs.includes(clubId)) {
+			console.log(clubId);
+			likedClubs.splice(index, 1);
+			setLikedClubs([...likedClubs]);
 
-		if (like) {
-			await axios.delete(`/likedClubs/${id}`);
-			setLike();
+			axios.delete("/likedClubs", {
+				clubId: Number(clubId),
+				userId: userId,
+			});
+		} else {
+			console.log(clubId);
+			setLikedClubs([...likedClubs, clubId]);
+			axios.post("/likedClubs", {
+				params: { userId: userId, clubId: Number(clubId) },
+			});
 		}
 	};
+
+	// const likePost = async (clubId) => {
+	// 	axios.post("/likedClubs", { clubId: Number(clubId), userId: userId });
+	// };
+
+	// const likeDelete = async (clubId) => {
+	// 	axios.delete("/likedClubs", {
+	// 		params: { userId: userId, clubId: Number(clubId) },
+	// 	});
+	// };
 
 	return (
 		<Wrapper>
@@ -100,7 +119,11 @@ const Main = () => {
 					.filter((club, i) => i < 4)
 					.map((club) => (
 						<Col key={club.id} span={6}>
-							<MainClubCard club={club} like={like} handleLike={handleLike} />
+							<MainClubCard
+								club={club}
+								handleLikedClubs={handleLikedClubs}
+								likedClubs={likedClubs}
+							/>
 						</Col>
 					))}
 			</Row>
@@ -110,7 +133,11 @@ const Main = () => {
 					.filter((club, i) => i < 4)
 					.map((club) => (
 						<Col key={club.id} span={6}>
-							<MainClubCard club={club} like={like} handleLike={handleLike} />
+							<MainClubCard
+								club={club}
+								handleLikedClubs={handleLikedClubs}
+								likedClubs={likedClubs}
+							/>
 						</Col>
 					))}
 			</Row>
