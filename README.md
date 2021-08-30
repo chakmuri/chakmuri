@@ -1,6 +1,6 @@
 <h1 align="center"> 📚 책무리 프로젝트 (Chakmuri Project) </h1>
 <h3 align="center"> 책으로 하나되어 모이다. "책무리" </h3>
-<h5 align="center"> 6주만에 포트폴리오 웹 프로젝트 만들기 - <a href="https://couchcoding.kr/">CouchCoding</a> (3기) </h5>
+
 
 ![image](https://user-images.githubusercontent.com/71365547/131267031-58c7fe10-5a43-4ed1-905c-73f728a77da3.png)
 <br>
