@@ -150,19 +150,17 @@ const EditForm = ({ ...props }) => {
 	const [selectedTags, setSelectedTags] = useState(
 		props.myClub.tags ? props.myClub.tags.split(", ") : []
 	);
+	const userId = localStorage.getItem("user_id");
+	const fullAddress = streetAddress + " " + detailAddress;
 	const tags = [
 		"온라인",
 		"오프라인",
-		"온・오프라인",
+		"온/오프라인",
 		"수도권",
 		"지방",
 		"친목",
 		"독서 외 활동",
 	];
-
-	const fullAddress = streetAddress + " " + detailAddress;
-
-	const userId = localStorage.getItem("user_id");
 
 	const onChange = (e) => {
 		setInputText(e.target.value);
@@ -274,7 +272,6 @@ const EditForm = ({ ...props }) => {
 	};
 
 	const onFinish = async (values) => {
-		console.log("form values: ", values);
 		sendData(values);
 	};
 

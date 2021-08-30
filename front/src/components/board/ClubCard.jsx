@@ -1,10 +1,11 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { Card } from "antd";
-import SmallTag from "./SmallTag";
+import { Card, Skeleton } from "antd";
+import SmallTag from "../common/SmallTag";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
 import filledHeart from "../../images/icons/filled_heart.png";
+import ExpiredTag from "../common/ExpiredTag";
 
 const { Meta } = Card;
 
@@ -35,6 +36,8 @@ const StyledCard = styled(Card)`
 		font-size: 16px;
 		color: black;
 	}
+
+	position: relative;
 `;
 
 const TagContainer = styled.div`
@@ -63,6 +66,16 @@ const LikeIcon = styled.div`
 	bottom: 25px;
 `;
 
+const ClubExpiredTag = styled(ExpiredTag)`
+	& {
+		font-size: 16px;
+		padding: 5px;
+		position: absolute;
+		top: 5%;
+		right: 3%;
+	}
+`;
+
 const LikeNum = styled.span``;
 
 const ClubCard = ({ ...props }) => {
@@ -71,10 +84,21 @@ const ClubCard = ({ ...props }) => {
 	return (
 		<StyledCard
 			hoverable
-			cover={<img src={props.club.imgUrl} alt="Clubcard thumbnail" />}
+			cover={
+				props.club.imgUrl ? (
+					<img src={props.club.imgUrl} alt="Clubcard thumbnail" />
+				) : (
+					<Skeleton.Image />
+				)
+			}
 			onClick={() => history.push(`/detail/${props.club.id}`)}
 		>
 			<Meta title={props.club.title} description={props.club.contents} />
+			{props.club.clubStatus === "EXPIRED" ? (
+				<ClubExpiredTag>마감</ClubExpiredTag>
+			) : (
+				""
+			)}
 			<TagContainer>
 				{props.club.tags.split(", ").map((tag, i) => (
 					<ClubTag key={i}>{tag}</ClubTag>

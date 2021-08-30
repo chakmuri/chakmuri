@@ -17,6 +17,24 @@ const StyledSearchBar = styled(Search)`
 		border-color: #ff6701;
 		background-color: #ff6701;
 	}
+
+	.ant-input-wrapper:hover {
+		border-color: #fea82f;
+	}
+
+	.ant-input-affix-wrapper:focus,
+	.ant-input-affix-wrapper-focused {
+		border-color: #fea82f;
+	}
+
+	.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+		border-color: #fea82f;
+	}
+
+	.ant-input-affix-wrapper.ant-input-affix-wrapper-focused.ant-input-affix-wrapper-lg {
+		border-color: #fea82f;
+		box-shadow: none;
+	}
 `;
 
 const SearchBar = (props) => {

@@ -6,6 +6,7 @@ import InfoBox from "./InfoBox";
 import DetailInfo from "./DetailInfo";
 import Comment from "./Comment";
 import Button from "../common/Button";
+import Spin from "../common/Spin";
 import Pagination from "../common/Pagination";
 import profile from "../../images/icons/profile.png";
 
@@ -87,6 +88,15 @@ const PaginationRow = styled(Row)`
 	justify-content: center;
 `;
 
+const SpinContainer = styled.div`
+	width: 100%;
+	height: 80vh;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
 const Main = (props) => {
 	const [club, setClub] = useState();
 	const [comments, setComments] = useState();
@@ -96,6 +106,7 @@ const Main = (props) => {
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(1);
 	const [like, setLike] = useState();
+	const [loading, setLoading] = useState(true);
 	const clubId = Number(props.match.params.id);
 	const userId = localStorage.getItem("user_id");
 	const userImg = localStorage.getItem("user_image");
@@ -112,6 +123,8 @@ const Main = (props) => {
 				console.log("res: ", res.data);
 
 				setClub(res.data);
+
+				setLoading(false);
 			} catch (err) {
 				console.log(err);
 			}
@@ -204,7 +217,7 @@ const Main = (props) => {
 
 	const handleDeleteLike = async (id) => {
 		try {
-			const res = await axios.delete("/likedClubs", {
+			await axios.delete("/likedClubs", {
 				params: { userId: userId, clubId: Number(id) },
 			});
 		} catch (err) {
@@ -220,66 +233,74 @@ const Main = (props) => {
 
 	return (
 		<Wrapper>
-			<InfoBox
-				club={club}
-				like={like}
-				handleLike={handleLike}
-				handleDeleteLike={handleDeleteLike}
-			/>
-			<DetailInfo club={club} />
-			<TitleRow>
-				<Title>댓글 ({total})</Title>
-			</TitleRow>
-			<CmtContainer>
-				<InputBox>
-					<ProfileIcon>
-						{userImg ? (
-							<img src={userImg} alt="User profile" />
-						) : (
-							<img src={profile} alt="User profile icon" />
-						)}
-					</ProfileIcon>
-					<StyledInput
-						value={postComment}
-						placeholder="댓글을 입력하세요..."
-						onChange={(e) => {
-							setPostComment(e.target.value);
-						}}
+			{loading ? (
+				<SpinContainer>
+					<Spin />
+				</SpinContainer>
+			) : (
+				<>
+					<InfoBox
+						club={club}
+						like={like}
+						handleLike={handleLike}
+						handleDeleteLike={handleDeleteLike}
 					/>
-					<CmtPost
-						onClick={() => {
-							handlePostComment();
-							onReset();
-						}}
-					>
-						등록
-					</CmtPost>
-				</InputBox>
-				<ListRow>
-					{comments
-						? comments.map((comment) => (
-								<Comment
-									key={comment.id}
-									comment={comment}
-									userId={userId}
-									setUpdateComment={setUpdateComment}
-									editable={editable}
-									setEditable={setEditable}
-									handleUpdateComment={handleUpdateComment}
-									handleDeleteComment={handleDeleteComment}
-								/>
-						  ))
-						: ""}
-				</ListRow>
-			</CmtContainer>
-			<PaginationRow>
-				<Pagination
-					total={total}
-					pageSize={5}
-					current={page}
-					onChange={(page) => setPage(page)}
-				/>
-			</PaginationRow>
+					<DetailInfo club={club} />
+					<TitleRow>
+						<Title>댓글 ({total})</Title>
+					</TitleRow>
+					<CmtContainer>
+						<InputBox>
+							<ProfileIcon>
+								{userImg ? (
+									<img src={userImg} alt="User profile" />
+								) : (
+									<img src={profile} alt="User profile icon" />
+								)}
+							</ProfileIcon>
+							<StyledInput
+								value={postComment}
+								placeholder="댓글을 입력하세요..."
+								onChange={(e) => {
+									setPostComment(e.target.value);
+								}}
+							/>
+							<CmtPost
+								onClick={() => {
+									handlePostComment();
+									onReset();
+								}}
+							>
+								등록
+							</CmtPost>
+						</InputBox>
+						<ListRow>
+							{comments
+								? comments.map((comment) => (
+										<Comment
+											key={comment.id}
+											comment={comment}
+											userId={userId}
+											setUpdateComment={setUpdateComment}
+											editable={editable}
+											setEditable={setEditable}
+											handleUpdateComment={handleUpdateComment}
+											handleDeleteComment={handleDeleteComment}
+										/>
+								  ))
+								: ""}
+						</ListRow>
+					</CmtContainer>
+					<PaginationRow>
+						<Pagination
+							total={total}
+							pageSize={5}
+							current={page}
+							onChange={(page) => setPage(page)}
+						/>
+					</PaginationRow>
+				</>
+			)}
 		</Wrapper>
 	);
 };

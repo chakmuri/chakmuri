@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Slider from "react-slick";
 import banner1 from "../../images/banner-1.png";
@@ -32,8 +33,6 @@ const Image = styled.img`
 	height: 100%;
 `;
 
-const banners = [banner1, banner2, banner3, banner4];
-
 export default class ImageSlider extends Component {
 	render() {
 		const settings = {
@@ -49,11 +48,12 @@ export default class ImageSlider extends Component {
 		return (
 			<Wrapper>
 				<StyledSlider {...settings}>
-					{banners.map((banner, index) => (
-						<div key={index}>
-							<Image src={banner}></Image>
-						</div>
-					))}
+					<Image src={banner1}></Image>
+					<Link to="/board">
+						<Image src={banner2}></Image>
+					</Link>
+					<Image src={banner3}></Image>
+					<Image src={banner4}></Image>
 				</StyledSlider>
 			</Wrapper>
 		);

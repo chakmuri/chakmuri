@@ -5,7 +5,6 @@ import styled from "styled-components";
 import Button from "../../Button";
 import Tag from "../../Tag";
 import MapContainer from "../../MapContainer";
-import { useEffect } from "react";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -153,7 +152,7 @@ const RegisterForm = ({ ...props }) => {
 	const tags = [
 		"온라인",
 		"오프라인",
-		"온・오프라인",
+		"온/오프라인",
 		"수도권",
 		"지방",
 		"친목",

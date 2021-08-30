@@ -5,13 +5,14 @@ import { Row, Col, Checkbox, Select, message } from "antd";
 import TagFilter from "./TagFilter";
 import SearchBar from "./SearchBar";
 import Pagination from "../common/Pagination";
-import ClubCard from "../common/ClubCard";
+import ClubCard from "./ClubCard";
+import Spin from "../common/Spin";
 
 const { Option } = Select;
 
 const Wrapper = styled.div`
 	width: 1200px;
-	margin: 60px auto;
+	margin: 90px auto;
 `;
 
 const MainTitle = styled.div`
@@ -71,15 +72,19 @@ const SortFilter = styled(Select)`
 	}
 `;
 
-const CardContainer = styled(Row)`
-	width: 100%;
-	margin-bottom: 90px;
-`;
-
 const PaginationRow = styled(Row)`
 	width: 100%;
-	margin-top: 48px;
+	margin-top: 90px;
 	justify-content: center;
+`;
+
+const SpinContainer = styled.div`
+	width: 100%;
+	height: 80vh;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
 
 const Main = () => {
@@ -91,115 +96,130 @@ const Main = () => {
 	const [likedClubs, setLikedClubs] = useState([]);
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(1);
+	const [loading, setLoading] = useState(true);
 	const userId = localStorage.getItem("user_id");
 
 	useEffect(() => {
-		const fetchData = async () => {
-			const sendTags = selectedTags.join(", ");
-
-			try {
-				const res = await axios.get("/clubs", {
-					params: {
-						sortBy: sortBy,
-						tags: sendTags,
-						clubStatus: clubStatus,
-						keyword: keyword,
-						page: page,
-					},
-				});
-
-				setClubs(res.data.clubList);
-				setTotal(res.data.totalCount);
-
-				const likedClubsRes = await axios.get(`/likedClubs/users/${userId}`);
-				setLikedClubs(likedClubsRes.data.clubList);
-			} catch (err) {
-				console.log(err);
-			}
-		};
 		fetchData();
-	}, [page, total, clubStatus, selectedTags, keyword, sortBy, userId]);
+		setLoading(false);
+	}, [page, total, clubStatus, selectedTags, keyword, sortBy]);
 
-	useEffect(() => {
-		console.log("likedClubs: ", likedClubs);
-	});
-
-	const handleLikedClubs = async (id) => {
-		let index = likedClubs.indexOf(id);
+	const fetchData = async () => {
+		const sendTags = selectedTags.join(", ");
 
 		try {
-			if (likedClubs.includes(id)) {
-				likedClubs.splice(index, 1);
-				setLikedClubs([...likedClubs]);
-				try {
-					await axios.delete("/likedClubs", {
-						params: { clubId: Number(id), userId: userId },
-					});
-				} catch (err) {
-					console.log(err);
-				}
-			} else {
-				setLikedClubs([...likedClubs, id]);
-				const res = await axios.post("/likedClubs", {
-					clubId: Number(id),
-					userId: userId,
-				});
-				if (res.status === 400) message.error("이미 좋아요한 독서모임입니다.");
-			}
+			const res = await axios.get("/clubs", {
+				params: {
+					sortBy: sortBy,
+					tags: sendTags,
+					clubStatus: clubStatus,
+					keyword: keyword,
+					page: page,
+				},
+			});
+
+			setClubs(res.data.clubList);
+			setTotal(res.data.totalCount);
 		} catch (err) {
 			console.log(err);
 		}
 	};
 
+	const handleLikedClubs = (clubId) => {
+		let index = likedClubs.indexOf(clubId);
+
+		if (likedClubs.includes(clubId)) {
+			likedClubs.splice(index, 1);
+			setLikedClubs([...likedClubs]);
+			handleLikeDelete(clubId);
+		} else {
+			setLikedClubs([...likedClubs, clubId]);
+			handleLikePost(clubId);
+		}
+	};
+
+	const handleLikePost = async (clubId) => {
+		try {
+			await axios.post("/likedClubs", {
+				clubId: Number(clubId),
+				userId: userId,
+			});
+		} catch (err) {
+			message.error("이미 좋아요한 독서모임입니다.");
+		} finally {
+			fetchData();
+		}
+	};
+
+	const handleLikeDelete = async (clubId) => {
+		try {
+			axios.delete("/likedClubs", {
+				params: { userId: userId, clubId: Number(clubId) },
+			});
+		} catch (err) {
+			console.log(err);
+		} finally {
+			fetchData();
+		}
+	};
+
 	return (
 		<Wrapper>
-			<MainTitle onClick={() => window.location.reload()}>
-				독서모임 찾기
-			</MainTitle>
-			<SearchBar keyword={keyword} setKeyword={setKeyword} />
-			<TagFilter
-				selectedTags={selectedTags}
-				setSelectedTags={setSelectedTags}
-			/>
-			<TitleRow>
-				<Title>{total}개의 독서모임</Title>
-				<CheckboxFilter
-					onChange={(e) => {
-						setClubStatus(e.target.checked ? "ACTIVE" : "");
-					}}
-				>
-					모집중
-				</CheckboxFilter>
-				<SortFilter
-					showSearch
-					placeholder="정렬필터"
-					onChange={(value) => setSortBy(value)}
-				>
-					<Option value="createdAt">최신순</Option>
-					<Option value="likes">좋아요순</Option>
-				</SortFilter>
-			</TitleRow>
-			<CardContainer gutter={[48, 48]}>
-				{clubs
-					? clubs.map((club) => (
-							<Col key={club.id} span={8}>
-								<ClubCard
-									club={club}
-									likedClubs={likedClubs}
-									handleLikedClubs={handleLikedClubs}
-								/>
-							</Col>
-					  ))
-					: ""}
-			</CardContainer>
-			<PaginationRow>
-				<Pagination
-					total={total}
-					pageSize={9}
-					current={page}
-					onChange={(page) => setPage(page)}
-				/>
-			</PaginationRow>
+			{loading ? (
+				<SpinContainer>
+					<Spin />
+				</SpinContainer>
+			) : (
+				<>
+					<MainTitle onClick={() => window.location.reload()}>
+						독서모임 찾기
+					</MainTitle>
+					<SearchBar keyword={keyword} setKeyword={setKeyword} />
+					<TagFilter
+						selectedTags={selectedTags}
+						setSelectedTags={setSelectedTags}
+					/>
+					<TitleRow>
+						<Title>{total}개의 독서모임</Title>
+						<CheckboxFilter
+							onChange={(e) => {
+								setClubStatus(e.target.checked ? "ACTIVE" : "");
+							}}
+						>
+							모집중
+						</CheckboxFilter>
+						<SortFilter
+							showSearch
+							placeholder="정렬필터"
+							onChange={(value) => setSortBy(value)}
+						>
+							<Option value="createdAt">최신순</Option>
+							<Option value="likes">좋아요순</Option>
+						</SortFilter>
+					</TitleRow>
+					<Row gutter={[90, 70]}>
+						{clubs
+							? clubs.map((club) => (
+									<Col key={club.id}>
+										<ClubCard
+											club={club}
+											likedClubs={likedClubs}
+											handleLikedClubs={handleLikedClubs}
+										/>
+									</Col>
+							  ))
+							: ""}
+					</Row>
+					<PaginationRow>
+						<Pagination
+							total={total}
+							pageSize={9}
+							current={page}
+							onChange={(page) => setPage(page)}
+						/>
+					</PaginationRow>
+				</>
+			)}
 		</Wrapper>
 	);
 };

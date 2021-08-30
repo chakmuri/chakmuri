@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { Card } from "antd";
+import { Card, Skeleton } from "antd";
 import SmallTag from "../common/SmallTag";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
 import filledHeart from "../../images/icons/filled_heart.png";
@@ -71,7 +71,13 @@ const LikedClubCard = ({ ...props }) => {
 	return (
 		<StyledCard
 			hoverable
-			cover={<img src={props.club.imgUrl} alt="Clubcard thumbnail" />}
+			cover={
+				props.club.imgUrl ? (
+					<img src={props.club.imgUrl} alt="Clubcard thumbnail" />
+				) : (
+					<Skeleton.Image />
+				)
+			}
 			onClick={() => history.push(`/detail/${props.club.id}`)}
 		>
 			<Meta title={props.club.title} description={props.club.contents} />
@@ -83,7 +89,7 @@ const LikedClubCard = ({ ...props }) => {
 			<LikeIcon
 				onClick={(e) => {
 					e.stopPropagation();
-					props.handleDeleteLike(props.club.clubId);
+					props.handleLikeDelete(props.club.clubId);
 				}}
 			>
 				{props.like === props.club.clubId ? (

@@ -80,7 +80,6 @@ const LikeIcon = styled.div`
 `;
 
 const InfoBox = ({ ...props }) => {
-	if (!props.club) return <></>;
 	const tags = props.club.tags.split(", ");
 
 	return (
