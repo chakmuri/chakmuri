@@ -21,7 +21,6 @@ const StyledSearchBar = styled(Search)`
 
 const SearchBar = (props) => {
 	const onSearch = (value) => {
-		console.log(value);
 		props.setKeyword(value);
 	};
 	return (

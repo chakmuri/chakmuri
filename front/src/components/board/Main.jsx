@@ -82,8 +82,8 @@ const PaginationRow = styled(Row)`
 	justify-content: center;
 `;
 
-const Main = ({ ...props }) => {
-	const [clubs, setClubs] = useState([]);
+const Main = () => {
+	const [clubs, setClubs] = useState();
 	const [sortBy, setSortBy] = useState("createdAt");
 	const [clubStatus, setClubStatus] = useState("");
 	const [selectedTags, setSelectedTags] = useState([]);
@@ -92,10 +92,11 @@ const Main = ({ ...props }) => {
 	const [page, setPage] = useState(1);
 	const [like, setLike] = useState(false);
 	const userId = localStorage.getItem("user_id");
-	const sendTags = selectedTags.join(", ");
 
 	useEffect(() => {
 		const fetchData = async () => {
+			const sendTags = selectedTags.join(", ");
+
 			try {
 				const res = await axios.get("/clubs", {
 					params: {
@@ -122,7 +123,7 @@ const Main = ({ ...props }) => {
 			}
 		};
 		fetchData();
-	}, [page, total, clubStatus, keyword, sendTags, sortBy]);
+	}, [page, total, clubStatus, selectedTags, keyword, sortBy]);
 
 	const handleLike = async (id) => {
 		const data = {
@@ -161,14 +162,16 @@ const Main = ({ ...props }) => {
 					<Option value="likes">좋아요순</Option>
 				</SortFilter>
 			</TitleRow>
-			<CardContainer justify="space-between" gutter={[0, 48]}>
-				{clubs.map((club) => (
-					<Col key={club.id} span={8}>
-						<Link to={`/detail/${club.id}`}>
-							<ClubCard club={club} onClick={handleLike} like={like} />
-						</Link>
-					</Col>
-				))}
+			<CardContainer gutter={[48, 48]}>
+				{clubs
+					? clubs.map((club) => (
+							<Col key={club.id} span={8}>
+								<Link to={`/detail/${club.id}`}>
+									<ClubCard club={club} onClick={handleLike} like={like} />
+								</Link>
+							</Col>
+					  ))
+					: ""}
 			</CardContainer>
 			<PaginationRow>
 				<CustomPagination
