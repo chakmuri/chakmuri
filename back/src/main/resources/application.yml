@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://chamuridb.cubzwjzl7nw9.ap-northeast-2.rds.amazonaws.com:3306/chakmuriDB
+    username: admin
+    password: chakmuri
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: none #create #none #update #validate
+    properties:
+      hibernate:
+        #        show_sql: true
+        format_sql: true
+
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+    com: #failed to connect to service endpoint 오류가 뜨지 않게 함
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
+
+cloud:
+  aws:
+    s3:
+      bucket: chakmuri-bucket
+    region:
+      static: ap-northeast-2
+    credentials:
+      instance-profile: true
+    stack:
+      auto: false
