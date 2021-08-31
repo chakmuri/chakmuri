@@ -77,6 +77,5 @@
 [`Sol-Ahn`](https://github.com/Sol-Ahn)
 
  ### BE 
-  - 공동작업 : 페이지네이션, 사용자 등록, 배포
-* [`Sharpie`](https://github.com/sharpie1330) - 독서모임 CRUD, 검색 필터링, S3 이미지 업로드
-* [`JunHo KANG`](https://github.com/JunHo-YH) - 좋아요한 독서모임, 댓글
+* [`Sharpie`](https://github.com/sharpie1330)
+* [`JunHo KANG`](https://github.com/JunHo-YH)
