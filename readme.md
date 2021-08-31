@@ -58,7 +58,7 @@
 * AWS - EC2, RDS, S3
   
 <br>
-<h2 id="design"> 👩 🏫 기획 & 설계 </h2>
+<h2 id="design"> 👩‍💻 기획 & 설계 </h2>
   <ul>
     <li><a href="https://cobalt-scallion-3d2.notion.site/70949e72bf674a6e857ed795a456ca56">📄기능 설명서</a></li>
     <li><a href="https://cobalt-scallion-3d2.notion.site/9835c787ad6240c3963783552331b547">⚙기능 명세서</a></li>
@@ -70,7 +70,7 @@
   </ul>
 <br>  
   
-<h2 id="fe-be-role"> 👨 💻 FE & BE 역할 분담 </h2>
+<h2 id="fe-be-role"> 👨‍💻 FE & BE 역할 분담 </h2>
 
 [프로젝트 칸반보드✨](https://github.com/chakmuri/chakmuri/projects)
  ### FE 
