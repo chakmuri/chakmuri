@@ -2,6 +2,22 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+const MyComment = ({ ...props }) => {
+	return (
+		<CommentBar>
+			<CommentProfileIcon>
+				<img src={props.myComment.userImgUrl} alt="Profile icon" />
+			</CommentProfileIcon>
+			<CommentText>{props.myComment.contents}</CommentText>
+			<Link to={`/detail/${props.myComment.clubId}`}>
+				<CommentBtn>보기</CommentBtn>
+			</Link>
+		</CommentBar>
+	);
+};
+
+export default MyComment;
+
 const CommentBar = styled.div`
 	width: 1200px;
 	height: 80px;
@@ -41,19 +57,3 @@ const CommentBtn = styled.button`
 	margin-right: 55px;
 	cursor: pointer;
 `;
-
-const MyComment = ({ ...props }) => {
-	return (
-		<CommentBar>
-			<CommentProfileIcon>
-				<img src={props.myComment.userImgUrl} alt="Profile icon" />
-			</CommentProfileIcon>
-			<CommentText>{props.myComment.contents}</CommentText>
-			<Link to={`/detail/${props.myComment.clubId}`}>
-				<CommentBtn>보기</CommentBtn>
-			</Link>
-		</CommentBar>
-	);
-};
-
-export default MyComment;

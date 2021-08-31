@@ -1,5 +1,15 @@
-import React from "react";
 import styled from "styled-components";
+
+const Footer = () => {
+	return (
+		<StyledFooter>
+			<Copyright>Copyright &copy; 2021 책무리</Copyright>
+			<Text>본 사이트는 포트폴리오 용도로 제작된 사이트입니다.</Text>
+		</StyledFooter>
+	);
+};
+
+export default Footer;
 
 const StyledFooter = styled.div`
 	width: 100%;
@@ -21,14 +31,3 @@ const Text = styled.div`
 	font-family: Roboto;
 	font-size: 20px;
 `;
-
-const Footer = () => {
-	return (
-		<StyledFooter>
-			<Copyright>Copyright &copy; 2021 책무리</Copyright>
-			<Text>본 사이트는 포트폴리오 용도로 제작된 사이트입니다.</Text>
-		</StyledFooter>
-	);
-};
-
-export default Footer;

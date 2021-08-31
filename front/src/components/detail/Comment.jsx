@@ -3,6 +3,68 @@ import styled from "styled-components";
 import { Input } from "antd";
 import Button from "../common/Button";
 
+const Comment = (props) => {
+	const createdAt = new Date(props.comment.createdAt).toLocaleString();
+	const updatedAt = new Date(props.comment.updatedAt).toLocaleString();
+
+	return (
+		<CmtContainer>
+			<ProfileIcon>
+				<img src={props.comment.userImgUrl} alt="User profile" />
+			</ProfileIcon>
+			<CmtBox>
+				<CmtWriter>{props.comment.userName}</CmtWriter>
+				<CmtDate>{createdAt !== updatedAt ? updatedAt : createdAt}</CmtDate>
+				<CmtUpdateCheck>
+					{createdAt !== updatedAt ? "(수정됨)" : ""}
+				</CmtUpdateCheck>
+				{props.comment.userId === props.userId ? (
+					<CmtUpdate onClick={() => props.setEditable(props.comment.id)}>
+						수정
+					</CmtUpdate>
+				) : (
+					""
+				)}
+				{props.comment.userId === props.userId ? (
+					<CmtDelete
+						onClick={() => props.handleDeleteComment(props.comment.id)}
+					>
+						삭제
+					</CmtDelete>
+				) : (
+					""
+				)}
+				<CmtText>
+					{props.editable === props.comment.id ? (
+						<>
+							<CmtInput
+								defaultValue={props.comment.contents}
+								onChange={(e) => {
+									console.log(e.target.value);
+									props.setUpdateComment(e.target.value);
+								}}
+							/>
+							<ConfirmBtn
+								onClick={() => {
+									props.handleUpdateComment(props.comment.id);
+									props.setEditable();
+								}}
+							>
+								확인
+							</ConfirmBtn>
+							<CancelBtn onClick={() => props.setEditable()}>취소</CancelBtn>
+						</>
+					) : (
+						props.comment.contents
+					)}
+				</CmtText>
+			</CmtBox>
+		</CmtContainer>
+	);
+};
+
+export default Comment;
+
 const CmtContainer = styled.div`
 	display: flex;
 	justify-content: center;
@@ -104,65 +166,3 @@ const CancelBtn = styled(Button)`
 		margin-left: 15px;
 	}
 `;
-
-const Comment = (props) => {
-	const createdAt = new Date(props.comment.createdAt).toLocaleString();
-	const updatedAt = new Date(props.comment.updatedAt).toLocaleString();
-
-	return (
-		<CmtContainer>
-			<ProfileIcon>
-				<img src={props.comment.userImgUrl} alt="User profile" />
-			</ProfileIcon>
-			<CmtBox>
-				<CmtWriter>{props.comment.userName}</CmtWriter>
-				<CmtDate>{createdAt !== updatedAt ? updatedAt : createdAt}</CmtDate>
-				<CmtUpdateCheck>
-					{createdAt !== updatedAt ? "(수정됨)" : ""}
-				</CmtUpdateCheck>
-				{props.comment.userId === props.userId ? (
-					<CmtUpdate onClick={() => props.setEditable(props.comment.id)}>
-						수정
-					</CmtUpdate>
-				) : (
-					""
-				)}
-				{props.comment.userId === props.userId ? (
-					<CmtDelete
-						onClick={() => props.handleDeleteComment(props.comment.id)}
-					>
-						삭제
-					</CmtDelete>
-				) : (
-					""
-				)}
-				<CmtText>
-					{props.editable === props.comment.id ? (
-						<>
-							<CmtInput
-								defaultValue={props.comment.contents}
-								onChange={(e) => {
-									console.log(e.target.value);
-									props.setUpdateComment(e.target.value);
-								}}
-							/>
-							<ConfirmBtn
-								onClick={() => {
-									props.handleUpdateComment(props.comment.id);
-									props.setEditable();
-								}}
-							>
-								확인
-							</ConfirmBtn>
-							<CancelBtn onClick={() => props.setEditable()}>취소</CancelBtn>
-						</>
-					) : (
-						props.comment.contents
-					)}
-				</CmtText>
-			</CmtBox>
-		</CmtContainer>
-	);
-};
-
-export default Comment;

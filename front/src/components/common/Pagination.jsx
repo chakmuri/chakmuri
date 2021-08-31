@@ -1,6 +1,11 @@
-import React from "react";
 import { Pagination } from "antd";
 import styled from "styled-components";
+
+const CustomPagination = (props) => {
+	return <StyledPagination {...props} />;
+};
+
+export default CustomPagination;
 
 const StyledPagination = styled(Pagination)`
 	.ant-pagination-item:focus-visible,
@@ -13,9 +18,3 @@ const StyledPagination = styled(Pagination)`
 		color: #ff6701;
 	}
 `;
-
-const CustomPagination = (props) => {
-	return <StyledPagination {...props} />;
-};
-
-export default CustomPagination;

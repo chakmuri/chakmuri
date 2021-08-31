@@ -1,6 +1,19 @@
-import React from "react";
 import styled from "styled-components";
+
 import Button from "../common/Button";
+
+const Member = () => {
+	return (
+		<MemberBar>
+			<MemberProfileIcon>
+				<img src="assets/images/icons/profile.png" alt="Profile icon" />
+			</MemberProfileIcon>
+			<MemberUsername>Username</MemberUsername>
+			<MemberEmail>email</MemberEmail>
+			<MemberBtn>내보내기</MemberBtn>
+		</MemberBar>
+	);
+};
 
 const MemberBar = styled.div`
 	width: 1200px;
@@ -39,18 +52,5 @@ const MemberBtn = styled(Button)`
 	border-radius: 6px;
 	margin-right: 55px;
 `;
-
-const Member = () => {
-	return (
-		<MemberBar>
-			<MemberProfileIcon>
-				<img src="assets/images/icons/profile.png" alt="Profile icon" />
-			</MemberProfileIcon>
-			<MemberUsername>Username</MemberUsername>
-			<MemberEmail>email</MemberEmail>
-			<MemberBtn>내보내기</MemberBtn>
-		</MemberBar>
-	);
-};
 
 export default Member;

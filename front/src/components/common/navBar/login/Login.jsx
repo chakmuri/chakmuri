@@ -1,31 +1,12 @@
 import React from "react";
-import axios from "axios";
 import { GoogleLogin } from "react-google-login";
+import axios from "axios";
 import styled from "styled-components";
-import google from "../../../../images/icons/google.png";
 import dotenv from "dotenv";
+
+import google from "../../../../images/icons/google.png";
+
 dotenv.config();
-
-const GoogleIcon = styled.span`
-	position: absolute;
-	left: 14px;
-`;
-
-const GoogleLoginButton = styled.button`
-	width: 280px;
-	height: 40px;
-	font-size: 16px;
-	font-weight: bold;
-	color: #ffffff;
-	background-color: #db4437;
-	border: none;
-	border-radius: 5px;
-	outline: none;
-	text-align: center;
-	cursor: pointer;
-
-	position: relative;
-`;
 
 const Login = ({ ...props }) => {
 	const onSuccess = async (response) => {
@@ -88,3 +69,24 @@ const Login = ({ ...props }) => {
 };
 
 export default Login;
+
+const GoogleIcon = styled.span`
+	position: absolute;
+	left: 14px;
+`;
+
+const GoogleLoginButton = styled.button`
+	width: 280px;
+	height: 40px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #ffffff;
+	background-color: #db4437;
+	border: none;
+	border-radius: 5px;
+	outline: none;
+	text-align: center;
+	cursor: pointer;
+
+	position: relative;
+`;

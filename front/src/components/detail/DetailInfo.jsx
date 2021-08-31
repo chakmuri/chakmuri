@@ -1,38 +1,8 @@
 import React from "react";
-import styled from "styled-components";
-import MapContainer from "../common/MapContainer";
 import { Divider } from "antd";
+import styled from "styled-components";
 
-const DetailInfoContainer = styled.div`
-	margin: 60px 0;
-`;
-
-const Title = styled.div`
-	font-size: 24px;
-	font-weight: bold;
-	margin-bottom: 30px;
-`;
-
-const SubTitle = styled.div`
-	font-size: 20px;
-	font-weight: 600;
-	margin-bottom: 15px;
-`;
-
-const Contents = styled.div`
-	font-size: 16px;
-`;
-
-const TextBox = styled.div`
-	font-size: 16px;
-	margin-bottom: 50px;
-`;
-
-const MapWrapper = styled.div`
-	width: 1000px;
-	height: 250px;
-	margin-top: 40px;
-`;
+import MapContainer from "../common/MapContainer";
 
 const DetailInfo = ({ ...props }) => {
 	return (
@@ -64,3 +34,34 @@ const DetailInfo = ({ ...props }) => {
 };
 
 export default DetailInfo;
+
+const DetailInfoContainer = styled.div`
+	margin: 60px 0;
+`;
+
+const Title = styled.div`
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 30px;
+`;
+
+const SubTitle = styled.div`
+	font-size: 20px;
+	font-weight: 600;
+	margin-bottom: 15px;
+`;
+
+const Contents = styled.div`
+	font-size: 16px;
+`;
+
+const TextBox = styled.div`
+	font-size: 16px;
+	margin-bottom: 50px;
+`;
+
+const MapWrapper = styled.div`
+	width: 1000px;
+	height: 250px;
+	margin-top: 40px;
+`;

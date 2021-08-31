@@ -1,12 +1,120 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import { Modal, Menu, Dropdown } from "antd";
+import styled from "styled-components";
+
 import Login from "./login/Login";
 import RegisterForm from "./register/RegisterForm";
 import logo from "../../../images/icons/logo.png";
 import profile from "../../../images/icons/profile.png";
 import add from "../../../images/icons/add.png";
+
+const NavBar = () => {
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const userId = localStorage.getItem("user_id");
+	const userImg = localStorage.getItem("user_image");
+	const [userImage, setUserImage] = useState(null);
+	const [isLoggedIn, setLoggedIn] = useState(false);
+
+	useEffect(() => {
+		if (userId) {
+			setLoggedIn(true);
+			setUserImage(userImg);
+		}
+	}, [userId, userImg]);
+
+	const showModal = () => {
+		setIsModalVisible(true);
+	};
+
+	const handleCancel = () => {
+		setIsModalVisible(false);
+	};
+
+	const handleLogout = () => {
+		localStorage.removeItem("user_id");
+		localStorage.removeItem("user_image");
+		setLoggedIn(false);
+		setUserImage(null);
+	};
+
+	const dropdownMenu = (
+		<StyledDropdownMenu>
+			<Menu.Item key="1">
+				<Link to="/myPage">마이페이지</Link>
+			</Menu.Item>
+			<Menu.Item key="2" onClick={handleLogout}>
+				로그아웃
+			</Menu.Item>
+		</StyledDropdownMenu>
+	);
+
+	return (
+		<>
+			{!isLoggedIn ? (
+				<Nav>
+					<Link to="/">
+						<NavLogo>
+							<LogoIcon>
+								<img src={logo} alt="Logo" />
+							</LogoIcon>
+							<LogoTitle>책무리</LogoTitle>
+						</NavLogo>
+					</Link>
+					<NavMenu>
+						<NavLink to="/board">
+							<NavText>독서모임 찾기</NavText>
+						</NavLink>
+						<NavIcon>
+							<NavProfile onClick={showModal}>
+								<img src={profile} alt="Profile icon" />
+							</NavProfile>
+							<StyledModal visible={isModalVisible} onCancel={handleCancel}>
+								<Title>
+									지금 바로,
+									<br />
+									<strong>책무리</strong>에서 모여보세요!
+								</Title>
+								<Login onCancel={handleCancel} setLoggedIn={setLoggedIn} />
+							</StyledModal>
+						</NavIcon>
+					</NavMenu>
+				</Nav>
+			) : (
+				<Nav>
+					<Link to="/">
+						<NavLogo>
+							<LogoIcon>
+								<img src={logo} alt="Logo" />
+							</LogoIcon>
+							<LogoTitle>책무리</LogoTitle>
+						</NavLogo>
+					</Link>
+					<NavMenu>
+						<NavLink to="/board">
+							<NavText>독서모임 찾기</NavText>
+						</NavLink>
+						<NavIcon>
+							<Dropdown overlay={dropdownMenu} placement="bottomCenter">
+								<NavProfile>
+									<img src={userImage} alt="User profile" />
+								</NavProfile>
+							</Dropdown>
+							<NavRegister onClick={showModal}>
+								<img src={add} alt="Add icon" />
+							</NavRegister>
+							<StyledModal visible={isModalVisible} onCancel={handleCancel}>
+								<RegisterForm onCancel={handleCancel} />
+							</StyledModal>
+						</NavIcon>
+					</NavMenu>
+				</Nav>
+			)}
+		</>
+	);
+};
+
+export default NavBar;
 
 const Nav = styled.nav`
 	width: 1200px;
@@ -122,110 +230,3 @@ const StyledModal = styled(Modal)`
 		display: none;
 	}
 `;
-
-const NavBar = () => {
-	const [isModalVisible, setIsModalVisible] = useState(false);
-	const userId = localStorage.getItem("user_id");
-	const userImg = localStorage.getItem("user_image");
-	const [userImage, setUserImage] = useState(null);
-	const [isLoggedIn, setLoggedIn] = useState(false);
-
-	useEffect(() => {
-		if (userId) {
-			setLoggedIn(true);
-			setUserImage(userImg);
-		}
-	}, [userId, userImg]);
-
-	const showModal = () => {
-		setIsModalVisible(true);
-	};
-
-	const handleCancel = () => {
-		setIsModalVisible(false);
-	};
-
-	const handleLogout = () => {
-		localStorage.removeItem("user_id");
-		localStorage.removeItem("user_image");
-		setLoggedIn(false);
-		setUserImage(null);
-	};
-
-	const dropdownMenu = (
-		<StyledDropdownMenu>
-			<Menu.Item key="1">
-				<Link to="/myPage">마이페이지</Link>
-			</Menu.Item>
-			<Menu.Item key="2" onClick={handleLogout}>
-				로그아웃
-			</Menu.Item>
-		</StyledDropdownMenu>
-	);
-
-	return (
-		<>
-			{!isLoggedIn ? (
-				<Nav>
-					<Link to="/">
-						<NavLogo>
-							<LogoIcon>
-								<img src={logo} alt="Logo" />
-							</LogoIcon>
-							<LogoTitle>책무리</LogoTitle>
-						</NavLogo>
-					</Link>
-					<NavMenu>
-						<NavLink to="/board">
-							<NavText>독서모임 찾기</NavText>
-						</NavLink>
-						<NavIcon>
-							<NavProfile onClick={showModal}>
-								<img src={profile} alt="Profile icon" />
-							</NavProfile>
-							<StyledModal visible={isModalVisible} onCancel={handleCancel}>
-								<Title>
-									지금 바로,
-									<br />
-									<strong>책무리</strong>에서 모여보세요!
-								</Title>
-								<Login onCancel={handleCancel} setLoggedIn={setLoggedIn} />
-							</StyledModal>
-						</NavIcon>
-					</NavMenu>
-				</Nav>
-			) : (
-				<Nav>
-					<Link to="/">
-						<NavLogo>
-							<LogoIcon>
-								<img src={logo} alt="Logo" />
-							</LogoIcon>
-							<LogoTitle>책무리</LogoTitle>
-						</NavLogo>
-					</Link>
-					<NavMenu>
-						<NavLink to="/board">
-							<NavText>독서모임 찾기</NavText>
-						</NavLink>
-						<NavIcon>
-							<Dropdown overlay={dropdownMenu} placement="bottomCenter">
-								<NavProfile>
-									<img src={userImage} alt="User profile" />
-								</NavProfile>
-							</Dropdown>
-							<NavRegister onClick={showModal}>
-								<img src={add} alt="Add icon" />
-							</NavRegister>
-							<StyledModal visible={isModalVisible} onCancel={handleCancel}>
-								<RegisterForm onCancel={handleCancel} />
-							</StyledModal>
-						</NavIcon>
-					</NavMenu>
-				</Nav>
-			)}
-		</>
-	);
-};
-
-export default NavBar;

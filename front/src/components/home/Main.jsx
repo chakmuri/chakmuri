@@ -3,53 +3,11 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { Row, Col, message } from "antd";
 import styled from "styled-components";
+
 import ImageSlider from "./ImageSlider";
-import Button from "../common/Button";
 import MainClubCard from "./MainClubCard";
+import Button from "../common/Button";
 import Spin from "../common/Spin";
-
-const Wrapper = styled.div`
-	width: 1200px;
-	margin: 0 auto;
-`;
-
-const Title = styled.div`
-	font-family: Roboto;
-	font-weight: bold;
-	font-size: 24px;
-	line-height: 28px;
-	margin: 60px 0 40px 0;
-`;
-
-const ButtonRow = styled.div`
-	display: flex;
-	justify-content: center;
-`;
-
-const MainButton = styled(Button)`
-	text-align: center;
-	margin: 80px 0;
-	border-radius: 30px;
-	color: #ff6701;
-	background-color: #ffffff;
-	border: 1px solid #ff6701;
-	padding: 10px 20px;
-	transition: all 0.3s;
-
-	&:hover {
-		color: #ffffff;
-		background-color: #ff6701;
-	}
-`;
-
-const SpinContainer = styled.div`
-	width: 100%;
-	height: 80vh;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
 
 const Main = () => {
 	const [sortByCreatedAtClubs, setSortByCreatedAtClubs] = useState([]);
@@ -178,3 +136,46 @@ const Main = () => {
 };
 
 export default Main;
+
+const Wrapper = styled.section`
+	width: 1200px;
+	margin: 0 auto;
+`;
+
+const Title = styled.div`
+	font-family: Roboto;
+	font-weight: bold;
+	font-size: 24px;
+	line-height: 28px;
+	margin: 60px 0 40px 0;
+`;
+
+const ButtonRow = styled.div`
+	display: flex;
+	justify-content: center;
+`;
+
+const MainButton = styled(Button)`
+	text-align: center;
+	margin: 80px 0;
+	border-radius: 30px;
+	color: #ff6701;
+	background-color: #ffffff;
+	border: 1px solid #ff6701;
+	padding: 10px 20px;
+	transition: all 0.3s;
+
+	&:hover {
+		color: #ffffff;
+		background-color: #ff6701;
+	}
+`;
+
+const SpinContainer = styled.div`
+	width: 100%;
+	height: 80vh;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;

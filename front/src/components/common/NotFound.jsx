@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+const NotFound = (props) => {
+	return <StyledNotFound>{props.children}</StyledNotFound>;
+};
+
+export default NotFound;
+
 const StyledNotFound = styled.div`
 	width: 100%;
 	height: 100vh;
@@ -11,9 +17,3 @@ const StyledNotFound = styled.div`
 	justify-content: center;
 	align-items: center;
 `;
-
-const NotFound = (props) => {
-	return <StyledNotFound>{props.children}</StyledNotFound>;
-};
-
-export default NotFound;

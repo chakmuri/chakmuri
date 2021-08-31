@@ -1,22 +1,10 @@
 import React from "react";
-import styled from "styled-components";
 import { Row, Col } from "antd";
+import styled from "styled-components";
+
 import Tag from "../common/Tag";
 
-const TagContainer = styled.div`
-	width: 850px;
-	margin: 80px auto;
-
-	display: flex;
-	flex-direction: column;
-	gap: 30px;
-`;
-
-const BoardTag = styled(Tag)`
-	width: 200px;
-`;
-
-const Search = (props) => {
+const TagFilter = (props) => {
 	const tags = [
 		"소수정예",
 		"온라인",
@@ -63,4 +51,17 @@ const Search = (props) => {
 	);
 };
 
-export default Search;
+export default TagFilter;
+
+const TagContainer = styled.div`
+	width: 850px;
+	margin: 80px auto;
+
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+`;
+
+const BoardTag = styled(Tag)`
+	width: 200px;
+`;

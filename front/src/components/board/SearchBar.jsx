@@ -1,6 +1,35 @@
 import React from "react";
-import styled from "styled-components";
 import { Input } from "antd";
+import styled from "styled-components";
+
+const SearchBar = (props) => {
+	const onSearch = (value) => {
+		props.setKeyword(value);
+		value = "";
+	};
+
+	const onReset = () => {
+		props.setKeyword("");
+	};
+
+	return (
+		<SearchBarContainer>
+			<StyledSearchBar
+				allowClear
+				enterButton
+				size="large"
+				placeholder="독서모임 검색"
+				onSearch={onSearch}
+				onPressEnter={(e) => {
+					props.setKeyword(e.target.value);
+					onReset();
+				}}
+			/>
+		</SearchBarContainer>
+	);
+};
+
+export default SearchBar;
 
 const { Search } = Input;
 
@@ -36,32 +65,3 @@ const StyledSearchBar = styled(Search)`
 		box-shadow: none;
 	}
 `;
-
-const SearchBar = (props) => {
-	const onSearch = (value) => {
-		props.setKeyword(value);
-		value = "";
-	};
-
-	const onReset = () => {
-		props.setKeyword("");
-	};
-
-	return (
-		<SearchBarContainer>
-			<StyledSearchBar
-				allowClear
-				enterButton
-				size="large"
-				placeholder="독서모임 검색"
-				onSearch={onSearch}
-				onPressEnter={(e) => {
-					props.setKeyword(e.target.value);
-					onReset();
-				}}
-			/>
-		</SearchBarContainer>
-	);
-};
-
-export default SearchBar;

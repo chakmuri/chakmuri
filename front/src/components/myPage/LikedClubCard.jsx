@@ -1,10 +1,51 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 import { Card, Skeleton } from "antd";
+import styled from "styled-components";
+
 import SmallTag from "../common/SmallTag";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
 import filledHeart from "../../images/icons/filled_heart.png";
+
+const LikedClubCard = ({ ...props }) => {
+	let history = useHistory();
+
+	return (
+		<StyledCard
+			hoverable
+			cover={
+				props.club.imgUrl ? (
+					<img src={props.club.imgUrl} alt="Clubcard thumbnail" />
+				) : (
+					<Skeleton.Image />
+				)
+			}
+			onClick={() => history.push(`/detail/${props.club.id}`)}
+		>
+			<Meta title={props.club.title} description={props.club.contents} />
+			<TagContainer>
+				{props.club.tags.split(", ").map((tag, i) => (
+					<ClubTag key={i}>{tag}</ClubTag>
+				))}
+			</TagContainer>
+			<LikeIcon
+				onClick={(e) => {
+					e.stopPropagation();
+					props.handleLikeDelete(props.club.clubId);
+				}}
+			>
+				{props.like === props.club.clubId ? (
+					<img src={filledHeart} alt="Filled like icon"></img>
+				) : (
+					<img src={unfilledHeart} alt="Unfilled like icon" />
+				)}
+				<LikeNum>{props.club.likes}</LikeNum>
+			</LikeIcon>
+		</StyledCard>
+	);
+};
+
+export default LikedClubCard;
 
 const { Meta } = Card;
 
@@ -64,43 +105,3 @@ const LikeIcon = styled.div`
 `;
 
 const LikeNum = styled.span``;
-
-const LikedClubCard = ({ ...props }) => {
-	let history = useHistory();
-
-	return (
-		<StyledCard
-			hoverable
-			cover={
-				props.club.imgUrl ? (
-					<img src={props.club.imgUrl} alt="Clubcard thumbnail" />
-				) : (
-					<Skeleton.Image />
-				)
-			}
-			onClick={() => history.push(`/detail/${props.club.id}`)}
-		>
-			<Meta title={props.club.title} description={props.club.contents} />
-			<TagContainer>
-				{props.club.tags.split(", ").map((tag, i) => (
-					<ClubTag key={i}>{tag}</ClubTag>
-				))}
-			</TagContainer>
-			<LikeIcon
-				onClick={(e) => {
-					e.stopPropagation();
-					props.handleLikeDelete(props.club.clubId);
-				}}
-			>
-				{props.like === props.club.clubId ? (
-					<img src={filledHeart} alt="Filled like icon"></img>
-				) : (
-					<img src={unfilledHeart} alt="Unfilled like icon" />
-				)}
-				<LikeNum>{props.club.likes}</LikeNum>
-			</LikeIcon>
-		</StyledCard>
-	);
-};
-
-export default LikedClubCard;

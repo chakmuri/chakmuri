@@ -2,90 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { Row, Col, Checkbox, Select, message } from "antd";
+
 import TagFilter from "./TagFilter";
 import SearchBar from "./SearchBar";
-import Pagination from "../common/Pagination";
 import ClubCard from "./ClubCard";
+import Pagination from "../common/Pagination";
 import Spin from "../common/Spin";
-
-const { Option } = Select;
-
-const Wrapper = styled.div`
-	width: 1200px;
-	margin: 90px auto;
-`;
-
-const MainTitle = styled.div`
-	font-size: 26px;
-	font-weight: bold;
-	text-align: center;
-	cursor: pointer;
-`;
-const TitleRow = styled.div`
-	display: flex;
-	align-items: center;
-	margin: 50px 0;
-`;
-
-const Title = styled.div`
-	font-family: Roboto;
-	font-weight: 500;
-	font-size: 24px;
-	flex: 5;
-`;
-
-const CheckboxFilter = styled(Checkbox)`
-	font-family: Roboto;
-	font-size: 18px;
-	flex: 0.7;
-
-	.ant-checkbox-inner {
-		width: 20px;
-		height: 20px;
-	}
-
-	.ant-checkbox-checked .ant-checkbox-inner {
-		background-color: #fea82f;
-		border-color: #fea82f;
-	}
-
-	.ant-checkbox-checked::after {
-		border-color: #fea82f;
-	}
-
-	.ant-checkbox-wrapper:hover .ant-checkbox-inner,
-	.ant-checkbox:hover .ant-checkbox-inner,
-	.ant-checkbox-input:focus + .ant-checkbox-inner {
-		border-color: #fea82f;
-	}
-`;
-
-const SortFilter = styled(Select)`
-	flex: 0.7;
-
-	.ant-select-selection-item {
-		font-size: 16px;
-	}
-
-	&:not(.ant-select-disabled):hover .ant-select-selector {
-		border-color: #fea82f;
-	}
-`;
-
-const PaginationRow = styled(Row)`
-	width: 100%;
-	margin-top: 90px;
-	justify-content: center;
-`;
-
-const SpinContainer = styled.div`
-	width: 100%;
-	height: 80vh;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
 
 const Main = () => {
 	const [clubs, setClubs] = useState();
@@ -225,3 +147,82 @@ const Main = () => {
 };
 
 export default Main;
+
+const { Option } = Select;
+
+const Wrapper = styled.section`
+	width: 1200px;
+	margin: 90px auto;
+`;
+
+const MainTitle = styled.div`
+	font-size: 26px;
+	font-weight: bold;
+	text-align: center;
+	cursor: pointer;
+`;
+const TitleRow = styled.div`
+	display: flex;
+	align-items: center;
+	margin: 50px 0;
+`;
+
+const Title = styled.div`
+	font-family: Roboto;
+	font-weight: 500;
+	font-size: 24px;
+	flex: 5;
+`;
+
+const CheckboxFilter = styled(Checkbox)`
+	font-family: Roboto;
+	font-size: 18px;
+	flex: 0.7;
+
+	.ant-checkbox-inner {
+		width: 20px;
+		height: 20px;
+	}
+
+	.ant-checkbox-checked .ant-checkbox-inner {
+		background-color: #fea82f;
+		border-color: #fea82f;
+	}
+
+	.ant-checkbox-checked::after {
+		border-color: #fea82f;
+	}
+
+	.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+	.ant-checkbox:hover .ant-checkbox-inner,
+	.ant-checkbox-input:focus + .ant-checkbox-inner {
+		border-color: #fea82f;
+	}
+`;
+
+const SortFilter = styled(Select)`
+	flex: 0.7;
+
+	.ant-select-selection-item {
+		font-size: 16px;
+	}
+
+	&:not(.ant-select-disabled):hover .ant-select-selector {
+		border-color: #fea82f;
+	}
+`;
+
+const PaginationRow = styled(Row)`
+	width: 100%;
+	margin-top: 90px;
+	justify-content: center;
+`;
+
+const SpinContainer = styled.div`
+	width: 100%;
+	height: 80vh;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
