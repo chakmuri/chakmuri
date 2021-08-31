@@ -18,7 +18,6 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-aws.yml
 .idea
 *.iws
 *.iml
@@ -36,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### 배포시 gitignore ##
+aws.yml
