@@ -27,6 +27,7 @@ const EditForm = ({ ...props }) => {
 	const userId = localStorage.getItem("user_id");
 	const fullAddress = streetAddress + " " + detailAddress;
 	const tags = [
+		"소수정예",
 		"온라인",
 		"오프라인",
 		"온/오프라인",
@@ -252,11 +253,13 @@ const EditForm = ({ ...props }) => {
 										alt="Preview image"
 									></PreviewImage>
 								)}
-								<input
-									type="file"
-									accept="image/*"
-									onChange={handleImgChange}
-								/>
+								<FileInput>
+									<input
+										type="file"
+										accept="image/*"
+										onChange={handleImgChange}
+									/>
+								</FileInput>
 							</Row>
 						</Form.Item>
 					</Col>
@@ -360,7 +363,7 @@ const EditForm = ({ ...props }) => {
 							<StyledTextArea
 								rows={10}
 								placeholder={
-									"모임의 소개글이나 공지사항 등 상세한 설명을 작성해주세요."
+									"모임의 소개글이나 공지사항, 연락처 등 상세한 설명을 작성해주세요."
 								}
 							/>
 						</Form.Item>
@@ -372,8 +375,8 @@ const EditForm = ({ ...props }) => {
 							<Form.Item
 								name="addressStreet"
 								initialValue={
-									props.myClub.addressStreet === undefined
-										? ""
+									!props.myClub.addressStreet
+										? "없음"
 										: props.myClub.addressStreet
 								}
 							>
@@ -386,8 +389,8 @@ const EditForm = ({ ...props }) => {
 							<Form.Item
 								name="addressDetail"
 								initialValue={
-									props.myClub.addressDetail === undefined
-										? ""
+									!props.myClub.addressDetail
+										? "없음"
 										: props.myClub.addressDetail
 								}
 							>
@@ -479,6 +482,13 @@ const TitleRow = styled.div`
 
 const TagRow = styled(Row)`
 	margin-top: 20px;
+`;
+
+const FileInput = styled.div`
+	background-color: #f6f6f6;
+	border: 1px solid #94989b;
+	border-radius: 5px;
+	padding: 3px;
 `;
 
 const StyledRangePicker = styled(RangePicker)`
