@@ -16,6 +16,7 @@ const RegisterForm = ({ ...props }) => {
 	const [preview, setPreview] = useState(null);
 	const [selectedTags, setSelectedTags] = useState([]);
 	const tags = [
+		"소수정예",
 		"온라인",
 		"오프라인",
 		"온/오프라인",
@@ -80,11 +81,6 @@ const RegisterForm = ({ ...props }) => {
 		const endDate = values.date[1]._d.toISOString().substring(0, 10);
 		const sendTags = selectedTags.join(", ");
 		const formData = new FormData();
-		const config = {
-			headers: {
-				"content-type": "multipart/form-data",
-			},
-		};
 
 		if (!values.minPersonnel || !values.maxPersonnel) {
 			message.error("참여인원을 입력해주세요.");
@@ -123,15 +119,21 @@ const RegisterForm = ({ ...props }) => {
 			const res = await axios.get(`/clubs/users/${userId}`);
 
 			if (res.status === 204) {
-				const res = await axios.post("/clubs", formData, config);
+				const res = await axios.post("/clubs", formData);
 
 				if (res.status === 200) {
+					registerForm.resetFields();
+					setImgFile();
 					message.success("독서모임이 성공적으로 등록되었습니다!");
 					props.onCancel();
 				} else {
 					message.error("독서모임 등록에 실패했습니다.");
 				}
-			} else if (res.data) message.error("이미 등록한 독서모임이 존재합니다.");
+			} else if (res.data) {
+				registerForm.resetFields();
+				setImgFile();
+				message.error("이미 등록한 독서모임이 존재합니다.");
+			}
 		} catch (err) {
 			console.log(err);
 		}
@@ -233,11 +235,13 @@ const RegisterForm = ({ ...props }) => {
 										alt="Preview image"
 									></PreviewImage>
 								)}
-								<input
-									type="file"
-									accept="image/*"
-									onChange={handleImgChange}
-								/>
+								<FileInput>
+									<input
+										type="file"
+										accept="image/*"
+										onChange={handleImgChange}
+									/>
+								</FileInput>
 							</Row>
 						</Form.Item>
 					</Col>
@@ -326,7 +330,7 @@ const RegisterForm = ({ ...props }) => {
 							<StyledTextArea
 								rows={10}
 								placeholder={
-									"모임의 소개글이나 공지사항 등 상세한 설명을 작성해주세요."
+									"모임의 소개글이나 공지사항, 연락처 등 상세한 설명을 작성해주세요."
 								}
 							/>
 						</Form.Item>
@@ -462,6 +466,13 @@ const PreviewImage = styled.img`
 	height: 263px;
 	border: none;
 	border-radius: 50%;
+`;
+
+const FileInput = styled.div`
+	background-color: #f6f6f6;
+	border: 1px solid #94989b;
+	border-radius: 5px;
+	padding: 3px;
 `;
 
 const TagRow = styled(Row)`
