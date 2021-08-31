@@ -32,7 +32,7 @@
 <!--SITE-->
 <h2 id="site"> 💻 사이트</h2>
 
-* 실서버 링크 :
+* 실서버 링크 : [책무리 웹사이트 링크](http://chakmuri.club/)
 <br>
 
 <h2 id="period"> 🗓 개발 기간 </h2>
