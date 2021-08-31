@@ -1,11 +1,56 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 import { Card, Skeleton } from "antd";
+import styled from "styled-components";
+
 import SmallTag from "../common/SmallTag";
 import ExpiredTag from "../common/ExpiredTag";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
 import filledHeart from "../../images/icons/filled_heart.png";
+
+const MainClubCard = ({ ...props }) => {
+	let history = useHistory();
+	return (
+		<StyledCard
+			hoverable
+			cover={
+				props.club.imgUrl ? (
+					<img src={props.club.imgUrl} alt="Clubcard thumbnail" />
+				) : (
+					<Skeleton.Image />
+				)
+			}
+			onClick={() => history.push(`/detail/${props.club.id}`)}
+		>
+			<Meta title={props.club.title} description={props.club.contents} />
+			{props.club.clubStatus === "EXPIRED" ? (
+				<ClubExpiredTag>마감</ClubExpiredTag>
+			) : (
+				""
+			)}
+			<TagContainer>
+				{props.club.tags.split(", ").map((tag, i) => (
+					<MainTag key={i}>{tag}</MainTag>
+				))}
+			</TagContainer>
+			<LikeIcon
+				onClick={(e) => {
+					e.stopPropagation();
+					props.handleLikedClubs(props.club.id);
+				}}
+			>
+				{props.likedClubs.includes(props.club.id) ? (
+					<img src={filledHeart} alt="Filled like icon" />
+				) : (
+					<img src={unfilledHeart} alt="Unfilled like icon" />
+				)}
+				<LikeNum>{props.club.likes}</LikeNum>
+			</LikeIcon>
+		</StyledCard>
+	);
+};
+
+export default MainClubCard;
 
 const { Meta } = Card;
 
@@ -78,47 +123,3 @@ const ClubExpiredTag = styled(ExpiredTag)`
 `;
 
 const LikeNum = styled.span``;
-
-const MainClubCard = ({ ...props }) => {
-	let history = useHistory();
-	return (
-		<StyledCard
-			hoverable
-			cover={
-				props.club.imgUrl ? (
-					<img src={props.club.imgUrl} alt="Clubcard thumbnail" />
-				) : (
-					<Skeleton.Image />
-				)
-			}
-			onClick={() => history.push(`/detail/${props.club.id}`)}
-		>
-			<Meta title={props.club.title} description={props.club.contents} />
-			{props.club.clubStatus === "EXPIRED" ? (
-				<ClubExpiredTag>마감</ClubExpiredTag>
-			) : (
-				""
-			)}
-			<TagContainer>
-				{props.club.tags.split(", ").map((tag, i) => (
-					<MainTag key={i}>{tag}</MainTag>
-				))}
-			</TagContainer>
-			<LikeIcon
-				onClick={(e) => {
-					e.stopPropagation();
-					props.handleLikedClubs(props.club.id);
-				}}
-			>
-				{props.likedClubs.includes(props.club.id) ? (
-					<img src={filledHeart} alt="Filled like icon" />
-				) : (
-					<img src={unfilledHeart} alt="Unfilled like icon" />
-				)}
-				<LikeNum>{props.club.likes}</LikeNum>
-			</LikeIcon>
-		</StyledCard>
-	);
-};
-
-export default MainClubCard;

@@ -1,14 +1,9 @@
 import React from "react";
 import { Row } from "antd";
 import styled from "styled-components";
-import Member from "./Member";
-import CustomPagination from "../common/Pagination";
 
-const PaginationRow = styled(Row)`
-	width: 100%;
-	margin-top: 48px;
-	justify-content: center;
-`;
+import Member from "./Member";
+import Pagination from "../common/Pagination";
 
 const MemberList = () => {
 	return (
@@ -19,10 +14,16 @@ const MemberList = () => {
 				<Member />
 			</Row>
 			<PaginationRow>
-				<CustomPagination />
+				<Pagination />
 			</PaginationRow>
 		</>
 	);
 };
 
 export default MemberList;
+
+const PaginationRow = styled(Row)`
+	width: 100%;
+	margin-top: 48px;
+	justify-content: center;
+`;

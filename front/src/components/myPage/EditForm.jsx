@@ -3,136 +3,10 @@ import axios from "axios";
 import { Form, Input, InputNumber, Row, Col, DatePicker, message } from "antd";
 import styled from "styled-components";
 import moment from "moment";
+
+import MapContainer from "../common/MapContainer";
 import Button from "../common/Button";
 import Tag from "../common/Tag";
-import MapContainer from "../common/MapContainer";
-
-const { TextArea } = Input;
-const { RangePicker } = DatePicker;
-
-const Wrapper = styled.div`
-	width: 1200px;
-	padding: 40px 100px;
-	margin: 0 auto;
-	border: 1.5px solid #c4c4c4;
-	border-radius: 5px;
-`;
-
-const StyledForm = styled(Form)`
-	.ant-form-item-label > label {
-		font-size: 18px;
-		font-weight: bold;
-	}
-
-	.ant-form-item {
-		margin-bottom: 14px;
-	}
-
-	.ant-input:focus,
-	.ant-input-focused,
-	.ant-input:hover,
-	.ant-input-number:hover,
-	.ant-picker:hover,
-	.ant-picker-focused {
-		border-color: #f98404;
-		box-shadow: none;
-	}
-`;
-
-const StyledInput = styled(Input)`
-	font-family: Roboto;
-	font-size: 16px;
-	height: 48px;
-	background-color: #f6f6f6;
-	border: 1px solid #94989b;
-	border-radius: 5px;
-	}
-`;
-
-const StyledInputNumber = styled(InputNumber)`
-	font-family: Roboto;
-	font-weight: bold;
-	font-size: 16px;
-	width: 80px;
-	height: 40px;
-	background-color: #f6f6f6;
-	border: 1px solid #94989b;
-	border-radius: 5px;
-`;
-
-const PersonnelRow = styled.div`
-	display: flex;
-	gap: 5px;
-`;
-
-const TitleRow = styled.div`
-	font-family: Roboto;
-	font-weight: bold;
-	font-size: 20px;
-	margin: 20px 0;
-`;
-
-const TagRow = styled(Row)`
-	margin-top: 20px;
-`;
-
-const StyledRangePicker = styled(RangePicker)`
-	height: 48px;
-	background-color: #f6f6f6;
-	border: 1px solid #94989b;
-	border-radius: 5px;
-
-	.ant-picker-input > input {
-		font-size: 16px;
-		text-align: center;
-	}
-
-	.ant-picker-active-bar {
-		background: #f98404;
-	}
-`;
-
-const StyledTextArea = styled(TextArea)`
-	font-size: 16px;
-	width: 700px;
-	background-color: #f6f6f6;
-	border: 1px solid #94989b;
-	border-radius: 5px;
-`;
-
-const TagContainer = styled.div`
-	display: flex;
-	gap: 10px;
-`;
-
-const PreviewImage = styled.img`
-	width: 263px;
-	height: 263px;
-	border: none;
-	border-radius: 50%;
-`;
-
-const ButtonRow = styled.div`
-	display: flex;
-	justify-content: center;
-	margin: 40px 0;
-`;
-
-const MapWrapper = styled.div`
-	width: 1000px;
-	height: 250px;
-	margin-top: 40px;
-`;
-
-const FilledBtn = styled(Button)`
-	& {
-		color: #ffffff;
-		background-color: #ff6701;
-		border: none;
-		border-radius: 6px;
-		outline: none;
-	}
-`;
 
 const EditForm = ({ ...props }) => {
 	const [editForm] = Form.useForm();
@@ -537,3 +411,130 @@ const EditForm = ({ ...props }) => {
 };
 
 export default EditForm;
+
+const { TextArea } = Input;
+const { RangePicker } = DatePicker;
+
+const Wrapper = styled.section`
+	width: 1200px;
+	padding: 40px 100px;
+	margin: 0 auto;
+	border: 1.5px solid #c4c4c4;
+	border-radius: 5px;
+`;
+
+const StyledForm = styled(Form)`
+	.ant-form-item-label > label {
+		font-size: 18px;
+		font-weight: bold;
+	}
+
+	.ant-form-item {
+		margin-bottom: 14px;
+	}
+
+	.ant-input:focus,
+	.ant-input-focused,
+	.ant-input:hover,
+	.ant-input-number:hover,
+	.ant-picker:hover,
+	.ant-picker-focused {
+		border-color: #f98404;
+		box-shadow: none;
+	}
+`;
+
+const StyledInput = styled(Input)`
+	font-family: Roboto;
+	font-size: 16px;
+	height: 48px;
+	background-color: #f6f6f6;
+	border: 1px solid #94989b;
+	border-radius: 5px;
+	}
+`;
+
+const StyledInputNumber = styled(InputNumber)`
+	font-family: Roboto;
+	font-weight: bold;
+	font-size: 16px;
+	width: 80px;
+	height: 40px;
+	background-color: #f6f6f6;
+	border: 1px solid #94989b;
+	border-radius: 5px;
+`;
+
+const PersonnelRow = styled.div`
+	display: flex;
+	gap: 5px;
+`;
+
+const TitleRow = styled.div`
+	font-family: Roboto;
+	font-weight: bold;
+	font-size: 20px;
+	margin: 20px 0;
+`;
+
+const TagRow = styled(Row)`
+	margin-top: 20px;
+`;
+
+const StyledRangePicker = styled(RangePicker)`
+	height: 48px;
+	background-color: #f6f6f6;
+	border: 1px solid #94989b;
+	border-radius: 5px;
+
+	.ant-picker-input > input {
+		font-size: 16px;
+		text-align: center;
+	}
+
+	.ant-picker-active-bar {
+		background: #f98404;
+	}
+`;
+
+const StyledTextArea = styled(TextArea)`
+	font-size: 16px;
+	width: 700px;
+	background-color: #f6f6f6;
+	border: 1px solid #94989b;
+	border-radius: 5px;
+`;
+
+const TagContainer = styled.div`
+	display: flex;
+	gap: 10px;
+`;
+
+const PreviewImage = styled.img`
+	width: 263px;
+	height: 263px;
+	border: none;
+	border-radius: 50%;
+`;
+
+const ButtonRow = styled.div`
+	display: flex;
+	justify-content: center;
+	margin: 40px 0;
+`;
+
+const MapWrapper = styled.div`
+	width: 1000px;
+	height: 250px;
+	margin-top: 40px;
+`;
+
+const FilledBtn = styled(Button)`
+	& {
+		color: #ffffff;
+		background-color: #ff6701;
+		border: none;
+		border-radius: 6px;
+		outline: none;
+	}
+`;

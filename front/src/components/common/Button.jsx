@@ -1,6 +1,10 @@
-import React from "react";
 import styled from "styled-components";
-import classnames from "classnames";
+
+const Button = (props) => {
+	return <StyledButton {...props}>{props.children}</StyledButton>;
+};
+
+export default Button;
 
 const StyledButton = styled.button`
 	font-family: Roboto;
@@ -12,13 +16,3 @@ const StyledButton = styled.button`
 	background-color: #ffffff;
 	cursor: pointer;
 `;
-
-const Button = (props) => {
-	return (
-		<StyledButton {...props} className={classnames("button", props.className)}>
-			{props.children}
-		</StyledButton>
-	);
-};
-
-export default Button;

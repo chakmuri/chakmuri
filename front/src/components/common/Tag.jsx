@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+const Tag = (props) => {
+	return <StyledTag {...props}>{props.children}</StyledTag>;
+};
+
+export default Tag;
+
 const StyledTag = styled.button`
 	font-size: 20px;
 	color: ${(props) => (props.selected ? "#ffffff" : "#f98404")};
@@ -16,9 +22,3 @@ const StyledTag = styled.button`
 		background-color: #f98404;
 	}
 `;
-
-const Tag = (props) => {
-	return <StyledTag {...props}>{props.children}</StyledTag>;
-};
-
-export default Tag;

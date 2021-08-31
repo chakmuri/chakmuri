@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import styled from "styled-components";
 import { Row, message } from "antd";
+import styled from "styled-components";
+
 import InfoBox from "./InfoBox";
 import DetailInfo from "./DetailInfo";
 import Comment from "./Comment";
@@ -9,93 +10,6 @@ import Button from "../common/Button";
 import Spin from "../common/Spin";
 import Pagination from "../common/Pagination";
 import profile from "../../images/icons/profile.png";
-
-const Wrapper = styled.div`
-	width: 996px;
-	margin: 60px auto;
-`;
-
-const TitleRow = styled.div`
-	display: flex;
-	align-items: center;
-	text-align: center;
-	margin-bottom: 15px;
-`;
-
-const Title = styled.div`
-	font-family: Roboto;
-	font-weight: 500;
-	font-size: 24px;
-	margin-top: 50px;
-`;
-
-const CmtContainer = styled.div`
-	width: 100%;
-`;
-
-const InputBox = styled.div`
-	width: 840px;
-	border: 1px solid #c4c4c4;
-	border-radius: 10px;
-	margin: 0 auto;
-	padding: 10px;
-
-	display: flex;
-`;
-
-const ProfileIcon = styled.div`
-	width: 48px;
-	height: 48px;
-	margin-right: 10px;
-
-	img {
-		width: 100%;
-		height: 100%;
-	}
-`;
-
-const StyledInput = styled.input`
-	border: none;
-	outline: none;
-	font-size: 20px;
-	flex: 2;
-`;
-
-const CmtPost = styled(Button)`
-	& {
-		font-size: 16px;
-		color: #ffffff;
-		background-color: #ff6701;
-		padding: 0;
-		border-radius: 5px;
-	}
-	flex: 0.2;
-`;
-
-const ListRow = styled.div`
-	width: 100%;
-	margin: 20px 0;
-
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	gap: 20px;
-`;
-
-const PaginationRow = styled(Row)`
-	width: 100%;
-	margin-top: 48px;
-	justify-content: center;
-`;
-
-const SpinContainer = styled.div`
-	width: 100%;
-	height: 80vh;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
 
 const Main = (props) => {
 	const [club, setClub] = useState();
@@ -306,3 +220,90 @@ const Main = (props) => {
 };
 
 export default Main;
+
+const Wrapper = styled.section`
+	width: 996px;
+	margin: 60px auto;
+`;
+
+const TitleRow = styled.div`
+	display: flex;
+	align-items: center;
+	text-align: center;
+	margin-bottom: 15px;
+`;
+
+const Title = styled.div`
+	font-family: Roboto;
+	font-weight: 500;
+	font-size: 24px;
+	margin-top: 50px;
+`;
+
+const CmtContainer = styled.div`
+	width: 100%;
+`;
+
+const InputBox = styled.div`
+	width: 840px;
+	border: 1px solid #c4c4c4;
+	border-radius: 10px;
+	margin: 0 auto;
+	padding: 10px;
+
+	display: flex;
+`;
+
+const ProfileIcon = styled.div`
+	width: 48px;
+	height: 48px;
+	margin-right: 10px;
+
+	img {
+		width: 100%;
+		height: 100%;
+	}
+`;
+
+const StyledInput = styled.input`
+	border: none;
+	outline: none;
+	font-size: 20px;
+	flex: 2;
+`;
+
+const CmtPost = styled(Button)`
+	& {
+		font-size: 16px;
+		color: #ffffff;
+		background-color: #ff6701;
+		padding: 0;
+		border-radius: 5px;
+	}
+	flex: 0.2;
+`;
+
+const ListRow = styled.div`
+	width: 100%;
+	margin: 20px 0;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 20px;
+`;
+
+const PaginationRow = styled(Row)`
+	width: 100%;
+	margin-top: 48px;
+	justify-content: center;
+`;
+
+const SpinContainer = styled.div`
+	width: 100%;
+	height: 80vh;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;

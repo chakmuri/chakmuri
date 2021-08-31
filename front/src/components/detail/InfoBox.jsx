@@ -1,8 +1,56 @@
 import React from "react";
 import styled from "styled-components";
+
 import SmallTag from "../common/SmallTag";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
 import filledHeart from "../../images/icons/filled_heart.png";
+
+const InfoBox = ({ ...props }) => {
+	const tags = props.club.tags.split(", ");
+
+	return (
+		<InfoBoxContainer>
+			<ClubThumbnail>
+				<img src={props.club.imgUrl} alt="Club Thumbnail" />
+			</ClubThumbnail>
+			<ClubInfo>
+				<Title>{props.club.title}</Title>
+				<InfoRow>
+					<SubTitle>참여 인원</SubTitle>{" "}
+					<Text>
+						{props.club.minPersonnel}인 ~ {props.club.maxPersonnel}인
+					</Text>
+				</InfoRow>
+				<InfoRow>
+					<SubTitle>진행 기간</SubTitle>{" "}
+					<Text>
+						{props.club.startDate} - {props.club.endDate}
+					</Text>
+				</InfoRow>
+				<TagContainer>
+					{tags.map((tag, i) => (
+						<Tag key={i}>{tag}</Tag>
+					))}
+				</TagContainer>
+				<LikeIcon
+					onClick={() => {
+						props.like
+							? props.handleDeleteLike(props.club.id)
+							: props.handleLike(props.club.id);
+					}}
+				>
+					{props.like === props.club.id ? (
+						<img src={filledHeart} alt="Filled like icon"></img>
+					) : (
+						<img src={unfilledHeart} alt="Unfilled like icon" />
+					)}
+				</LikeIcon>
+			</ClubInfo>
+		</InfoBoxContainer>
+	);
+};
+
+export default InfoBox;
 
 const InfoBoxContainer = styled.div`
 	width: 100%;
@@ -78,50 +126,3 @@ const LikeIcon = styled.div`
 		width: 100%;
 	}
 `;
-
-const InfoBox = ({ ...props }) => {
-	const tags = props.club.tags.split(", ");
-
-	return (
-		<InfoBoxContainer>
-			<ClubThumbnail>
-				<img src={props.club.imgUrl} alt="Club Thumbnail" />
-			</ClubThumbnail>
-			<ClubInfo>
-				<Title>{props.club.title}</Title>
-				<InfoRow>
-					<SubTitle>참여 인원</SubTitle>{" "}
-					<Text>
-						{props.club.minPersonnel}인 ~ {props.club.maxPersonnel}인
-					</Text>
-				</InfoRow>
-				<InfoRow>
-					<SubTitle>진행 기간</SubTitle>{" "}
-					<Text>
-						{props.club.startDate} - {props.club.endDate}
-					</Text>
-				</InfoRow>
-				<TagContainer>
-					{tags.map((tag, i) => (
-						<Tag key={i}>{tag}</Tag>
-					))}
-				</TagContainer>
-				<LikeIcon
-					onClick={() => {
-						props.like
-							? props.handleDeleteLike(props.club.id)
-							: props.handleLike(props.club.id);
-					}}
-				>
-					{props.like === props.club.id ? (
-						<img src={filledHeart} alt="Filled like icon"></img>
-					) : (
-						<img src={unfilledHeart} alt="Unfilled like icon" />
-					)}
-				</LikeIcon>
-			</ClubInfo>
-		</InfoBoxContainer>
-	);
-};
-
-export default InfoBox;

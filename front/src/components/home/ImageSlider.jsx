@@ -2,36 +2,14 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Slider from "react-slick";
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import banner1 from "../../images/banner-1.png";
 import banner2 from "../../images/banner-2.png";
 import banner3 from "../../images/banner-3.png";
 import banner4 from "../../images/banner-4.png";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
-const Wrapper = styled.div`
-	margin: 0 auto;
-	width: 1200px;
-	height: 300px;
-`;
-
-const StyledSlider = styled(Slider)`
-	.slick-prev:before,
-	.slick-next:before {
-		color: #ff6701;
-		margin: 0 auto;
-	}
-
-	.slick-slide {
-		width: 100%;
-		height: 300px;
-	}
-`;
-
-const Image = styled.img`
-	width: 100%;
-	height: 100%;
-`;
 
 export default class ImageSlider extends Component {
 	render() {
@@ -59,3 +37,27 @@ export default class ImageSlider extends Component {
 		);
 	}
 }
+
+const Wrapper = styled.section`
+	margin: 0 auto;
+	width: 1200px;
+	height: 300px;
+`;
+
+const StyledSlider = styled(Slider)`
+	.slick-prev:before,
+	.slick-next:before {
+		color: #ff6701;
+		margin: 0 auto;
+	}
+
+	.slick-slide {
+		width: 100%;
+		height: 300px;
+	}
+`;
+
+const Image = styled.img`
+	width: 100%;
+	height: 100%;
+`;

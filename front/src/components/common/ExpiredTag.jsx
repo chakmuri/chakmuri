@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+const ExpiredTag = (props) => (
+	<StyledExpiredTag {...props}>{props.children}</StyledExpiredTag>
+);
+
+export default ExpiredTag;
+
 const StyledExpiredTag = styled.div`
 	width: 50px;
 	font-family: Roboto;
@@ -10,9 +16,3 @@ const StyledExpiredTag = styled.div`
 	border-radius: 3px;
 	text-align: center;
 `;
-
-const ExpiredTag = (props) => (
-	<StyledExpiredTag {...props}>{props.children}</StyledExpiredTag>
-);
-
-export default ExpiredTag;
