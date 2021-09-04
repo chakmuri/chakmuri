@@ -43,7 +43,7 @@ public class ClubController {
     }
 
 
-    //독서모임 리스트 조회(검색조건 x)
+    //독서모임 리스트 조회
     @GetMapping
     public ResponseEntity<ClubPageResponseDto> getClubs(
             @RequestParam(value = "sortBy") String sortBy,

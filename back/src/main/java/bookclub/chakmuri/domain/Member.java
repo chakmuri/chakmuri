@@ -21,11 +21,11 @@ public class Member {
     private Long id;
 
     @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = LAZY)
     private User user;
 
     @JoinColumn(name = "club_id")
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = LAZY)
     private Club club;
 
     @Column(nullable = false)
