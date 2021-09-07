@@ -25,7 +25,6 @@ public class MemberService {
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
 
-    //TODO: LikedClubRepositoryCustom 설정 후 applyId 생성 작업
     @Transactional
     public Member apply(MemberCreateRequestDto request){
         User user = userRepository.findById(request.getUserId()).orElseThrow();

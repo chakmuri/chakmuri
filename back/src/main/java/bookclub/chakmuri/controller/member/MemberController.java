@@ -52,7 +52,7 @@ public class MemberController {
 //        return new ResponseEntity("참여가 승인되었습니다.", HttpStatus.OK);
 //    }
 
-//    승인 대기자 목록 조회, 참여자 목록 조회 (approvalStatus: WAITING -> 승인대기자, COMFIRMED -> 참여자)
+    //승인 대기자 목록 조회, 참여자 목록 조회 (approvalStatus: WAITING -> 승인대기자, COMFIRMED -> 참여자)
     @GetMapping("/users/{userId}")
     public ResponseEntity<MemberPageResponseDto> getMembers(
             @PathVariable("userId") String userId,
