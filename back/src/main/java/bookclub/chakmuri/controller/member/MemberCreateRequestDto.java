@@ -11,11 +11,4 @@ public class MemberCreateRequestDto {
 
     private String userId;
     private Long clubId;
-    private ApprovalStatus approvalStatus;
-
-    public Member toEntity(){
-        return Member.builder()
-                .approvalStatus(approvalStatus)
-                .build();
-    }
 }

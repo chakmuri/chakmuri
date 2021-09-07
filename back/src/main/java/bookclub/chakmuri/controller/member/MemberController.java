@@ -38,29 +38,29 @@ public class MemberController {
     }
 
     //참여 승인 -> 참여중인 독서모임에 추가, 참여 신청자에게 메일(승인되었습니다)
-    @PutMapping
-    public ResponseEntity<MemberResponseDto> memberApprove(
-            @RequestParam("clubId") Long clubId,
-            @RequestParam("userId") String userId){
-        memberService.approveMember(clubId, userId);
-        return new ResponseEntity("참여가 승인되었습니다.", HttpStatus.OK);
-    }
+//    @PutMapping
+//    public ResponseEntity<MemberResponseDto> memberApprove(
+//            @RequestParam("clubId") Long clubId,
+//            @RequestParam("userId") String userId){
+//        memberService.approveMember(clubId, userId);
+//        return new ResponseEntity("참여가 승인되었습니다.", HttpStatus.OK);
+//    }
 
     //승인 대기자 목록 조회, 참여자 목록 조회 (approvalStatus: WAITING -> 승인대기자, COMFIRMED -> 참여자)
-    @GetMapping("/clubs/{clubId}")
-    public ResponseEntity<MemberPageResponseDto> getMembers(
-            @PathVariable("clubId") Long clubId,
-            @RequestParam("approvalStatus") String approvalStatus,
-            @RequestParam("page") int page){
-        Page<Member> allMembers = memberService.getMemberList(clubId, approvalStatus, page);
-        Long totalCount = allMembers.getTotalElements();
-        List<MemberResponseDto> response = allMembers
-                .stream()
-                .map(MemberResponseDto::new)
-                .collect(Collectors.toList());
-        MemberPageResponseDto memberPageResponseDto = new MemberPageResponseDto(totalCount, response);
-        return new ResponseEntity(memberPageResponseDto, HttpStatus.OK);
-    }
+//    @GetMapping("/clubs/{clubId}")
+//    public ResponseEntity<MemberPageResponseDto> getMembers(
+//            @PathVariable("clubId") Long clubId,
+//            @RequestParam("approvalStatus") String approvalStatus,
+//            @RequestParam("page") int page){
+//        Page<Member> allMembers = memberService.getMemberList(clubId, approvalStatus, page);
+//        Long totalCount = allMembers.getTotalElements();
+//        List<MemberResponseDto> response = allMembers
+//                .stream()
+//                .map(MemberResponseDto::new)
+//                .collect(Collectors.toList());
+//        MemberPageResponseDto memberPageResponseDto = new MemberPageResponseDto(totalCount, response);
+//        return new ResponseEntity(memberPageResponseDto, HttpStatus.OK);
+//    }
 
     //참여중인 독서모임 조회
 }
