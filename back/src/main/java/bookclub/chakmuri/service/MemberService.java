@@ -33,8 +33,11 @@ public class MemberService {
     }
 
     @Transactional
-    public void deleteMember(String userId){
-
+    public void deleteMember(String userId, Long clubId){
+        User user = userRepository.findById(userId).orElseThrow();
+        Club club = clubRepository.findById(clubId).orElseThrow();
+        Member member = memberRepository.findByUserAndClub(user, club).orElseThrow();
+        memberRepository.delete(member);
     }
 
 //    public Page<Member> getMemberList(Long clubId, String approvalStauts, int page){

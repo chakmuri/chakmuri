@@ -30,10 +30,11 @@ public class MemberController {
     }
 
     //참여신청 취소, 참여신청 거절, 참여자 내보내기 -> 참여신청자에게 메일(거절/ 내보내기)
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping
     public ResponseEntity<MemberResponseDto> memberCancel(
-            @PathVariable String userId){
-        memberService.deleteMember(userId);
+            @RequestParam String userId,
+            @RequestParam Long clubId){
+        memberService.deleteMember(userId, clubId);
         return new ResponseEntity("독서모임 참여가 취소되었습니다.", HttpStatus.OK);
     }
 
