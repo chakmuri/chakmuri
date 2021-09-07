@@ -6,6 +6,9 @@ import styled from "styled-components";
 import MyComment from "./MyComment";
 import EditForm from "./EditForm";
 import LikedClubCard from "./LikedClubCard";
+import JoinedClubCard from "./JoinedClubCard";
+import Member from "./Member";
+import PendingMember from "./PendingMember";
 import Pagination from "../common/Pagination";
 import Button from "../common/Button";
 import NotFound from "../common/NotFound";
@@ -15,11 +18,20 @@ const Main = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [myClub, setMyClub] = useState();
 	const [myLikedClubs, setMyLikedClubs] = useState(null);
+	const [myJoinedClubs, setMyJoinedClubs] = useState(null);
 	const [myComments, setMyComments] = useState(null);
+	const [myPendingMembers, setMyPendingMembers] = useState();
+	const [myPendingMembersTotal, setMyPendingMembersTotal] = useState(0);
+	const [myPendingMembersPage, setMyPendingMembersPage] = useState(1);
+	const [myMembers, setMyMembers] = useState();
+	const [myMembersTotal, setMyMembersTotal] = useState(0);
+	const [myMembersPage, setMyMembersPage] = useState(1);
 	const [myCommentsTotal, setMyCommentsTotal] = useState(0);
 	const [myCommentsPage, setMyCommentsPage] = useState(1);
 	const [myLikedClubsTotal, setMyLikedClubsTotal] = useState(0);
 	const [myLikedClubsPage, setMyLikedClubsPage] = useState(1);
+	const [myJoinedClubsTotal, setMyJoinedClubsTotal] = useState(0);
+	const [myJoinedClubsPage, setMyJoinedClubsPage] = useState(1);
 	const [loading, setLoading] = useState(true);
 	const userId = localStorage.getItem("user_id");
 
@@ -39,6 +51,19 @@ const Main = () => {
 				setMyLikedClubs(likedClubsRes.data.likedClubList);
 				setMyLikedClubsTotal(likedClubsRes.data.totalCount);
 
+				// const joinedClubsRes = await axios.get(`/members/users/${userId}`, {
+				// 	params: {
+				// 		approvalStatus: "CONFIRMED",
+				// 		page: myJoinedClubsPage,
+				// 	},
+				// });
+				// setMyJoinedClubs(joinedClubsRes.data.joinedClubList);
+				// setMyJoinedClubsTotal(joinedClubsRes.data.totalCount);
+
+				// pending member get api call
+
+				// member get api call
+
 				const myClubRes = await axios.get(`/clubs/users/${userId}`);
 				setMyClub(myClubRes.data);
 
@@ -48,12 +73,18 @@ const Main = () => {
 			}
 		};
 		fetchData();
-	}, [myCommentsPage, myCommentsTotal, myLikedClubsPage, myLikedClubsTotal]);
-
-	useEffect(() => {
-		console.log("좋아요 모임", myLikedClubs);
-		console.log("내 댓글", myComments);
-	});
+	}, [
+		myCommentsPage,
+		myCommentsTotal,
+		myLikedClubsPage,
+		myLikedClubsTotal,
+		myJoinedClubsPage,
+		myJoinedClubsTotal,
+		myPendingMembersPage,
+		myPendingMembersTotal,
+		myMembersPage,
+		myMembersTotal,
+	]);
 
 	const fetchData = async () => {
 		const res = await axios.get(`/likedClubs/users/${userId}`, {
@@ -164,40 +195,122 @@ const Main = () => {
 								<NotFound>🚫 좋아요한 독서모임이 존재하지 않습니다 🚫</NotFound>
 							)}
 						</TabPane>
-						<TabPane tab="독서모임 관리" key="3">
+						<TabPane tab="참여중인 독서모임" key="3">
+							{myJoinedClubsTotal !== 0 ? (
+								<TabContainer gutter={[0, 98]}>
+									<Row gutter={[90, 48]}>
+										{myJoinedClubs.map((joinedClub) => (
+											<Col key={joinedClub.id}>
+												<JoinedClubCard
+													club={joinedClub}
+													handleLikeDelete={handleLikeDelete}
+													like={joinedClub.clubId}
+												/>
+											</Col>
+										))}
+									</Row>
+									<PaginationRow>
+										<Pagination
+											total={myJoinedClubsTotal}
+											pageSize={9}
+											current={myJoinedClubsPage}
+											onChange={(page) => setMyJoinedClubsPage(page)}
+										/>
+									</PaginationRow>
+								</TabContainer>
+							) : (
+								<NotFound>🚫 참여중인 독서모임이 존재하지 않습니다 🚫</NotFound>
+							)}
+						</TabPane>
+						<TabPane tab="독서모임 관리" key="4">
 							{myClub ? (
-								<TabContainer gutter={[0, 16]}>
-									<MidTitle>정보 수정</MidTitle>
-									<EditForm myClub={myClub} />
-									<Divider />
-									<DeleteBtnContainer>
-										<TextBox>
-											<LargeText>독서모임 삭제하기</LargeText>
-											<Text>
-												한 번 독서모임을 삭제하면 복구할 수 없습니다. 신중하게
-												결정해주세요!
-											</Text>
-										</TextBox>
-										<DeleteBtn onClick={showModal}>독서모임 삭제</DeleteBtn>
-										<StyledModal
-											visible={isModalVisible}
-											onCancel={handleCancel}
-										>
-											<ModalTitle>
-												정말로 독서모임을 삭제하시겠습니까?
-											</ModalTitle>
-											<Text>
-												한 번 삭제하시면 다시 되돌릴 수 없습니다. <br />{" "}
-												신중하게 선택하신 다음 확인 버튼을 눌러주세요.
-											</Text>
-											<ButtonRow>
-												<FilledBtn onClick={handleDeleteClub}>확인</FilledBtn>
-												<UnfilledBtn type="button" onClick={handleCancel}>
-													취소
-												</UnfilledBtn>
-											</ButtonRow>
-										</StyledModal>
-									</DeleteBtnContainer>
+								<TabContainer gutter={[0, 150]}>
+									<Box>
+										<MidTitle>참여자 관리</MidTitle>
+										<Text>승인 대기자</Text>
+										{myPendingMembers ? (
+											<>
+												<Row gutter={[0, 16]}>
+													{myPendingMembers.map((member) => (
+														<Row key={member.id}>
+															<PendingMember myPendingMember={member} />
+														</Row>
+													))}
+												</Row>
+												<PaginationRow>
+													<Pagination
+														total={myPendingMembersTotal}
+														pageSize={10}
+														current={myPendingMembersPage}
+														onChange={(page) => setMyPendingMembersPage(page)}
+													/>
+												</PaginationRow>
+											</>
+										) : (
+											<MemberNotFound>
+												🚫 현재 대기중인 멤버가 없습니다. 🚫
+											</MemberNotFound>
+										)}
+										<Divider />
+										<Text>참여자 목록</Text>
+										{myMembers ? (
+											<>
+												<Row gutter={[0, 16]}>
+													{myMembers.map((member) => (
+														<Row key={member.id}>
+															<Member myMember={member} />
+														</Row>
+													))}
+												</Row>
+												<PaginationRow>
+													<Pagination
+														total={myMembersTotal}
+														pageSize={10}
+														current={myMembersPage}
+														onChange={(page) => setMyMembersPage(page)}
+													/>
+												</PaginationRow>
+											</>
+										) : (
+											<MemberNotFound>
+												{" "}
+												🚫 현재 참여중인 멤버가 없습니다. 🚫{" "}
+											</MemberNotFound>
+										)}
+									</Box>
+									<Box>
+										<MidTitle>정보 수정</MidTitle>
+										<EditForm myClub={myClub} />
+										<Divider />
+										<DeleteBtnContainer>
+											<TextBox>
+												<LargeText>독서모임 삭제하기</LargeText>
+												<Text>
+													한 번 독서모임을 삭제하면 복구할 수 없습니다. 신중하게
+													결정해주세요!
+												</Text>
+											</TextBox>
+											<DeleteBtn onClick={showModal}>독서모임 삭제</DeleteBtn>
+											<StyledModal
+												visible={isModalVisible}
+												onCancel={handleCancel}
+											>
+												<ModalTitle>
+													정말로 독서모임을 삭제하시겠습니까?
+												</ModalTitle>
+												<Text>
+													한 번 삭제하시면 다시 되돌릴 수 없습니다. <br />{" "}
+													신중하게 선택하신 다음 확인 버튼을 눌러주세요.
+												</Text>
+												<ButtonRow>
+													<FilledBtn onClick={handleDeleteClub}>확인</FilledBtn>
+													<UnfilledBtn type="button" onClick={handleCancel}>
+														취소
+													</UnfilledBtn>
+												</ButtonRow>
+											</StyledModal>
+										</DeleteBtnContainer>
+									</Box>
 								</TabContainer>
 							) : (
 								<NotFound>
@@ -266,6 +379,10 @@ const Text = styled.div`
 
 const TextBox = styled.div`
 	flex: 1;
+`;
+
+const Box = styled.div`
+	width: 100%;
 `;
 
 const DeleteBtnContainer = styled.div`
@@ -355,4 +472,11 @@ const SpinContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+`;
+
+const MemberNotFound = styled(NotFound)`
+	& {
+		height: 100px;
+		font-size: 16px;
+	}
 `;

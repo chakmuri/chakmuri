@@ -2,14 +2,14 @@ import styled from "styled-components";
 
 import Button from "../common/Button";
 
-const Member = () => {
+const Member = (props) => {
 	return (
 		<MemberBar>
 			<MemberProfileIcon>
-				<img src="assets/images/icons/profile.png" alt="Profile icon" />
+				<img src={props.userImgUrl} alt="Profile icon" />
 			</MemberProfileIcon>
-			<MemberUsername>Username</MemberUsername>
-			<MemberEmail>email</MemberEmail>
+			<MemberUsername>{props.userName}</MemberUsername>
+			<MemberEmail>{props.userEmail}</MemberEmail>
 			<MemberBtn>내보내기</MemberBtn>
 		</MemberBar>
 	);
