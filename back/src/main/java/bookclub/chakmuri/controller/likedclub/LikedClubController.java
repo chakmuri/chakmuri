@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 public class LikedClubController {
 
     private final LikedClubService likedClubService;
-    private final LikedClubRepository likedClubRepository;
 
     @PostMapping
     public ResponseEntity<LikedClubResponseDto> createLikedClub(
