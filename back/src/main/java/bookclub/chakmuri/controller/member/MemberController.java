@@ -47,21 +47,21 @@ public class MemberController {
 //        return new ResponseEntity("참여가 승인되었습니다.", HttpStatus.OK);
 //    }
 
-    //승인 대기자 목록 조회, 참여자 목록 조회 (approvalStatus: WAITING -> 승인대기자, COMFIRMED -> 참여자)
-//    @GetMapping("/clubs/{clubId}")
-//    public ResponseEntity<MemberPageResponseDto> getMembers(
-//            @PathVariable("clubId") Long clubId,
-//            @RequestParam("approvalStatus") String approvalStatus,
-//            @RequestParam("page") int page){
-//        Page<Member> allMembers = memberService.getMemberList(clubId, approvalStatus, page);
-//        Long totalCount = allMembers.getTotalElements();
-//        List<MemberResponseDto> response = allMembers
-//                .stream()
-//                .map(MemberResponseDto::new)
-//                .collect(Collectors.toList());
-//        MemberPageResponseDto memberPageResponseDto = new MemberPageResponseDto(totalCount, response);
-//        return new ResponseEntity(memberPageResponseDto, HttpStatus.OK);
-//    }
+//    승인 대기자 목록 조회, 참여자 목록 조회 (approvalStatus: WAITING -> 승인대기자, COMFIRMED -> 참여자)
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<MemberPageResponseDto> getMembers(
+            @PathVariable("userId") String userId,
+            @RequestParam("approvalStatus") String approvalStatus,
+            @RequestParam("page") int page){
+        Page<Member> allMembers = memberService.getMemberList(userId, approvalStatus, page);
+        Long totalCount = allMembers.getTotalElements();
+        List<MemberResponseDto> response = allMembers
+                .stream()
+                .map(MemberResponseDto::new)
+                .collect(Collectors.toList());
+        MemberPageResponseDto memberPageResponseDto = new MemberPageResponseDto(totalCount, response);
+        return new ResponseEntity(memberPageResponseDto, HttpStatus.OK);
+    }
 
     //참여중인 독서모임 조회
 }

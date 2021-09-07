@@ -11,6 +11,8 @@ import bookclub.chakmuri.repository.MemberRepository;
 import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,8 +42,15 @@ public class MemberService {
         memberRepository.delete(member);
     }
 
-//    public Page<Member> getMemberList(Long clubId, String approvalStauts, int page){
-//        Club club = clubRepository.findById(clubId).orElseThrow();
-//
-//    }
+    public Page<Member> getMemberList(String userId, String approvalStatus, int page){
+        User user = userRepository.findById(userId).orElseThrow();
+        PageRequest pageRequest = PageRequest.of((page - 1), 3, Sort.by(Sort.Direction.DESC, "id"));
+        ApprovalStatus status;
+        if(!approvalStatus.equals(ApprovalStatus.CONFIRMED.toString())){
+            status = ApprovalStatus.WAITING;
+        }else {
+            status = ApprovalStatus.CONFIRMED;
+        }
+        return memberRepository.findByUserAndApprovalStatus(user, status, pageRequest);
+    }
 }
