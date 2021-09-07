@@ -3,6 +3,7 @@ package bookclub.chakmuri.controller.member;
 import bookclub.chakmuri.controller.likedclub.LikedClubPageResponseDto;
 import bookclub.chakmuri.controller.likedclub.LikedClubResponseDto;
 import bookclub.chakmuri.domain.ApprovalStatus;
+import bookclub.chakmuri.domain.LikedClub;
 import bookclub.chakmuri.domain.Member;
 import bookclub.chakmuri.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,12 @@ public class MemberController {
     @PostMapping
     public ResponseEntity<MemberResponseDto> memberApply(
             @RequestBody MemberCreateRequestDto memberCreateRequestDto) {
-        Member member = memberService.apply(memberCreateRequestDto);
-        return new ResponseEntity("참여신청이 완료되었습니다.", HttpStatus.OK);
+        try{
+            Member member = memberService.apply(memberCreateRequestDto);
+            return new ResponseEntity("참여신청이 완료되었습니다. (memberId : " + member.getId() + ")", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity("이미 참여신청된 독서모임 입니다.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     //참여신청 취소, 참여신청 거절, 참여자 내보내기 -> 참여신청자에게 메일(거절/ 내보내기)

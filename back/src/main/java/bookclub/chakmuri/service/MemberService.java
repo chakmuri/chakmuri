@@ -30,6 +30,11 @@ public class MemberService {
     public Member apply(MemberCreateRequestDto request){
         User user = userRepository.findById(request.getUserId()).orElseThrow();
         Club club = clubRepository.findById(request.getClubId()).orElseThrow();
+
+        if(memberRepository.findByUserAndClub(user, club).isPresent()){
+            return null;
+        }
+
         Member member = Member.builder().user(user).club(club).approvalStatus(ApprovalStatus.WAITING).build();
         return memberRepository.save(member);
     }
