@@ -1,7 +1,12 @@
 import styled from "styled-components";
+import classnames from "classnames";
 
 const NotFound = (props) => {
-	return <StyledNotFound>{props.children}</StyledNotFound>;
+	return (
+		<StyledNotFound className={classnames("notFound", props.className)}>
+			{props.children}
+		</StyledNotFound>
+	);
 };
 
 export default NotFound;
