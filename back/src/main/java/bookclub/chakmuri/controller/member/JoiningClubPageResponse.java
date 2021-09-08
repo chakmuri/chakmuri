@@ -12,11 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 public class JoiningClubPageResponse {
     private Long totalCount;
-    private LocalDateTime createdAt;
-    private List<JoiningClubResponse> joingClubList;
+    private List<JoiningClubResponse> joiningClubList;
 
-    public JoiningClubPageResponse(Long totalCount, List<JoiningClubResponse> joingClubList) {
+    public JoiningClubPageResponse(Long totalCount, List<JoiningClubResponse> joiningClubList) {
         this.totalCount = totalCount;
-        this.joingClubList = joingClubList;
+        this.joiningClubList = joiningClubList;
     }
 }
