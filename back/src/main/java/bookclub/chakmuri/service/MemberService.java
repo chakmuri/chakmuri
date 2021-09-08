@@ -16,6 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -56,5 +58,17 @@ public class MemberService {
             status = ApprovalStatus.CONFIRMED;
         }
         return memberRepository.findByUserAndApprovalStatus(user, status, pageRequest);
+    }
+
+    public Page<Club> getJoingClubList(String userId, String approvalStatus, int page) {
+        User user = userRepository.findById(userId).orElseThrow();
+        Club club = clubRepository.findByUser(user).orElseThrow();
+        PageRequest pageRequest = PageRequest.of((page - 1), 3, Sort.by(Sort.Direction.DESC, "id"));
+
+        if(approvalStatus.equals(ApprovalStatus.CONFIRMED.toString())) {
+            return memberRepository.findAllByClub(club, pageRequest);
+        } else {
+            return null;
+        }
     }
 }
