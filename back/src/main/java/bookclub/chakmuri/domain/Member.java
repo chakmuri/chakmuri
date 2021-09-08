@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -25,7 +26,7 @@ public class Member {
     private User user;
 
     @JoinColumn(name = "club_id")
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = EAGER)
     private Club club;
 
     @Column(nullable = false)

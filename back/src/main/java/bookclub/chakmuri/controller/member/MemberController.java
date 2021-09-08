@@ -50,9 +50,9 @@ public class MemberController {
 //    }
 
     //승인 대기자 목록 조회, 참여자 목록 조회 (approvalStatus: WAITING -> 승인대기자, COMFIRMED -> 참여자)
-    @GetMapping("/users/{userId}")
+    @GetMapping
     public ResponseEntity<MemberPageResponseDto> getMembers(
-            @PathVariable("userId") String userId,
+            @RequestParam("userId") String userId,
             @RequestParam("approvalStatus") String approvalStatus,
             @RequestParam("page") int page){
         Page<Member> allMembers = memberService.getMemberList(userId, approvalStatus, page);
@@ -71,16 +71,12 @@ public class MemberController {
      * - 참여중인 독서모임에 좋아요 클릭 → 내가 좋아요한 독서모임에도 등록 (좋아요 링크) -> API 재활용
      */
     @GetMapping("/users/{userId}")
-    public ResponseEntity<JoiningClubPageResponse> getJoingClubs(
+    public ResponseEntity<JoiningClubPageResponse> getJoiningClubs(
             @PathVariable("userId") String userId,
-            @RequestParam("approvalStatus") String approvalStatus,
             @RequestParam("page") int page) {
-        Page<Club> allJoingClubs = memberService.getJoingClubList(userId, approvalStatus, page);
-        if(allJoingClubs == null) {
-            return new ResponseEntity("참여중인 독서모임이 없습니다.", HttpStatus.OK);
-        }
-        Long totalCount = allJoingClubs.getTotalElements();
-        List<JoiningClubResponse> response = allJoingClubs
+        Page<Member> allJoiningClubs = memberService.getJoiningClubList(userId, page);
+        Long totalCount = allJoiningClubs.getTotalElements();
+        List<JoiningClubResponse> response = allJoiningClubs
                 .stream()
                 .map(JoiningClubResponse::new)
                 .collect(Collectors.toList());
