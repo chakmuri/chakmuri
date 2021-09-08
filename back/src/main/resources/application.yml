@@ -20,8 +20,6 @@ spring:
       pageable:
         one-indexed-parameters: true
 
-# 메일 서비스
-#  mail: host: smtp.gmail.com port: 587 username: password: properties: mail: smtp: auth: true starttls: enable : true
 
 logging:
   level:
