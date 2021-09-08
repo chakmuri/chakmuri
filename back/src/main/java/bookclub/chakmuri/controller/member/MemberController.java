@@ -1,9 +1,6 @@
 package bookclub.chakmuri.controller.member;
 
-import bookclub.chakmuri.controller.likedclub.LikedClubPageResponseDto;
-import bookclub.chakmuri.controller.likedclub.LikedClubResponseDto;
-import bookclub.chakmuri.domain.ApprovalStatus;
-import bookclub.chakmuri.domain.LikedClub;
+import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.Member;
 import bookclub.chakmuri.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -69,4 +66,25 @@ public class MemberController {
     }
 
     //참여중인 독서모임 조회
+    /**
+     * - 참여중인 독서모임 → 마감/Dday → 마감 라벨 적용 ex) D-4, D-1, 마감
+     * - 참여중인 독서모임에 좋아요 클릭 → 내가 좋아요한 독서모임에도 등록 (좋아요 링크) -> API 재활용
+     */
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<JoiningClubPageResponse> getJoingClubs(
+            @PathVariable("userId") String userId,
+            @RequestParam("approvalStatus") String approvalStatus,
+            @RequestParam("page") int page) {
+        Page<Club> allJoingClubs = memberService.getJoingClubList(userId, approvalStatus, page);
+        if(allJoingClubs == null) {
+            return new ResponseEntity("참여중인 독서모임이 없습니다.", HttpStatus.OK);
+        }
+        Long totalCount = allJoingClubs.getTotalElements();
+        List<JoiningClubResponse> response = allJoingClubs
+                .stream()
+                .map(JoiningClubResponse::new)
+                .collect(Collectors.toList());
+        JoiningClubPageResponse joiningClubPageResponse = new JoiningClubPageResponse(totalCount, response);
+        return new ResponseEntity(joiningClubPageResponse, HttpStatus.OK);
+    }
 }

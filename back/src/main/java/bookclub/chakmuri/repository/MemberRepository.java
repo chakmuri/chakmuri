@@ -16,4 +16,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByUserAndClub(User user, Club club);
 
     Page<Member> findByUserAndApprovalStatus(User user, ApprovalStatus approvalStatus, Pageable pageable);
+
+    Page<Club> findAllByClub(Club club, Pageable pageable);
 }
