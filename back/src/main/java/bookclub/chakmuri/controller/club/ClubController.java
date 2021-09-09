@@ -23,9 +23,6 @@ public class ClubController {
 
     private final ClubService clubService;
 
-    //TODO: AWS S3 서비스 이용, pageable 설정
-    //TODO: 독서모임 검색(검색조건 - 태그, 모집중 여부, 정렬, 검색 키워드)
-
     //독서모임 생성
     @PostMapping
     public ResponseEntity<ClubCreateRequestDto> createClub(
@@ -41,7 +38,6 @@ public class ClubController {
             return new ResponseEntity("독서모임 등록이 완료되었습니다. (clubId: " + club.getId() + ")", HttpStatus.OK);
         }
     }
-
 
     //독서모임 리스트 조회
     @GetMapping

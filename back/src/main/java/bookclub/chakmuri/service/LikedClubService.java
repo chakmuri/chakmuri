@@ -26,7 +26,6 @@ public class LikedClubService {
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
 
-
     @Transactional
     public LikedClub createLikedClub(LikedClubCreateRequestDto likedClubRequestDto) {
         final User user = userRepository.findById(likedClubRequestDto.getUserId())
@@ -47,7 +46,6 @@ public class LikedClubService {
 
         return likedClubRepository.save(postLikedClub);
     }
-
 
     @Transactional
     public void deleteLikedClub(Long clubId, String userId) {

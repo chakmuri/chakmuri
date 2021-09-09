@@ -66,10 +66,6 @@ public class MemberController {
     }
 
     //참여중인 독서모임 조회
-    /**
-     * - 참여중인 독서모임 → 마감/Dday → 마감 라벨 적용 ex) D-4, D-1, 마감
-     * - 참여중인 독서모임에 좋아요 클릭 → 내가 좋아요한 독서모임에도 등록 (좋아요 링크) -> API 재활용
-     */
     @GetMapping("/users/{userId}")
     public ResponseEntity<JoiningClubPageResponse> getJoiningClubs(
             @PathVariable("userId") String userId,
