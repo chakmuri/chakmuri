@@ -6,7 +6,6 @@ import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.Member;
 import bookclub.chakmuri.domain.User;
 import bookclub.chakmuri.repository.ClubRepository;
-import bookclub.chakmuri.repository.LikedClubRepository;
 import bookclub.chakmuri.repository.MemberRepository;
 import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

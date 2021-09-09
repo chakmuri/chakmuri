@@ -20,7 +20,6 @@ spring:
       pageable:
         one-indexed-parameters: true
 
-
 logging:
   level:
     org:

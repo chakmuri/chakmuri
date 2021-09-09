@@ -1,7 +1,6 @@
 package bookclub.chakmuri.controller.likedclub;
 
 import bookclub.chakmuri.domain.LikedClub;
-import bookclub.chakmuri.repository.LikedClubRepository;
 import bookclub.chakmuri.service.LikedClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

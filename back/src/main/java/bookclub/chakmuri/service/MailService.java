@@ -16,7 +16,7 @@ public class MailService {
     public void mailSend(String address, String subject, String text){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(address);
-        message.setFrom("noreply@chakmuri.club"); //현재 동작되지 않음.
+        message.setFrom("chakmuri@gmail.com");
         message.setSubject(subject);
         message.setText(text);
 
