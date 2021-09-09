@@ -38,3 +38,4 @@ out/
 
 ### 배포시 gitignore ##
 aws.yml
+mail.yml
