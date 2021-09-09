@@ -27,7 +27,7 @@ public class ClubService {
     private final LikedClubRepository likedClubRepository;
     private final S3Service s3Service;
 
-    //TODO: 독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> ??
+    //TODO: 독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> FE??
 
     @Transactional
     public Club createClub(ClubCreateRequestDto requestDto, MultipartFile file) {

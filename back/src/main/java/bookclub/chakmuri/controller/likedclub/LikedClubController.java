@@ -56,4 +56,13 @@ public class LikedClubController {
         return new ResponseEntity(likedClubPageResponseDto, HttpStatus.OK);
     }
 
+    // 사용자가 등록한 좋아요한 독서모임 아이디 조회 (FE 요청으로 추가적으로 만든 api)
+    @GetMapping("/ids")
+    public ResponseEntity<LikedClubIdListResponseDto> getUserLikedClubIds (
+            @RequestParam("userId") String userId){
+        List<Long> likedClubIdList = likedClubService.getLikedClubIds(userId);
+        LikedClubIdListResponseDto responseDto = new LikedClubIdListResponseDto(likedClubIdList);
+        return new ResponseEntity(responseDto, HttpStatus.OK);
+    }
+
 }

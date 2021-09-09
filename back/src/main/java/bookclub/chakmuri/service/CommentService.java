@@ -63,18 +63,15 @@ public class CommentService {
 
         comment.changeComment(contents);
     }
+
     @Transactional
     public void deleteComment(final Long commentId) {
         final Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(); // TODO: CommentNotFoundException::new 추가하기
 
         commentRepository.delete(comment);
-
-//        userRepository.findById(comment.getUser().getId()) // 댓글을 등록한 유저가 맞다면, 댓글을 삭제할 수 있습니다.
-//                .orElseThrow(); // TODO: UserNotFoundException::new 추가하기
-
-
     }
+
     //TODO: 존재하지 않는 모임에 대한 검증 추가
     public Page<Comment> findAllClubComments(Long clubId, int page) {
         final Club club = clubRepository.findById(clubId)
