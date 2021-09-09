@@ -1,10 +1,8 @@
 package bookclub.chakmuri.controller.likedclub;
 
-import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.ClubStatus;
 import bookclub.chakmuri.domain.LikedClub;
 import lombok.*;
-import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDate;
 
