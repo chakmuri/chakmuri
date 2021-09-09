@@ -15,6 +15,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -60,8 +63,19 @@ public class LikedClubService {
     @Transactional(readOnly = true)
     public Page<LikedClub> findAllUserLikedClubs(String userId, int page) {
         final User user = userRepository.findById(userId)
-                .orElseThrow();
+                .orElseThrow(); //TODO: exception
         PageRequest pageRequest = PageRequest.of((page - 1), 9, Sort.by(Sort.Direction.DESC, "id"));
         return likedClubRepository.findAllByUser(user, pageRequest);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Long> getLikedClubIds(String userId){
+        User user = userRepository.findById(userId).orElseThrow(); //TODO:exception
+        List<LikedClub> likedClubList = likedClubRepository.findAllByUser(user);
+        List<Long> likedClubIdList = new ArrayList<>();
+        for(LikedClub likedClub:likedClubList){
+            likedClubIdList.add(likedClub.getId());
+        }
+        return likedClubIdList;
     }
 }
