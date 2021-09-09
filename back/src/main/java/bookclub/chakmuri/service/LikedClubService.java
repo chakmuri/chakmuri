@@ -33,7 +33,7 @@ public class LikedClubService {
         final Club club = clubRepository.findById(likedClubRequestDto.getClubId())
                 .orElseThrow();
 
-        if(likedClubRepository.findByClubAndUser(club, user) != null){
+        if (likedClubRepository.findByClubAndUser(club, user) != null) {
             return null;
         }
 
@@ -53,7 +53,7 @@ public class LikedClubService {
         Club club = clubRepository.findById(clubId).orElseThrow();
         LikedClub likedClub = likedClubRepository.findByClubAndUser(club, user); //TODO: exception 추가
 
-        club.changeLikes(club.getLikes() -1); // 좋아요 취소
+        club.changeLikes(club.getLikes() - 1); // 좋아요 취소
 
         likedClubRepository.delete(likedClub);
     }
@@ -67,11 +67,11 @@ public class LikedClubService {
     }
 
     @Transactional(readOnly = true)
-    public List<Long> getLikedClubIds(String userId){
+    public List<Long> getLikedClubIds(String userId) {
         User user = userRepository.findById(userId).orElseThrow(); //TODO:exception
         List<LikedClub> likedClubList = likedClubRepository.findAllByUser(user);
         List<Long> likedClubIdList = new ArrayList<>();
-        for(LikedClub likedClub:likedClubList){
+        for (LikedClub likedClub : likedClubList) {
             likedClubIdList.add(likedClub.getId());
         }
         return likedClubIdList;

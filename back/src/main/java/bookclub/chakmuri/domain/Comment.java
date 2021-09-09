@@ -15,8 +15,9 @@ import static javax.persistence.FetchType.EAGER;
 @ToString
 @Getter
 @Table(name = "comments")
-public class Comment extends BaseTime{
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Comment extends BaseTime {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@Column(name = "comment_id")
     private Long id;
 
@@ -28,7 +29,8 @@ public class Comment extends BaseTime{
     @ManyToOne(fetch = EAGER)
     private User user;
 
-    @Column(length = 500, nullable = false) @Size(max = 500)
+    @Column(length = 500, nullable = false)
+    @Size(max = 500)
     private String contents;
 
     // 댓글 수정 -> setter역할 (변경감지 활용)

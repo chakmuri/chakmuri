@@ -30,10 +30,9 @@ public class ClubController {
             @RequestParam(value = "img") MultipartFile file) {
         //이 유저가 만든 독서모임이 있는지 체크(한사람당 한 개)
         //400 에러 -> 잘못된 요청
-        if(clubService.findClubByUserId(clubCreateRequestDto.getUserId()) != null){
+        if (clubService.findClubByUserId(clubCreateRequestDto.getUserId()) != null) {
             return new ResponseEntity("한 사람 당 하나의 독서모임만 생성할 수 있습니다.", HttpStatus.BAD_REQUEST);
-        }
-        else {
+        } else {
             Club club = clubService.createClub(clubCreateRequestDto, file);
             return new ResponseEntity("독서모임 등록이 완료되었습니다. (clubId: " + club.getId() + ")", HttpStatus.OK);
         }
@@ -49,14 +48,14 @@ public class ClubController {
             @PageableDefault(direction = Sort.Direction.DESC, size = 9) Pageable pageable) {
         List<Club> allClubs = clubService.findAllClubs(sortBy, tags, clubStatus, keyword);
         //page=0부터 동작하는 게 default이지만, yml 설정을 통해 1부터 시작하게 할 수 있음. 그러나 여전히 0이어도 동작은 한다.
-        int start = (int)pageable.getOffset();
+        int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), allClubs.size());
         Page<Club> page = new PageImpl<>(allClubs.subList(start, end), pageable, allClubs.size());
         List<ClubResponseDto> clubResponseDtoList = page.stream()
                 .map(ClubResponseDto::new)  //조회한 클럽 리스트 항목 하나하나를 ClubResponseDto와 매핑해 줌
                 .collect(Collectors.toList());  //스트림에서 작업한 결과를 담은 리스트로 반환
         //Collectors.joining(delimeter, prefix, suffix)로 스트링으로 조합할 수 있음
-        ClubPageResponseDto pageResponseDto = new ClubPageResponseDto((long)allClubs.size(), clubResponseDtoList);
+        ClubPageResponseDto pageResponseDto = new ClubPageResponseDto((long) allClubs.size(), clubResponseDtoList);
         return new ResponseEntity(pageResponseDto, HttpStatus.OK);
     }
 
@@ -87,10 +86,10 @@ public class ClubController {
             ClubUpdateRequestDto clubUpdateRequestDto,
             @PathVariable String userId,
             @RequestParam(value = "img", required = false) MultipartFile file) {
-        try{
+        try {
             clubService.updateClub(clubUpdateRequestDto, userId, file);
             return new ResponseEntity("독서모임 수정이 완료되었습니다.", HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

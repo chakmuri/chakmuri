@@ -33,7 +33,6 @@ public class CommentService {
 
         final Comment newComment = convertToComment(comment, userId, clubId);
         return commentRepository.save(newComment);
-
     }
 
     private Comment convertToComment(final Comment comment, final String userId, final Long clubId) {
@@ -50,14 +49,9 @@ public class CommentService {
     }
 
     // 댓글 수정
-    // TODO: commentId 예외처리하기, checkArgument(lectureId > 0, "lectureId must be positive number"); import 안됨.
     @Transactional
     public void updateComment(CommentUpdateRequestDto commentUpdateRequestDto, Long commentId) {
-        String userId = commentUpdateRequestDto.getUserId();
         String contents = commentUpdateRequestDto.getContents();
-        final User user = userRepository.findById(userId)
-                .orElseThrow();   // TODO: UserNotFoundException::new 추가하기
-
         final Comment comment = commentRepository.findById(commentId)
                 .orElseThrow();   // TODO: CommentNotFoundException::new 추가하기
 
@@ -72,11 +66,7 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    //TODO: 존재하지 않는 모임에 대한 검증 추가
     public Page<Comment> findAllClubComments(Long clubId, int page) {
-        final Club club = clubRepository.findById(clubId)
-                .orElseThrow(); // TODO: ClubNotFoundException::new 추가하기
-
         PageRequest pageRequest = PageRequest.of((page - 1), 5, Sort.by(Sort.Direction.DESC, "id"));
         return commentRepository.findAllByClubId(clubId, pageRequest);
     }
@@ -88,6 +78,7 @@ public class CommentService {
         return commentRepository.findAllByUser(user, pageRequest);
     }
 
+    // 실제로 사용되지는 않음
     @Transactional
     public void deleteAll() {
         commentRepository.deleteAll();

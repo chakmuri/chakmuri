@@ -14,7 +14,7 @@ public class UserCreateRequestDto {
     private String email;
     private String imgUrl;
 
-    public User toEntity(){
+    public User toEntity() {
         return User.builder()
                 .id(id)
                 .name(name)

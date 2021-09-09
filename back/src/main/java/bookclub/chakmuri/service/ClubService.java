@@ -77,16 +77,15 @@ public class ClubService {
     }
 
     //독서모임 만료 처리 메서드
-    private void changeClubStatus(Club club){
-        if(LocalDate.now().isAfter(club.getEndDate())){
+    private void changeClubStatus(Club club) {
+        if (LocalDate.now().isAfter(club.getEndDate())) {
             club.changeStatus(ClubStatus.EXPIRED);
-        }
-        else club.changeStatus(ClubStatus.ACTIVE);
+        } else club.changeStatus(ClubStatus.ACTIVE);
     }
 
-    private void changeAllClubStatus(){
+    private void changeAllClubStatus() {
         List<Club> clubList = clubRepository.findAll();
-        for(Club club : clubList){
+        for (Club club : clubList) {
             changeClubStatus(club);
         }
     }
@@ -103,38 +102,38 @@ public class ClubService {
         clubs = clubRepository.findAll(sort);
 
         //모집중 만 필터링
-        if(!clubStatus.isEmpty()){
+        if (!clubStatus.isEmpty()) {
             clubs.removeIf(club -> club.getClubStatus().equals(ClubStatus.EXPIRED));
         }
 
         //tag와 keyword 값 확인 -> 둘 다 없으면 sortBy만 적용해서 리턴
-        if(tags.isEmpty() && keyword.isEmpty()){
+        if (tags.isEmpty() && keyword.isEmpty()) {
             return clubs;
         }
 
         //keyword 필터링 -> clubs 항목들의 제목이 keyword 를 포함하고 있는가
         List<Club> clubSortedByKeyword = new ArrayList<>();
 
-        if(keyword.isEmpty())
+        if (keyword.isEmpty())
             clubSortedByKeyword = clubs;
         else {
-            for(Club club: clubs){
-                if(club.getTitle().contains(keyword)) {
+            for (Club club : clubs) {
+                if (club.getTitle().contains(keyword)) {
                     clubSortedByKeyword.add(club);
                 }
             }
         }
 
-        if(tags.isEmpty())
+        if (tags.isEmpty())
             return clubSortedByKeyword;
 
         //tag 필터링
         Set<Club> clubSortedByTags = new HashSet<>();
         List<String> tag = Arrays.asList(tags.split(", "));
-        for(Club club : clubSortedByKeyword){
+        for (Club club : clubSortedByKeyword) {
             List<String> originTag = Arrays.asList(club.getTags().split(", "));
-            for(String tagString : tag){
-                if(originTag.contains(tagString))
+            for (String tagString : tag) {
+                if (originTag.contains(tagString))
                     clubSortedByTags.add(club);
             }
         }
@@ -151,7 +150,7 @@ public class ClubService {
     public Club findClubByUserId(String userId) {
         User user = userRepository.findById(userId).orElseThrow(); // -> TODO : UserNotFoundException 만들어서 넣기
         Club club = clubRepository.findByUser(user).orElse(null);
-        if(club != null){
+        if (club != null) {
             changeClubStatus(club);
         }
         return club;

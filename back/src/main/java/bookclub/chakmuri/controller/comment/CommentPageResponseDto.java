@@ -14,7 +14,7 @@ public class CommentPageResponseDto {
     private Long totalCount;
     private List<CommentResponseDto> commentList;
 
-    public CommentPageResponseDto(Long totalCount, List<CommentResponseDto> commentList){
+    public CommentPageResponseDto(Long totalCount, List<CommentResponseDto> commentList) {
         this.totalCount = totalCount;
         this.commentList = commentList;
     }

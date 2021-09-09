@@ -36,5 +36,4 @@ public class JoiningClubResponse {
         this.approvalStatus = member.getApprovalStatus();
         this.clubStatus = member.getClub().getClubStatus();
     }
-
 }

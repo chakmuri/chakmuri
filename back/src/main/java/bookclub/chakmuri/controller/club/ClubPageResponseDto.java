@@ -13,7 +13,7 @@ public class ClubPageResponseDto {
     private Long totalCount;
     private List<ClubResponseDto> clubList;
 
-    public ClubPageResponseDto(Long totalCount, List<ClubResponseDto> clubList){
+    public ClubPageResponseDto(Long totalCount, List<ClubResponseDto> clubList) {
         this.totalCount = totalCount;
         this.clubList = clubList;
     }

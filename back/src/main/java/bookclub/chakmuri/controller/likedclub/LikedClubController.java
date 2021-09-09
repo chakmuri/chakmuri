@@ -21,12 +21,12 @@ public class LikedClubController {
     @PostMapping
     public ResponseEntity<LikedClubResponseDto> createLikedClub(
             @RequestBody LikedClubCreateRequestDto likedClubRequestDto) {
-        try{
+        try {
             LikedClub likedClub = likedClubService.createLikedClub(likedClubRequestDto);
             return new ResponseEntity(
                     "정상적으로 등록됐습니다. (likedClubId: " + likedClub.getId() + ")", HttpStatus.OK
             );
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity("이미 등록된 좋아요한 독서모임 입니다.", HttpStatus.BAD_REQUEST);
         }
     }
@@ -58,8 +58,8 @@ public class LikedClubController {
 
     // 사용자가 등록한 좋아요한 독서모임 아이디 조회 (FE 요청으로 추가적으로 만든 api)
     @GetMapping("/ids")
-    public ResponseEntity<LikedClubIdListResponseDto> getUserLikedClubIds (
-            @RequestParam("userId") String userId){
+    public ResponseEntity<LikedClubIdListResponseDto> getUserLikedClubIds(
+            @RequestParam("userId") String userId) {
         List<Long> likedClubIdList = likedClubService.getLikedClubIds(userId);
         LikedClubIdListResponseDto responseDto = new LikedClubIdListResponseDto(likedClubIdList);
         return new ResponseEntity(responseDto, HttpStatus.OK);

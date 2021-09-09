@@ -13,7 +13,7 @@ public class MemberPageResponseDto {
     private Long totalCount;
     private List<MemberResponseDto> memberList;
 
-    public MemberPageResponseDto(Long totalCount, List<MemberResponseDto> memberList){
+    public MemberPageResponseDto(Long totalCount, List<MemberResponseDto> memberList) {
         this.totalCount = totalCount;
         this.memberList = memberList;
     }

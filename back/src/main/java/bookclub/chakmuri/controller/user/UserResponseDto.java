@@ -14,7 +14,7 @@ public class UserResponseDto { //DTO : 로직x. 순수한 데이터 객체, gett
     private String email;
     private String imgUrl;
 
-    public UserResponseDto(User user){
+    public UserResponseDto(User user) {
         BeanUtils.copyProperties(user, this);
     }
 }
