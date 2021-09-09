@@ -15,6 +15,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.*;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -43,10 +45,22 @@ public class MemberService {
                 + "만약 참여 신청자가 신청을 취소한 경우 승인 대기자 목록에서 조회되지 않을 수 있습니다.\n\n감사합니다."
                 + "\n\n- 책무리팀";
 
-        mailService.mailSend(address, subject, text);
+        // 메일 전송 - 10초 이상 지연되는 작업
+        sendAsyncMail(address, subject, text);
 
         Member member = Member.builder().user(user).club(club).approvalStatus(ApprovalStatus.WAITING).build();
         return memberRepository.save(member);
+    }
+
+    // 메일 전송 비동기 처리
+    private void sendAsyncMail(String address, String subject, String text){
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        new Thread(
+                () -> {
+                    mailService.mailSend(address, subject, text);
+                    future.complete(null);
+                }
+        ).start();
     }
 
     @Transactional
@@ -67,7 +81,7 @@ public class MemberService {
                     + " 독서모임의 참여 신청이 거절되었습니다.\n"
                     + "아쉽지만 다른 독서모임에 참여 신청 부탁드립니다.\n\n감사합니다."
                     + "\n\n- 책무리팀";
-            mailService.mailSend(address, subject, text);
+            sendAsyncMail(address, subject, text);
         } else if(deleteStatus.equals("out")){
             subject = "[책무리] " + user.getName() + "님, " + club.getTitle()
                     + " 독서모임의 참여자에서 내보내기 되었습니다.";
@@ -75,7 +89,7 @@ public class MemberService {
                     + " 독서모임 참여자 목록에서 내보내기 된 내역이 확인되었습니다.\n"
                     + "아쉽지만 다른 독서모임에 참여 신청 부탁드립니다.\n\n감사합니다."
                     + "\n\n- 책무리팀";
-            mailService.mailSend(address, subject, text);
+            sendAsyncMail(address, subject, text);
         }
     }
 
@@ -95,7 +109,7 @@ public class MemberService {
                 + " 독서모임의 참여 신청이 승인되었습니다.\n"
                 + "즐거운 모임 가지시길 바랍니다.\n\n감사합니다."
                 + "\n\n- 책무리팀";
-        mailService.mailSend(address, subject, text);
+        sendAsyncMail(address, subject, text);
 
     }
 
