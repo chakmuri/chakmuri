@@ -27,7 +27,7 @@ public class ClubService {
     private final LikedClubRepository likedClubRepository;
     private final S3Service s3Service;
 
-    //TODO: 독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> FE??
+    //독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> FE 측에서 처리??
 
     @Transactional
     public Club createClub(ClubCreateRequestDto requestDto, MultipartFile file) {
@@ -106,7 +106,7 @@ public class ClubService {
             clubs.removeIf(club -> club.getClubStatus().equals(ClubStatus.EXPIRED));
         }
 
-        //tag와 keyword 값 확인 -> 둘 다 없으면 sortBy만 적용해서 리턴
+        //tag 와 keyword 값 확인 -> 둘 다 없으면 sortBy만 적용해서 리턴
         if (tags.isEmpty() && keyword.isEmpty()) {
             return clubs;
         }

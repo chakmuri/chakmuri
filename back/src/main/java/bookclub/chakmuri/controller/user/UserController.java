@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-//@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
@@ -27,7 +26,7 @@ public class UserController {
                     new UserResponseDto(userService.searchUser(userId))
             );
         } else {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 

@@ -24,7 +24,7 @@ public class CommentController {
             @RequestBody CommentCreateRequestDto commentCreateRequestDto) {
         Comment comment = commentService.createComment(commentCreateRequestDto);
         return new ResponseEntity(
-                "댓글이 성공적으로 등록되었습니다. (commentId: " + comment.getId() + ")",
+                "댓글이 등록되었습니다. (commentId: " + comment.getId() + ")",
                 HttpStatus.OK
         );
     }
@@ -37,7 +37,7 @@ public class CommentController {
         commentService.updateComment(commentUpdateRequestDto, commentId);
 
         return new ResponseEntity(
-                "댓글이 성공적으로 수정되었습니다. (commentId: " + commentId + ")",
+                "댓글이 수정되었습니다. (commentId: " + commentId + ")",
                 HttpStatus.OK
         );
 
@@ -49,7 +49,7 @@ public class CommentController {
             @PathVariable("commentId") Long commentId) {
         commentService.deleteComment(commentId);
         return new ResponseEntity(
-                "댓글이 성공적으로 삭제되었습니다. (commentId: " + commentId + ")",
+                "댓글이 삭제되었습니다. (commentId: " + commentId + ")",
                 HttpStatus.OK
         );
     }

@@ -24,7 +24,7 @@ public class LikedClubController {
         try {
             LikedClub likedClub = likedClubService.createLikedClub(likedClubRequestDto);
             return new ResponseEntity(
-                    "정상적으로 등록됐습니다. (likedClubId: " + likedClub.getId() + ")", HttpStatus.OK
+                    "좋아요한 독서모임에 등록되었습니다. (likedClubId: " + likedClub.getId() + ")", HttpStatus.OK
             );
         } catch (Exception e) {
             return new ResponseEntity("이미 등록된 좋아요한 독서모임 입니다.", HttpStatus.BAD_REQUEST);
@@ -37,7 +37,7 @@ public class LikedClubController {
             @RequestParam("userId") String userId) {
         likedClubService.deleteLikedClub(clubId, userId);
         return new ResponseEntity(
-                "정상적으로 삭제되었습니다.", HttpStatus.OK
+                "좋아요한 독서모임에서 삭제되었습니다.", HttpStatus.OK
         );
     }
 
