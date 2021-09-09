@@ -34,6 +34,17 @@ public class MemberService {
             return null;
         }
 
+        String address = club.getUser().getEmail();
+        String subject = "[책무리] " + club.getUser().getName() + "님, " + club.getTitle()
+                + " 독서모임에 새로운 참여 신청이 있습니다.";
+        String text = "안녕하세요, " + club.getUser().getName() + "님.\n\n운영중이신 " + club.getTitle()
+                + " 독서모임에 <"+ user.getName() +">님으로부터 새로운 참여 신청이 도착했습니다.\n\n참여 신청자 정보는 "
+                + "[마이페이지 > 내가 운영중인 독서모임 > 참여자 관리] 에서 확인하실 수 있으며,\n"
+                + "만약 참여 신청자가 신청을 취소한 경우 승인 대기자 목록에서 조회되지 않을 수 있습니다.\n\n감사합니다."
+                + "\n\n- 책무리팀";
+
+        mailService.mailSend(address, subject, text);
+
         Member member = Member.builder().user(user).club(club).approvalStatus(ApprovalStatus.WAITING).build();
         return memberRepository.save(member);
     }
@@ -82,7 +93,7 @@ public class MemberService {
                 + " 독서모임 참여 신청이 승인되었습니다.";
         text = "안녕하세요, " + user.getName() + "님.\n\n요청하신 " + club.getTitle()
                 + " 독서모임의 참여 신청이 승인되었습니다.\n"
-                + " 즐거운 모임 가지시길 바랍니다.\n\n감사합니다."
+                + "즐거운 모임 가지시길 바랍니다.\n\n감사합니다."
                 + "\n\n- 책무리팀";
         mailService.mailSend(address, subject, text);
 
