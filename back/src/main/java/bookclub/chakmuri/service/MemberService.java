@@ -68,6 +68,26 @@ public class MemberService {
         }
     }
 
+    @Transactional
+    public void approveMember(Long clubId, String userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        Club club = clubRepository.findById(clubId).orElseThrow();
+        Member member = memberRepository.findByUserAndClub(user, club).orElseThrow();
+        member.changeStatus(ApprovalStatus.CONFIRMED);
+
+        String address = user.getEmail();
+        String subject, text;
+
+        subject = "[책무리] " + user.getName() + "님, " + club.getTitle()
+                + " 독서모임 참여 신청이 승인되었습니다.";
+        text = "안녕하세요, " + user.getName() + "님.\n\n요청하신 " + club.getTitle()
+                + " 독서모임의 참여 신청이 승인되었습니다.\n"
+                + " 즐거운 모임 가지시길 바랍니다.\n\n감사합니다."
+                + "\n\n- 책무리팀";
+        mailService.mailSend(address, subject, text);
+
+    }
+
     public Page<Member> getMemberList(String userId, String approvalStatus, int page){
         User user = userRepository.findById(userId).orElseThrow();
         PageRequest pageRequest = PageRequest.of((page - 1), 3, Sort.by(Sort.Direction.DESC, "id"));
@@ -85,4 +105,6 @@ public class MemberService {
         PageRequest pageRequest = PageRequest.of((page - 1), 3, Sort.by(Sort.Direction.DESC, "id"));
         return memberRepository.findAllByUser(user, pageRequest);
     }
+
+
 }

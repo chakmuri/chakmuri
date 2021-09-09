@@ -40,4 +40,7 @@ public class Member {
         this.approvalStatus = approvalStatus;
     }
 
+    public void changeStatus(ApprovalStatus approvalStatus) {
+        this.approvalStatus = approvalStatus;
+    }
 }
