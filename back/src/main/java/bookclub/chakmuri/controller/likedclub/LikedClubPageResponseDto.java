@@ -1,6 +1,5 @@
 package bookclub.chakmuri.controller.likedclub;
 
-import bookclub.chakmuri.controller.comment.CommentResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

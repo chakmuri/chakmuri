@@ -1,6 +1,5 @@
 package bookclub.chakmuri.controller.member;
 
-import bookclub.chakmuri.controller.club.ClubResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
