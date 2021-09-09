@@ -5,10 +5,11 @@ import styled from "styled-components";
 
 import SmallTag from "../common/SmallTag";
 import ExpiredTag from "../common/ExpiredTag";
+import DdayTag from "../common/DdayTag";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
 import filledHeart from "../../images/icons/filled_heart.png";
 
-const LikedClubCard = ({ ...props }) => {
+const JoinedClubCard = ({ ...props }) => {
 	let history = useHistory();
 
 	return (
@@ -24,11 +25,13 @@ const LikedClubCard = ({ ...props }) => {
 			onClick={() => history.push(`/detail/${props.club.id}`)}
 		>
 			<Meta title={props.club.title} description={props.club.contents} />
-			{props.club.clubStatus === "EXPIRED" ? (
-				<ClubExpiredTag>마감</ClubExpiredTag>
-			) : (
-				""
-			)}
+			{() => {
+				const dDay = props.handleClubDday(props.club.endDate);
+				if (props.club.clubStatus === "EXPIRED")
+					<ClubExpiredTag>마감</ClubExpiredTag>;
+				else if (dDay) <ClubDdayTag>{dDay}</ClubDdayTag>;
+				else return "";
+			}}
 			<TagContainer>
 				{props.club.tags.split(", ").map((tag, i) => (
 					<ClubTag key={i}>{tag}</ClubTag>
@@ -51,7 +54,7 @@ const LikedClubCard = ({ ...props }) => {
 	);
 };
 
-export default LikedClubCard;
+export default JoinedClubCard;
 
 const { Meta } = Card;
 
@@ -113,6 +116,16 @@ const LikeIcon = styled.div`
 const LikeNum = styled.span``;
 
 const ClubExpiredTag = styled(ExpiredTag)`
+	& {
+		font-size: 16px;
+		padding: 5px;
+		position: absolute;
+		top: 5%;
+		right: 3%;
+	}
+`;
+
+const ClubDdayTag = styled(DdayTag)`
 	& {
 		font-size: 16px;
 		padding: 5px;

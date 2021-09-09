@@ -36,63 +36,61 @@ const Main = () => {
 	const userId = localStorage.getItem("user_id");
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const res = await axios.get(`/comments/users/${userId}`, {
-					params: { page: myCommentsPage },
-				});
-
-				setMyComments(res.data.commentList);
-				setMyCommentsTotal(res.data.totalCount);
-
-				const likedClubsRes = await axios.get(`/likedClubs/users/${userId}`, {
-					params: { page: myLikedClubsPage },
-				});
-				setMyLikedClubs(likedClubsRes.data.likedClubList);
-				setMyLikedClubsTotal(likedClubsRes.data.totalCount);
-
-				// const joinedClubsRes = await axios.get(`/members/users/${userId}`, {
-				// 	params: {
-				// 		approvalStatus: "CONFIRMED",
-				// 		page: myJoinedClubsPage,
-				// 	},
-				// });
-				// setMyJoinedClubs(joinedClubsRes.data.joinedClubList);
-				// setMyJoinedClubsTotal(joinedClubsRes.data.totalCount);
-
-				// pending member get api call
-
-				// member get api call
-
-				const myClubRes = await axios.get(`/clubs/users/${userId}`);
-				setMyClub(myClubRes.data);
-
-				setLoading(false);
-			} catch (err) {
-				console.log(err);
-			}
-		};
 		fetchData();
-	}, [
-		myCommentsPage,
-		myCommentsTotal,
-		myLikedClubsPage,
-		myLikedClubsTotal,
-		myJoinedClubsPage,
-		myJoinedClubsTotal,
-		myPendingMembersPage,
-		myPendingMembersTotal,
-		myMembersPage,
-		myMembersTotal,
-	]);
+	}, []);
 
 	const fetchData = async () => {
-		const res = await axios.get(`/likedClubs/users/${userId}`, {
-			params: { page: myLikedClubsPage },
-		});
+		try {
+			const res = await axios.get(`/comments/users/${userId}`, {
+				params: { page: myCommentsPage },
+			});
 
-		setMyLikedClubs(res.data.likedClubList);
-		setMyLikedClubsTotal(res.data.totalCount);
+			setMyComments(res.data.commentList);
+			setMyCommentsTotal(res.data.totalCount);
+
+			const likedClubsRes = await axios.get(`/likedClubs/users/${userId}`, {
+				params: { page: myLikedClubsPage },
+			});
+			setMyLikedClubs(likedClubsRes.data.likedClubList);
+			setMyLikedClubsTotal(likedClubsRes.data.totalCount);
+
+			const joinedClubsRes = await axios.get(`/members/users/${userId}`, {
+				params: {
+					approvalStatus: "CONFIRMED",
+					page: myJoinedClubsPage,
+				},
+			});
+
+			setMyJoinedClubs(joinedClubsRes.data.joiningClubList);
+			setMyJoinedClubsTotal(joinedClubsRes.data.totalCount);
+
+			const pendingMembersRes = await axios.get("/members", {
+				params: {
+					userId: userId,
+					approvalStatus: "WATING",
+					page: myPendingMembersPage,
+				},
+			});
+
+			setMyPendingMembers(pendingMembersRes.data.memberList);
+			setMyPendingMembersTotal(pendingMembersRes.data.totalCount);
+
+			const memberRes = await axios.get(`/members/users/${userId}`, {
+				params: {
+					page: myMembersPage,
+				},
+			});
+
+			setMyMembers(memberRes.data.memberList);
+			setMyMembersTotal(memberRes.totalCount);
+
+			const myClubRes = await axios.get(`/clubs/users/${userId}`);
+			setMyClub(myClubRes.data);
+
+			setLoading(false);
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	const showModal = () => {
@@ -133,6 +131,80 @@ const Main = () => {
 			console.log(err);
 		} finally {
 			fetchData();
+		}
+	};
+
+	const handleMemberApproval = async (clubId) => {
+		try {
+			axios.put("/members", {
+				params: {
+					clubId: Number(clubId),
+					userId: userId,
+				},
+			});
+		} catch (err) {
+			console.log(err);
+		} finally {
+			fetchData();
+		}
+	};
+
+	const handleMemberReject = async (clubId) => {
+		try {
+			axios.delete("/members", {
+				params: {
+					userId: userId,
+					clubId: Number(clubId),
+					delete: "no",
+				},
+			});
+		} catch (err) {
+			console.log(err);
+		} finally {
+			fetchData();
+		}
+	};
+
+	const handleMemberDelete = async (clubId) => {
+		try {
+			axios.delete("/member", {
+				params: {
+					userId: userId,
+					clubId: Number(clubId),
+					delete: "out",
+				},
+			});
+		} catch (err) {
+			console.log(err);
+		} finally {
+			fetchData();
+		}
+	};
+
+	const handleClubDday = async (endDate) => {
+		const today = new Date().getDate().toString();
+
+		const endDay = endDate.substr(8, 2);
+
+		const dDay = endDay - today;
+
+		switch (dDay) {
+			case "1":
+				return "D-1";
+			case "2":
+				return "D-2";
+			case "3":
+				return "D-3";
+			case "4":
+				return "D-4";
+			case "5":
+				return "D-5";
+			case "6":
+				return "D-6";
+			case "7":
+				return "D-7";
+			default:
+				return "";
 		}
 	};
 
@@ -203,6 +275,7 @@ const Main = () => {
 											<Col key={joinedClub.id}>
 												<JoinedClubCard
 													club={joinedClub}
+													handleClubDday={handleClubDday}
 													handleLikeDelete={handleLikeDelete}
 													like={joinedClub.clubId}
 												/>
@@ -228,59 +301,66 @@ const Main = () => {
 									<Box>
 										<MidTitle>참여자 관리</MidTitle>
 										<Text>승인 대기자</Text>
-										{myPendingMembers ? (
-											<>
-												<Row gutter={[0, 16]}>
-													{myPendingMembers.map((member) => (
-														<Row key={member.id}>
-															<PendingMember myPendingMember={member} />
-														</Row>
-													))}
-												</Row>
-												<PaginationRow>
-													<Pagination
-														total={myPendingMembersTotal}
-														pageSize={10}
-														current={myPendingMembersPage}
-														onChange={(page) => setMyPendingMembersPage(page)}
-													/>
-												</PaginationRow>
-											</>
-										) : (
+										{/* {myPendingMembers === [] ? ( */}
+										<>
+											{/* <Row gutter={[0, 16]}>
+												{myPendingMembers.map((member) => (
+													<Row key={member.id}> */}
+											<PendingMember
+												myPendingMember={myPendingMembers}
+												handleMemberReject={handleMemberReject}
+												handleMemberApproval={handleMemberApproval}
+											/>
+											{/* </Row> */}
+											{/* ))} */}
+											{/* </Row> */}
+											<PaginationRow>
+												<Pagination
+													total={myPendingMembersTotal}
+													pageSize={10}
+													current={myPendingMembersPage}
+													onChange={(page) => setMyPendingMembersPage(page)}
+												/>
+											</PaginationRow>
+										</>
+										{/* ) : (
 											<MemberNotFound>
 												🚫 현재 대기중인 멤버가 없습니다. 🚫
 											</MemberNotFound>
-										)}
+										)} */}
 										<Divider />
 										<Text>참여자 목록</Text>
-										{myMembers ? (
-											<>
-												<Row gutter={[0, 16]}>
-													{myMembers.map((member) => (
-														<Row key={member.id}>
-															<Member myMember={member} />
-														</Row>
-													))}
-												</Row>
-												<PaginationRow>
-													<Pagination
-														total={myMembersTotal}
-														pageSize={10}
-														current={myMembersPage}
-														onChange={(page) => setMyMembersPage(page)}
-													/>
-												</PaginationRow>
-											</>
-										) : (
-											<MemberNotFound>
-												{" "}
-												🚫 현재 참여중인 멤버가 없습니다. 🚫{" "}
-											</MemberNotFound>
-										)}
+										{/* {myMembers === [] ? ( */}
+										<>
+											{/* <Row gutter={[0, 16]}> */}
+											{/* {myMembers.map((member) => ( */}
+											{/* <Row key={member.id}> */}
+											<Member
+												myMember={myMembers}
+												handleMemberDelete={handleMemberDelete}
+											/>
+											{/* </Row> */}
+											{/* ))} */}
+											{/* </Row> */}
+											<PaginationRow>
+												<Pagination
+													total={myMembersTotal}
+													pageSize={10}
+													current={myMembersPage}
+													onChange={(page) => setMyMembersPage(page)}
+												/>
+											</PaginationRow>
+										</>
+										{/* ) : (
+										<MemberNotFound>
+											{" "}
+											🚫 현재 참여중인 멤버가 없습니다. 🚫{" "}
+										</MemberNotFound>
+										)} */}
 									</Box>
 									<Box>
 										<MidTitle>정보 수정</MidTitle>
-										<EditForm myClub={myClub} />
+										<EditForm myClub={myClub} fetchData={fetchData} />
 										<Divider />
 										<DeleteBtnContainer>
 											<TextBox>

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Skeleton } from "antd";
 
 import SmallTag from "../common/SmallTag";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
@@ -11,7 +12,11 @@ const InfoBox = ({ ...props }) => {
 	return (
 		<InfoBoxContainer>
 			<ClubThumbnail>
-				<img src={props.club.imgUrl} alt="Club Thumbnail" />
+				{props.club.imgUrl ? (
+					<img src={props.club.imgUrl} alt="Club Thumbnail" />
+				) : (
+					<SkeletonImg />
+				)}
 			</ClubThumbnail>
 			<ClubInfo>
 				<Title>{props.club.title}</Title>
@@ -124,5 +129,12 @@ const LikeIcon = styled.div`
 
 	img {
 		width: 100%;
+	}
+`;
+
+const SkeletonImg = styled(Skeleton.Image)`
+	.ant-skeleton-image {
+		width: 493px;
+		height: 320px;
 	}
 `;

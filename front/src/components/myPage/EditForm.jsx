@@ -19,8 +19,8 @@ const EditForm = ({ ...props }) => {
 	);
 	const [imgFile, setImgFile] = useState(props.myClub.imgUrl);
 	const [preview, setPreview] = useState(props.myClub.imgUrl);
-	const [startDate, setStartDate] = useState("");
-	const [endDate, setEndDate] = useState("");
+	const [startDate, setStartDate] = useState(props.myClub.startDate);
+	const [endDate, setEndDate] = useState(props.myClub.endDate);
 	const [selectedTags, setSelectedTags] = useState(
 		props.myClub.tags ? props.myClub.tags.split(", ") : []
 	);
@@ -89,11 +89,11 @@ const EditForm = ({ ...props }) => {
 		setEndDate(values.date[1]._d.toISOString().substring(0, 10));
 		const sendTags = selectedTags.join(", ");
 		const formData = new FormData();
-		const config = {
-			headers: {
-				"content-type": "multipart/form-data",
-			},
-		};
+		// const config = {
+		// 	headers: {
+		// 		"content-type": "multipart/form-data",
+		// 	},
+		// };
 
 		if (!values.minPersonnel || !values.maxPersonnel) {
 			message.error("참여인원을 입력해주세요.");
@@ -119,15 +119,24 @@ const EditForm = ({ ...props }) => {
 		formData.append("tags", sendTags);
 		formData.append("bookTitle", values.bookTitle);
 		formData.append("author", values.author);
-		formData.append("publisher", values.publisher);
+		formData.append(
+			"publisher",
+			values.publisher === "없음" ? "" : values.publisher
+		);
 		formData.append(
 			"publishedAt",
-			values.publishedAt === 0 ? "미정" : values.publishedAt
+			values.publishedAt === "없음" ? 0 : values.publishedAt
 		);
 		formData.append("bookDescription", values.bookDescription);
 		formData.append("description", values.description);
-		formData.append("addressStreet", values.addressStreet);
-		formData.append("addressDetail", values.addressDetail);
+		formData.append(
+			"addressStreet",
+			values.addressStreet === "없음" ? "" : values.addressStreet
+		);
+		formData.append(
+			"addressDetail",
+			values.addressDetail === "없음" ? "" : values.addressDetail
+		);
 
 		if (props.myClub.imgUrl !== imgFile) {
 			formData.append("img", imgFile);
@@ -136,7 +145,7 @@ const EditForm = ({ ...props }) => {
 		}
 
 		try {
-			const res = await axios.put(`/clubs/users/${userId}`, formData, config);
+			const res = await axios.put(`/clubs/users/${userId}`, formData);
 
 			if (res.status === 200)
 				message.success("독서모임이 성공적으로 수정되었습니다!");
@@ -147,7 +156,13 @@ const EditForm = ({ ...props }) => {
 	};
 
 	const onFinish = async (values) => {
-		sendData(values);
+		try {
+			sendData(values);
+		} catch (err) {
+			console.log(err);
+		} finally {
+			props.fetchData();
+		}
 	};
 
 	const onFinishFailed = (errorInfo) => {
@@ -314,17 +329,21 @@ const EditForm = ({ ...props }) => {
 				<Col span={16}>
 					<Form.Item
 						initialValue={
-							props.myClub.publisher === undefined ? "" : props.myClub.publisher
+							props.myClub.publisher === "undefined"
+								? ""
+								: props.myClub.publisher
 						}
 						label="출판사"
 						name="publisher"
 					>
-						<StyledInput placeholder="작가명" />
+						<StyledInput placeholder="출판사" />
 					</Form.Item>
 				</Col>
 				<Col span={16}>
 					<Form.Item
-						initialValue={props.myClub.publishedAt}
+						initialValue={
+							props.myClub.publishedAt === 0 ? "" : props.myClub.publishedAt
+						}
 						label="출판연도"
 						name="publishedAt"
 					>
@@ -375,7 +394,7 @@ const EditForm = ({ ...props }) => {
 							<Form.Item
 								name="addressStreet"
 								initialValue={
-									!props.myClub.addressStreet
+									props.myClub.addressStreet === "undefined"
 										? "없음"
 										: props.myClub.addressStreet
 								}
@@ -389,7 +408,7 @@ const EditForm = ({ ...props }) => {
 							<Form.Item
 								name="addressDetail"
 								initialValue={
-									!props.myClub.addressDetail
+									props.myClub.addressDetail === "undefined"
 										? "없음"
 										: props.myClub.addressDetail
 								}
@@ -466,6 +485,11 @@ const StyledInputNumber = styled(InputNumber)`
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
+
+	.ant-input-number-input-wrap,
+	.ant-input-number-input {
+		height: 100%;
+	}
 `;
 
 const PersonnelRow = styled.div`

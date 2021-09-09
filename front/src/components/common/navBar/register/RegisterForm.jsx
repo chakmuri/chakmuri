@@ -418,6 +418,11 @@ const StyledInputNumber = styled(InputNumber)`
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
+
+	.ant-input-number-input-wrap,
+	.ant-input-number-input {
+		height: 100%;
+	}
 `;
 
 const PersonnelRow = styled.div`
