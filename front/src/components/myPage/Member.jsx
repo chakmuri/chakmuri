@@ -1,16 +1,25 @@
 import styled from "styled-components";
 
 import Button from "../common/Button";
+import profile from "../../images/icons/profile.png";
 
 const Member = (props) => {
 	return (
 		<MemberBar>
 			<MemberProfileIcon>
-				<img src={props.userImgUrl} alt="Profile icon" />
+				{/* {props.myMember.imgUrl ? (
+					<img src={props.myMember.imgUrl} alt="Profile icon" />
+				) : ( */}
+				<img src={profile} alt="Profile icon" />
+				{/* )} */}
 			</MemberProfileIcon>
-			<MemberUsername>{props.userName}</MemberUsername>
-			<MemberEmail>{props.userEmail}</MemberEmail>
-			<MemberBtn>내보내기</MemberBtn>
+			{/* <MemberUsername>{props.myMember.name}</MemberUsername> */}
+			{/* <MemberEmail>{props.myMember.email}</MemberEmail> */}
+			<MemberBtn
+				onClick={() => props.handleMemberDelete(props.myMember.clubId)}
+			>
+				내보내기
+			</MemberBtn>
 		</MemberBar>
 	);
 };
@@ -23,6 +32,7 @@ const MemberBar = styled.div`
 
 	display: flex;
 	align-items: center;
+	margin: 20px 0;
 `;
 
 const MemberProfileIcon = styled.div`
@@ -32,16 +42,17 @@ const MemberProfileIcon = styled.div`
 	margin-right: 15px;
 `;
 
-const MemberUsername = styled.div`
-	font-family: Roboto;
-	font-size: 20px;
-	margin-right: 55px;
-`;
-const MemberEmail = styled.div`
-	font-family: Roboto;
-	font-size: 20px;
-	flex: 1;
-`;
+// const MemberUsername = styled.div`
+// 	font-family: Roboto;
+// 	font-size: 20px;
+// 	margin-right: 55px;
+// `;
+
+// const MemberEmail = styled.div`
+// 	font-family: Roboto;
+// 	font-size: 20px;
+// 	flex: 1;
+// `;
 
 const MemberBtn = styled(Button)`
 	font-size: 16px;

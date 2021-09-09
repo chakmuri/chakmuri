@@ -1,15 +1,29 @@
 import styled from "styled-components";
 
+import profile from "../../images/icons/profile.png";
+
 const PendingMember = (props) => {
 	return (
 		<PendingMemberBar>
 			<PendingMemberProfileIcon>
-				<img src={props.userImgUrl} alt="Profile icon" />
+				{props.myPendingMember.imgUrl ? (
+					<img src={props.myPendingMember.imgUrl} alt="Profile icon" />
+				) : (
+					<img src={profile} alt="Profile icon" />
+				)}
 			</PendingMemberProfileIcon>
-			<PendingMemberUsername>{props.username}</PendingMemberUsername>
-			<PendingMemberEmail>{props.userEmail}</PendingMemberEmail>
-			<PendingMemberBtn>승인</PendingMemberBtn>
-			<PendingMemberBtn>거절</PendingMemberBtn>
+			{/* <PendingMemberUsername>{props.myPendingMember.name}</PendingMemberUsername> */}
+			<PendingMemberEmail>{props.myPendingMember.email}</PendingMemberEmail>
+			<PendingMemberBtn
+				onClick={() => props.handleMemberApproval(props.myPendingMember.clubId)}
+			>
+				승인
+			</PendingMemberBtn>
+			<PendingMemberBtn
+				onClick={() => props.handleMemberReject(props.myPendingMember.clubId)}
+			>
+				거절
+			</PendingMemberBtn>
 		</PendingMemberBar>
 	);
 };
@@ -21,8 +35,10 @@ const PendingMemberBar = styled.div`
 	height: 80px;
 	border: 1.5px solid #c4c4c4;
 	border-radius: 5px;
+
 	display: flex;
 	align-items: center;
+	margin: 20px 0;
 `;
 
 const PendingMemberProfileIcon = styled.div`
@@ -32,11 +48,12 @@ const PendingMemberProfileIcon = styled.div`
 	margin-right: 15px;
 `;
 
-const PendingMemberUsername = styled.div`
-	font-family: Roboto;
-	font-size: 20px;
-	margin-right: 55px;
-`;
+// const PendingMemberUsername = styled.div`
+// 	font-family: Roboto;
+// 	font-size: 20px;
+// 	margin-right: 55px;
+// `;
+
 const PendingMemberEmail = styled.div`
 	font-family: Roboto;
 	font-size: 20px;

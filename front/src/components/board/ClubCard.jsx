@@ -18,7 +18,7 @@ const ClubCard = ({ ...props }) => {
 				props.club.imgUrl ? (
 					<img src={props.club.imgUrl} alt="Clubcard thumbnail" />
 				) : (
-					<Skeleton.Image />
+					<SkeletonImg />
 				)
 			}
 			onClick={() => history.push(`/detail/${props.club.id}`)}
@@ -123,3 +123,10 @@ const ClubExpiredTag = styled(ExpiredTag)`
 `;
 
 const LikeNum = styled.span``;
+
+const SkeletonImg = styled(Skeleton.Image)`
+	.ant-skeleton-image {
+		width: 340px;
+		height: 190px;
+	}
+`;
