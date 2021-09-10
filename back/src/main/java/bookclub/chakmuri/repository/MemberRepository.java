@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByUserAndClub(User user, Club club);
 
-    Page<Member> findByUserAndApprovalStatus(User user, ApprovalStatus approvalStatus, Pageable pageable);
+    Page<Member> findByClubAndApprovalStatus(Club club, ApprovalStatus approvalStatus, Pageable pageable);
 
     Page<Member> findAllByUser(User user, Pageable pageable);
 }

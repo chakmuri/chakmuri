@@ -29,8 +29,8 @@ public class MemberService {
 
     @Transactional
     public Member apply(MemberCreateRequestDto request) {
-        User user = userRepository.findById(request.getUserId()).orElseThrow();
-        Club club = clubRepository.findById(request.getClubId()).orElseThrow();
+        User user = userRepository.findById(request.getUserId()).orElseThrow(); //TODO: usernotfound
+        Club club = clubRepository.findById(request.getClubId()).orElseThrow(); //TODO: clubnotfound
 
         if (memberRepository.findByUserAndClub(user, club).isPresent()) {
             return null;
@@ -65,9 +65,9 @@ public class MemberService {
 
     @Transactional
     public void deleteMember(String userId, Long clubId, String deleteStatus) {
-        User user = userRepository.findById(userId).orElseThrow();
-        Club club = clubRepository.findById(clubId).orElseThrow();
-        Member member = memberRepository.findByUserAndClub(user, club).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(); //TODO:usernotfound
+        Club club = clubRepository.findById(clubId).orElseThrow(); //TODO:clubnotfound
+        Member member = memberRepository.findByUserAndClub(user, club).orElseThrow(); //TODO:memberNotFound
         memberRepository.delete(member);
 
         String address = user.getEmail();
@@ -95,9 +95,9 @@ public class MemberService {
 
     @Transactional
     public void approveMember(Long clubId, String userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        Club club = clubRepository.findById(clubId).orElseThrow();
-        Member member = memberRepository.findByUserAndClub(user, club).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound
+        Club club = clubRepository.findById(clubId).orElseThrow(); //TODO:clubNotFound
+        Member member = memberRepository.findByUserAndClub(user, club).orElseThrow(); //TODO:memberNotFound
         member.changeStatus(ApprovalStatus.CONFIRMED);
 
         String address = user.getEmail();
@@ -114,7 +114,8 @@ public class MemberService {
     }
 
     public Page<Member> getMemberList(String userId, String approvalStatus, int page) {
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound
+        Club club = clubRepository.findByUser(user).orElseThrow(); //TODO:clubNotFound
         PageRequest pageRequest = PageRequest.of((page - 1), 3, Sort.by(Sort.Direction.DESC, "id"));
         ApprovalStatus status;
         if (!approvalStatus.equals(ApprovalStatus.CONFIRMED.toString())) {
@@ -122,11 +123,11 @@ public class MemberService {
         } else {
             status = ApprovalStatus.CONFIRMED;
         }
-        return memberRepository.findByUserAndApprovalStatus(user, status, pageRequest);
+        return memberRepository.findByClubAndApprovalStatus(club, status, pageRequest);
     }
 
     public Page<Member> getJoiningClubList(String userId, int page) {
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound
         PageRequest pageRequest = PageRequest.of((page - 1), 3, Sort.by(Sort.Direction.DESC, "id"));
         return memberRepository.findAllByUser(user, pageRequest);
     }

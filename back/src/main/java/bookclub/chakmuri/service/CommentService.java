@@ -37,9 +37,9 @@ public class CommentService {
 
     private Comment convertToComment(final Comment comment, final String userId, final Long clubId) {
         final User user = userRepository.findById(userId)
-                .orElseThrow();// UserNotFoundException::new 추가하기
+                .orElseThrow();// TODO:UserNotFoundException::new 추가하기
         final Club club = clubRepository.findById(clubId)
-                .orElseThrow(); // ClubNotFoundException::new 추가하기
+                .orElseThrow(); // TODO:ClubNotFoundException::new 추가하기
 
         return Comment.builder()
                 .contents(comment.getContents())
