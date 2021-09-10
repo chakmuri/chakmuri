@@ -14,6 +14,7 @@ public class MemberResponseDto {
     private Long id;
     private Long clubId;
     private String userId;
+    private String imgUrl;
     private String name;
     private String email;
     private ApprovalStatus approvalStatus;
@@ -22,6 +23,7 @@ public class MemberResponseDto {
         BeanUtils.copyProperties(member, this);
         this.clubId = member.getClub().getId();
         this.userId = member.getUser().getId();
+        this.imgUrl = member.getUser().getImgUrl();
         this.name = member.getUser().getName();
         this.email = member.getUser().getEmail();
     }
