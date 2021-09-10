@@ -1,5 +1,6 @@
 package bookclub.chakmuri.controller.member;
 
+import bookclub.chakmuri.controller.likedclub.LikedClubIdListResponseDto;
 import bookclub.chakmuri.domain.Member;
 import bookclub.chakmuri.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -78,4 +79,14 @@ public class MemberController {
         JoiningClubPageResponse joiningClubPageResponse = new JoiningClubPageResponse(totalCount, response);
         return new ResponseEntity(joiningClubPageResponse, HttpStatus.OK);
     }
+
+    //참여중인 독서모임 아이디 조회 (FE 요청으로 추가적으로 만든 api)
+    @GetMapping("/ids")
+    public ResponseEntity<LikedClubIdListResponseDto> getUserLikedClubIds(
+            @RequestParam("userId") String userId) {
+        List<Long> joiningClubIdList = memberService.getJoiningClubIds(userId);
+        JoiningClubIdListResponseDto responseDto = new JoiningClubIdListResponseDto(joiningClubIdList);
+        return new ResponseEntity(responseDto, HttpStatus.OK);
+    }
+
 }
