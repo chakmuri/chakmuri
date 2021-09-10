@@ -35,15 +35,15 @@ insert into users (id,name,email,img_url) values("000000000000000000033","안솔
 insert into users (id,name,email,img_url) values("000000000000000000034","최수아","amberaplin14@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
 insert into users (id,name,email,img_url) values("000000000000000000035","박유찬","amberaplin14@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
 insert into users (id,name,email,img_url) values("000000000000000000036","류수현","amberaplin14@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
-insert into users (id,name,email,img_url) values("000000000000000000037","김재우","amberaplin14@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
-insert into users (id,name,email,img_url) values("000000000000000000038","최예나","amberaplin14@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
-insert into users (id,name,email,img_url) values("000000000000000000039","안유진","amberaplin14@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
-insert into users (id,name,email,img_url) values("000000000000000000040","하윤아","amberaplin14@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
-insert into users (id,name,email,img_url) values("000000000000000000041","목연수","amberaplin14@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
-insert into users (id,name,email,img_url) values("000000000000000000042","허민성","amberaplin14@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
-insert into users (id,name,email,img_url) values("000000000000000000043","선우정아","amberaplin14@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
-insert into users (id,name,email,img_url) values("000000000000000000044","추재현","amberaplin14@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
-insert into users (id,name,email,img_url) values("000000000000000000045","민설아","amberaplin14@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
+insert into users (id,name,email,img_url) values("000000000000000000037","김재우","sorry0194@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
+insert into users (id,name,email,img_url) values("000000000000000000038","최예나","sorry0194@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
+insert into users (id,name,email,img_url) values("000000000000000000039","안유진","sorry0194@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
+insert into users (id,name,email,img_url) values("000000000000000000040","하윤아","sorry0194@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
+insert into users (id,name,email,img_url) values("000000000000000000041","목연수","sorry0194@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
+insert into users (id,name,email,img_url) values("000000000000000000042","허민성","sorry0194@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
+insert into users (id,name,email,img_url) values("000000000000000000043","선우정아","sorry0194@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
+insert into users (id,name,email,img_url) values("000000000000000000044","추재현","sorry0194@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
+insert into users (id,name,email,img_url) values("000000000000000000045","민설아","sorry0194@gmail.com","https://i.stack.imgur.com/34AD2.jpg");
 
 insert into clubs (id, address_detail, address_street, author, book_description, book_title, published_at, publisher, club_status, contents, created_at, description, end_date, img_url, likes, max_personnel, min_personnel, start_date, tags, title, updated_at, user_id) values(null, null, null, "김영한","스프링 데이터 예제 프로젝트로 배우는 전자정부 표준 데이터베이스 프레임, 인프런을 대표하는 김영한님이 쓰신 책으로, 스프링을 공부하려는 본 독서모임의 목적에 부합하는 책입니다.", "자바 ORM 표준 JPA 프로그래밍", "2015", "에이콘출판","ACTIVE","스프링부트 관련 도서를 읽고 공부합니다!","2021-06-30 12:40:30.736347","벡엔드 스프링 개발자의, 개발자에 의한, 개발자를 위한 독서모임! 봄공부입니다. 스프링부트 관련 서적을 읽고 함께 스터디를 진행하는 모임입니다. 스프링부트 관련 서적을 읽고 함께 스터디해요~", "2021-08-31","https://cdn.lifestyleasia.com/wp-content/uploads/sites/2/2020/02/25145253/Photo-by-Alfons-Morales-on-Unsplash-scaled-1535x900.jpg",17,8,3,"2021-07-27","온라인, 독서 외 활동","봄공부","2021-06-30 12:40:30.736347","000000000000000000003");
 insert into clubs (id, address_detail, address_street, author, book_description, book_title, published_at, publisher, club_status, contents, created_at, description, end_date, img_url, likes, max_personnel, min_personnel, start_date, tags, title, updated_at, user_id) values(null, '북쌔즈', '서울시 강남구 역삼1동 테헤란로 311', "에릭 와이너",'"인생에서 길을 잃는 수많은 간마다 이 철학자들의 목소리가 들려올 것이다" 《소크라테스 익스프레스》는 마르쿠스 아우렐리우스부터 몽테뉴까지 역사상 가장 위대한 철학자들을 만나러 떠나는 여행기이자, 그들의 삶과 작품 속의 지혜가 우리 인생을 개선하는 데 어떻게 도움이 되는지 답을 찾아가는 책이다. 매력적인 글솜씨로 "빌 브라이슨의 유머와 알랭 드 보통의 통찰력이 만났다"는 평가를 받는 에릭 와이너가 이 여행의 동반자로 나선다. - 교보문고 책 소개글 中', "소크라테스 익스프레스", "2021", "어크로스", "ACTIVE", "트렌드에 따라 베스트러 도서 위주로 읽고 감상을 나누는 모임", "2021-08-27 17:41:30.736347", "베스트셀러 도서를 읽고 감상을 나누는 모임입니다.", "2021-10-27","https://cdn.lifestyleasia.com/wp-content/uploads/sites/2/2020/02/25145253/Photo-by-Alfons-Morales-on-Unsplash-scaled-1535x900.jpg",12,10,4,"2021-09-01","온/오프라인, 수도권","베스트리더","2021-08-27 17:41:30.736347","000000000000000000001");
@@ -128,3 +128,4 @@ select * from likedclubs;
 select * from members;
 
 ALTER TABLE members AUTO_INCREMENT = 1;
+ALTER TABLE likedclubs AUTO_INCREMENT = 1;
