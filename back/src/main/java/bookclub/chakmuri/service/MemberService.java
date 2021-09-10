@@ -1,5 +1,6 @@
 package bookclub.chakmuri.service;
 
+import bookclub.chakmuri.controller.member.MemberApproveRequestDto;
 import bookclub.chakmuri.controller.member.MemberCreateRequestDto;
 import bookclub.chakmuri.domain.ApprovalStatus;
 import bookclub.chakmuri.domain.Club;
@@ -94,8 +95,8 @@ public class MemberService {
     }
 
     @Transactional
-    public void approveMember(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(); //TODO:memberNotFound
+    public void approveMember(MemberApproveRequestDto requestDto) {
+        Member member = memberRepository.findById(requestDto.getMemberId()).orElseThrow(); //TODO:memberNotFound
         member.changeStatus(ApprovalStatus.CONFIRMED);
 
         String address = member.getUser().getEmail();
