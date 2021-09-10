@@ -72,7 +72,7 @@ public class LikedClubService {
         List<LikedClub> likedClubList = likedClubRepository.findAllByUser(user);
         List<Long> likedClubIdList = new ArrayList<>();
         for (LikedClub likedClub : likedClubList) {
-            likedClubIdList.add(likedClub.getId());
+            likedClubIdList.add(likedClub.getClub().getId());
         }
         return likedClubIdList;
     }
