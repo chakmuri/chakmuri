@@ -32,12 +32,11 @@ public class MemberController {
     }
 
     //참여신청 취소, 참여신청 거절, 참여자 내보내기 -> 참여신청자에게 메일(거절/ 내보내기)
-    @DeleteMapping
+    @DeleteMapping("/{memberId}")
     public ResponseEntity<MemberResponseDto> memberCancel(
-            @RequestParam("userId") String userId,
-            @RequestParam("clubId") Long clubId,
+            @PathVariable("memberId") Long memberId,
             @RequestParam("delete") String deleteStatus) {
-        memberService.deleteMember(userId, clubId, deleteStatus);
+        memberService.deleteMember(memberId, deleteStatus);
         return new ResponseEntity("독서모임 참여가 취소되었습니다.", HttpStatus.OK);
     }
 
@@ -49,7 +48,7 @@ public class MemberController {
         return new ResponseEntity("참여가 승인되었습니다.", HttpStatus.OK);
     }
 
-    //승인 대기자 목록 조회, 참여자 목록 조회 (approvalStatus: WAITING -> 승인대기자, COMFIRMED -> 참여자)
+    //승인 대기자 목록 조회, 참여자 목록 조회 (approvalStatus: WAITING -> 승인대기자, CONFIRMED -> 참여자)
     @GetMapping
     public ResponseEntity<MemberPageResponseDto> getMembers(
             @RequestParam("userId") String userId,
