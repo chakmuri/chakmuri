@@ -43,8 +43,8 @@ public class MemberController {
     //참여 승인 -> 참여중인 독서모임에 추가, 참여 신청자에게 메일(승인되었습니다)
     @PutMapping
     public ResponseEntity<MemberResponseDto> memberApprove(
-            @RequestParam("memberId") Long memberId) {
-        memberService.approveMember(memberId);
+            @RequestBody MemberApproveRequestDto memberApproveRequestDto) {
+        memberService.approveMember(memberApproveRequestDto);
         return new ResponseEntity("참여가 승인되었습니다.", HttpStatus.OK);
     }
 
