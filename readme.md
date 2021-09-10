@@ -38,7 +38,7 @@
 <h2 id="period"> 🗓 개발 기간 </h2>
 
 * v1. (2021/07/27 ~ 2021/08/31)
-* v2. <b>(2021/09/01 ~ ing)
+* v2. (2021/09/01 ~ <b>ing)
 
 <br>
 <h2 id="skills"> 🗃 기술 스택 </h2>
@@ -55,7 +55,8 @@
 * Spring Data JPA
 * Gradle
 * MySQL
-* AWS - EC2, RDS, S3
+* AWS - EC2, RDS, S3, Route53
+* Google SMTP
   
 <br>
 <h2 id="design"> 👩‍💻 기획 & 설계 </h2>
@@ -74,7 +75,7 @@
 
 [프로젝트 칸반보드✨](https://github.com/chakmuri/chakmuri/projects)
  ### FE 
-[`Sol-Ahn`](https://github.com/Sol-Ahn)
+* [`Sol-Ahn`](https://github.com/Sol-Ahn)
 
  ### BE 
 * [`Sharpie`](https://github.com/sharpie1330)
