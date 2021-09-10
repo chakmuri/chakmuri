@@ -94,18 +94,16 @@ public class MemberService {
     }
 
     @Transactional
-    public void approveMember(Long clubId, String userId) {
-        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound
-        Club club = clubRepository.findById(clubId).orElseThrow(); //TODO:clubNotFound
-        Member member = memberRepository.findByUserAndClub(user, club).orElseThrow(); //TODO:memberNotFound
+    public void approveMember(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(); //TODO:memberNotFound
         member.changeStatus(ApprovalStatus.CONFIRMED);
 
-        String address = user.getEmail();
+        String address = member.getUser().getEmail();
         String subject, text;
 
-        subject = "[책무리] " + user.getName() + "님, " + club.getTitle()
+        subject = "[책무리] " + member.getUser().getName() + "님, " + member.getClub().getTitle()
                 + " 독서모임 참여 신청이 승인되었습니다.";
-        text = "안녕하세요, " + user.getName() + "님.\n\n요청하신 " + club.getTitle()
+        text = "안녕하세요, " + member.getUser().getName() + "님.\n\n요청하신 " + member.getClub().getTitle()
                 + " 독서모임의 참여 신청이 승인되었습니다.\n"
                 + "즐거운 모임 가지시길 바랍니다.\n\n감사합니다."
                 + "\n\n- 책무리팀";

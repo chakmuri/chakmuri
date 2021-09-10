@@ -18,4 +18,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Page<Member> findByClubAndApprovalStatus(Club club, ApprovalStatus approvalStatus, Pageable pageable);
 
     Page<Member> findAllByUser(User user, Pageable pageable);
+
+    void deleteAllByClub(Club club);
 }
