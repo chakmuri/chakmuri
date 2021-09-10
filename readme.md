@@ -12,9 +12,9 @@
   <ol>
     <li><a href="#description"> ➤ 웹서비스 설명</a></li>
     <li><a href="#site"> ➤ 사이트</a></li>
+    <li><a href="#design"> ➤ 기획 & 설계</a></li>
     <li><a href="#period"> ➤ 개발 기간</a?</li>
     <li><a href="#skills"> ➤ 기술 스택</a></li>
-    <li><a href="#design"> ➤ 기획 & 설계</a></li>
     <li><a href="#fe-be-role"> ➤ FE & BE 역할 분담 </a></li>
   </ol>
 </details>
@@ -74,13 +74,25 @@
 
   책무리는 이렇게 독서모임 운영자와 독서모임 참여자, 두 가지 역할로서 이용이 가능합니다. 꼭 한 가지 역할만 해야하는 것은 아닙니다. 사용자는 모두 독서모임의 운영자가 되거나, 참여자가 될 수도 있습니다. '책'이라는 하나의 공통 분모를 가지고, 다양한 사람들과 무리지어 모여 모임을 구성하는 <[책무리](http://chakmuri.club/)>에서 지금, 모여보세요!
   
-  <br>
+<br>
 <!--SITE-->
 <h2 id="site"> 💻 사이트</h2>
 
 * 실서버 링크 : http://chakmuri.club/
 <br>
 
+  <h2 id="design"> 👩‍💻 기획 & 설계 </h2>
+  <ul>
+    <li><a href="https://cobalt-scallion-3d2.notion.site/70949e72bf674a6e857ed795a456ca56">📄 기능 설명서</a></li>
+    <li><a href="https://cobalt-scallion-3d2.notion.site/9835c787ad6240c3963783552331b547">⚙ 기능 명세서</a></li>
+    <li><a href="https://www.erdcloud.com/d/A3SxWkvRZhPxj5kdg">☁ DB ERDCloud</a></li>
+    <li><a href="https://cobalt-scallion-3d2.notion.site/DB-0919e254a9844a0c840cdf1e86fba73d">📒 DB 명세서</a></li>
+    <li><a href="https://cobalt-scallion-3d2.notion.site/API-be617ab2fde340b6a79e11b68e6731a9">⌨ API 명세서</a></li>
+    <li><a href="https://cobalt-scallion-3d2.notion.site/API-50532f780bb64cba87723d0c9118eb08">💾 API 문서</a></li>
+    <li><a href="https://cobalt-scallion-3d2.notion.site/bf21e9b6316f4099b03ff9aa151ffe47">🖥 페이지 기획서</a></li>
+  </ul>
+<br>
+  
 <h2 id="period"> 🗓 개발 기간 </h2>
 
 * v1. (2021/07/27 ~ 2021/08/31)
@@ -103,18 +115,6 @@
 * MySQL
 * AWS - EC2, RDS, S3, Route53
 * Google SMTP
-  
-<br>
-<h2 id="design"> 👩‍💻 기획 & 설계 </h2>
-  <ul>
-    <li><a href="https://cobalt-scallion-3d2.notion.site/70949e72bf674a6e857ed795a456ca56">📄기능 설명서</a></li>
-    <li><a href="https://cobalt-scallion-3d2.notion.site/9835c787ad6240c3963783552331b547">⚙기능 명세서</a></li>
-    <li><a href="https://www.erdcloud.com/d/A3SxWkvRZhPxj5kdg">☁DB ERDCloud</a></li>
-    <li><a href="https://cobalt-scallion-3d2.notion.site/DB-0919e254a9844a0c840cdf1e86fba73d">📒DB 명세서</a></li>
-    <li><a href="https://cobalt-scallion-3d2.notion.site/API-be617ab2fde340b6a79e11b68e6731a9">⌨API 명세서</a></li>
-    <li><a href="https://cobalt-scallion-3d2.notion.site/API-50532f780bb64cba87723d0c9118eb08">💾API 문서</a></li>
-    <li><a href="https://cobalt-scallion-3d2.notion.site/bf21e9b6316f4099b03ff9aa151ffe47">🖥페이지 기획서</a></li>
-  </ul>
 <br>  
   
 <h2 id="fe-be-role"> 👨‍💻 FE & BE 역할 분담 </h2>
