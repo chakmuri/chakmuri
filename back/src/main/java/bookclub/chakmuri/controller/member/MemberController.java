@@ -22,10 +22,10 @@ public class MemberController {
     @PostMapping
     public ResponseEntity<MemberResponseDto> memberApply(
             @RequestBody MemberCreateRequestDto memberCreateRequestDto) {
-        try{
+        try {
             Member member = memberService.apply(memberCreateRequestDto);
             return new ResponseEntity("참여신청이 완료되었습니다. (memberId : " + member.getId() + ")", HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity("이미 참여신청된 독서모임 입니다.", HttpStatus.BAD_REQUEST);
         }
     }
@@ -35,7 +35,7 @@ public class MemberController {
     public ResponseEntity<MemberResponseDto> memberCancel(
             @RequestParam("userId") String userId,
             @RequestParam("clubId") Long clubId,
-            @RequestParam("delete") String deleteStatus){
+            @RequestParam("delete") String deleteStatus) {
         memberService.deleteMember(userId, clubId, deleteStatus);
         return new ResponseEntity("독서모임 참여가 취소되었습니다.", HttpStatus.OK);
     }
@@ -44,7 +44,7 @@ public class MemberController {
     @PutMapping
     public ResponseEntity<MemberResponseDto> memberApprove(
             @RequestParam("clubId") Long clubId,
-            @RequestParam("userId") String userId){
+            @RequestParam("userId") String userId) {
         memberService.approveMember(clubId, userId);
         return new ResponseEntity("참여가 승인되었습니다.", HttpStatus.OK);
     }
@@ -54,7 +54,7 @@ public class MemberController {
     public ResponseEntity<MemberPageResponseDto> getMembers(
             @RequestParam("userId") String userId,
             @RequestParam("approvalStatus") String approvalStatus,
-            @RequestParam("page") int page){
+            @RequestParam("page") int page) {
         Page<Member> allMembers = memberService.getMemberList(userId, approvalStatus, page);
         Long totalCount = allMembers.getTotalElements();
         List<MemberResponseDto> response = allMembers

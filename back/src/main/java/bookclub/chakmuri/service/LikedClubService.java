@@ -29,11 +29,11 @@ public class LikedClubService {
     @Transactional
     public LikedClub createLikedClub(LikedClubCreateRequestDto likedClubRequestDto) {
         final User user = userRepository.findById(likedClubRequestDto.getUserId())
-                .orElseThrow();
+                .orElseThrow(); //TODO:userNotFound
         final Club club = clubRepository.findById(likedClubRequestDto.getClubId())
-                .orElseThrow();
+                .orElseThrow(); //TODO:clubNotFound
 
-        if(likedClubRepository.findByClubAndUser(club, user) != null){
+        if (likedClubRepository.findByClubAndUser(club, user) != null) {
             return null;
         }
 
@@ -49,11 +49,11 @@ public class LikedClubService {
 
     @Transactional
     public void deleteLikedClub(Long clubId, String userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        Club club = clubRepository.findById(clubId).orElseThrow();
-        LikedClub likedClub = likedClubRepository.findByClubAndUser(club, user); //TODO: exception 추가
+        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound
+        Club club = clubRepository.findById(clubId).orElseThrow(); //TODO:clubNotFound
+        LikedClub likedClub = likedClubRepository.findByClubAndUser(club, user); //TODO: likedClubNotFound
 
-        club.changeLikes(club.getLikes() -1); // 좋아요 취소
+        club.changeLikes(club.getLikes() - 1); // 좋아요 취소
 
         likedClubRepository.delete(likedClub);
     }
@@ -61,17 +61,17 @@ public class LikedClubService {
     @Transactional(readOnly = true)
     public Page<LikedClub> findAllUserLikedClubs(String userId, int page) {
         final User user = userRepository.findById(userId)
-                .orElseThrow(); //TODO: exception
+                .orElseThrow(); //TODO: userNotFound exception
         PageRequest pageRequest = PageRequest.of((page - 1), 9, Sort.by(Sort.Direction.DESC, "id"));
         return likedClubRepository.findAllByUser(user, pageRequest);
     }
 
     @Transactional(readOnly = true)
-    public List<Long> getLikedClubIds(String userId){
-        User user = userRepository.findById(userId).orElseThrow(); //TODO:exception
+    public List<Long> getLikedClubIds(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound exception
         List<LikedClub> likedClubList = likedClubRepository.findAllByUser(user);
         List<Long> likedClubIdList = new ArrayList<>();
-        for(LikedClub likedClub:likedClubList){
+        for (LikedClub likedClub : likedClubList) {
             likedClubIdList.add(likedClub.getId());
         }
         return likedClubIdList;

@@ -14,11 +14,15 @@ public class MemberResponseDto {
     private Long id;
     private Long clubId;
     private String userId;
+    private String name;
+    private String email;
     private ApprovalStatus approvalStatus;
 
     public MemberResponseDto(Member member) {
         BeanUtils.copyProperties(member, this);
         this.clubId = member.getClub().getId();
         this.userId = member.getUser().getId();
+        this.name = member.getUser().getName();
+        this.email = member.getUser().getEmail();
     }
 }

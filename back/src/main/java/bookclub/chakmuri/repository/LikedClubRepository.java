@@ -14,8 +14,11 @@ import java.util.List;
 public interface LikedClubRepository extends JpaRepository<LikedClub, Long> {
 
     Page<LikedClub> findAllByUser(User user, Pageable pageable);
+
     LikedClub findByClubAndUser(Club club, User user);
+
     void deleteByClubId(Long clubId);
+
     List<LikedClub> findAllByUser(User user);
 
 }

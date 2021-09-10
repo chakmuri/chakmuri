@@ -12,7 +12,7 @@ import java.util.List;
 public class LikedClubIdListResponseDto {
     private List<Long> likedClubIdList;
 
-    public LikedClubIdListResponseDto(List<Long> likedClubIdList){
+    public LikedClubIdListResponseDto(List<Long> likedClubIdList) {
         this.likedClubIdList = likedClubIdList;
     }
 }

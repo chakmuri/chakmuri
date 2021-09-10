@@ -8,7 +8,6 @@ import lombok.ToString;
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @NoArgsConstructor
@@ -17,12 +16,13 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 public class Member {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@Column(name = "member_id")
     private Long id;
 
     @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = EAGER)
     private User user;
 
     @JoinColumn(name = "club_id")
@@ -34,7 +34,7 @@ public class Member {
     private ApprovalStatus approvalStatus; //승인상태 [WAITING, CONFIRMED]
 
     @Builder
-    public Member(User user, Club club, ApprovalStatus approvalStatus){
+    public Member(User user, Club club, ApprovalStatus approvalStatus) {
         this.user = user;
         this.club = club;
         this.approvalStatus = approvalStatus;

@@ -14,13 +14,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User searchUser(String userId){
+    public User searchUser(String userId) {
         return userRepository.findById(userId)
                 .orElse(null);
     }
 
     @Transactional
-    public User createUser(User user){
+    public User createUser(User user) {
         return userRepository.save(user);
     }
 }

@@ -28,11 +28,11 @@ public class MemberService {
     private final MailService mailService;
 
     @Transactional
-    public Member apply(MemberCreateRequestDto request){
-        User user = userRepository.findById(request.getUserId()).orElseThrow();
-        Club club = clubRepository.findById(request.getClubId()).orElseThrow();
+    public Member apply(MemberCreateRequestDto request) {
+        User user = userRepository.findById(request.getUserId()).orElseThrow(); //TODO: usernotfound
+        Club club = clubRepository.findById(request.getClubId()).orElseThrow(); //TODO: clubnotfound
 
-        if(memberRepository.findByUserAndClub(user, club).isPresent()){
+        if (memberRepository.findByUserAndClub(user, club).isPresent()) {
             return null;
         }
 
@@ -40,7 +40,7 @@ public class MemberService {
         String subject = "[책무리] " + club.getUser().getName() + "님, " + club.getTitle()
                 + " 독서모임에 새로운 참여 신청이 있습니다.";
         String text = "안녕하세요, " + club.getUser().getName() + "님.\n\n운영중이신 " + club.getTitle()
-                + " 독서모임에 <"+ user.getName() +">님으로부터 새로운 참여 신청이 도착했습니다.\n\n참여 신청자 정보는 "
+                + " 독서모임에 <" + user.getName() + ">님으로부터 새로운 참여 신청이 도착했습니다.\n\n참여 신청자 정보는 "
                 + "[마이페이지 > 내가 운영중인 독서모임 > 참여자 관리] 에서 확인하실 수 있으며,\n"
                 + "만약 참여 신청자가 신청을 취소한 경우 승인 대기자 목록에서 조회되지 않을 수 있습니다.\n\n감사합니다."
                 + "\n\n- 책무리팀";
@@ -53,7 +53,7 @@ public class MemberService {
     }
 
     // 메일 전송 비동기 처리
-    private void sendAsyncMail(String address, String subject, String text){
+    private void sendAsyncMail(String address, String subject, String text) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         new Thread(
                 () -> {
@@ -64,17 +64,17 @@ public class MemberService {
     }
 
     @Transactional
-    public void deleteMember(String userId, Long clubId, String deleteStatus){
-        User user = userRepository.findById(userId).orElseThrow();
-        Club club = clubRepository.findById(clubId).orElseThrow();
-        Member member = memberRepository.findByUserAndClub(user, club).orElseThrow();
+    public void deleteMember(String userId, Long clubId, String deleteStatus) {
+        User user = userRepository.findById(userId).orElseThrow(); //TODO:usernotfound
+        Club club = clubRepository.findById(clubId).orElseThrow(); //TODO:clubnotfound
+        Member member = memberRepository.findByUserAndClub(user, club).orElseThrow(); //TODO:memberNotFound
         memberRepository.delete(member);
 
         String address = user.getEmail();
         String subject, text;
 
         // 없으면 참여신청 취소, no 면 거절, out 이면 내보내기
-        if(deleteStatus.equals("no")){
+        if (deleteStatus.equals("no")) {
             subject = "[책무리] " + user.getName() + "님, " + club.getTitle()
                     + " 독서모임 참여 신청이 거절되었습니다.";
             text = "안녕하세요, " + user.getName() + "님.\n\n요청하신 " + club.getTitle()
@@ -82,7 +82,7 @@ public class MemberService {
                     + "아쉽지만 다른 독서모임에 참여 신청 부탁드립니다.\n\n감사합니다."
                     + "\n\n- 책무리팀";
             sendAsyncMail(address, subject, text);
-        } else if(deleteStatus.equals("out")){
+        } else if (deleteStatus.equals("out")) {
             subject = "[책무리] " + user.getName() + "님, " + club.getTitle()
                     + " 독서모임의 참여자에서 내보내기 되었습니다.";
             text = "안녕하세요, " + user.getName() + "님.\n\n" + club.getTitle()
@@ -95,9 +95,9 @@ public class MemberService {
 
     @Transactional
     public void approveMember(Long clubId, String userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        Club club = clubRepository.findById(clubId).orElseThrow();
-        Member member = memberRepository.findByUserAndClub(user, club).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound
+        Club club = clubRepository.findById(clubId).orElseThrow(); //TODO:clubNotFound
+        Member member = memberRepository.findByUserAndClub(user, club).orElseThrow(); //TODO:memberNotFound
         member.changeStatus(ApprovalStatus.CONFIRMED);
 
         String address = user.getEmail();
@@ -113,20 +113,21 @@ public class MemberService {
 
     }
 
-    public Page<Member> getMemberList(String userId, String approvalStatus, int page){
-        User user = userRepository.findById(userId).orElseThrow();
+    public Page<Member> getMemberList(String userId, String approvalStatus, int page) {
+        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound
+        Club club = clubRepository.findByUser(user).orElseThrow(); //TODO:clubNotFound
         PageRequest pageRequest = PageRequest.of((page - 1), 3, Sort.by(Sort.Direction.DESC, "id"));
         ApprovalStatus status;
-        if(!approvalStatus.equals(ApprovalStatus.CONFIRMED.toString())){
+        if (!approvalStatus.equals(ApprovalStatus.CONFIRMED.toString())) {
             status = ApprovalStatus.WAITING;
-        }else {
+        } else {
             status = ApprovalStatus.CONFIRMED;
         }
-        return memberRepository.findByUserAndApprovalStatus(user, status, pageRequest);
+        return memberRepository.findByClubAndApprovalStatus(club, status, pageRequest);
     }
 
     public Page<Member> getJoiningClubList(String userId, int page) {
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound
         PageRequest pageRequest = PageRequest.of((page - 1), 3, Sort.by(Sort.Direction.DESC, "id"));
         return memberRepository.findAllByUser(user, pageRequest);
     }

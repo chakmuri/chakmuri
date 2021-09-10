@@ -24,7 +24,7 @@ public class CommentController {
             @RequestBody CommentCreateRequestDto commentCreateRequestDto) {
         Comment comment = commentService.createComment(commentCreateRequestDto);
         return new ResponseEntity(
-                "댓글이 성공적으로 등록되었습니다. (commentId: " + comment.getId() + ")",
+                "댓글이 등록되었습니다. (commentId: " + comment.getId() + ")",
                 HttpStatus.OK
         );
     }
@@ -37,7 +37,7 @@ public class CommentController {
         commentService.updateComment(commentUpdateRequestDto, commentId);
 
         return new ResponseEntity(
-                "댓글이 성공적으로 수정되었습니다. (commentId: " + commentId + ")",
+                "댓글이 수정되었습니다. (commentId: " + commentId + ")",
                 HttpStatus.OK
         );
 
@@ -49,7 +49,7 @@ public class CommentController {
             @PathVariable("commentId") Long commentId) {
         commentService.deleteComment(commentId);
         return new ResponseEntity(
-                "댓글이 성공적으로 삭제되었습니다. (commentId: " + commentId + ")",
+                "댓글이 삭제되었습니다. (commentId: " + commentId + ")",
                 HttpStatus.OK
         );
     }
@@ -57,7 +57,7 @@ public class CommentController {
     // 모임상세 댓글 전체 조회
     @GetMapping("/clubs/{clubId}")
     public ResponseEntity<CommentPageResponseDto> getClubComments(
-            @PathVariable("clubId") Long clubId, @RequestParam("page") int page){
+            @PathVariable("clubId") Long clubId, @RequestParam("page") int page) {
         Page<Comment> allClubComments = commentService.findAllClubComments(clubId, page);
         Long totalCount = allClubComments.getTotalElements();
         List<CommentResponseDto> response = allClubComments
@@ -71,7 +71,7 @@ public class CommentController {
     // 사용자 댓글 전체 조회
     @GetMapping("/users/{userId}")
     public ResponseEntity<CommentPageResponseDto> getUserComments(
-                @PathVariable("userId") String userId, @RequestParam("page") int page) {
+            @PathVariable("userId") String userId, @RequestParam("page") int page) {
         Page<Comment> allClubComments = commentService.findAllUserComments(userId, page);
         Long totalCount = allClubComments.getTotalElements();
         List<CommentResponseDto> response = allClubComments
@@ -81,16 +81,4 @@ public class CommentController {
         CommentPageResponseDto pageResponseDto = new CommentPageResponseDto(totalCount, response);
         return new ResponseEntity(pageResponseDto, HttpStatus.OK);
     }
-
-    // 댓글 전체 삭제
-//    @DeleteMapping
-//    public ResponseEntity<Void> deleteAllComment() {
-//        commentService.deleteAll();
-//        return new ResponseEntity(
-//                "댓글이 모두 삭제되었습니다.",
-//                HttpStatus.OK
-//        );
-//
-//    }
-
 }

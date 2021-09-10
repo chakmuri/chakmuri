@@ -19,7 +19,7 @@ public class CommentCreateRequestDto {
     // JSON -> Entity (DTO)
     public Comment toEntity() {
         return Comment.builder()
-                .contents(contents) // 하나만 작성하는 이유는?
+                .contents(contents)
                 .build();
     }
 

@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-//@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    public UserController(final UserService userService){
+    public UserController(final UserService userService) {
         this.userService = userService;
     }
 
@@ -22,13 +21,12 @@ public class UserController {
     public ResponseEntity<UserResponseDto> searchUser(
             @PathVariable final String userId) {
         User user = userService.searchUser(userId);
-        if(user != null){
+        if (user != null) {
             return ResponseEntity.ok(
                     new UserResponseDto(userService.searchUser(userId))
             );
-        }
-        else{
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
@@ -39,7 +37,7 @@ public class UserController {
         final User user = userService.searchUser(userCreateRequestDto.toEntity().getId());
 
         // 유저 정보가 등록되어 있다면
-        if(user != null){
+        if (user != null) {
             return ResponseEntity.ok(
                     new UserResponseDto(userService.searchUser(userCreateRequestDto.toEntity().getId()))
             );

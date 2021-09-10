@@ -14,7 +14,8 @@ import static javax.persistence.FetchType.EAGER;
 @Table(name = "likedclubs")
 public class LikedClub {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@Column(name = "likedClub_id")
     private Long id;
 
@@ -27,7 +28,7 @@ public class LikedClub {
     private Club club;
 
     @Builder
-    public LikedClub( User user, Club club) {
+    public LikedClub(User user, Club club) {
         this.user = user;
         this.club = club;
     }
