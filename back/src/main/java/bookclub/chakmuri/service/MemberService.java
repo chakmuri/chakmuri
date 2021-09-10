@@ -29,8 +29,8 @@ public class MemberService {
 
     @Transactional
     public Member apply(MemberCreateRequestDto request) {
-        User user = userRepository.findById(request.getUserId()).orElseThrow(); //TODO: usernotfound
-        Club club = clubRepository.findById(request.getClubId()).orElseThrow(); //TODO: clubnotfound
+        User user = userRepository.findById(request.getUserId()).orElseThrow(); //TODO: userNotFound
+        Club club = clubRepository.findById(request.getClubId()).orElseThrow(); //TODO: clubNotFound
 
         if (memberRepository.findByUserAndClub(user, club).isPresent()) {
             return null;
@@ -64,28 +64,26 @@ public class MemberService {
     }
 
     @Transactional
-    public void deleteMember(String userId, Long clubId, String deleteStatus) {
-        User user = userRepository.findById(userId).orElseThrow(); //TODO:usernotfound
-        Club club = clubRepository.findById(clubId).orElseThrow(); //TODO:clubnotfound
-        Member member = memberRepository.findByUserAndClub(user, club).orElseThrow(); //TODO:memberNotFound
+    public void deleteMember(Long memberId, String deleteStatus) {
+        Member member = memberRepository.findById(memberId).orElseThrow(); //TODO:memberNotFound
         memberRepository.delete(member);
 
-        String address = user.getEmail();
+        String address = member.getUser().getEmail();
         String subject, text;
 
         // 없으면 참여신청 취소, no 면 거절, out 이면 내보내기
         if (deleteStatus.equals("no")) {
-            subject = "[책무리] " + user.getName() + "님, " + club.getTitle()
+            subject = "[책무리] " + member.getUser().getName() + "님, " + member.getClub().getTitle()
                     + " 독서모임 참여 신청이 거절되었습니다.";
-            text = "안녕하세요, " + user.getName() + "님.\n\n요청하신 " + club.getTitle()
+            text = "안녕하세요, " + member.getUser().getName() + "님.\n\n요청하신 " + member.getClub().getTitle()
                     + " 독서모임의 참여 신청이 거절되었습니다.\n"
                     + "아쉽지만 다른 독서모임에 참여 신청 부탁드립니다.\n\n감사합니다."
                     + "\n\n- 책무리팀";
             sendAsyncMail(address, subject, text);
         } else if (deleteStatus.equals("out")) {
-            subject = "[책무리] " + user.getName() + "님, " + club.getTitle()
+            subject = "[책무리] " + member.getUser().getName() + "님, " + member.getClub().getTitle()
                     + " 독서모임의 참여자에서 내보내기 되었습니다.";
-            text = "안녕하세요, " + user.getName() + "님.\n\n" + club.getTitle()
+            text = "안녕하세요, " + member.getUser().getName() + "님.\n\n" + member.getClub().getTitle()
                     + " 독서모임 참여자 목록에서 내보내기 된 내역이 확인되었습니다.\n"
                     + "아쉽지만 다른 독서모임에 참여 신청 부탁드립니다.\n\n감사합니다."
                     + "\n\n- 책무리팀";
