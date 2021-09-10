@@ -3,10 +3,7 @@ package bookclub.chakmuri.service;
 import bookclub.chakmuri.controller.club.ClubCreateRequestDto;
 import bookclub.chakmuri.controller.club.ClubUpdateRequestDto;
 import bookclub.chakmuri.domain.*;
-import bookclub.chakmuri.repository.ClubRepository;
-import bookclub.chakmuri.repository.CommentRepository;
-import bookclub.chakmuri.repository.LikedClubRepository;
-import bookclub.chakmuri.repository.UserRepository;
+import bookclub.chakmuri.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -25,6 +22,7 @@ public class ClubService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final LikedClubRepository likedClubRepository;
+    private final MemberRepository memberRepository;
     private final S3Service s3Service;
 
     //독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> FE 측에서 처리??
@@ -190,8 +188,9 @@ public class ClubService {
     @Transactional
     public void deleteClub(String userId) {
         final Club club = findClubByUserId(userId);
-        commentRepository.deleteAllByClubId(club.getId());
-        likedClubRepository.deleteByClubId(club.getId());
+        commentRepository.deleteAllByClub(club);
+        likedClubRepository.deleteByClub(club);
+        memberRepository.deleteAllByClub(club);
         clubRepository.delete(club);
     }
 }
