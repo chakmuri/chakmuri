@@ -74,7 +74,7 @@ public class MemberService {
         String subject, text;
 
         // 없으면 참여신청 취소, no 면 거절, out 이면 내보내기
-        if (deleteStatus.equals("no")) {
+        if (deleteStatus.equals("NO")) {
             subject = "[책무리] " + user.getName() + "님, " + club.getTitle()
                     + " 독서모임 참여 신청이 거절되었습니다.";
             text = "안녕하세요, " + user.getName() + "님.\n\n요청하신 " + club.getTitle()
@@ -82,7 +82,7 @@ public class MemberService {
                     + "아쉽지만 다른 독서모임에 참여 신청 부탁드립니다.\n\n감사합니다."
                     + "\n\n- 책무리팀";
             sendAsyncMail(address, subject, text);
-        } else if (deleteStatus.equals("out")) {
+        } else if (deleteStatus.equals("OUT")) {
             subject = "[책무리] " + user.getName() + "님, " + club.getTitle()
                     + " 독서모임의 참여자에서 내보내기 되었습니다.";
             text = "안녕하세요, " + user.getName() + "님.\n\n" + club.getTitle()
