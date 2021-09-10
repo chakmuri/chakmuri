@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Row, message } from "antd";
+import { Row, message, Modal } from "antd";
 import styled from "styled-components";
 
 import InfoBox from "./InfoBox";
@@ -12,6 +12,7 @@ import Pagination from "../common/Pagination";
 import profile from "../../images/icons/profile.png";
 
 const Main = (props) => {
+	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [club, setClub] = useState();
 	const [comments, setComments] = useState();
 	const [postComment, setPostComment] = useState("");
@@ -20,21 +21,16 @@ const Main = (props) => {
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(1);
 	const [like, setLike] = useState();
+	const [apply, setApply] = useState();
 	const [loading, setLoading] = useState(true);
 	const clubId = Number(props.match.params.id);
 	const userId = localStorage.getItem("user_id");
 	const userImg = localStorage.getItem("user_image");
 
-	console.log("clubId: ", clubId);
-	console.log("Main props: ", props);
-
 	useEffect(() => {
-		console.log("api call check");
 		const fetchData = async () => {
 			try {
 				const res = await axios.get(`/clubs/${clubId}`);
-
-				console.log("res: ", res.data);
 
 				setClub(res.data);
 
@@ -54,6 +50,14 @@ const Main = (props) => {
 
 		setComments(res.data.commentList);
 		setTotal(res.data.totalCount);
+	};
+
+	const showModal = () => {
+		setIsModalVisible(true);
+	};
+
+	const handleCancel = () => {
+		setIsModalVisible(false);
 	};
 
 	const handlePostComment = async () => {
@@ -115,7 +119,7 @@ const Main = (props) => {
 		}
 	};
 
-	const handleLike = async () => {
+	const handlePostLike = async () => {
 		const data = {
 			clubId: Number(clubId),
 			userId: userId,
@@ -134,15 +138,39 @@ const Main = (props) => {
 			await axios.delete("/likedClubs", {
 				params: { userId: userId, clubId: Number(id) },
 			});
+			setLike();
 		} catch (err) {
 			console.log(err);
 		}
-
-		setLike();
 	};
 
 	const onReset = () => {
 		setPostComment("");
+	};
+
+	const handlePostApply = async (id) => {
+		try {
+			const data = { userId: userId, clubId: Number(id) };
+			await axios.post("/members", data);
+			setApply(data.clubId);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const handleDeleteApply = async (id) => {
+		try {
+			await axios.delete("/members", {
+				params: {
+					userId: userId,
+					clubId: Number(id),
+					delete: "",
+				},
+			});
+			setApply();
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	return (
@@ -156,8 +184,14 @@ const Main = (props) => {
 					<InfoBox
 						club={club}
 						like={like}
-						handleLike={handleLike}
+						handlePostLike={handlePostLike}
 						handleDeleteLike={handleDeleteLike}
+						apply={apply}
+						handlePostApply={handlePostApply}
+						handleDeleteApply={handleDeleteApply}
+						isModalVisible={isModalVisible}
+						showModal={showModal}
+						handleCancel={handleCancel}
 					/>
 					<DetailInfo club={club} />
 					<TitleRow>

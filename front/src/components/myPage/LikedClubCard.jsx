@@ -18,7 +18,7 @@ const LikedClubCard = ({ ...props }) => {
 				props.club.imgUrl ? (
 					<img src={props.club.imgUrl} alt="Clubcard thumbnail" />
 				) : (
-					<Skeleton.Image />
+					<SkeletonImg />
 				)
 			}
 			onClick={() => history.push(`/detail/${props.club.id}`)}
@@ -119,5 +119,12 @@ const ClubExpiredTag = styled(ExpiredTag)`
 		position: absolute;
 		top: 5%;
 		right: 3%;
+	}
+`;
+
+const SkeletonImg = styled(Skeleton.Image)`
+	.ant-skeleton-image {
+		width: 340px;
+		height: 190px;
 	}
 `;

@@ -504,7 +504,6 @@ const FilledBtn = styled(Button)`
 		border: none;
 		border-radius: 6px;
 		outline: none;
-		cursor: pointer;
 	}
 `;
 
@@ -514,6 +513,5 @@ const UnfilledBtn = styled(Button)`
 		background-color: #ffffff;
 		border: 2px solid #ff6701;
 		border-radius: 6px;
-		cursor: pointer;
 	}
 `;
