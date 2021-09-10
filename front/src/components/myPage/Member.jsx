@@ -7,14 +7,14 @@ const Member = (props) => {
 	return (
 		<MemberBar>
 			<MemberProfileIcon>
-				{/* {props.myMember.imgUrl ? (
+				{props.myMember.imgUrl ? (
 					<img src={props.myMember.imgUrl} alt="Profile icon" />
-				) : ( */}
-				<img src={profile} alt="Profile icon" />
-				{/* )} */}
+				) : (
+					<img src={profile} alt="Profile icon" />
+				)}
 			</MemberProfileIcon>
 			{/* <MemberUsername>{props.myMember.name}</MemberUsername> */}
-			{/* <MemberEmail>{props.myMember.email}</MemberEmail> */}
+			<MemberEmail>{props.myMember.email}</MemberEmail>
 			<MemberBtn
 				onClick={() => props.handleMemberDelete(props.myMember.clubId)}
 			>
@@ -48,11 +48,11 @@ const MemberProfileIcon = styled.div`
 // 	margin-right: 55px;
 // `;
 
-// const MemberEmail = styled.div`
-// 	font-family: Roboto;
-// 	font-size: 20px;
-// 	flex: 1;
-// `;
+const MemberEmail = styled.div`
+	font-family: Roboto;
+	font-size: 20px;
+	flex: 1;
+`;
 
 const MemberBtn = styled(Button)`
 	font-size: 16px;

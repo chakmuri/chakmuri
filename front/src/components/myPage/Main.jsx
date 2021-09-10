@@ -81,7 +81,7 @@ const Main = () => {
 				},
 			});
 
-			setMyMembers(memberRes.data.memberList);
+			setMyMembers(memberRes.data.joiningClubList);
 			setMyMembersTotal(memberRes.totalCount);
 
 			const myClubRes = await axios.get(`/clubs/users/${userId}`);
@@ -122,6 +122,19 @@ const Main = () => {
 		}
 	};
 
+	const handleLikePost = async (clubId) => {
+		try {
+			await axios.post("/likedClubs", {
+				clubId: Number(clubId),
+				userId: userId,
+			});
+		} catch (err) {
+			message.error("이미 좋아요한 독서모임입니다.");
+		} finally {
+			fetchData();
+		}
+	};
+
 	const handleLikeDelete = async (clubId) => {
 		try {
 			axios.delete("/likedClubs", {
@@ -134,11 +147,11 @@ const Main = () => {
 		}
 	};
 
-	const handleMemberApproval = async (clubId) => {
+	const handleMemberApproval = async (id) => {
 		try {
 			axios.put("/members", {
 				params: {
-					clubId: Number(clubId),
+					clubId: Number(id),
 					userId: userId,
 				},
 			});
@@ -149,12 +162,12 @@ const Main = () => {
 		}
 	};
 
-	const handleMemberReject = async (clubId) => {
+	const handleMemberReject = async (id) => {
 		try {
 			axios.delete("/members", {
 				params: {
 					userId: userId,
-					clubId: Number(clubId),
+					clubId: Number(id),
 					delete: "no",
 				},
 			});
@@ -167,7 +180,7 @@ const Main = () => {
 
 	const handleMemberDelete = async (clubId) => {
 		try {
-			axios.delete("/member", {
+			axios.delete("/members", {
 				params: {
 					userId: userId,
 					clubId: Number(clubId),
@@ -181,7 +194,7 @@ const Main = () => {
 		}
 	};
 
-	const handleClubDday = async (endDate) => {
+	const handleClubDday = (endDate) => {
 		const today = new Date().getDate().toString();
 
 		const endDay = endDate.substr(8, 2);
@@ -275,9 +288,9 @@ const Main = () => {
 											<Col key={joinedClub.id}>
 												<JoinedClubCard
 													club={joinedClub}
-													handleClubDday={handleClubDday}
+													handleLikePost={handleLikePost}
 													handleLikeDelete={handleLikeDelete}
-													like={joinedClub.clubId}
+													handleClubDday={handleClubDday}
 												/>
 											</Col>
 										))}
@@ -301,62 +314,61 @@ const Main = () => {
 									<Box>
 										<MidTitle>참여자 관리</MidTitle>
 										<Text>승인 대기자</Text>
-										{/* {myPendingMembers === [] ? ( */}
-										<>
-											{/* <Row gutter={[0, 16]}>
-												{myPendingMembers.map((member) => (
-													<Row key={member.id}> */}
-											<PendingMember
-												myPendingMember={myPendingMembers}
-												handleMemberReject={handleMemberReject}
-												handleMemberApproval={handleMemberApproval}
-											/>
-											{/* </Row> */}
-											{/* ))} */}
-											{/* </Row> */}
-											<PaginationRow>
-												<Pagination
-													total={myPendingMembersTotal}
-													pageSize={10}
-													current={myPendingMembersPage}
-													onChange={(page) => setMyPendingMembersPage(page)}
-												/>
-											</PaginationRow>
-										</>
-										{/* ) : (
+										{myPendingMembers.length !== 0 ? (
+											<>
+												<Row gutter={[0, 16]}>
+													{myPendingMembers.map((member) => (
+														<Row key={member.id}>
+															<PendingMember
+																myPendingMember={member}
+																handleMemberReject={handleMemberReject}
+																handleMemberApproval={handleMemberApproval}
+															/>
+														</Row>
+													))}
+												</Row>
+												<PaginationRow>
+													<Pagination
+														total={myPendingMembersTotal}
+														pageSize={10}
+														current={myPendingMembersPage}
+														onChange={(page) => setMyPendingMembersPage(page)}
+													/>
+												</PaginationRow>
+											</>
+										) : (
 											<MemberNotFound>
 												🚫 현재 대기중인 멤버가 없습니다. 🚫
 											</MemberNotFound>
-										)} */}
+										)}
 										<Divider />
 										<Text>참여자 목록</Text>
-										{/* {myMembers === [] ? ( */}
-										<>
-											{/* <Row gutter={[0, 16]}> */}
-											{/* {myMembers.map((member) => ( */}
-											{/* <Row key={member.id}> */}
-											<Member
-												myMember={myMembers}
-												handleMemberDelete={handleMemberDelete}
-											/>
-											{/* </Row> */}
-											{/* ))} */}
-											{/* </Row> */}
-											<PaginationRow>
-												<Pagination
-													total={myMembersTotal}
-													pageSize={10}
-													current={myMembersPage}
-													onChange={(page) => setMyMembersPage(page)}
-												/>
-											</PaginationRow>
-										</>
-										{/* ) : (
-										<MemberNotFound>
-											{" "}
-											🚫 현재 참여중인 멤버가 없습니다. 🚫{" "}
-										</MemberNotFound>
-										)} */}
+										{myMembers.length !== 0 ? (
+											<>
+												<Row gutter={[0, 16]}>
+													{myMembers.map((member) => (
+														<Row key={member.id}>
+															<Member
+																myMember={member}
+																handleMemberDelete={handleMemberDelete}
+															/>
+														</Row>
+													))}
+												</Row>
+												<PaginationRow>
+													<Pagination
+														total={myMembersTotal}
+														pageSize={10}
+														current={myMembersPage}
+														onChange={(page) => setMyMembersPage(page)}
+													/>
+												</PaginationRow>
+											</>
+										) : (
+											<MemberNotFound>
+												🚫 현재 참여중인 멤버가 없습니다. 🚫
+											</MemberNotFound>
+										)}
 									</Box>
 									<Box>
 										<MidTitle>정보 수정</MidTitle>

@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { Skeleton } from "antd";
+import { Skeleton, Modal, Row } from "antd";
 
 import SmallTag from "../common/SmallTag";
+import Button from "../common/Button";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
 import filledHeart from "../../images/icons/filled_heart.png";
 
@@ -37,19 +38,75 @@ const InfoBox = ({ ...props }) => {
 						<Tag key={i}>{tag}</Tag>
 					))}
 				</TagContainer>
-				<LikeIcon
-					onClick={() => {
-						props.like
-							? props.handleDeleteLike(props.club.id)
-							: props.handleLike(props.club.id);
-					}}
-				>
-					{props.like === props.club.id ? (
-						<img src={filledHeart} alt="Filled like icon"></img>
-					) : (
-						<img src={unfilledHeart} alt="Unfilled like icon" />
-					)}
-				</LikeIcon>
+				<BtnRow>
+					<LikeIconContainer>
+						<LikeIcon
+							onClick={() => {
+								props.like
+									? props.handleDeleteLike(props.club.id)
+									: props.handlePostLike(props.club.id);
+							}}
+						>
+							{props.like === props.club.id ? (
+								<img src={filledHeart} alt="Filled like icon"></img>
+							) : (
+								<img src={unfilledHeart} alt="Unfilled like icon" />
+							)}
+						</LikeIcon>
+					</LikeIconContainer>
+					{(() => {
+						if (props.club.clubStatus !== "EXPIRED") {
+							if (props.apply)
+								return (
+									<>
+										<ApplyBtn
+											onClick={() => {
+												props.handleDeleteApply(props.club.id);
+												props.showModal();
+											}}
+										>
+											참여취소
+										</ApplyBtn>
+										<StyledModal
+											visible={props.isModalVisible}
+											onCancel={() => props.handleCancel()}
+										>
+											<ModalTitle>참여신청이 취소되었습니다.</ModalTitle>
+											<ButtonRow>
+												<FilledBtn onClick={() => props.handleCancel()}>
+													확인
+												</FilledBtn>
+											</ButtonRow>
+										</StyledModal>
+									</>
+								);
+							else
+								return (
+									<>
+										<ApplyBtn
+											onClick={() => {
+												props.handlePostApply(props.club.id);
+												props.showModal();
+											}}
+										>
+											참여신청
+										</ApplyBtn>
+										<StyledModal
+											visible={props.isModalVisible}
+											onCancel={() => props.handleCancel()}
+										>
+											<ModalTitle>참여신청이 완료되었습니다.</ModalTitle>
+											<ButtonRow>
+												<FilledBtn onClick={() => props.handleCancel()}>
+													확인
+												</FilledBtn>
+											</ButtonRow>
+										</StyledModal>
+									</>
+								);
+						} else return <ApplyBtn disabled>모집마감</ApplyBtn>;
+					})()}
+				</BtnRow>
 			</ClubInfo>
 		</InfoBoxContainer>
 	);
@@ -62,7 +119,6 @@ const InfoBoxContainer = styled.div`
 	height: 320px;
 	border: 1.5px solid #e5e5e5;
 	border-radius: 10px;
-	position: relative;
 
 	display: flex;
 `;
@@ -80,7 +136,11 @@ const ClubThumbnail = styled.div`
 
 const ClubInfo = styled.div`
 	width: 50%;
-	padding: 50px;
+	padding: 0 50px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 `;
 
 const InfoRow = styled.div`
@@ -109,7 +169,7 @@ const TagContainer = styled.div`
 	display: flex;
 	gap: 10px;
 
-	margin-top: 40px;
+	margin-top: 15px;
 `;
 
 const Tag = styled(SmallTag)`
@@ -119,16 +179,88 @@ const Tag = styled(SmallTag)`
 	}
 `;
 
+const BtnRow = styled.div`
+	display: flex;
+	gap: 30px;
+	margin-top: 40px;
+`;
+
+const LikeIconContainer = styled.div`
+	width: 50px;
+	height: 50px;
+	border: 2px solid #e5e5e5;
+	border-radius: 5px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
 const LikeIcon = styled.div`
-	width: 28px;
-	height: 28px;
-	position: absolute;
-	top: 20px;
-	right: 20px;
+	width: 32px;
+	height: 32px;
 	cursor: pointer;
 
 	img {
 		width: 100%;
+	}
+`;
+
+const ApplyBtn = styled(Button)`
+	width: 300px;
+	height: 50px;
+	color: #ffffff;
+	background-color: #ff6701;
+	border-radius: 5px;
+	padding: 0;
+	text-align: center;
+
+	&:disabled {
+		opacity: 60%;
+		cursor: not-allowed;
+	}
+`;
+
+const StyledModal = styled(Modal)`
+	display: flex;
+	justify-content: center;
+
+	.ant-modal-content {
+		padding: 30px 55px;
+		display: flex;
+		align-items: center;
+	}
+
+	.ant-modal-body {
+		text-align: center;
+	}
+
+	.ant-modal-footer {
+		display: none;
+	}
+`;
+
+const ModalTitle = styled.div`
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 10px;
+`;
+
+const ButtonRow = styled(Row)`
+	margin-top: 30px;
+	display: flex;
+	justify-content: center;
+	gap: 50px;
+`;
+
+const FilledBtn = styled(Button)`
+	& {
+		color: #ffffff;
+		background-color: #ff6701;
+		border: none;
+		border-radius: 6px;
+		outline: none;
+		cursor: pointer;
 	}
 `;
 

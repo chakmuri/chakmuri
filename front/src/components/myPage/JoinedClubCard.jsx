@@ -19,19 +19,22 @@ const JoinedClubCard = ({ ...props }) => {
 				props.club.imgUrl ? (
 					<img src={props.club.imgUrl} alt="Clubcard thumbnail" />
 				) : (
-					<Skeleton.Image />
+					<SkeletonImg />
 				)
 			}
 			onClick={() => history.push(`/detail/${props.club.id}`)}
 		>
 			<Meta title={props.club.title} description={props.club.contents} />
-			{() => {
-				const dDay = props.handleClubDday(props.club.endDate);
-				if (props.club.clubStatus === "EXPIRED")
-					<ClubExpiredTag>마감</ClubExpiredTag>;
-				else if (dDay) <ClubDdayTag>{dDay}</ClubDdayTag>;
-				else return "";
-			}}
+			<>
+				{(() => {
+					const dDay = props.handleClubDday(props.club.endDate);
+
+					if (props.club.clubStatus === "EXPIRED")
+						return <ClubExpiredTag>마감</ClubExpiredTag>;
+					else if (dDay) return <ClubDdayTag>{dDay}</ClubDdayTag>;
+					else return "";
+				})()}
+			</>
 			<TagContainer>
 				{props.club.tags.split(", ").map((tag, i) => (
 					<ClubTag key={i}>{tag}</ClubTag>
@@ -40,6 +43,7 @@ const JoinedClubCard = ({ ...props }) => {
 			<LikeIcon
 				onClick={(e) => {
 					e.stopPropagation();
+					props.handleLikePost(props.club.clubId);
 					props.handleLikeDelete(props.club.clubId);
 				}}
 			>
@@ -132,5 +136,12 @@ const ClubDdayTag = styled(DdayTag)`
 		position: absolute;
 		top: 5%;
 		right: 3%;
+	}
+`;
+
+const SkeletonImg = styled(Skeleton.Image)`
+	.ant-skeleton-image {
+		width: 340px;
+		height: 190px;
 	}
 `;
