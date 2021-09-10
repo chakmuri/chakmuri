@@ -44,6 +44,13 @@ const Main = () => {
 				},
 			});
 			setsortByLikesClubs(likesRes.data.clubList);
+
+			const likedClubRes = await axios.get("/likedClubs/ids", {
+				params: {
+					userId: userId,
+				},
+			});
+			setLikedClubs(likedClubRes.data.likedClubIdList);
 		} catch (err) {
 			console.log(err);
 		}
