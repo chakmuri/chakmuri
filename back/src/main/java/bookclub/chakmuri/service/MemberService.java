@@ -128,7 +128,7 @@ public class MemberService {
 
     public Page<Member> getJoiningClubList(String userId, int page) {
         User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound
-        PageRequest pageRequest = PageRequest.of((page - 1), 3, Sort.by(Sort.Direction.DESC, "id"));
+        PageRequest pageRequest = PageRequest.of((page - 1), 9, Sort.by(Sort.Direction.DESC, "id"));
         return memberRepository.findAllByUser(user, pageRequest);
     }
 
