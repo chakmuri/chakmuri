@@ -1,5 +1,7 @@
 package bookclub.chakmuri.service;
 
+import bookclub.chakmuri.common.error.exception.ClubNotFoundException;
+import bookclub.chakmuri.common.error.exception.UserNotFoundException;
 import bookclub.chakmuri.controller.club.ClubCreateRequestDto;
 import bookclub.chakmuri.controller.club.ClubUpdateRequestDto;
 import bookclub.chakmuri.domain.*;
@@ -54,7 +56,7 @@ public class ClubService {
     private Club convertToNewClub(final Club club, final Book book, final String userId,
                                   LocalDate startDate, LocalDate endDate) {
         final User user = userRepository.findById(userId)
-                .orElseThrow(); // -> TODO : UserNotFoundException 만들어서 넣기
+                .orElseThrow(UserNotFoundException::new);
         return Club.builder()
                 .user(user)
                 .title(club.getTitle())
@@ -140,13 +142,13 @@ public class ClubService {
     }
 
     public Club findClubById(Long clubId) {
-        Club club = clubRepository.findById(clubId).orElseThrow();// -> TODO : ClubNotFoundException 만들기
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         changeClubStatus(club);
         return club;
     }
 
     public Club findClubByUserId(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(); // -> TODO : UserNotFoundException 만들어서 넣기
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Club club = clubRepository.findByUser(user).orElse(null);
         if (club != null) {
             changeClubStatus(club);
