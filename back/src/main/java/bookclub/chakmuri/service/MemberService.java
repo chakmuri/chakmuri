@@ -1,5 +1,8 @@
 package bookclub.chakmuri.service;
 
+import bookclub.chakmuri.common.error.exception.ClubNotFoundException;
+import bookclub.chakmuri.common.error.exception.MemberNotFoundException;
+import bookclub.chakmuri.common.error.exception.UserNotFoundException;
 import bookclub.chakmuri.controller.member.MemberApproveRequestDto;
 import bookclub.chakmuri.controller.member.MemberCreateRequestDto;
 import bookclub.chakmuri.domain.*;
@@ -29,8 +32,8 @@ public class MemberService {
 
     @Transactional
     public Member apply(MemberCreateRequestDto request) {
-        User user = userRepository.findById(request.getUserId()).orElseThrow(); //TODO: userNotFound
-        Club club = clubRepository.findById(request.getClubId()).orElseThrow(); //TODO: clubNotFound
+        User user = userRepository.findById(request.getUserId()).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findById(request.getClubId()).orElseThrow(ClubNotFoundException::new);
 
         if (memberRepository.findByUserAndClub(user, club).isPresent()) {
             return null;
@@ -65,7 +68,7 @@ public class MemberService {
 
     @Transactional
     public void deleteMember(Long memberId, String deleteStatus) {
-        Member member = memberRepository.findById(memberId).orElseThrow(); //TODO:memberNotFound
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
         memberRepository.delete(member);
 
         String address = member.getUser().getEmail();
@@ -93,7 +96,7 @@ public class MemberService {
 
     @Transactional
     public void approveMember(MemberApproveRequestDto requestDto) {
-        Member member = memberRepository.findById(requestDto.getMemberId()).orElseThrow(); //TODO:memberNotFound
+        Member member = memberRepository.findById(requestDto.getMemberId()).orElseThrow(MemberNotFoundException::new);
         member.changeStatus(ApprovalStatus.CONFIRMED);
 
         String address = member.getUser().getEmail();
@@ -110,8 +113,8 @@ public class MemberService {
     }
 
     public Page<Member> getMemberList(String userId, String approvalStatus, int page) {
-        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound
-        Club club = clubRepository.findByUser(user).orElseThrow(); //TODO:clubNotFound
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findByUser(user).orElseThrow(ClubNotFoundException::new);
         PageRequest pageRequest = PageRequest.of((page - 1), 3, Sort.by(Sort.Direction.DESC, "id"));
         ApprovalStatus status;
         if (!approvalStatus.equals(ApprovalStatus.CONFIRMED.toString())) {
@@ -123,13 +126,13 @@ public class MemberService {
     }
 
     public Page<Member> getJoiningClubList(String userId, int page) {
-        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         PageRequest pageRequest = PageRequest.of((page - 1), 3, Sort.by(Sort.Direction.DESC, "id"));
         return memberRepository.findAllByUser(user, pageRequest);
     }
 
     public List<Long> getJoiningClubIds(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound exception
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         List<Member> joiningClubList = memberRepository.findAllByUser(user);
         List<Long> joiningClubIdList = new ArrayList<>();
         for (Member member : joiningClubList) {

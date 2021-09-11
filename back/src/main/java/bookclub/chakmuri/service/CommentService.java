@@ -1,5 +1,8 @@
 package bookclub.chakmuri.service;
 
+import bookclub.chakmuri.common.error.exception.ClubNotFoundException;
+import bookclub.chakmuri.common.error.exception.CommentNotFoundException;
+import bookclub.chakmuri.common.error.exception.UserNotFoundException;
 import bookclub.chakmuri.controller.comment.CommentCreateRequestDto;
 import bookclub.chakmuri.controller.comment.CommentUpdateRequestDto;
 import bookclub.chakmuri.domain.Club;
@@ -37,9 +40,9 @@ public class CommentService {
 
     private Comment convertToComment(final Comment comment, final String userId, final Long clubId) {
         final User user = userRepository.findById(userId)
-                .orElseThrow();// TODO:UserNotFoundException::new 추가하기
+                .orElseThrow(UserNotFoundException::new);
         final Club club = clubRepository.findById(clubId)
-                .orElseThrow(); // TODO:ClubNotFoundException::new 추가하기
+                .orElseThrow(ClubNotFoundException::new);
 
         return Comment.builder()
                 .contents(comment.getContents())
@@ -53,7 +56,7 @@ public class CommentService {
     public void updateComment(CommentUpdateRequestDto commentUpdateRequestDto, Long commentId) {
         String contents = commentUpdateRequestDto.getContents();
         final Comment comment = commentRepository.findById(commentId)
-                .orElseThrow();   // TODO: CommentNotFoundException::new 추가하기
+                .orElseThrow(CommentNotFoundException::new);
 
         comment.changeComment(contents);
     }
@@ -61,7 +64,7 @@ public class CommentService {
     @Transactional
     public void deleteComment(final Long commentId) {
         final Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(); // TODO: CommentNotFoundException::new 추가하기
+                .orElseThrow(CommentNotFoundException::new);
 
         commentRepository.delete(comment);
     }
@@ -73,7 +76,7 @@ public class CommentService {
 
     public Page<Comment> findAllUserComments(String userId, int page) {
         User user = userRepository.findById(userId)
-                .orElseThrow();// TODO: UserNotFoundException::new 추가하기
+                .orElseThrow(UserNotFoundException::new);
         PageRequest pageRequest = PageRequest.of((page - 1), 10, Sort.by(Sort.Direction.DESC, "id"));
         return commentRepository.findAllByUser(user, pageRequest);
     }
