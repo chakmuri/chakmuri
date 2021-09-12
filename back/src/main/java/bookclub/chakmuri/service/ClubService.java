@@ -26,6 +26,7 @@ public class ClubService {
     private final LikedClubRepository likedClubRepository;
     private final MemberRepository memberRepository;
     private final S3Service s3Service;
+    private final String imageUrl = "https://cdn.lifestyleasia.com/wp-content/uploads/sites/2/2020/02/25145253/Photo-by-Alfons-Morales-on-Unsplash-scaled-1535x900.jpg";
 
     //독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> FE 측에서 처리??
 
@@ -38,6 +39,8 @@ public class ClubService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else{
+            requestDto.setImgUrl(imageUrl);
         }
         Club club = requestDto.toEntity();
         String startDateString = requestDto.getStartDate();
@@ -166,6 +169,8 @@ public class ClubService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            requestDto.setImgUrl(imageUrl);
         }
         LocalDate startDate = LocalDate.parse(requestDto.getStartDate(), DateTimeFormatter.ISO_DATE);
         LocalDate endDate = LocalDate.parse(requestDto.getEndDate(), DateTimeFormatter.ISO_DATE);
