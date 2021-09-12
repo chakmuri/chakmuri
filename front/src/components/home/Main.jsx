@@ -132,6 +132,7 @@ const Main = () => {
 							.map((club) => (
 								<Col key={club.id}>
 									<MainClubCard
+										userId={userId}
 										club={club}
 										handleLikedClubs={handleLikedClubs}
 										likedClubs={likedClubs}

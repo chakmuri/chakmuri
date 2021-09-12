@@ -11,10 +11,10 @@ import add from "../../../images/icons/add.png";
 
 const NavBar = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
-	const userId = localStorage.getItem("user_id");
-	const userImg = localStorage.getItem("user_image");
 	const [userImage, setUserImage] = useState(null);
 	const [isLoggedIn, setLoggedIn] = useState(false);
+	const userId = localStorage.getItem("user_id");
+	const userImg = localStorage.getItem("user_image");
 
 	useEffect(() => {
 		if (userId) {
@@ -36,6 +36,7 @@ const NavBar = () => {
 		localStorage.removeItem("user_image");
 		setLoggedIn(false);
 		setUserImage(null);
+		window.location.reload();
 	};
 
 	const dropdownMenu = (

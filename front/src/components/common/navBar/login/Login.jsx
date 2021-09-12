@@ -26,6 +26,7 @@ const Login = ({ ...props }) => {
 				};
 
 				await axios.post("/users", user);
+
 				await axios.get(`users/${user.id}`);
 
 				localStorage.setItem("user_id", user.id);

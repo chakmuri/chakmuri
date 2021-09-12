@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Card, Skeleton } from "antd";
+import { Card, Skeleton, message } from "antd";
 import styled from "styled-components";
 
 import SmallTag from "../common/SmallTag";
@@ -36,7 +36,12 @@ const MainClubCard = ({ ...props }) => {
 			<LikeIcon
 				onClick={(e) => {
 					e.stopPropagation();
-					props.handleLikedClubs(props.club.id);
+
+					if (props.userId) {
+						props.handleLikedClubs(props.club.id);
+					} else {
+						message.error("로그인이 필요한 기능입니다.");
+					}
 				}}
 			>
 				{props.likedClubs.includes(props.club.id) ? (
