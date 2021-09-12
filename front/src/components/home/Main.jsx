@@ -19,7 +19,7 @@ const Main = () => {
 	useEffect(() => {
 		fetchData();
 		setLoading(false);
-	}, []);
+	}, [userId]);
 
 	const fetchData = async () => {
 		try {
@@ -45,12 +45,14 @@ const Main = () => {
 			});
 			setsortByLikesClubs(likesRes.data.clubList);
 
-			const likedClubRes = await axios.get("/likedClubs/ids", {
-				params: {
-					userId: userId,
-				},
-			});
-			setLikedClubs(likedClubRes.data.likedClubIdList);
+			if (userId) {
+				const likedClubRes = await axios.get("/likedClubs/ids", {
+					params: {
+						userId: userId,
+					},
+				});
+				setLikedClubs(likedClubRes.data.likedClubIdList);
+			}
 		} catch (err) {
 			console.log(err);
 		}
@@ -59,13 +61,19 @@ const Main = () => {
 	const handleLikedClubs = (clubId) => {
 		let index = likedClubs.indexOf(clubId);
 
-		if (likedClubs.includes(clubId)) {
-			likedClubs.splice(index, 1);
-			setLikedClubs([...likedClubs]);
-			handleLikeDelete(clubId);
-		} else {
-			setLikedClubs([...likedClubs, clubId]);
-			handleLikePost(clubId);
+		try {
+			if (likedClubs.includes(clubId)) {
+				likedClubs.splice(index, 1);
+				setLikedClubs([...likedClubs]);
+				handleLikeDelete(clubId);
+			} else {
+				setLikedClubs([...likedClubs, clubId]);
+				handleLikePost(clubId);
+			}
+		} catch (err) {
+			console.log(err);
+		} finally {
+			fetchData();
 		}
 	};
 

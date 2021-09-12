@@ -22,51 +22,56 @@ const Main = () => {
 	const userId = localStorage.getItem("user_id");
 
 	useEffect(() => {
-		const fetchData = async () => {
-			const sendTags = selectedTags.join(", ");
+		fetchData();
+		setLoading(false);
+	}, [clubStatus, page, keyword, selectedTags, sortBy, userId]);
 
-			try {
-				const res = await axios.get("/clubs", {
-					params: {
-						sortBy: sortBy,
-						tags: sendTags,
-						clubStatus: clubStatus,
-						keyword: keyword,
-						page: page,
-					},
-				});
+	const fetchData = async () => {
+		const sendTags = selectedTags.join(", ");
 
-				setClubs(res.data.clubList);
-				setTotal(res.data.totalCount);
+		try {
+			const res = await axios.get("/clubs", {
+				params: {
+					sortBy: sortBy,
+					tags: sendTags,
+					clubStatus: clubStatus,
+					keyword: keyword,
+					page: page,
+				},
+			});
 
+			setClubs(res.data.clubList);
+			setTotal(res.data.totalCount);
+
+			if (userId) {
 				const likedClubRes = await axios.get("/likedClubs/ids", {
 					params: {
 						userId: userId,
 					},
 				});
 				setLikedClubs(likedClubRes.data.likedClubIdList);
-			} catch (err) {
-				console.log(err);
 			}
-		};
-		fetchData();
-		setLoading(false);
-	}, [clubStatus, page, keyword, selectedTags, sortBy]);
-
-	console.log(clubs);
-	// console.log(clubs.map((club) => club.id));
-	console.log(likedClubs);
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	const handleLikedClubs = (clubId) => {
 		let index = likedClubs.indexOf(clubId);
 
-		if (likedClubs.includes(clubId)) {
-			likedClubs.splice(index, 1);
-			setLikedClubs([...likedClubs]);
-			handleLikeDelete(clubId);
-		} else {
-			setLikedClubs([...likedClubs, clubId]);
-			handleLikePost(clubId);
+		try {
+			if (likedClubs.includes(clubId)) {
+				likedClubs.splice(index, 1);
+				setLikedClubs([...likedClubs]);
+				handleLikeDelete(clubId);
+			} else {
+				setLikedClubs([...likedClubs, clubId]);
+				handleLikePost(clubId);
+			}
+		} catch (err) {
+			console.log(err);
+		} finally {
+			fetchData();
 		}
 	};
 
