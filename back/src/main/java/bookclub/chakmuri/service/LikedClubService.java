@@ -1,5 +1,8 @@
 package bookclub.chakmuri.service;
 
+import bookclub.chakmuri.common.error.exception.ClubNotFoundException;
+import bookclub.chakmuri.common.error.exception.LikedClubNotFoundException;
+import bookclub.chakmuri.common.error.exception.UserNotFoundException;
 import bookclub.chakmuri.controller.likedclub.LikedClubCreateRequestDto;
 import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.LikedClub;
@@ -29,11 +32,11 @@ public class LikedClubService {
     @Transactional
     public LikedClub createLikedClub(LikedClubCreateRequestDto likedClubRequestDto) {
         final User user = userRepository.findById(likedClubRequestDto.getUserId())
-                .orElseThrow(); //TODO:userNotFound
+                .orElseThrow(UserNotFoundException::new);
         final Club club = clubRepository.findById(likedClubRequestDto.getClubId())
-                .orElseThrow(); //TODO:clubNotFound
+                .orElseThrow(ClubNotFoundException::new);
 
-        if (likedClubRepository.findByClubAndUser(club, user) != null) {
+        if (likedClubRepository.findByClubAndUser(club, user).isPresent()) {
             return null;
         }
 
@@ -49,9 +52,9 @@ public class LikedClubService {
 
     @Transactional
     public void deleteLikedClub(Long clubId, String userId) {
-        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound
-        Club club = clubRepository.findById(clubId).orElseThrow(); //TODO:clubNotFound
-        LikedClub likedClub = likedClubRepository.findByClubAndUser(club, user); //TODO: likedClubNotFound
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        LikedClub likedClub = likedClubRepository.findByClubAndUser(club, user).orElseThrow(LikedClubNotFoundException::new);
 
         club.changeLikes(club.getLikes() - 1); // 좋아요 취소
 
@@ -61,14 +64,14 @@ public class LikedClubService {
     @Transactional(readOnly = true)
     public Page<LikedClub> findAllUserLikedClubs(String userId, int page) {
         final User user = userRepository.findById(userId)
-                .orElseThrow(); //TODO: userNotFound exception
+                .orElseThrow(UserNotFoundException::new);
         PageRequest pageRequest = PageRequest.of((page - 1), 9, Sort.by(Sort.Direction.DESC, "id"));
         return likedClubRepository.findAllByUser(user, pageRequest);
     }
 
     @Transactional(readOnly = true)
     public List<Long> getLikedClubIds(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(); //TODO:userNotFound exception
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         List<LikedClub> likedClubList = likedClubRepository.findAllByUser(user);
         List<Long> likedClubIdList = new ArrayList<>();
         for (LikedClub likedClub : likedClubList) {
