@@ -173,8 +173,10 @@ const Main = (props) => {
 
 	const handleDeleteApply = async (clubId) => {
 		try {
-			const res = await axios.delete(`/members/${userId}`, {
+			const res = await axios.delete("/members", {
 				params: {
+					userId: userId,
+					clubId: Number(clubId),
 					delete: "",
 				},
 			});
