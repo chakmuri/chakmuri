@@ -32,10 +32,12 @@ const Login = ({ ...props }) => {
 				localStorage.setItem("user_id", user.id);
 				localStorage.setItem("user_image", user.imgUrl);
 				props.onCancel();
+				window.location.reload();
 			} else {
 				localStorage.setItem("user_id", res.data.id);
 				localStorage.setItem("user_image", res.data.imgUrl);
 				props.onCancel();
+				window.location.reload();
 			}
 		} catch (err) {
 			console.log(err);
