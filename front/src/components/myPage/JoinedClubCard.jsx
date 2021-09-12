@@ -22,7 +22,7 @@ const JoinedClubCard = (props) => {
 					<SkeletonImg />
 				)
 			}
-			onClick={() => history.push(`/detail/${props.club.id}`)}
+			onClick={() => history.push(`/detail/${props.club.clubId}`)}
 		>
 			<Meta title={props.club.title} description={props.club.contents} />
 			<>
