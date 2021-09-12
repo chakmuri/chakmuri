@@ -5,12 +5,13 @@ import styled from "styled-components";
 
 import SmallTag from "../common/SmallTag";
 import ExpiredTag from "../common/ExpiredTag";
-import DdayTag from "../common/DdayTag";
+import WaitingTag from "../common/WaitingTag";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
 import filledHeart from "../../images/icons/filled_heart.png";
 
-const JoinedClubCard = ({ ...props }) => {
+const JoinedClubCard = (props) => {
 	let history = useHistory();
+	console.log("joinedClub props: ", props);
 
 	return (
 		<StyledCard
@@ -27,11 +28,10 @@ const JoinedClubCard = ({ ...props }) => {
 			<Meta title={props.club.title} description={props.club.contents} />
 			<>
 				{(() => {
-					const dDay = props.handleClubDday(props.club.endDate);
-
 					if (props.club.clubStatus === "EXPIRED")
 						return <ClubExpiredTag>마감</ClubExpiredTag>;
-					else if (dDay) return <ClubDdayTag>{dDay}</ClubDdayTag>;
+					else if (props.club.approvalStatus === "WAITING")
+						return <ClubWaitingTag>대기중</ClubWaitingTag>;
 					else return "";
 				})()}
 			</>
@@ -129,9 +129,8 @@ const ClubExpiredTag = styled(ExpiredTag)`
 	}
 `;
 
-const ClubDdayTag = styled(DdayTag)`
+const ClubWaitingTag = styled(WaitingTag)`
 	& {
-		font-size: 16px;
 		padding: 5px;
 		position: absolute;
 		top: 5%;
