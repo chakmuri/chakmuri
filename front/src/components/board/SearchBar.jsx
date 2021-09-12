@@ -5,11 +5,6 @@ import styled from "styled-components";
 const SearchBar = (props) => {
 	const onSearch = (value) => {
 		props.setKeyword(value);
-		value = "";
-	};
-
-	const onReset = () => {
-		props.setKeyword("");
 	};
 
 	return (
@@ -21,8 +16,7 @@ const SearchBar = (props) => {
 				placeholder="독서모임 검색"
 				onSearch={onSearch}
 				onPressEnter={(e) => {
-					props.setKeyword(e.target.value);
-					onReset();
+					onSearch(e.target.value);
 				}}
 			/>
 		</SearchBarContainer>
