@@ -67,8 +67,10 @@ public class MemberService {
     }
 
     @Transactional
-    public void deleteMember(Long memberId, String deleteStatus) {
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+    public void deleteMember(String userId, Long clubId, String deleteStatus) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        Member member = memberRepository.findByUserAndClub(user, club).orElseThrow(MemberNotFoundException::new);
         memberRepository.delete(member);
 
         String address = member.getUser().getEmail();
