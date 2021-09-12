@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Row, message, Modal } from "antd";
+import { Row, message } from "antd";
 import styled from "styled-components";
 
 import InfoBox from "./InfoBox";
@@ -34,6 +34,14 @@ const Main = (props) => {
 
 				setClub(res.data);
 
+				if (userId) {
+					const applyRes = await axios.get("/members/ids", {
+						params: { userId: userId },
+					});
+
+					setApply(applyRes.data.joiningClubIdList);
+				}
+
 				setLoading(false);
 			} catch (err) {
 				console.log(err);
@@ -42,6 +50,8 @@ const Main = (props) => {
 		fetchData();
 		fetchCmtData();
 	}, [userImg, total, page]);
+
+	console.log(apply);
 
 	const fetchCmtData = async () => {
 		const res = await axios.get(`/comments/clubs/${clubId}`, {
@@ -151,23 +161,30 @@ const Main = (props) => {
 	const handlePostApply = async (id) => {
 		try {
 			const data = { userId: userId, clubId: Number(id) };
-			await axios.post("/members", data);
-			setApply(data.clubId);
+			const res = await axios.post("/members", data);
+			if (res.status === 400) {
+				message.error("이미 참여신청한 모임입니다.");
+			}
+			setApply([...apply, id]);
 		} catch (err) {
 			console.log(err);
 		}
 	};
 
-	const handleDeleteApply = async (id) => {
+	const handleDeleteApply = async (clubId) => {
 		try {
-			await axios.delete("/members", {
+			const res = await axios.delete(`/members/${userId}`, {
 				params: {
-					userId: userId,
-					clubId: Number(id),
 					delete: "",
 				},
 			});
-			setApply();
+			if (res.status === 400) {
+				message.error("이미 참여취소한 모임입니다.");
+			}
+
+			const index = apply.indexOf(clubId);
+			apply.splice(index, 1);
+			setApply([...apply]);
 		} catch (err) {
 			console.log(err);
 		}
@@ -182,6 +199,7 @@ const Main = (props) => {
 			) : (
 				<>
 					<InfoBox
+						userId={userId}
 						club={club}
 						like={like}
 						handlePostLike={handlePostLike}

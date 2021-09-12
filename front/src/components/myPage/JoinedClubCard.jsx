@@ -11,7 +11,6 @@ import filledHeart from "../../images/icons/filled_heart.png";
 
 const JoinedClubCard = (props) => {
 	let history = useHistory();
-	console.log("joinedClub props: ", props);
 
 	return (
 		<StyledCard

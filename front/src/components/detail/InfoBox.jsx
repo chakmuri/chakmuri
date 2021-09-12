@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { Skeleton, Modal, Row } from "antd";
+import { Skeleton, Modal, Row, message } from "antd";
 
 import SmallTag from "../common/SmallTag";
 import Button from "../common/Button";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
 import filledHeart from "../../images/icons/filled_heart.png";
 
-const InfoBox = ({ ...props }) => {
+const InfoBox = (props) => {
 	const tags = props.club.tags.split(", ");
 
 	return (
@@ -56,7 +56,7 @@ const InfoBox = ({ ...props }) => {
 					</LikeIconContainer>
 					{(() => {
 						if (props.club.clubStatus !== "EXPIRED") {
-							if (props.apply)
+							if (props.userId && props.apply.includes(props.club.id))
 								return (
 									<>
 										<ApplyBtn
@@ -85,8 +85,12 @@ const InfoBox = ({ ...props }) => {
 									<>
 										<ApplyBtn
 											onClick={() => {
-												props.handlePostApply(props.club.id);
-												props.showModal();
+												if (props.userId) {
+													props.handlePostApply(props.club.id);
+													props.showModal();
+												} else {
+													message.error("로그인이 필요한 기능입니다.");
+												}
 											}}
 										>
 											참여신청
