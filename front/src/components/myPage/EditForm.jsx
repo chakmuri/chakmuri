@@ -89,11 +89,6 @@ const EditForm = ({ ...props }) => {
 		setEndDate(values.date[1]._d.toISOString().substring(0, 10));
 		const sendTags = selectedTags.join(", ");
 		const formData = new FormData();
-		// const config = {
-		// 	headers: {
-		// 		"content-type": "multipart/form-data",
-		// 	},
-		// };
 
 		if (!values.minPersonnel || !values.maxPersonnel) {
 			message.error("참여인원을 입력해주세요.");
@@ -160,8 +155,6 @@ const EditForm = ({ ...props }) => {
 			sendData(values);
 		} catch (err) {
 			console.log(err);
-		} finally {
-			props.fetchData();
 		}
 	};
 
@@ -342,7 +335,7 @@ const EditForm = ({ ...props }) => {
 				<Col span={16}>
 					<Form.Item
 						initialValue={
-							props.myClub.publishedAt === 0 ? "" : props.myClub.publishedAt
+							props.myClub.publishedAt === 0 ? 0 : props.myClub.publishedAt
 						}
 						label="출판연도"
 						name="publishedAt"

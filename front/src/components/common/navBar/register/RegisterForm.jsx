@@ -415,6 +415,8 @@ const StyledInputNumber = styled(InputNumber)`
 	font-family: Roboto;
 	font-weight: bold;
 	font-size: 16px;
+	width: 80px;
+	height: 40px;
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
