@@ -71,7 +71,7 @@ const InfoBox = (props) => {
 											visible={props.isModalVisible}
 											onCancel={() => props.handleCancel()}
 										>
-											<ModalTitle>참여신청이 취소되었습니다.</ModalTitle>
+											<ModalTitle>참여신청이 완료되었습니다.</ModalTitle>
 											<ButtonRow>
 												<FilledBtn onClick={() => props.handleCancel()}>
 													확인
@@ -99,7 +99,7 @@ const InfoBox = (props) => {
 											visible={props.isModalVisible}
 											onCancel={() => props.handleCancel()}
 										>
-											<ModalTitle>참여신청이 완료되었습니다.</ModalTitle>
+											<ModalTitle>참여신청이 취소되었습니다.</ModalTitle>
 											<ButtonRow>
 												<FilledBtn onClick={() => props.handleCancel()}>
 													확인
