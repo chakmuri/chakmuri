@@ -27,7 +27,7 @@ public class ClubController {
     @PostMapping
     public ResponseEntity<ClubCreateRequestDto> createClub(
             ClubCreateRequestDto clubCreateRequestDto,
-            @RequestParam(value = "img") MultipartFile file) {
+            @RequestParam(value = "img", required = false) MultipartFile file) {
         //이 유저가 만든 독서모임이 있는지 체크(한사람당 한 개)
         //400 에러 -> 잘못된 요청
         if (clubService.findClubByUserId(clubCreateRequestDto.getUserId()) != null) {
