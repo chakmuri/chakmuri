@@ -22,30 +22,40 @@ const Main = () => {
 	const userId = localStorage.getItem("user_id");
 
 	useEffect(() => {
+		const fetchData = async () => {
+			const sendTags = selectedTags.join(", ");
+
+			try {
+				const res = await axios.get("/clubs", {
+					params: {
+						sortBy: sortBy,
+						tags: sendTags,
+						clubStatus: clubStatus,
+						keyword: keyword,
+						page: page,
+					},
+				});
+
+				setClubs(res.data.clubList);
+				setTotal(res.data.totalCount);
+
+				const likedClubRes = await axios.get("/likedClubs/ids", {
+					params: {
+						userId: userId,
+					},
+				});
+				setLikedClubs(likedClubRes.data.likedClubIdList);
+			} catch (err) {
+				console.log(err);
+			}
+		};
 		fetchData();
 		setLoading(false);
-	}, [page, total, clubStatus, selectedTags, keyword, sortBy]);
+	}, [clubStatus, page, keyword, selectedTags, sortBy]);
 
-	const fetchData = async () => {
-		const sendTags = selectedTags.join(", ");
-
-		try {
-			const res = await axios.get("/clubs", {
-				params: {
-					sortBy: sortBy,
-					tags: sendTags,
-					clubStatus: clubStatus,
-					keyword: keyword,
-					page: page,
-				},
-			});
-
-			setClubs(res.data.clubList);
-			setTotal(res.data.totalCount);
-		} catch (err) {
-			console.log(err);
-		}
-	};
+	console.log(clubs);
+	// console.log(clubs.map((club) => club.id));
+	console.log(likedClubs);
 
 	const handleLikedClubs = (clubId) => {
 		let index = likedClubs.indexOf(clubId);
@@ -68,8 +78,6 @@ const Main = () => {
 			});
 		} catch (err) {
 			message.error("이미 좋아요한 독서모임입니다.");
-		} finally {
-			fetchData();
 		}
 	};
 
@@ -80,8 +88,6 @@ const Main = () => {
 			});
 		} catch (err) {
 			console.log(err);
-		} finally {
-			fetchData();
 		}
 	};
 
