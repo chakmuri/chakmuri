@@ -13,11 +13,9 @@ const Member = (props) => {
 					<img src={profile} alt="Profile icon" />
 				)}
 			</MemberProfileIcon>
-			{/* <MemberUsername>{props.myMember.name}</MemberUsername> */}
+			<MemberUsername>{props.myMember.name}</MemberUsername>
 			<MemberEmail>{props.myMember.email}</MemberEmail>
-			<MemberBtn
-				onClick={() => props.handleMemberDelete(props.myMember.clubId)}
-			>
+			<MemberBtn onClick={() => props.handleMemberDelete(props.myMember.id)}>
 				내보내기
 			</MemberBtn>
 		</MemberBar>
@@ -32,7 +30,6 @@ const MemberBar = styled.div`
 
 	display: flex;
 	align-items: center;
-	margin: 20px 0;
 `;
 
 const MemberProfileIcon = styled.div`
@@ -40,13 +37,18 @@ const MemberProfileIcon = styled.div`
 	height: 48px;
 	margin-left: 65px;
 	margin-right: 15px;
+
+	img {
+		width: 100%;
+		heigt: 100%;
+	}
 `;
 
-// const MemberUsername = styled.div`
-// 	font-family: Roboto;
-// 	font-size: 20px;
-// 	margin-right: 55px;
-// `;
+const MemberUsername = styled.div`
+	font-family: Roboto;
+	font-size: 20px;
+	margin-right: 55px;
+`;
 
 const MemberEmail = styled.div`
 	font-family: Roboto;

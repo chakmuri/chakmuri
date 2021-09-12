@@ -12,15 +12,17 @@ const PendingMember = (props) => {
 					<img src={profile} alt="Profile icon" />
 				)}
 			</PendingMemberProfileIcon>
-			{/* <PendingMemberUsername>{props.myPendingMember.name}</PendingMemberUsername> */}
+			<PendingMemberUsername>
+				{props.myPendingMember.name}
+			</PendingMemberUsername>
 			<PendingMemberEmail>{props.myPendingMember.email}</PendingMemberEmail>
 			<PendingMemberBtn
-				onClick={() => props.handleMemberApproval(props.myPendingMember.clubId)}
+				onClick={() => props.handleMemberApproval(props.myPendingMember.id)}
 			>
 				승인
 			</PendingMemberBtn>
 			<PendingMemberBtn
-				onClick={() => props.handleMemberReject(props.myPendingMember.clubId)}
+				onClick={() => props.handleMemberReject(props.myPendingMember.id)}
 			>
 				거절
 			</PendingMemberBtn>
@@ -35,10 +37,8 @@ const PendingMemberBar = styled.div`
 	height: 80px;
 	border: 1.5px solid #c4c4c4;
 	border-radius: 5px;
-
 	display: flex;
 	align-items: center;
-	margin: 20px 0;
 `;
 
 const PendingMemberProfileIcon = styled.div`
@@ -46,13 +46,18 @@ const PendingMemberProfileIcon = styled.div`
 	height: 48px;
 	margin-left: 65px;
 	margin-right: 15px;
+
+	img {
+		width: 100%;
+		heigt: 100%;
+	}
 `;
 
-// const PendingMemberUsername = styled.div`
-// 	font-family: Roboto;
-// 	font-size: 20px;
-// 	margin-right: 55px;
-// `;
+const PendingMemberUsername = styled.div`
+	font-family: Roboto;
+	font-size: 20px;
+	margin-right: 55px;
+`;
 
 const PendingMemberEmail = styled.div`
 	font-family: Roboto;

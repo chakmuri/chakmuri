@@ -37,7 +37,13 @@ const Main = () => {
 
 	useEffect(() => {
 		fetchData();
-	}, []);
+	}, [
+		myMembersPage,
+		myPendingMembersPage,
+		myJoinedClubsPage,
+		myLikedClubsPage,
+		myCommentsPage,
+	]);
 
 	const fetchData = async () => {
 		try {
@@ -56,7 +62,6 @@ const Main = () => {
 
 			const joinedClubsRes = await axios.get(`/members/users/${userId}`, {
 				params: {
-					approvalStatus: "CONFIRMED",
 					page: myJoinedClubsPage,
 				},
 			});
@@ -64,33 +69,51 @@ const Main = () => {
 			setMyJoinedClubs(joinedClubsRes.data.joiningClubList);
 			setMyJoinedClubsTotal(joinedClubsRes.data.totalCount);
 
-			const pendingMembersRes = await axios.get("/members", {
-				params: {
-					userId: userId,
-					approvalStatus: "WATING",
-					page: myPendingMembersPage,
-				},
-			});
-
-			setMyPendingMembers(pendingMembersRes.data.memberList);
-			setMyPendingMembersTotal(pendingMembersRes.data.totalCount);
-
-			const memberRes = await axios.get(`/members/users/${userId}`, {
-				params: {
-					page: myMembersPage,
-				},
-			});
-
-			setMyMembers(memberRes.data.joiningClubList);
-			setMyMembersTotal(memberRes.totalCount);
-
 			const myClubRes = await axios.get(`/clubs/users/${userId}`);
+
+			if (myClubRes.data) {
+				const pendingMembersRes = await axios.get("/members", {
+					params: {
+						userId: userId,
+						approvalStatus: "WAITING",
+						page: myPendingMembersPage,
+					},
+				});
+
+				setMyPendingMembers(pendingMembersRes.data.memberList);
+				setMyPendingMembersTotal(pendingMembersRes.data.totalCount);
+
+				const memberRes = await axios.get("/members", {
+					params: {
+						userId: userId,
+						approvalStatus: "CONFIRMED",
+						page: myMembersPage,
+					},
+				});
+
+				setMyMembers(memberRes.data.memberList);
+				setMyMembersTotal(memberRes.data.totalCount);
+			}
+
 			setMyClub(myClubRes.data);
 
 			setLoading(false);
 		} catch (err) {
 			console.log(err);
 		}
+	};
+
+	const fetchMemberData = async () => {
+		const memberRes = await axios.get("/members", {
+			params: {
+				userId: userId,
+				approvalStatus: "CONFIRMED",
+				page: myMembersPage,
+			},
+		});
+
+		setMyMembers(memberRes.data.memberList);
+		setMyMembersTotal(memberRes.data.totalCount);
 	};
 
 	const showModal = () => {
@@ -130,8 +153,6 @@ const Main = () => {
 			});
 		} catch (err) {
 			message.error("이미 좋아요한 독서모임입니다.");
-		} finally {
-			fetchData();
 		}
 	};
 
@@ -142,19 +163,15 @@ const Main = () => {
 			});
 		} catch (err) {
 			console.log(err);
-		} finally {
-			fetchData();
 		}
 	};
 
-	const handleMemberApproval = async (id) => {
+	const handleMemberApproval = async (memberId) => {
 		try {
-			axios.put("/members", {
-				params: {
-					clubId: Number(id),
-					userId: userId,
-				},
-			});
+			const res = axios.put("/members", { memberId: memberId });
+			if (res.status === 200) {
+				message.success("독서모임 참여가 승인되었습니다.");
+			}
 		} catch (err) {
 			console.log(err);
 		} finally {
@@ -162,15 +179,16 @@ const Main = () => {
 		}
 	};
 
-	const handleMemberReject = async (id) => {
+	const handleMemberReject = async (memberId) => {
 		try {
-			axios.delete("/members", {
+			const res = axios.delete(`/members/${memberId}`, {
 				params: {
-					userId: userId,
-					clubId: Number(id),
-					delete: "no",
+					delete: "NO",
 				},
 			});
+			if (res.status === 200) {
+				message.warning("독서모임 참여가 거절되었습니다.");
+			}
 		} catch (err) {
 			console.log(err);
 		} finally {
@@ -178,46 +196,21 @@ const Main = () => {
 		}
 	};
 
-	const handleMemberDelete = async (clubId) => {
+	const handleMemberDelete = async (memberId) => {
 		try {
-			axios.delete("/members", {
+			const res = axios.delete(`/members/${memberId}`, {
 				params: {
-					userId: userId,
-					clubId: Number(clubId),
-					delete: "out",
+					delete: "OUT",
 				},
 			});
+
+			if (res.status === 200) {
+				message.warning("독서모임에서 내보내기 처리되었습니다.");
+			}
 		} catch (err) {
 			console.log(err);
 		} finally {
-			fetchData();
-		}
-	};
-
-	const handleClubDday = (endDate) => {
-		const today = new Date().getDate().toString();
-
-		const endDay = endDate.substr(8, 2);
-
-		const dDay = endDay - today;
-
-		switch (dDay) {
-			case "1":
-				return "D-1";
-			case "2":
-				return "D-2";
-			case "3":
-				return "D-3";
-			case "4":
-				return "D-4";
-			case "5":
-				return "D-5";
-			case "6":
-				return "D-6";
-			case "7":
-				return "D-7";
-			default:
-				return "";
+			fetchMemberData();
 		}
 	};
 
@@ -290,7 +283,6 @@ const Main = () => {
 													club={joinedClub}
 													handleLikePost={handleLikePost}
 													handleLikeDelete={handleLikeDelete}
-													handleClubDday={handleClubDday}
 												/>
 											</Col>
 										))}
@@ -330,7 +322,7 @@ const Main = () => {
 												<PaginationRow>
 													<Pagination
 														total={myPendingMembersTotal}
-														pageSize={10}
+														pageSize={3}
 														current={myPendingMembersPage}
 														onChange={(page) => setMyPendingMembersPage(page)}
 													/>
@@ -358,7 +350,7 @@ const Main = () => {
 												<PaginationRow>
 													<Pagination
 														total={myMembersTotal}
-														pageSize={10}
+														pageSize={3}
 														current={myMembersPage}
 														onChange={(page) => setMyMembersPage(page)}
 													/>
@@ -372,7 +364,7 @@ const Main = () => {
 									</Box>
 									<Box>
 										<MidTitle>정보 수정</MidTitle>
-										<EditForm myClub={myClub} fetchData={fetchData} />
+										<EditForm myClub={myClub} />
 										<Divider />
 										<DeleteBtnContainer>
 											<TextBox>
@@ -467,6 +459,7 @@ const LargeText = styled.div`
 
 const Text = styled.div`
 	font-size: 16px;
+	margin-bottom: 15px;
 `;
 
 const TextBox = styled.div`
@@ -553,7 +546,7 @@ const UnfilledBtn = styled(Button)`
 
 const PaginationRow = styled(Row)`
 	width: 100%;
-	margin: 0 auto;
+	margin: 30px auto;
 	justify-content: center;
 `;
 
