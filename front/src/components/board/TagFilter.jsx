@@ -1,5 +1,4 @@
 import React from "react";
-import { Row, Col } from "antd";
 import styled from "styled-components";
 import { customMedia } from "../common/GlobalStyles";
 
@@ -64,7 +63,13 @@ const TagContainer = styled.div`
     gap: 20px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+    margin: 40px auto;
+    gap: 20px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 475px;
     margin: 40px auto;
     gap: 30px;
@@ -84,7 +89,11 @@ const BoardTag = styled(Tag)`
     width: 137.5px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 171.5px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 222.5px;
   `}
 

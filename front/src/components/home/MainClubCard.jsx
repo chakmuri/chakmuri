@@ -64,7 +64,12 @@ const StyledCard = styled(Card)`
     height: 333px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+	${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+    height: 401px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 285px;
     height: 323px;
   `}
@@ -82,7 +87,11 @@ const StyledCard = styled(Card)`
     height: 166.5px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    height: 200.5px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     height: 161.5px;
   `}
 
@@ -101,7 +110,12 @@ const StyledCard = styled(Card)`
 		padding: 20px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    height: 200.5px;
+    padding: 30px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     height: 161.5px;
 		padding: 20px;
   `}
@@ -120,7 +134,11 @@ const StyledCard = styled(Card)`
     font-size: 18px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 20px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 18px;
   `}
 
@@ -137,7 +155,11 @@ const StyledCard = styled(Card)`
     font-size: 14px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+   ${customMedia.between("mobile", "largeMobile")`
+    font-size: 16px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 14px;
   `}
 
@@ -158,10 +180,13 @@ const TagContainer = styled.div`
   
   ${customMedia.lessThan("mobile")`
    bottom: 20px;
-
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+   bottom: 25px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    bottom: 20px;
 
   `}
@@ -180,10 +205,14 @@ const MainTag = styled(SmallTag)`
   ${customMedia.lessThan("mobile")`
     font-size: 12px;
     padding: 5px 10px;
-
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 14px;
+    padding: 5px 13px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 12px;
     padding: 5px 10px;
 
@@ -216,7 +245,12 @@ const LikeIcon = styled.div`
     height: 18px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 22px;
+    height: 20px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 20px;
     height: 18px;
   `}
@@ -231,7 +265,11 @@ const LikeIcon = styled.div`
     bottom: 20px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    bottom: 25px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     bottom: 20px;
   `}
 
@@ -248,7 +286,11 @@ const LikeNum = styled.span`
     font-size: 12px; 
   `}
 
-	${customMedia.between("mobile", "tablet")`
+   ${customMedia.between("mobile", "largeMobile")`
+    font-size: 14px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 12px; 
   `}
 
@@ -266,10 +308,15 @@ const SkeletonImg = styled(Skeleton.Image)`
     
   ${customMedia.lessThan("mobile")`
     width: 412px;
-    height: 225px;
+    height: 206px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+    height: 200.5px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 285px;
     height: 161.5px;
   `}

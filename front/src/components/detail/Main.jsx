@@ -256,7 +256,7 @@ const Main = (props) => {
 							/>
 							<CmtPost
 								onClick={() => {
-									if (props.userId) {
+									if (userId) {
 										handlePostComment();
 										onReset();
 									} else {
@@ -309,7 +309,12 @@ const Wrapper = styled.section`
 	  margin: 40px auto;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+    margin: 40px auto;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 610px;
 	  margin: 40px auto;
   `}
@@ -335,7 +340,11 @@ const Title = styled.div`
    	font-size: 16px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 16px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 18px;
   `}
 
@@ -361,7 +370,11 @@ const InputBox = styled.div`
    	width: 295px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 321px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	width: 528px;
   `}
 
@@ -385,7 +398,12 @@ const ProfileIcon = styled.div`
 	  height: 28px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+   ${customMedia.between("mobile", "largeMobile")`
+    width: 28px;
+	  height: 28px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	width: 32px;
 	  height: 32px;
   `}
@@ -407,7 +425,11 @@ const StyledInput = styled.input`
 
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+   font-size: 14px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 14px;
 
   `}
@@ -424,6 +446,9 @@ const CmtPost = styled(Button)`
       flex: 0.3;
     `}
 
+    ${customMedia.between("mobile", "largeMobile")`
+    flex: 0.3;
+  `}
   
 	& {
 		font-size: 16px;
@@ -436,7 +461,11 @@ const CmtPost = styled(Button)`
       font-size: 10px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 12px;
 
     `}
@@ -468,6 +497,11 @@ const PaginationRow = styled(Row)`
 
   `}
 
+  ${customMedia.between("mobile", "largeMobile")`
+        margin-top: 24px;
+
+  `}
+
 	${customMedia.between("mobile", "tablet")`
     margin-top: 24px;
 
@@ -480,5 +514,18 @@ const SpinContainer = styled.div`
 
 	display: flex;
 	justify-content: center;
-	align-items: center;
+  align-items: center;
+  
+  ${customMedia.lessThan("mobile")`
+    margin-top: 45px;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    margin-top: 45px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
+    margin-top: 45px;
+
+  `}
 `;

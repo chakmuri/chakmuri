@@ -47,8 +47,12 @@ const Wrapper = styled.section`
   ${customMedia.lessThan("mobile")`
     display: none;
   `}
+  
+  ${customMedia.between("mobile", "largeMobile")`
+    display: none;
+  `}
 
-	${customMedia.between("mobile", "tablet")`
+	${customMedia.between("largeMobile", "tablet")`
     width: 610px;
     height: 152.5px;
   `}
@@ -71,13 +75,16 @@ const StyledSlider = styled(Slider)`
 	.slick-slider {
 		width: 100%;
     height: 300px;
-
     
   ${customMedia.lessThan("mobile")`
     display: none;
   `}
 
-  ${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    display: none;
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
     height: 152.5px;
   `}
 

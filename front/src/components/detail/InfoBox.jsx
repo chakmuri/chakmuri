@@ -134,7 +134,12 @@ const InfoBoxContainer = styled.div`
     height: 372px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    flex-direction: column;
+    height: 340px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     height: 203px;
   `}
 
@@ -156,6 +161,11 @@ const ClubThumbnail = styled.div`
     ${customMedia.lessThan("mobile")`
       border-radius: 10px 10px 0 0;
   `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    border-radius: 10px 10px 0 0;
+
+  `}
   }
   
   ${customMedia.lessThan("mobile")`
@@ -163,7 +173,13 @@ const ClubThumbnail = styled.div`
     height: 50%;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+    height: 50%;
+
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 305px;
   `}
 
@@ -186,7 +202,12 @@ const ClubInfo = styled.div`
     padding: 5px 17px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 100%;
+    padding: 17px 25px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     padding: 10px 20px;
   `}
 `;
@@ -207,7 +228,12 @@ const Title = styled.div`
     margin-bottom: 8px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 16px;
+    margin-bottom: 8px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 18px;
   `}
 
@@ -225,7 +251,11 @@ ${customMedia.lessThan("mobile")`
    	font-size: 14px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 12px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 14px;
   `}
 
@@ -241,7 +271,11 @@ const Text = styled.div`
    	font-size: 14px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 12px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 14px;
   `}
 
@@ -254,6 +288,10 @@ const TagContainer = styled.div`
 	display: flex;
 	gap: 10px;
 	margin-top: 15px;
+
+	${customMedia.between("mobile", "largeMobile")`
+      margin-top: 5px;
+  `}
 `;
 
 const Tag = styled(SmallTag)`
@@ -268,7 +306,14 @@ const Tag = styled(SmallTag)`
     
   `}
 
-	${customMedia.between("mobile", "tablet")`
+   ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+      padding: 5px 10px;
+      margin-top: 0;
+
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 12px;
 		padding: 7px 13px;
   `}
@@ -290,7 +335,12 @@ const BtnRow = styled.div`
     margin-top: 10px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    gap: 10px;
+     margin-top: 10px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
 	  gap: 20px;
     margin-top: 15px;
   `}
@@ -311,7 +361,13 @@ const LikeIconContainer = styled.div`
     height: 40px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+   width: 30px;
+    height: 30px;
+    padding-bottom: 8px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 40px;
 	  height: 40px;
   `}
@@ -333,7 +389,12 @@ const LikeIcon = styled.div`
 
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+   width: 18px;
+    height: 16px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 24px;
 	  height: 22px;
   `}
@@ -366,7 +427,13 @@ const ApplyBtn = styled(Button)`
     
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 250px;
+    height: 30px;
+    font-size: 12px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 200px;
     height: 40px;
     font-size: 16px;

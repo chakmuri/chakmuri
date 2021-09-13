@@ -41,9 +41,12 @@ const StyledSearchBar = styled(Search)`
     width: 275px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 303px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 305px;
-    font-size: 14px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
@@ -55,7 +58,11 @@ const StyledSearchBar = styled(Search)`
       font-size: 14px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 14px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 14px;
   `}
 

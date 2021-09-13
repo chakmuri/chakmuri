@@ -26,7 +26,12 @@ const StyledFooter = styled.div`
     gap: 100px;
   `}
 
-  ${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    height: 40px;
+    gap: 150px;
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
     height: 60px;
     gap: 200px;
   `}
@@ -47,7 +52,12 @@ const Copyright = styled.div`
     margin-left: 25px;
   `}
 
-  ${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+   font-size: 10px;
+    margin-left: 25px;
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
     font-size: 14px;
   `}
 
@@ -65,7 +75,12 @@ const Text = styled.div`
     margin-right: 25px;
   `}
 
-  ${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+    margin-right: 25px;
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
     font-size: 14px;
   `}
 
