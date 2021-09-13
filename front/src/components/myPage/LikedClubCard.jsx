@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Card, message, Skeleton } from "antd";
 import styled from "styled-components";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import SmallTag from "../common/SmallTag";
 import ExpiredTag from "../common/ExpiredTag";

@@ -1,7 +1,7 @@
 import React from "react";
 import { Input } from "antd";
 import styled from "styled-components";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 const SearchBar = (props) => {
 	const onSearch = (value) => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Tabs, Row, Divider, message, Modal } from "antd";
 import styled from "styled-components";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import MyComment from "./MyComment";
 import EditForm from "./EditForm";
@@ -443,7 +443,8 @@ const { TabPane } = Tabs;
 
 const Wrapper = styled.div`
 	width: 1200px;
-	margin: 0 auto;
+  margin: 0 auto;
+  flex: 1;
 
 	${customMedia.lessThan("mobile")`
     width: 295px;
@@ -481,6 +482,7 @@ const TabContainer = styled(Row)`
 `;
 
 const StyledTabs = styled(Tabs)`
+
 	.ant-tabs-tab-btn {
     font-size: 22px;
     

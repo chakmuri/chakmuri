@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import Tag from "../common/Tag";
 

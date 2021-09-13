@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Skeleton, Modal, Row, message } from "antd";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import SmallTag from "../common/SmallTag";
 import Button from "../common/Button";
