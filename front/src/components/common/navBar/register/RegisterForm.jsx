@@ -10,6 +10,7 @@ import {
 	message,
 	Skeleton,
 } from "antd";
+import moment from "moment";
 import styled from "styled-components";
 import { customMedia } from "../../GlobalStyles";
 
@@ -153,6 +154,8 @@ const RegisterForm = ({ ...props }) => {
 		console.log("Failed: ", errorInfo);
 	};
 
+	const disabledDate = (current) => current && current < moment().endOf("day");
+
 	return (
 		<Wrapper>
 			<StyledForm
@@ -215,7 +218,7 @@ const RegisterForm = ({ ...props }) => {
 								},
 							]}
 						>
-							<StyledRangePicker />
+							<StyledRangePicker disabledDate={disabledDate} />
 						</Form.Item>
 					</Col>
 					<Col span={8}>
