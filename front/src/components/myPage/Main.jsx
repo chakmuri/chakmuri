@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Tabs, Row, Col, Divider, message, Modal } from "antd";
+import { Tabs, Row, Divider, message, Modal } from "antd";
 import styled from "styled-components";
 import { customMedia } from "../common/GlobalStyles";
 
@@ -20,8 +20,8 @@ const Main = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [myClub, setMyClub] = useState();
 	const [likedClubs, setLikedClubs] = useState([]);
-	const [myLikedClubs, setMyLikedClubs] = useState(null);
-	const [myJoinedClubs, setMyJoinedClubs] = useState(null);
+	const [myLikedClubs, setMyLikedClubs] = useState([]);
+	const [myJoinedClubs, setMyJoinedClubs] = useState([]);
 	const [myComments, setMyComments] = useState(null);
 	const [myPendingMembers, setMyPendingMembers] = useState();
 	const [myPendingMembersTotal, setMyPendingMembersTotal] = useState(0);
@@ -103,14 +103,12 @@ const Main = () => {
 
 			setMyClub(myClubRes.data);
 
-			if (userId) {
-				const likedClubRes = await axios.get("/likedClubs/ids", {
-					params: {
-						userId: userId,
-					},
-				});
-				setLikedClubs(likedClubRes.data.likedClubIdList);
-			}
+			const likedClubRes = await axios.get("/likedClubs/ids", {
+				params: {
+					userId: userId,
+				},
+			});
+			setLikedClubs(likedClubRes.data.likedClubIdList);
 
 			setLoading(false);
 		} catch (err) {
@@ -268,7 +266,7 @@ const Main = () => {
 					<StyledTabs defaultActiveKey="1">
 						<TabPane tab="내 댓글" key="1">
 							{myCommentsTotal !== 0 ? (
-								<TabContainer gutter={[0, 98]}>
+								<TabContainer gutter={[0, 102]}>
 									<Row gutter={[0, 16]}>
 										{myComments.map((comment) => (
 											<Row key={comment.id}>
@@ -291,11 +289,12 @@ const Main = () => {
 						</TabPane>
 						<TabPane tab="좋아요한 독서모임" key="2">
 							{myLikedClubsTotal !== 0 ? (
-								<TabContainer gutter={[0, 98]}>
+								<TabContainer>
 									<CardRow>
 										{myLikedClubs.map((likedClub) => (
 											<LikedClubCard
 												key={likedClub.id}
+												userId={userId}
 												club={likedClub}
 												handleLikeDelete={handleLikeDelete}
 												like={likedClub.clubId}
@@ -317,11 +316,12 @@ const Main = () => {
 						</TabPane>
 						<TabPane tab="참여중인 독서모임" key="3">
 							{myJoinedClubsTotal !== 0 ? (
-								<TabContainer gutter={[0, 98]}>
+								<TabContainer>
 									<CardRow>
 										{myJoinedClubs.map((joinedClub) => (
 											<JoinedClubCard
 												key={joinedClub.id}
+												userId={userId}
 												club={joinedClub}
 												likedClubs={likedClubs}
 												handleLikedClubs={handleLikedClubs}
@@ -462,7 +462,11 @@ const Wrapper = styled.div`
     width: 295px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 610px;
   `}
 
@@ -472,15 +476,19 @@ const Wrapper = styled.div`
 `;
 
 const TabContainer = styled(Row)`
-	width: 100%;
-	margin-top: 70px;
-	padding-bottom: 160px;
+  width: 100%;
+  margin-top: 70px;
+  padding-bottom: 100px;
 
 	${customMedia.lessThan("mobile")`
-      margin-top: 40px;
-    `}
+    margin-top: 40px;
+  `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    margin-top: 40px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
 	  margin-top: 40px;
     `}
 `;
@@ -493,7 +501,11 @@ const StyledTabs = styled(Tabs)`
       font-size: 14px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 16px;
+    `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 16px;
     `}
 
@@ -509,8 +521,12 @@ const StyledTabs = styled(Tabs)`
     ${customMedia.lessThan("mobile")`
       font-weight: 500;
     `}
+
+    ${customMedia.between("mobile", "largeMobile")`
+      font-weight: 500;
+    `}
     
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("largeMobile", "tablet")`
       font-weight: 500;
     `}
 	}
@@ -531,7 +547,7 @@ const CardRow = styled.div`
 	flex-wrap: wrap;
 	gap: 60px;
 
-	${customMedia.between("mobile", "tablet")`
+	${customMedia.between("largeMobile", "tablet")`
     gap: 20px;
   `}
 
@@ -549,7 +565,11 @@ const MidTitle = styled.div`
     font-size: 14px;
   `}
 
-  ${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+  font-size: 14px;
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
     font-size: 16px;
   `}
 
@@ -567,7 +587,11 @@ const LargeText = styled.div`
       font-size: 12px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 12px;
+    `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 14px;
     `}
 
@@ -584,7 +608,11 @@ const Text = styled.div`
       font-size: 10px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+    `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 12px;
     `}
 
@@ -614,9 +642,16 @@ const DeleteBtnContainer = styled.div`
     flex-direction: column;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+      padding: 15px;
+      flex-direction: column;
+    `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 14px;
     `}
+    
 
     ${customMedia.between("tablet", "desktop")`
       font-size: 18px;
@@ -641,7 +676,13 @@ const DeleteBtn = styled(Button)`
     align-self: center;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+      padding: 5px 15px;
+      align-self: center;
+    `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       width: 80px;
       font-size: 12px;
     `}
@@ -680,7 +721,12 @@ ${customMedia.lessThan("mobile")`
       font-size: 22px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 22px;
+     
+    `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 22px;
     `}
 
@@ -718,9 +764,21 @@ const UnfilledBtn = styled(Button)`
 `;
 
 const PaginationRow = styled(Row)`
-	width: 100%;
+  width: 100%;
 	margin: 30px auto;
 	justify-content: center;
+
+	${customMedia.lessThan("mobile")`
+     	margin: 20px auto;
+  `}
+
+   ${customMedia.between("mobile", "largeMobile")`
+      margin: 20px auto;
+    `}
+
+	${customMedia.between("largeMobile", "tablet")`
+    	margin: 20px auto;
+  `}
 `;
 
 const SpinContainer = styled.div`
@@ -730,6 +788,18 @@ const SpinContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	${customMedia.lessThan("mobile")`
+     	height: 40vh;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+     	height: 40vh;
+    `}
+
+	${customMedia.between("largeMobile", "tablet")`
+    	height: 40vh;
+  `}
 `;
 
 const MemberNotFound = styled(NotFound)`
@@ -741,7 +811,11 @@ const MemberNotFound = styled(NotFound)`
       font-size: 10px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+    `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 12px;
     `}
 

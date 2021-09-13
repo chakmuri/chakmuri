@@ -57,12 +57,14 @@ const Title = styled.div`
   
   ${customMedia.lessThan("mobile")`
   	font-size: 18px;
-
   `}
 
-	${customMedia.between("mobile", "tablet")`
-    	font-size: 20px;
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 18px;
+  `}
 
+	${customMedia.between("largeMobile", "tablet")`
+    	font-size: 20px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
@@ -81,7 +83,11 @@ const SubTitle = styled.div`
 
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 16px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     	font-size: 18px;
 
   `}
@@ -101,7 +107,11 @@ const Contents = styled.div`
 
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 14px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     	font-size: 14px;
 
   `}
@@ -125,13 +135,15 @@ const MapWrapper = styled.div`
 
   `}
 
-	${customMedia.between("mobile", "tablet")`
-    width: 610px;
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+  `}
 
+	${customMedia.between("largeMobile", "tablet")`
+    width: 610px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
   	width: 880px;
-
   `}
 `;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Row, Col, message } from "antd";
+import { message } from "antd";
 import styled from "styled-components";
 import { customMedia } from "../common/GlobalStyles";
 
@@ -161,7 +161,11 @@ const Wrapper = styled.section`
     width: 295px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 610px;
   `}
 
@@ -177,15 +181,19 @@ const Title = styled.div`
   margin: 60px 0 40px 0;
 
   ${customMedia.lessThan("mobile")`
-    font-size: 20px;
-  `}
-
-	${customMedia.between("mobile", "tablet")`
     font-size: 18px;
   `}
 
-	${customMedia.between("tablet", "desktop")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 18px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 20px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    font-size: 22px;
     margin: 50px 0 30px 0;
   `}
 `;
@@ -197,10 +205,14 @@ const CardRow = styled.div`
   
   ${customMedia.lessThan("mobile")`
     flex-wrap: wrap;
-    gap: 24px;
   `}
 
-  ${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    flex-wrap: wrap;
+    gap: 32px;
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
     flex-wrap: wrap;
     gap: 40px;
   `}
@@ -230,7 +242,11 @@ const MainButton = styled(Button)`
     font-size: 16px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+  font-size: 16px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 14px;
   `}
 
@@ -252,4 +268,18 @@ const SpinContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	${customMedia.lessThan("mobile")`
+     	height: 40vh;
+  `}
+
+	${customMedia.between("mobile", "largeMobile")`
+     	height: 40vh;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
+    	height: 40vh;
+
+
+  `}
 `;

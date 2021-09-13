@@ -172,13 +172,16 @@ const Wrapper = styled.section`
   ${customMedia.lessThan("mobile")`
     width: 295px;
 	  margin: 40px auto;
-
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+    margin: 40px auto;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 610px;
 	  margin: 60px auto;
-
   `}
 
 	${customMedia.between("tablet", "desktop")`
@@ -196,15 +199,17 @@ const MainTitle = styled.div`
    	font-size: 18px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 18px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 20px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
     font-size: 22px;
   `}
-
-
 `;
 
 const TitleRow = styled.div`
@@ -222,7 +227,11 @@ const Title = styled.div`
    	font-size: 16px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 16px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 18px;
   `}
 
@@ -240,7 +249,12 @@ const CheckboxFilter = styled(Checkbox)`
     flex: 2;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 12px;
+    flex: 2;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 14px;
     flex: 1;
   `}
@@ -253,12 +267,17 @@ const CheckboxFilter = styled(Checkbox)`
 		width: 20px;
     height: 20px;
     
- ${customMedia.lessThan("mobile")`
+  ${customMedia.lessThan("mobile")`
    	width: 12px;
     height: 12px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 12px;
+    height: 12px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	width: 14px;
     height: 14px;
   `}
@@ -292,11 +311,15 @@ const SortFilter = styled(Select)`
 	.ant-select-selection-placeholder {
 		font-size: 16px;
 
-		${customMedia.lessThan("mobile")`
+	${customMedia.lessThan("mobile")`
    	font-size: 12px;
   `}
 
-		${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 12px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 14px;
   `}
 	}
@@ -312,7 +335,11 @@ const CardRow = styled.div`
 	flex-wrap: wrap;
 	gap: 60px;
 
-	${customMedia.between("mobile", "tablet")`
+	${customMedia.between("mobile", "largeMobile")`
+    gap: 40px;
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
     gap: 20px;
   `}
 
@@ -325,6 +352,19 @@ const PaginationRow = styled(Row)`
 	width: 100%;
 	margin-top: 90px;
 	justify-content: center;
+
+	${customMedia.lessThan("mobile")`
+    margin-top: 45px;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    margin-top: 45px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
+    margin-top: 45px;
+
+  `}
 `;
 
 const SpinContainer = styled.div`
@@ -334,4 +374,16 @@ const SpinContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	${customMedia.lessThan("mobile")`
+     	height: 40vh;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    margin-top: 40vh;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
+    	height: 40vh;
+  `}
 `;

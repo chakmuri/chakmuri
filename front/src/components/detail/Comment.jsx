@@ -80,7 +80,12 @@ const ProfileIcon = styled.div`
 	  height: 28px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 28px;
+	  height: 28px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	width: 32px;
 	  height: 32px;
   `}
@@ -112,7 +117,14 @@ const CmtBox = styled.div`
   	padding: 30px 15px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 261px;
+    display: flex;
+    flex-direction: column;
+  	padding: 30px 15px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	width: 446px;
   `}
 
@@ -130,7 +142,11 @@ const CmtWriter = styled.span`
    	font-size: 16px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 16px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 18px;
   `}
 
@@ -148,7 +164,11 @@ const CmtDate = styled.span`
    	font-size: 12px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 12px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 12px;
   `}
 
@@ -169,7 +189,12 @@ const CmtUpdateCheck = styled.span`
      
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 12px;
+    margin-left: 0;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 12px;
   `}
 
@@ -191,7 +216,12 @@ ${customMedia.lessThan("mobile")`
     
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+   right: 17%;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 12px;
 	  right: 11%;
      
@@ -213,7 +243,11 @@ const CmtDelete = styled.span`
    	font-size: 10px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 12px;
   `}
 
@@ -231,7 +265,11 @@ const CmtText = styled.div`
     font-size: 12px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 12px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 12px;
   `}
 
@@ -253,7 +291,12 @@ ${customMedia.lessThan("mobile")`
 	  width: 100%;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 12px;
+    width: 100%;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 12px;
   `}
 
@@ -281,7 +324,17 @@ const ConfirmBtn = styled(Button)`
       bottom: 5%;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+      padding: 3px 5px;
+      margin-left: 0;
+      margin-right: 15px;
+      position: absolute;
+      left: 30%;
+      bottom: 5%;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
      font-size: 12px;
   `}
 
@@ -308,10 +361,19 @@ const CancelBtn = styled(Button)`
     position: absolute;
     right: 30%;
     bottom: 5%;
+  `}
+
+	${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+    padding: 3px 5px;
+    margin-left: 0;
+    position: absolute;
+    right: 30%;
+    bottom: 5%;
 
   `}
 
-	${customMedia.between("mobile", "tablet")`
+	${customMedia.between("largeMobile", "tablet")`
    	font-size: 12px;
   `}
 

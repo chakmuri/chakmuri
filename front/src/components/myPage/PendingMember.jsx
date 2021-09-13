@@ -51,7 +51,12 @@ const PendingMemberBar = styled.div`
 	  height: 40px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+    height: 40px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
     width: 610px;
 	  height: 60px;
     `}
@@ -75,7 +80,14 @@ const PendingMemberProfileIcon = styled.div`
     margin-right: 5px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+     width: 24px;
+	  height: 24px;
+	  margin-left: 10px;
+    margin-right: 5px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       	width: 32px;
 	height: 32px;
 	margin-left: 25px;
@@ -104,7 +116,12 @@ const PendingMemberUsername = styled.div`
     margin-right: 15px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+      margin-right: 15px;
+    `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 16px;
     `}
 
@@ -124,7 +141,14 @@ const PendingMemberEmail = styled.div`
       text-overflow: ellipsis;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+     font-size: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 16px;
     `}
 
@@ -150,7 +174,13 @@ const PendingMemberBtn = styled.button`
 	    margin-right: 7px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+     font-size: 8px;
+      padding: 2px 5px;
+	    margin-right: 7px;
+    `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 12px;
       padding: 5px 10px;
 	    margin-right: 15px;

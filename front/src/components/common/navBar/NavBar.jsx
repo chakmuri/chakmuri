@@ -131,7 +131,11 @@ const Nav = styled.nav`
     width: 295px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 610px;
   `}
 
@@ -159,7 +163,12 @@ const LogoIcon = styled.div`
     height: 20px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 22px;
+    height: 22px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 24px;
     height: 24px;
   `}
@@ -174,7 +183,11 @@ const LogoTitle = styled.div`
     font-size: 20px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 20px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 24px;
   `}
 `;
@@ -189,7 +202,11 @@ const NavMenu = styled.div`
     gap: 20px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+   ${customMedia.between("mobile", "largeMobile")`
+    gap: 30px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     gap: 40px;
   `}
 `;
@@ -210,7 +227,11 @@ const NavText = styled.div`
     font-size: 14px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 14px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 16px;
   `}
 `;
@@ -223,7 +244,11 @@ const NavIcon = styled.div`
     gap: 10px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    gap: 15px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     gap: 20px;;
   `}
 `;
@@ -243,7 +268,12 @@ const NavProfile = styled.div`
 	  height: 28px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 30px;
+	  height: 30px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 32px;
 	  height: 32px;
   `}
@@ -257,7 +287,11 @@ const Title = styled.div`
    	font-size: 18px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 20px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 22px;
   `}
 `;
@@ -277,7 +311,12 @@ const NavRegister = styled.div`
 	  height: 28px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      width: 30px;
+	    height: 30px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 32px;
 	  height: 32px;
   `}
@@ -295,7 +334,13 @@ const StyledDropdownMenu = styled(Menu)`
 		padding: 5px 10px;
     `}
 
-		${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+     font-size: 12px;
+		padding: 5px 10px;
+
+  `}
+
+		${customMedia.between("largeMobile", "tablet")`
     font-size: 14px;
 		padding: 8px 13px;
     `}
@@ -315,7 +360,11 @@ const StyledModal = styled(Modal)`
     	padding: 5px;
   `}
 
-		${customMedia.between("mobile", "tablet")`
+   ${customMedia.between("mobile", "largeMobile")`
+      padding: 10px 15px;
+  `}
+
+		${customMedia.between("largeMobile", "tablet")`
     	padding: 20px 35px;
 
   `}
@@ -332,7 +381,11 @@ const StyledModal = styled(Modal)`
     	gap: 24px;
     `}
 
-		${customMedia.between("mobile", "tablet")`
+     ${customMedia.between("mobile", "largeMobile")`
+     gap: 26px;
+  `}
+
+		${customMedia.between("largeMobile", "tablet")`
    		gap: 32px;
     `}
 	}
