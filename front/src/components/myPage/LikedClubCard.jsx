@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Card, message, Skeleton } from "antd";
 import styled from "styled-components";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import SmallTag from "../common/SmallTag";
 import ExpiredTag from "../common/ExpiredTag";
@@ -310,11 +310,12 @@ const ClubExpiredTag = styled(ExpiredTag)`
 
 const SkeletonImg = styled(Skeleton.Image)`
 	.ant-skeleton-image {
-		width: 340px;
-    height: 190px;
+		width: 360px;
+    height: 192.5px;
     
     ${customMedia.lessThan("mobile")`
-	  height: 160px;
+    width: 195px;
+    height: 160px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -322,11 +323,13 @@ const SkeletonImg = styled(Skeleton.Image)`
     height: 194px;
   `}
 
-	${customMedia.between("largeMobile", "tablet")`
+  ${customMedia.between("largeMobile", "tablet")`
+    width: 295px;
 	  height: 160px;
   `}
 
-	${customMedia.between("tablet", "desktop")`
+  ${customMedia.between("tablet", "desktop")`
+    width: 280px;
 	  height: 152.5px;
   `}
 	}

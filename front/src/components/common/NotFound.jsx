@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import classnames from "classnames";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 const NotFound = (props) => {
 	return (

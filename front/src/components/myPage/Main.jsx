@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Tabs, Row, Divider, message, Modal } from "antd";
 import styled from "styled-components";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import MyComment from "./MyComment";
 import EditForm from "./EditForm";
@@ -114,19 +114,6 @@ const Main = () => {
 		} catch (err) {
 			console.log(err);
 		}
-	};
-
-	const fetchMemberData = async () => {
-		const memberRes = await axios.get("/members", {
-			params: {
-				userId: userId,
-				approvalStatus: "CONFIRMED",
-				page: myMembersPage,
-			},
-		});
-
-		setMyMembers(memberRes.data.memberList);
-		setMyMembersTotal(memberRes.data.totalCount);
 	};
 
 	const showModal = () => {
@@ -251,7 +238,7 @@ const Main = () => {
 		} catch (err) {
 			console.log(err);
 		} finally {
-			fetchMemberData();
+			fetchData();
 		}
 	};
 
@@ -456,7 +443,8 @@ const { TabPane } = Tabs;
 
 const Wrapper = styled.div`
 	width: 1200px;
-	margin: 0 auto;
+  margin: 0 auto;
+  flex: 1;
 
 	${customMedia.lessThan("mobile")`
     width: 295px;
@@ -494,6 +482,7 @@ const TabContainer = styled(Row)`
 `;
 
 const StyledTabs = styled(Tabs)`
+
 	.ant-tabs-tab-btn {
     font-size: 22px;
     

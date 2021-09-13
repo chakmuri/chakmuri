@@ -1,7 +1,7 @@
 import React from "react";
 import { Divider } from "antd";
 import styled from "styled-components";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import MapContainer from "../common/MapContainer";
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Row, message } from "antd";
 import styled from "styled-components";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import InfoBox from "./InfoBox";
 import DetailInfo from "./DetailInfo";
@@ -302,7 +302,8 @@ export default Main;
 
 const Wrapper = styled.section`
 	width: 996px;
-	margin: 60px auto;
+  margin: 60px auto;
+  flex: 1;
 
   ${customMedia.lessThan("mobile")`
     width: 295px;

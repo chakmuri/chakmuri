@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Card, Skeleton, message } from "antd";
 import styled from "styled-components";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import SmallTag from "../common/SmallTag";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
@@ -307,8 +307,8 @@ const SkeletonImg = styled(Skeleton.Image)`
     height: 160px;
     
   ${customMedia.lessThan("mobile")`
-    width: 412px;
-    height: 206px;
+    width: 295px;
+    height: 166.5px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`

@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import axios from "axios";
 import styled from "styled-components";
-import { customMedia } from "../../GlobalStyles";
+import { customMedia } from "../../../../GlobalStyles";
 
 import { GOOGLE_CLIENT_ID } from "../../../../constants";
 import google from "../../../../images/icons/google.png";

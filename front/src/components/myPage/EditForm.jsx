@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import {
 	Form,
@@ -12,11 +12,13 @@ import {
 } from "antd";
 import styled from "styled-components";
 import moment from "moment";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import MapContainer from "../common/MapContainer";
 import Button from "../common/Button";
 import Tag from "../common/Tag";
+
+import trash from "../../images/icons/trash.png";
 
 const EditForm = ({ ...props }) => {
 	const [editForm] = Form.useForm();
@@ -46,6 +48,8 @@ const EditForm = ({ ...props }) => {
 		"친목",
 		"독서 외 활동",
 	];
+
+	const ref = useRef();
 
 	const onChange = (e) => {
 		setInputText(e.target.value);
@@ -77,6 +81,11 @@ const EditForm = ({ ...props }) => {
 		if (file) {
 			reader.readAsDataURL(file);
 		}
+	};
+
+	const handleImgDelete = () => {
+		ref.current.value = "";
+		setPreview();
 	};
 
 	const handleSelectTags = (e) => {
@@ -112,10 +121,17 @@ const EditForm = ({ ...props }) => {
 
 		if (values.title.length > 10) {
 			message.warning("이름은 10자까지 입력 가능합니다.");
+			return;
 		}
 
 		if (values.contents.length > 40) {
 			message.warning("한 줄 소개는 40자까지 입력 가능합니다.");
+			return;
+		}
+
+		if (values.publishedAt < 0) {
+			message.warning("출판연도는 숫자 0 이상부터 입력 가능합니다.");
+			return;
 		}
 
 		formData.append("title", values.title);
@@ -159,7 +175,13 @@ const EditForm = ({ ...props }) => {
 				message.success("독서모임이 성공적으로 수정되었습니다!");
 			else message.error("독서모임 수정에 실패했습니다.");
 		} catch (err) {
-			console.log(err);
+			if (
+				err.response.data.message ===
+				"Maximum upload size exceeded; nested exception is java.lang.IllegalStateException: org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException: The field img exceeds its maximum permitted size of 1048576 bytes."
+			)
+				message.warning(
+					"사진 용량이 초과되었습니다! 사진을 다시 등록해주세요."
+				);
 		}
 	};
 
@@ -265,18 +287,29 @@ const EditForm = ({ ...props }) => {
 						>
 							<Row gutter={[0, 24]} justify="center">
 								{!preview ? (
-									<SkeletonImg />
+									<>
+										<SkeletonImg />
+										<TrashBtn>
+											<img src={trash} alt="Trash icon" />
+										</TrashBtn>
+									</>
 								) : (
-									<PreviewImage
-										src={preview}
-										alt="Preview image"
-									></PreviewImage>
+									<>
+										<PreviewImage
+											src={preview}
+											alt="Preview image"
+										></PreviewImage>
+										<TrashBtn onClick={handleImgDelete}>
+											<img src={trash} alt="Trash icon" />
+										</TrashBtn>
+									</>
 								)}
 								<FileInput>
 									<input
 										type="file"
 										accept="image/*"
 										onChange={handleImgChange}
+										ref={ref}
 									/>
 								</FileInput>
 							</Row>
@@ -781,6 +814,21 @@ const PreviewImage = styled.img`
     width: 180px;
     height: 180px;
   `}
+`;
+
+const TrashBtn = styled.div`
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+	z-index: 10;
+	position: absolute;
+	top: 10%;
+	right: 25%;
+
+	img {
+		width: 100%;
+		height: 100%;
+	}
 `;
 
 const ButtonRow = styled.div`

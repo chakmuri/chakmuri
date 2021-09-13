@@ -6,12 +6,14 @@ import Board from "../src/pages/Board";
 import Detail from "../src/pages/Detail";
 import MyPage from "./pages/MyPage";
 import ScrollToTop from "./components/common/ScrollToTop";
+import GlobalStyles from "./GlobalStyles";
 
 import "antd/dist/antd.css";
 
 const App = () => {
 	return (
 		<BrowserRouter>
+			<GlobalStyles />
 			<ScrollToTop>
 				<Switch>
 					<Route exact path="/" component={Home} />
