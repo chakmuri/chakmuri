@@ -313,8 +313,8 @@ const ClubExpiredTag = styled(ExpiredTag)`
 
 const SkeletonImg = styled(Skeleton.Image)`
 .ant-skeleton-image {
-  width: 340px;
-  height: 190px;
+  width: 360px;
+  height: 192.5px;
   
   ${customMedia.lessThan("mobile")`
     width: 295px;

@@ -307,8 +307,8 @@ const SkeletonImg = styled(Skeleton.Image)`
     height: 160px;
     
   ${customMedia.lessThan("mobile")`
-    width: 412px;
-    height: 206px;
+    width: 295px;
+    height: 166.5px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
