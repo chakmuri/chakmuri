@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Input } from "antd";
 import Button from "../common/Button";
+import { customMedia } from "../common/GlobalStyles";
 
 const Comment = (props) => {
 	const createdAt = new Date(props.comment.createdAt).toLocaleString();
@@ -74,6 +75,21 @@ const ProfileIcon = styled.div`
 	width: 48px;
 	height: 48px;
 
+	${customMedia.lessThan("mobile")`
+    width: 28px;
+	  height: 28px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+   	width: 32px;
+	  height: 32px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    width: 40px;
+	  height: 40px;
+  `}
+
 	img {
 		border-radius: 50%;
 		width: 100%;
@@ -87,82 +103,220 @@ const CmtBox = styled.div`
 	border-radius: 10px;
 	margin-left: 8px;
 	padding: 20px;
-	position: relative;
+  position: relative;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 213px;
+    display: flex;
+    flex-direction: column;
+  	padding: 30px 15px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+   	width: 446px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+   	width: 642px;
+  `}
 `;
 
 const CmtWriter = styled.span`
-	font-family: Roboto;
 	font-weight: bold;
-	font-size: 20px;
+	font-size: 22px;
 	margin-right: 5px;
+
+	${customMedia.lessThan("mobile")`
+   	font-size: 16px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+   	font-size: 18px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+   	font-size: 20px;
+  `}
 `;
 
 const CmtDate = styled.span`
 	font-weight: 500;
-	font-size: 14px;
-	line-height: 16px;
+	font-size: 16px;
 	color: #959595;
+
+	${customMedia.lessThan("mobile")`
+   	font-size: 12px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+   	font-size: 12px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+   	font-size: 14px;
+  `}
 `;
 
 const CmtUpdateCheck = styled.span`
 	font-weight: 500;
-	font-size: 14px;
-	line-height: 16px;
+	font-size: 16px;
 	color: #fea82f;
 	margin-left: 5px;
+
+	${customMedia.lessThan("mobile")`
+    font-size: 10px;
+	  margin-left: 0;
+     
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+   	font-size: 12px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+   	font-size: 14px;
+  `}
 `;
 
 const CmtUpdate = styled.span`
-	font-size: 14px;
+	font-size: 16px;
 	color: #959595;
 	cursor: pointer;
 	position: absolute;
 	right: 10%;
+
+${customMedia.lessThan("mobile")`
+    font-size: 10px;
+	  right: 17%;
+    
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    font-size: 12px;
+	  right: 11%;
+     
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+   	font-size: 14px;
+  `}
 `;
 
 const CmtDelete = styled.span`
-	font-size: 14px;
+	font-size: 16px;
 	color: #ff0000;
 	cursor: pointer;
 	position: absolute;
 	right: 5%;
+
+	${customMedia.lessThan("mobile")`
+   	font-size: 10px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+   	font-size: 12px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+   	font-size: 14px;
+  `}
 `;
 
 const CmtText = styled.div`
-	font-family: Roboto;
-	font-size: 14px;
-	padding: 5px 0;
+	font-size: 16px;
+  padding: 5px 0;
+
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 12px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+   	font-size: 12px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+   	font-size: 14px;
+  `}
 `;
 
 const CmtInput = styled(Input)`
 	width: 80%;
-	font-family: Roboto;
-	font-size: 14px;
+	font-size: 16px;
 	padding: 3px 5px;
 	border: 1px solid black;
 	border-radius: 2px;
 	outline: none;
+
+${customMedia.lessThan("mobile")`
+    font-size: 10px;
+	  width: 100%;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+   	font-size: 12px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+   	font-size: 14px;
+  `}
 `;
 
 const ConfirmBtn = styled(Button)`
 	& {
-		font-size: 14px;
+		font-size: 16px;
 		color: #ffffff;
 		background-color: #ff6701;
 		padding: 6px 10px;
 		border-radius: 5px;
 		margin-left: 15px;
+
+		${customMedia.lessThan("mobile")`
+      font-size: 10px;
+      padding: 3px 5px;
+      margin-left: 0;
+      margin-right: 15px;
+      position: absolute;
+      left: 30%;
+      bottom: 5%;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+     font-size: 12px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+   	font-size: 14px;
+  `}
 	}
 `;
 
 const CancelBtn = styled(Button)`
 	& {
-		font-size: 14px;
+		font-size: 16px;
 		background-color: #ffffff;
 		color: #ff6701;
 		padding: 6px 10px;
 		border: 1px solid #ff6701;
 		border-radius: 5px;
 		margin-left: 15px;
+
+	${customMedia.lessThan("mobile")`
+    font-size: 10px;
+    padding: 3px 5px;
+    margin-left: 0;
+    position: absolute;
+    right: 30%;
+    bottom: 5%;
+
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+   	font-size: 12px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+   	font-size: 14px;
+  `}
 	}
 `;
