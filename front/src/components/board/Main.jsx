@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 // import { useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
-import { Row, Col, Checkbox, Select, message } from "antd";
+import { Row, Checkbox, Select, message } from "antd";
 import { customMedia } from "../../GlobalStyles";
 
 import TagFilter from "./TagFilter";
