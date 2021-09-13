@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col } from "antd";
 import styled from "styled-components";
+import { customMedia } from "../common/GlobalStyles";
 
 import Tag from "../common/Tag";
 
@@ -31,21 +32,17 @@ const TagFilter = (props) => {
 	return (
 		<>
 			<TagContainer>
-				<Row gutter={[32, 32]}>
-					{tags.map((tag, i) => (
-						<Col key={i} span={6}>
-							<BoardTag
-								type="button"
-								key={i}
-								value={i}
-								onClick={handleSelectTags}
-								selected={props.selectedTags.includes(tag) ? true : false}
-							>
-								{tag}
-							</BoardTag>
-						</Col>
-					))}
-				</Row>
+				{tags.map((tag, i) => (
+					<BoardTag
+						type="button"
+						key={i}
+						value={i}
+						onClick={handleSelectTags}
+						selected={props.selectedTags.includes(tag) ? true : false}
+					>
+						{tag}
+					</BoardTag>
+				))}
 			</TagContainer>
 		</>
 	);
@@ -58,10 +55,40 @@ const TagContainer = styled.div`
 	margin: 80px auto;
 
 	display: flex;
-	flex-direction: column;
-	gap: 30px;
+	flex-wrap: wrap;
+	gap: 40px;
+
+	${customMedia.lessThan("mobile")`
+    width: 295px;
+    margin: 40px auto;
+    gap: 20px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    width: 555px;
+    margin: 40px auto;
+    gap: 30px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    width: 690px;
+    margin: 60px auto;
+    gap: 30px;
+  `}
 `;
 
 const BoardTag = styled(Tag)`
-	width: 200px;
+	width: 182.5px;
+
+	${customMedia.lessThan("mobile")`
+    width: 137.5px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    width: 257.5px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    width: 150px;
+  `}
 `;

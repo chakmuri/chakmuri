@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { customMedia } from "../common/GlobalStyles";
 import Slider from "react-slick";
 
 import "slick-carousel/slick/slick.css";
@@ -41,7 +42,23 @@ export default class ImageSlider extends Component {
 const Wrapper = styled.section`
 	margin: 0 auto;
 	width: 1200px;
-	height: 300px;
+  height: 300px;
+  
+  ${customMedia.lessThan("mobile")`
+    display: none;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    width: 610px;
+    height: 152.5px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    width: 880px;
+    height: 220px;
+  `}
+
+	
 `;
 
 const StyledSlider = styled(Slider)`
@@ -51,9 +68,23 @@ const StyledSlider = styled(Slider)`
 		margin: 0 auto;
 	}
 
-	.slick-slide {
+	.slick-slider {
 		width: 100%;
-		height: 300px;
+    height: 300px;
+
+    
+  ${customMedia.lessThan("mobile")`
+    display: none;
+  `}
+
+  ${customMedia.between("mobile", "tablet")`
+    height: 152.5px;
+  `}
+
+	${customMedia.lessThan("desktop")`
+    height: 220px;
+  `}
+
 	}
 `;
 

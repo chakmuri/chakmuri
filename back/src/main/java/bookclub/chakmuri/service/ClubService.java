@@ -170,7 +170,7 @@ public class ClubService {
                 e.printStackTrace();
             }
         } else {
-            requestDto.setImgUrl(imageUrl);
+            requestDto.setImgUrl(club.getImgUrl());
         }
         LocalDate startDate = LocalDate.parse(requestDto.getStartDate(), DateTimeFormatter.ISO_DATE);
         LocalDate endDate = LocalDate.parse(requestDto.getEndDate(), DateTimeFormatter.ISO_DATE);
