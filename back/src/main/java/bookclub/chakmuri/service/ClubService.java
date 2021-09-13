@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -95,14 +96,12 @@ public class ClubService {
 
     //독서모임 검색조건 조회
     //param 으로 아예 tags 나 keyword 를 포함하지 않을 수도 있기 때문에 ==null 로 비교
-    public List<Club> findAllClubs(String sortBy, String tags, String clubStatus, String keyword) {
+    public List<Club> findAllClubs(String tags, String clubStatus, String keyword) {
         //클럽 모집 여부 상태 확인
         changeAllClubStatus();
 
-        //sortBy 정렬
-        List<Club> clubs;
-        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
-        clubs = clubRepository.findAll(sort);
+        //모든 독서모임 조회
+        List<Club> clubs = clubRepository.findAll();
 
         //모집중 만 필터링
         if (!clubStatus.isEmpty()) {
@@ -142,6 +141,17 @@ public class ClubService {
         }
 
         return new ArrayList<>(clubSortedByTags);
+    }
+
+    //정렬 메서드
+    public List<Club> sortClubBySortBy(List<Club> clubs, String sortBy) {
+        if(sortBy.equals("createdAt")){
+            return clubs.stream().sorted(Comparator.comparing(Club::getId).reversed())
+                    .collect(Collectors.toList());
+        } else {
+            return clubs.stream().sorted(Comparator.comparing(Club::getLikes).reversed())
+                    .collect(Collectors.toList());
+        }
     }
 
     public Club findClubById(Long clubId) {
