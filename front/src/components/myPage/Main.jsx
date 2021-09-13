@@ -116,19 +116,6 @@ const Main = () => {
 		}
 	};
 
-	const fetchMemberData = async () => {
-		const memberRes = await axios.get("/members", {
-			params: {
-				userId: userId,
-				approvalStatus: "CONFIRMED",
-				page: myMembersPage,
-			},
-		});
-
-		setMyMembers(memberRes.data.memberList);
-		setMyMembersTotal(memberRes.data.totalCount);
-	};
-
 	const showModal = () => {
 		setIsModalVisible(true);
 	};
@@ -251,7 +238,7 @@ const Main = () => {
 		} catch (err) {
 			console.log(err);
 		} finally {
-			fetchMemberData();
+			fetchData();
 		}
 	};
 
