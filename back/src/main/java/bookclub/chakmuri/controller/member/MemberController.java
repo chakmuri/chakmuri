@@ -1,6 +1,5 @@
 package bookclub.chakmuri.controller.member;
 
-import bookclub.chakmuri.controller.likedclub.LikedClubIdListResponseDto;
 import bookclub.chakmuri.domain.Member;
 import bookclub.chakmuri.service.MemberService;
 import lombok.RequiredArgsConstructor;
