@@ -266,7 +266,7 @@ const Main = () => {
 					<StyledTabs defaultActiveKey="1">
 						<TabPane tab="내 댓글" key="1">
 							{myCommentsTotal !== 0 ? (
-								<TabContainer>
+								<TabContainer gutter={[0, 102]}>
 									<Row gutter={[0, 16]}>
 										{myComments.map((comment) => (
 											<Row key={comment.id}>
@@ -476,9 +476,9 @@ const Wrapper = styled.div`
 `;
 
 const TabContainer = styled(Row)`
-	width: 100%;
-	margin-top: 70px;
-	padding-bottom: 160px;
+  width: 100%;
+  margin-top: 70px;
+  padding-bottom: 100px;
 
 	${customMedia.lessThan("mobile")`
     margin-top: 40px;
@@ -763,7 +763,8 @@ const UnfilledBtn = styled(Button)`
 	}
 `;
 
-const PaginationRow = styled.div`
+const PaginationRow = styled(Row)`
+  width: 100%;
 	margin: 30px auto;
 	justify-content: center;
 
