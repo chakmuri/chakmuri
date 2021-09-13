@@ -2,13 +2,11 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import axios from "axios";
-import dotenv from "dotenv";
 import styled from "styled-components";
 import { customMedia } from "../../GlobalStyles";
 
+import { GOOGLE_CLIENT_ID } from "../../../../constants";
 import google from "../../../../images/icons/google.png";
-
-dotenv.config();
 
 const Login = ({ ...props }) => {
 	const history = useHistory();
@@ -57,7 +55,7 @@ const Login = ({ ...props }) => {
 	return (
 		<>
 			<GoogleLogin
-				clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+				clientId={GOOGLE_CLIENT_ID}
 				render={(renderProps) => (
 					<GoogleLoginButton
 						onClick={renderProps.onClick}
