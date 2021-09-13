@@ -99,8 +99,16 @@ const RegisterForm = ({ ...props }) => {
 		}
 
 		if (!sendTags) {
-			message.error("태그를 선택해주세요.");
+			message.warning("태그를 선택해주세요.");
 			return;
+		}
+
+		if (values.title.length > 10) {
+			message.warning("이름은 10자까지 입력 가능합니다.");
+		}
+
+		if (values.contents.length > 40) {
+			message.warning("한 줄 소개는 40자까지 입력 가능합니다.");
 		}
 
 		formData.append("userId", userId);
@@ -378,7 +386,12 @@ const Wrapper = styled.section`
 	  padding: 5px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+    padding: 5px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 610px;
 	  padding: 10px 20px;
   `}
@@ -399,7 +412,11 @@ const StyledForm = styled(Form)`
       font-size: 10px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 14px;
     `}
 
@@ -432,10 +449,15 @@ const StyledInput = styled(Input)`
 
 	${customMedia.lessThan("mobile")`
       font-size: 10px;
-	    height: 24px;
+	    height: 28px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+	    height: 28px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 12px;
 	    height: 32px;
     `}
@@ -466,7 +488,13 @@ const StyledInputNumber = styled(InputNumber)`
 	    height: 20px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+      width: 30px;
+	    height: 20px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
      font-size: 12px;
       width: 50px;
 	    height: 25px;
@@ -492,7 +520,12 @@ const StyledSpan = styled.span`
       font-size: 10px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
      font-size: 12px;
       
     `}
@@ -513,7 +546,11 @@ const TitleRow = styled.div`
       font-size: 12px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 12px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 14px;
     `}
 
@@ -528,17 +565,8 @@ const StyledRangePicker = styled(RangePicker)`
 	border: 1px solid #94989b;
 	border-radius: 5px;
 
-	${customMedia.lessThan("mobile")`
-    height: 24px;
-  `}
-
-  ${customMedia.between("mobile", "tablet")`
-    height: 32px;
-
-  `}
-
-  ${customMedia.between("tablet", "desktop")`
-    height: 40px;
+    ${customMedia.lessThan("desktop")`
+	    height: 40px;
     `}
     
     .ant-picker-input > input {
@@ -548,8 +576,12 @@ const StyledRangePicker = styled(RangePicker)`
       ${customMedia.lessThan("mobile")`
       font-size: 10px;
       `}
+
+      ${customMedia.between("mobile", "largeMobile")`
+        font-size: 10px;
+      `}
       
-      ${customMedia.between("mobile", "tablet")`
+      ${customMedia.between("largeMobile", "tablet")`
       font-size: 12px;
       `}
       
@@ -580,7 +612,13 @@ const FileInput = styled.div`
     width: 80px;
   `}
 
-  ${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+    padding: 0;
+    width: 80px;
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
     font-size: 12px;
     padding: 3px;
     width: 170px;
@@ -602,8 +640,13 @@ const StyledTextArea = styled(TextArea)`
 	${customMedia.lessThan("mobile")`
   font-size: 10px;
   `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+
+  `}
   
-  ${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("largeMobile", "tablet")`
   font-size: 12px;
   `}
   
@@ -624,8 +667,12 @@ const TagTitle = styled.div`
   ${customMedia.lessThan("mobile")`
   font-size: 10px;
   `} 
+
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+  `}
   
-  ${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("largeMobile", "tablet")`
   font-size: 14px;
   `} 
   
@@ -642,7 +689,12 @@ const TagContainer = styled.div`
     gap: 1px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    gap: 2px;
+
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     gap: 5px;
   `}
 `;
@@ -654,11 +706,17 @@ const PreviewImage = styled.img`
 	border-radius: 50%;
 
 	${customMedia.lessThan("mobile")`
-    width: 60px;
-	  height: 60px;
+    width: 80px;
+	  height: 80px;
   `}
 
-  ${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 80px;
+	  height: 80px;
+
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
     width: 120px;
     height: 120px;
   `}
@@ -686,7 +744,13 @@ const MapWrapper = styled.div`
 	  height: 200px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+     ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+	  height: 200px;
+
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       width: 567px;
     `}
 
@@ -707,7 +771,11 @@ const FilledBtn = styled(Button)`
       font-size: 10px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+         font-size: 10px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 12px;
 
     `}
@@ -730,7 +798,11 @@ const UnfilledBtn = styled(Button)`
       font-size: 10px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+         font-size: 10px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       font-size: 12px;
 
     `}
@@ -749,11 +821,16 @@ const SkeletonImg = styled(Skeleton.Image)`
 		border-radius: 50%;
 
 		${customMedia.lessThan("mobile")`
-      width: 80px;
-		  height: 80px;
+      width: 60px;
+		  height: 60px;
     `}
 
-    ${customMedia.between("mobile", "tablet")`
+    ${customMedia.between("mobile", "largeMobile")`
+      width: 80px;
+		  height: 80px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
       width: 120px;
 		  height: 120px;
     `}

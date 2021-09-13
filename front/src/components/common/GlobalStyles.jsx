@@ -4,6 +4,7 @@ import { generateMedia } from "styled-media-query";
 export const customMedia = generateMedia({
 	desktop: "1201px",
 	tablet: "769px",
+	largeMobile: "484px",
 	mobile: "376px",
 });
 

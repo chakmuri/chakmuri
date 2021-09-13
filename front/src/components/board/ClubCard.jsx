@@ -41,7 +41,7 @@ const ClubCard = (props) => {
 					if (props.userId) {
 						props.handleLikedClubs(props.club.id);
 					} else {
-						message.error("로그인이 필요한 기능입니다.");
+						message.warning("로그인이 필요한 기능입니다.");
 					}
 				}}
 			>
@@ -71,7 +71,12 @@ const StyledCard = styled(Card)`
 	  height: 320px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+    height: 388px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
    	width: 295px;
 	  height: 320px;
   `}
@@ -88,7 +93,11 @@ const StyledCard = styled(Card)`
 	  height: 160px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    height: 194px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
 	  height: 160px;
   `}
 
@@ -106,7 +115,12 @@ const StyledCard = styled(Card)`
 	  height: 160px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    height: 194px;
+		padding: 20px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
 	  height: 160px;
   `}
 
@@ -124,7 +138,11 @@ const StyledCard = styled(Card)`
 	  font-size: 20px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 22px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
 	 font-size: 20px;
   `}
 
@@ -142,7 +160,11 @@ const StyledCard = styled(Card)`
 	  font-size: 16px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 18px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
 	  font-size: 16px;
   `}
 
@@ -164,7 +186,12 @@ const TagContainer = styled.div`
 	  bottom: 15px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+   bottom: 20px;
+	  gap: 5px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     bottom: 15px;
 	  gap: 3px;
   `}
@@ -185,7 +212,12 @@ const ClubTag = styled(SmallTag)`
     padding: 5px 10px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+   font-size: 14px;
+    padding: 5px 12px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     font-size: 12px;
     padding: 5px 10px;
   `}
@@ -212,7 +244,11 @@ const LikeIcon = styled.div`
     bottom: 15px;  
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    bottom: 20px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
 	  bottom: 15px;
   `}
 
@@ -229,7 +265,12 @@ const LikeIcon = styled.div`
     height: 20px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 24px;
+    height: 22px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
 	  width: 20px;
     height: 18px;
   `}
@@ -239,6 +280,25 @@ const LikeIcon = styled.div`
     height: 18px;
   `}
 	}
+`;
+
+const LikeNum = styled.span`
+${customMedia.lessThan("mobile")`
+font-size: 14px;
+`}
+
+${customMedia.between("mobile", "largeMobile")`
+font-size: 16px;
+`}
+
+${customMedia.between("largeMobile", "tablet")`
+font-size: 12px;
+`}
+
+${customMedia.between("tablet", "desktop")`
+font-size: 12px;
+
+`}
 `;
 
 const ClubExpiredTag = styled(ExpiredTag)`
@@ -251,35 +311,28 @@ const ClubExpiredTag = styled(ExpiredTag)`
 	}
 `;
 
-const LikeNum = styled.span`
-  ${customMedia.lessThan("mobile")`
-	  font-size: 14px;
-  `}
-
-	${customMedia.between("mobile", "tablet")`
-    font-size: 12px;
-  `}
-
-	${customMedia.between("tablet", "desktop")`
-    font-size: 12px;
-    
-  `}
-`;
-
 const SkeletonImg = styled(Skeleton.Image)`
-	.ant-skeleton-image {
-		width: 340px;
-    height: 190px;
-    
+.ant-skeleton-image {
+  width: 340px;
+  height: 190px;
+  
   ${customMedia.lessThan("mobile")`
+    width: 295px;
 	  height: 160px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+    height: 194px;
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
+    width: 295px;
 	  height: 160px;
   `}
 
-	${customMedia.between("tablet", "desktop")`
+  ${customMedia.between("tablet", "desktop")`
+    width: 280px;
 	  height: 152.5px;
   `}
 	}

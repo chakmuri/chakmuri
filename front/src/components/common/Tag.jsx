@@ -19,14 +19,21 @@ const StyledTag = styled.button`
 	cursor: pointer;
 
 	${customMedia.lessThan("mobile")`
-    font-size: 10px;
-    padding: 5px 0;
+    font-size: 12px;
+    padding: 5px;
     border-radius: 15px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
-    font-size: 12px;
-	  padding: 3px 7px;
+  ${customMedia.between("mobile", "largeMobile")`
+      font-size: 12px;
+      padding: 5px 7px;
+      border-radius: 15px;
+
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
+    font-size: 16px;
+	  padding: 7px 13px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
