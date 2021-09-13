@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Row, message } from "antd";
 import styled from "styled-components";
+import { customMedia } from "../common/GlobalStyles";
 
 import InfoBox from "./InfoBox";
 import DetailInfo from "./DetailInfo";
@@ -20,7 +21,7 @@ const Main = (props) => {
 	const [editable, setEditable] = useState();
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(1);
-	const [like, setLike] = useState();
+	const [likedClubs, setLikedClubs] = useState([]);
 	const [apply, setApply] = useState();
 	const [loading, setLoading] = useState(true);
 	const clubId = Number(props.match.params.id);
@@ -35,6 +36,13 @@ const Main = (props) => {
 				setClub(res.data);
 
 				if (userId) {
+					const likedClubRes = await axios.get("/likedClubs/ids", {
+						params: {
+							userId: userId,
+						},
+					});
+					setLikedClubs(likedClubRes.data.likedClubIdList);
+
 					const applyRes = await axios.get("/members/ids", {
 						params: { userId: userId },
 					});
@@ -50,8 +58,6 @@ const Main = (props) => {
 		fetchData();
 		fetchCmtData();
 	}, [userImg, total, page]);
-
-	console.log(apply);
 
 	const fetchCmtData = async () => {
 		const res = await axios.get(`/comments/clubs/${clubId}`, {
@@ -129,7 +135,24 @@ const Main = (props) => {
 		}
 	};
 
-	const handlePostLike = async () => {
+	const handleLikedClubs = (clubId) => {
+		let index = likedClubs.indexOf(clubId);
+
+		try {
+			if (likedClubs.includes(clubId)) {
+				likedClubs.splice(index, 1);
+				setLikedClubs([...likedClubs]);
+				handleLikeDelete(clubId);
+			} else {
+				setLikedClubs([...likedClubs, clubId]);
+				handleLikePost(clubId);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const handleLikePost = async (clubId) => {
 		const data = {
 			clubId: Number(clubId),
 			userId: userId,
@@ -137,18 +160,16 @@ const Main = (props) => {
 
 		try {
 			await axios.post("/likedClubs", data);
-			setLike(data.clubId);
 		} catch (err) {
 			console.log(err);
 		}
 	};
 
-	const handleDeleteLike = async (id) => {
+	const handleLikeDelete = async (clubId) => {
 		try {
 			await axios.delete("/likedClubs", {
-				params: { userId: userId, clubId: Number(id) },
+				params: { userId: userId, clubId: Number(clubId) },
 			});
-			setLike();
 		} catch (err) {
 			console.log(err);
 		}
@@ -203,9 +224,8 @@ const Main = (props) => {
 					<InfoBox
 						userId={userId}
 						club={club}
-						like={like}
-						handlePostLike={handlePostLike}
-						handleDeleteLike={handleDeleteLike}
+						likedClubs={likedClubs}
+						handleLikedClubs={handleLikedClubs}
 						apply={apply}
 						handlePostApply={handlePostApply}
 						handleDeleteApply={handleDeleteApply}
@@ -278,6 +298,20 @@ export default Main;
 const Wrapper = styled.section`
 	width: 996px;
 	margin: 60px auto;
+
+  ${customMedia.lessThan("mobile")`
+    width: 295px;
+	  margin: 40px auto;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    width: 610px;
+	  margin: 40px auto;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    width: 880px;
+  `}
 `;
 
 const TitleRow = styled.div`
@@ -288,10 +322,21 @@ const TitleRow = styled.div`
 `;
 
 const Title = styled.div`
-	font-family: Roboto;
 	font-weight: 500;
 	font-size: 24px;
-	margin-top: 50px;
+  margin-top: 50px;
+  
+  ${customMedia.lessThan("mobile")`
+   	font-size: 16px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+   	font-size: 18px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+   	font-size: 20px;
+  `}
 `;
 
 const CmtContainer = styled.div`
@@ -305,7 +350,19 @@ const InputBox = styled.div`
 	margin: 0 auto;
 	padding: 10px;
 
-	display: flex;
+  display: flex;
+  
+  ${customMedia.lessThan("mobile")`
+   	width: 295px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+   	width: 528px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+  	width: 724px;
+  `}
 `;
 
 const ProfileIcon = styled.div`
@@ -316,25 +373,74 @@ const ProfileIcon = styled.div`
 	img {
 		width: 100%;
 		height: 100%;
-	}
+  }
+  
+  ${customMedia.lessThan("mobile")`
+   	width: 28px;
+	  height: 28px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+   	width: 32px;
+	  height: 32px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+  	width: 40px;
+	  height: 40px;
+  `}
 `;
 
 const StyledInput = styled.input`
 	border: none;
 	outline: none;
 	font-size: 20px;
-	flex: 2;
+  flex: 2;
+  
+  ${customMedia.lessThan("mobile")`
+   	font-size: 14px;
+
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+   	font-size: 14px;
+
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+  	font-size: 16px;
+  `}
 `;
 
 const CmtPost = styled(Button)`
+  flex: 0.2;
+
+   ${customMedia.lessThan("mobile")`
+      flex: 0.3;
+    `}
+
+  
 	& {
 		font-size: 16px;
 		color: #ffffff;
 		background-color: #ff6701;
 		padding: 0;
-		border-radius: 5px;
+    border-radius: 5px;
+    
+    ${customMedia.lessThan("mobile")`
+      font-size: 10px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      font-size: 12px;
+
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 14px;
+
+    `}
 	}
-	flex: 0.2;
 `;
 
 const ListRow = styled.div`

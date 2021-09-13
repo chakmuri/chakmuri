@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Form, Input, InputNumber, Row, Col, DatePicker, message } from "antd";
+import {
+	Form,
+	Input,
+	InputNumber,
+	Row,
+	Col,
+	DatePicker,
+	message,
+	Skeleton,
+} from "antd";
 import styled from "styled-components";
+import { customMedia } from "../../GlobalStyles";
 
 import Button from "../../Button";
 import Tag from "../../Tag";
@@ -84,11 +94,6 @@ const RegisterForm = ({ ...props }) => {
 
 		if (!values.minPersonnel || !values.maxPersonnel) {
 			message.error("참여인원을 입력해주세요.");
-			return;
-		}
-
-		if (!imgFile) {
-			message.error("사진을 등록해주세요.");
 			return;
 		}
 
@@ -189,14 +194,13 @@ const RegisterForm = ({ ...props }) => {
 									<Form.Item name="minPersonnel">
 										<StyledInputNumber min={2} placeholder={2} />
 									</Form.Item>
-									<span> 인 </span>
+									<StyledSpan> 인 ~ </StyledSpan>
 								</PersonnelRow>
-								<span> ~ </span>
 								<PersonnelRow>
 									<Form.Item name="maxPersonnel">
 										<StyledInputNumber min={2} placeholder={2} />
 									</Form.Item>
-									<span> 인 </span>
+									<StyledSpan> 인 </StyledSpan>
 								</PersonnelRow>
 							</Row>
 						</Form.Item>
@@ -225,10 +229,7 @@ const RegisterForm = ({ ...props }) => {
 						>
 							<Row gutter={[0, 24]} justify="center">
 								{!preview ? (
-									<PreviewImage
-										src="https://placehold.co/263x263"
-										alt="Preview image"
-									></PreviewImage>
+									<SkeletonImg />
 								) : (
 									<PreviewImage
 										src={preview}
@@ -247,30 +248,20 @@ const RegisterForm = ({ ...props }) => {
 					</Col>
 				</Row>
 				<TagRow>
-					<Form.Item
-						label="태그 (최대 3개까지 선택 가능)"
-						name="tags"
-						rules={[
-							{
-								required: false,
-								message: "모임의 태그를 선택하세요.",
-							},
-						]}
-					>
-						<TagContainer>
-							{tags.map((tag, i) => (
-								<Tag
-									type="button"
-									key={i}
-									value={i}
-									onClick={handleSelectTags}
-									selected={selectedTags.includes(tag) ? true : false}
-								>
-									{tag}
-								</Tag>
-							))}
-						</TagContainer>
-					</Form.Item>
+					<TagTitle>태그 (3개까지 선택 가능)</TagTitle>
+					<TagContainer>
+						{tags.map((tag, i) => (
+							<Tag
+								type="button"
+								key={i}
+								value={i}
+								onClick={handleSelectTags}
+								selected={selectedTags.includes(tag) ? true : false}
+							>
+								{tag}
+							</Tag>
+						))}
+					</TagContainer>
 				</TagRow>
 				<TitleRow>선정도서</TitleRow>
 				<Col span={16}>
@@ -378,12 +369,40 @@ const Wrapper = styled.section`
 	width: 1200px;
 	padding: 40px 100px;
 	margin: 0 auto;
+
+	${customMedia.lessThan("mobile")`
+    width: 295px;
+	  padding: 5px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    width: 610px;
+	  padding: 10px 20px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    width: 880px;
+	  padding: 20px 50px;
+
+  `}
 `;
 
 const StyledForm = styled(Form)`
 	.ant-form-item-label > label {
 		font-size: 18px;
 		font-weight: bold;
+
+		${customMedia.lessThan("mobile")`
+      font-size: 10px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      font-size: 14px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 16px;
+    `}
 	}
 
 	.ant-form-item {
@@ -402,17 +421,29 @@ const StyledForm = styled(Form)`
 `;
 
 const StyledInput = styled(Input)`
-	font-family: Roboto;
 	font-size: 16px;
 	height: 48px;
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
-	}
+
+	${customMedia.lessThan("mobile")`
+      font-size: 10px;
+	    height: 24px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      font-size: 12px;
+	    height: 32px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 14px;
+	    height: 40px;
+    `}
 `;
 
 const StyledInputNumber = styled(InputNumber)`
-	font-family: Roboto;
 	font-weight: bold;
 	font-size: 16px;
 	width: 80px;
@@ -425,18 +456,67 @@ const StyledInputNumber = styled(InputNumber)`
 	.ant-input-number-input {
 		height: 100%;
 	}
+
+	${customMedia.lessThan("mobile")`
+      font-size: 10px;
+      width: 30px;
+	    height: 20px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+     font-size: 12px;
+      width: 50px;
+	    height: 25px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 14px;
+      width: 60px;
+	    height: 30px;
+    `}
 `;
 
 const PersonnelRow = styled.div`
 	display: flex;
-	gap: 5px;
+	gap: 1px;
+`;
+
+const StyledSpan = styled.span`
+  align-self: center;
+  margin: 0 5px;
+
+  ${customMedia.lessThan("mobile")`
+      font-size: 10px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+     font-size: 12px;
+      
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 14px;
+      
+    `}
+
 `;
 
 const TitleRow = styled.div`
-	font-family: Roboto;
 	font-weight: bold;
 	font-size: 20px;
 	margin: 30px 0;
+
+	${customMedia.lessThan("mobile")`
+      font-size: 12px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      font-size: 14px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 16px;
+    `}
 `;
 
 const StyledRangePicker = styled(RangePicker)`
@@ -445,14 +525,68 @@ const StyledRangePicker = styled(RangePicker)`
 	border: 1px solid #94989b;
 	border-radius: 5px;
 
-	.ant-picker-input > input {
-		font-size: 16px;
-		text-align: center;
+	${customMedia.lessThan("mobile")`
+    height: 24px;
+  `}
+
+  ${customMedia.between("mobile", "tablet")`
+    height: 32px;
+
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    height: 40px;
+    `}
+    
+    .ant-picker-input > input {
+      font-size: 16px;
+      text-align: center;
+      
+      ${customMedia.lessThan("mobile")`
+      font-size: 10px;
+      `}
+      
+      ${customMedia.between("mobile", "tablet")`
+      font-size: 12px;
+      `}
+      
+      ${customMedia.between("tablet", "desktop")`
+      font-size: 14px;
+      `}
 	}
 
 	.ant-picker-active-bar {
 		background: #f98404;
 	}
+
+	${customMedia.lessThan("desktop")`
+    height: 40px;
+    `}
+`;
+
+const FileInput = styled.div`
+	background-color: #f6f6f6;
+	border: 1px solid #94989b;
+	border-radius: 5px;
+  padding: 10px;
+  width: 250px;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 10px;
+    padding: 0;
+    width: 80px;
+  `}
+
+  ${customMedia.between("mobile", "tablet")`
+    font-size: 12px;
+    padding: 3px;
+    width: 170px;
+  `}
+  
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 14px;
+    padding: 5px;
+  `}
 `;
 
 const StyledTextArea = styled(TextArea)`
@@ -461,11 +595,53 @@ const StyledTextArea = styled(TextArea)`
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
+
+	${customMedia.lessThan("mobile")`
+  font-size: 10px;
+  `}
+  
+  ${customMedia.between("mobile", "tablet")`
+  font-size: 12px;
+  `}
+  
+  ${customMedia.between("tablet", "desktop")`
+  font-size: 14px;
+  `}
+`;
+
+const TagRow = styled(Row)`
+	margin-top: 20px;
+`;
+
+const TagTitle = styled.div`
+	font-weight: bold;
+	font-size: 20px;
+  margin-bottom: 7px; 
+  
+  ${customMedia.lessThan("mobile")`
+  font-size: 10px;
+  `} 
+  
+  ${customMedia.between("mobile", "tablet")`
+  font-size: 14px;
+  `} 
+  
+  ${customMedia.between("tablet", "desktop")`
+  font-size: 16px;
+  `};
 `;
 
 const TagContainer = styled.div`
 	display: flex;
 	gap: 10px;
+
+	${customMedia.lessThan("mobile")`
+    gap: 1px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    gap: 5px;
+  `}
 `;
 
 const PreviewImage = styled.img`
@@ -473,17 +649,21 @@ const PreviewImage = styled.img`
 	height: 263px;
 	border: none;
 	border-radius: 50%;
-`;
 
-const FileInput = styled.div`
-	background-color: #f6f6f6;
-	border: 1px solid #94989b;
-	border-radius: 5px;
-	padding: 3px;
-`;
+	${customMedia.lessThan("mobile")`
+    width: 60px;
+	  height: 60px;
+  `}
 
-const TagRow = styled(Row)`
-	margin-top: 20px;
+  ${customMedia.between("mobile", "tablet")`
+    width: 120px;
+    height: 120px;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    width: 180px;
+    height: 180px;
+  `}
 `;
 
 const ButtonRow = styled(Row)`
@@ -497,6 +677,19 @@ const MapWrapper = styled.div`
 	width: 1000px;
 	height: 250px;
 	margin-top: 40px;
+
+	${customMedia.lessThan("mobile")`
+    width: 282px;
+	  height: 200px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      width: 567px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      width: 777px;
+    `}
 `;
 
 const FilledBtn = styled(Button)`
@@ -505,7 +698,21 @@ const FilledBtn = styled(Button)`
 		background-color: #ff6701;
 		border: none;
 		border-radius: 6px;
-		outline: none;
+    outline: none;
+    
+    	${customMedia.lessThan("mobile")`
+      font-size: 10px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      font-size: 12px;
+
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 16px;
+
+    `}
 	}
 `;
 
@@ -514,6 +721,43 @@ const UnfilledBtn = styled(Button)`
 		color: #ff6701;
 		background-color: #ffffff;
 		border: 2px solid #ff6701;
-		border-radius: 6px;
+    border-radius: 6px;
+    
+    ${customMedia.lessThan("mobile")`
+      font-size: 10px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      font-size: 12px;
+
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 16px;
+
+    `}
+	}
+`;
+
+const SkeletonImg = styled(Skeleton.Image)`
+	.ant-skeleton-image {
+		width: 263px;
+		height: 263px;
+		border-radius: 50%;
+
+		${customMedia.lessThan("mobile")`
+      width: 80px;
+		  height: 80px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      width: 120px;
+		  height: 120px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      width: 180px;
+		  height: 180px;
+    `}
 	}
 `;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Tabs, Row, Col, Divider, message, Modal } from "antd";
 import styled from "styled-components";
+import { customMedia } from "../common/GlobalStyles";
 
 import MyComment from "./MyComment";
 import EditForm from "./EditForm";
@@ -13,10 +14,12 @@ import Pagination from "../common/Pagination";
 import Button from "../common/Button";
 import NotFound from "../common/NotFound";
 import Spin from "../common/Spin";
+import { useHistory } from "react-router-dom";
 
 const Main = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [myClub, setMyClub] = useState();
+	const [likedClubs, setLikedClubs] = useState([]);
 	const [myLikedClubs, setMyLikedClubs] = useState(null);
 	const [myJoinedClubs, setMyJoinedClubs] = useState(null);
 	const [myComments, setMyComments] = useState(null);
@@ -35,12 +38,15 @@ const Main = () => {
 	const [loading, setLoading] = useState(true);
 	const userId = localStorage.getItem("user_id");
 
+	const history = useHistory();
+
 	useEffect(() => {
 		fetchData();
 	}, [
 		myMembersPage,
 		myPendingMembersPage,
 		myJoinedClubsPage,
+		myLikedClubsTotal,
 		myLikedClubsPage,
 		myCommentsPage,
 	]);
@@ -97,6 +103,15 @@ const Main = () => {
 
 			setMyClub(myClubRes.data);
 
+			if (userId) {
+				const likedClubRes = await axios.get("/likedClubs/ids", {
+					params: {
+						userId: userId,
+					},
+				});
+				setLikedClubs(likedClubRes.data.likedClubIdList);
+			}
+
 			setLoading(false);
 		} catch (err) {
 			console.log(err);
@@ -134,6 +149,7 @@ const Main = () => {
 				if (deleteRes.status === 200) {
 					message.success("독서모임이 성공적으로 삭제되었습니다.");
 					handleCancel();
+					history.go(0);
 				} else {
 					message.error("독서모임 삭제에 실패하였습니다.");
 				}
@@ -145,6 +161,25 @@ const Main = () => {
 		}
 	};
 
+	const handleLikedClubs = (clubId) => {
+		let index = likedClubs.indexOf(clubId);
+
+		try {
+			if (likedClubs.includes(clubId)) {
+				likedClubs.splice(index, 1);
+				setLikedClubs([...likedClubs]);
+				handleLikeDelete(clubId);
+			} else {
+				setLikedClubs([...likedClubs, clubId]);
+				handleLikePost(clubId);
+			}
+		} catch (err) {
+			console.log(err);
+		} finally {
+			fetchData();
+		}
+	};
+
 	const handleLikePost = async (clubId) => {
 		try {
 			await axios.post("/likedClubs", {
@@ -153,6 +188,8 @@ const Main = () => {
 			});
 		} catch (err) {
 			message.error("이미 좋아요한 독서모임입니다.");
+		} finally {
+			fetchData();
 		}
 	};
 
@@ -163,6 +200,8 @@ const Main = () => {
 			});
 		} catch (err) {
 			console.log(err);
+		} finally {
+			fetchData();
 		}
 	};
 
@@ -179,10 +218,12 @@ const Main = () => {
 		}
 	};
 
-	const handleMemberReject = async (memberId) => {
+	const handleMemberReject = async (userId, clubId) => {
 		try {
-			const res = axios.delete(`/members/${memberId}`, {
+			const res = axios.delete("/members", {
 				params: {
+					userId: userId,
+					clubId: clubId,
 					delete: "NO",
 				},
 			});
@@ -196,10 +237,12 @@ const Main = () => {
 		}
 	};
 
-	const handleMemberDelete = async (memberId) => {
+	const handleMemberDelete = async (userId, clubId) => {
 		try {
-			const res = axios.delete(`/members/${memberId}`, {
+			const res = axios.delete("/members", {
 				params: {
+					userId: userId,
+					clubId: Number(clubId),
 					delete: "OUT",
 				},
 			});
@@ -243,23 +286,22 @@ const Main = () => {
 									</PaginationRow>
 								</TabContainer>
 							) : (
-								<NotFound>🚫 내 댓글이 존재하지 않습니다 🚫</NotFound>
+								<NotFound>🚫 내 댓글이 존재하지 않습니다.🚫</NotFound>
 							)}
 						</TabPane>
 						<TabPane tab="좋아요한 독서모임" key="2">
 							{myLikedClubsTotal !== 0 ? (
 								<TabContainer gutter={[0, 98]}>
-									<Row gutter={[90, 48]}>
+									<CardRow>
 										{myLikedClubs.map((likedClub) => (
-											<Col key={likedClub.id}>
-												<LikedClubCard
-													club={likedClub}
-													handleLikeDelete={handleLikeDelete}
-													like={likedClub.clubId}
-												/>
-											</Col>
+											<LikedClubCard
+												key={likedClub.id}
+												club={likedClub}
+												handleLikeDelete={handleLikeDelete}
+												like={likedClub.clubId}
+											/>
 										))}
-									</Row>
+									</CardRow>
 									<PaginationRow>
 										<Pagination
 											total={myLikedClubsTotal}
@@ -270,23 +312,22 @@ const Main = () => {
 									</PaginationRow>
 								</TabContainer>
 							) : (
-								<NotFound>🚫 좋아요한 독서모임이 존재하지 않습니다 🚫</NotFound>
+								<NotFound>🚫 좋아요한 독서모임이 존재하지 않습니다🚫</NotFound>
 							)}
 						</TabPane>
 						<TabPane tab="참여중인 독서모임" key="3">
 							{myJoinedClubsTotal !== 0 ? (
 								<TabContainer gutter={[0, 98]}>
-									<Row gutter={[90, 48]}>
+									<CardRow>
 										{myJoinedClubs.map((joinedClub) => (
-											<Col key={joinedClub.id}>
-												<JoinedClubCard
-													club={joinedClub}
-													handleLikePost={handleLikePost}
-													handleLikeDelete={handleLikeDelete}
-												/>
-											</Col>
+											<JoinedClubCard
+												key={joinedClub.id}
+												club={joinedClub}
+												likedClubs={likedClubs}
+												handleLikedClubs={handleLikedClubs}
+											/>
 										))}
-									</Row>
+									</CardRow>
 									<PaginationRow>
 										<Pagination
 											total={myJoinedClubsTotal}
@@ -297,12 +338,12 @@ const Main = () => {
 									</PaginationRow>
 								</TabContainer>
 							) : (
-								<NotFound>🚫 참여중인 독서모임이 존재하지 않습니다 🚫</NotFound>
+								<NotFound>🚫 참여중인 독서모임이 존재하지 않습니다🚫</NotFound>
 							)}
 						</TabPane>
 						<TabPane tab="독서모임 관리" key="4">
 							{myClub ? (
-								<TabContainer gutter={[0, 150]}>
+								<TabContainer gutter={[0, 100]}>
 									<Box>
 										<MidTitle>참여자 관리</MidTitle>
 										<Text>승인 대기자</Text>
@@ -330,7 +371,7 @@ const Main = () => {
 											</>
 										) : (
 											<MemberNotFound>
-												🚫 현재 대기중인 멤버가 없습니다. 🚫
+												🚫 현재 대기중인 멤버가 없습니다.🚫
 											</MemberNotFound>
 										)}
 										<Divider />
@@ -358,7 +399,7 @@ const Main = () => {
 											</>
 										) : (
 											<MemberNotFound>
-												🚫 현재 참여중인 멤버가 없습니다. 🚫
+												🚫 현재 참여중인 멤버가 없습니다.🚫
 											</MemberNotFound>
 										)}
 									</Box>
@@ -416,22 +457,62 @@ const { TabPane } = Tabs;
 const Wrapper = styled.div`
 	width: 1200px;
 	margin: 0 auto;
+
+	${customMedia.lessThan("mobile")`
+    width: 295px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    width: 610px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    width: 880px;
+  `}
 `;
 
 const TabContainer = styled(Row)`
 	width: 100%;
 	margin-top: 70px;
 	padding-bottom: 160px;
+
+	${customMedia.lessThan("mobile")`
+      margin-top: 40px;
+    `}
+
+	${customMedia.between("mobile", "tablet")`
+	  margin-top: 40px;
+    `}
 `;
 
 const StyledTabs = styled(Tabs)`
 	.ant-tabs-tab-btn {
-		font-size: 22px;
+    font-size: 22px;
+    
+    ${customMedia.lessThan("mobile")`
+      font-size: 14px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      font-size: 16px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 18px;
+    `}
 	}
 
 	.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
 		color: #fa9423;
-		font-weight: bold;
+    font-weight: bold;
+
+    ${customMedia.lessThan("mobile")`
+      font-weight: 500;
+    `}
+    
+    ${customMedia.between("mobile", "tablet")`
+      font-weight: 500;
+    `}
 	}
 
 	.ant-tabs-tab:hover {
@@ -444,22 +525,72 @@ const StyledTabs = styled(Tabs)`
 	}
 `;
 
+const CardRow = styled.div`
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 60px;
+
+	${customMedia.between("mobile", "tablet")`
+    gap: 20px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    gap: 20px;
+  `}
+`;
+
 const MidTitle = styled.div`
 	width: 100%;
-	font-family: Roboto;
 	font-size: 20px;
 	margin-bottom: 10px;
+
+  ${customMedia.lessThan("mobile")`
+    font-size: 14px;
+  `}
+
+  ${customMedia.between("mobile", "tablet")`
+    font-size: 16px;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 18px;
+  `}
 `;
 
 const LargeText = styled.div`
 	font-size: 20px;
 	font-weight: bold;
 	margin-bottom: 15px;
+
+    ${customMedia.lessThan("mobile")`
+      font-size: 12px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      font-size: 14px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 18px;
+    `}
 `;
 
 const Text = styled.div`
 	font-size: 16px;
-	margin-bottom: 15px;
+  margin-bottom: 15px;
+  
+  ${customMedia.lessThan("mobile")`
+      font-size: 10px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      font-size: 12px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 14px;
+    `}
 `;
 
 const TextBox = styled.div`
@@ -476,6 +607,20 @@ const DeleteBtnContainer = styled.div`
 	border-radius: 5px;
 	padding: 25px;
 	display: flex;
+
+	${customMedia.lessThan("mobile")`
+    font-size: 10px;
+    padding: 15px;
+    flex-direction: column;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      font-size: 14px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 18px;
+    `}
 `;
 
 const DeleteBtn = styled(Button)`
@@ -489,6 +634,22 @@ const DeleteBtn = styled(Button)`
 	border-radius: 6px;
 	text-align: center;
 	flex: 0.1;
+
+  ${customMedia.lessThan("mobile")`
+    font-size: 10px;
+    padding: 5px 15px;
+    align-self: center;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      width: 80px;
+      font-size: 12px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+    	width: 120px;
+      font-size: 16px;
+    `}
 `;
 
 const StyledModal = styled(Modal)`
@@ -514,6 +675,18 @@ const ModalTitle = styled.div`
 	font-size: 20px;
 	font-weight: bold;
 	margin-bottom: 10px;
+
+${customMedia.lessThan("mobile")`
+      font-size: 22px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      font-size: 22px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 18px;
+    `}
 `;
 
 const ButtonRow = styled(Row)`
@@ -563,5 +736,17 @@ const MemberNotFound = styled(NotFound)`
 	& {
 		height: 100px;
 		font-size: 16px;
+
+	${customMedia.lessThan("mobile")`
+      font-size: 10px;
+    `}
+
+    ${customMedia.between("mobile", "tablet")`
+      font-size: 12px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 14px;
+    `}
 	}
 `;

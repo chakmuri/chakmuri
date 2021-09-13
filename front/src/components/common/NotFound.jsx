@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import classnames from "classnames";
+import { customMedia } from "../common/GlobalStyles";
 
 const NotFound = (props) => {
 	return (
@@ -21,4 +22,8 @@ const StyledNotFound = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	${customMedia.lessThan("desktop")`
+    font-size: 20px;
+  `}
 `;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Modal, Menu, Dropdown } from "antd";
 import styled from "styled-components";
+import { customMedia } from "../GlobalStyles";
 
 import Login from "./login/Login";
 import RegisterForm from "./register/RegisterForm";
@@ -124,7 +125,19 @@ const Nav = styled.nav`
 
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
+  align-items: center;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 295px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    width: 610px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    width: 880px;
+  `}
 `;
 
 const NavLogo = styled.div`
@@ -140,13 +153,30 @@ const LogoIcon = styled.div`
 	img {
 		width: 100%;
 	}
+
+	${customMedia.lessThan("mobile")`
+    width: 20px;
+    height: 20px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    width: 24px;
+    height: 24px;
+  `}
 `;
 
 const LogoTitle = styled.div`
-	font-family: Roboto;
 	font-weight: bold;
 	font-size: 30px;
 	color: #f98404;
+
+	${customMedia.lessThan("mobile")`
+    font-size: 20px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    font-size: 24px;
+  `}
 `;
 
 const NavMenu = styled.div`
@@ -154,11 +184,17 @@ const NavMenu = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	gap: 50px;
+
+	${customMedia.lessThan("mobile")`
+    gap: 20px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    gap: 40px;
+  `}
 `;
 
 const NavLink = styled(Link)`
-	display: flex;
-	gap: 50px;
 	color: black;
 
 	&:hover {
@@ -167,14 +203,29 @@ const NavLink = styled(Link)`
 `;
 
 const NavText = styled.div`
-	font-family: Roboto;
 	font-weight: 500;
 	font-size: 20px;
+
+	${customMedia.lessThan("mobile")`
+    font-size: 14px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    font-size: 16px;
+  `}
 `;
 
 const NavIcon = styled.div`
 	display: flex;
-	gap: 34px;
+	gap: 30px;
+
+	${customMedia.lessThan("mobile")`
+    gap: 10px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    gap: 20px;;
+  `}
 `;
 
 const NavProfile = styled.div`
@@ -186,26 +237,68 @@ const NavProfile = styled.div`
 		width: 100%;
 		height: 100%;
 	}
+
+	${customMedia.lessThan("mobile")`
+    width: 28px;
+	  height: 28px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    width: 32px;
+	  height: 32px;
+  `}
 `;
 
 const Title = styled.div`
 	font-size: 26px;
 	white-space: pre-wrap;
+
+	${customMedia.lessThan("mobile")`
+   	font-size: 18px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    font-size: 22px;
+  `}
 `;
 
 const NavRegister = styled.div`
 	width: 48px;
 	height: 48px;
 	cursor: pointer;
+
+	img {
+		width: 100%;
+		height: 100%;
+	}
+
+	${customMedia.lessThan("mobile")`
+    width: 28px;
+	  height: 28px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    width: 32px;
+	  height: 32px;
+  `}
 `;
 
 const StyledDropdownMenu = styled(Menu)`
 	.ant-dropdown-menu-item,
 	.ant-dropdown-menu-submenu-title {
-		font-family: Roboto;
 		font-size: 16px;
 		padding: 10px 20px;
 		text-align: center;
+
+		${customMedia.lessThan("mobile")`
+    font-size: 12px;
+		padding: 5px 10px;
+    `}
+
+		${customMedia.between("mobile", "tablet")`
+    font-size: 14px;
+		padding: 8px 13px;
+    `}
 	}
 `;
 
@@ -217,6 +310,15 @@ const StyledModal = styled(Modal)`
 		padding: 30px 55px;
 		display: flex;
 		align-items: center;
+
+		${customMedia.lessThan("mobile")`
+    	padding: 5px;
+  `}
+
+		${customMedia.between("mobile", "tablet")`
+    	padding: 20px 35px;
+
+  `}
 	}
 
 	.ant-modal-body {
@@ -225,6 +327,14 @@ const StyledModal = styled(Modal)`
 		justify-content: center;
 		align-items: center;
 		gap: 48px;
+
+		${customMedia.lessThan("mobile")`
+    	gap: 24px;
+    `}
+
+		${customMedia.between("mobile", "tablet")`
+   		gap: 32px;
+    `}
 	}
 
 	.ant-modal-footer {

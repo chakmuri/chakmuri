@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { Row, Col, message } from "antd";
 import styled from "styled-components";
+import { customMedia } from "../common/GlobalStyles";
 
 import ImageSlider from "./ImageSlider";
 import MainClubCard from "./MainClubCard";
@@ -27,7 +28,7 @@ const Main = () => {
 				params: {
 					sortBy: "createdAt",
 					tags: "",
-					clubStatus: "",
+					clubStatus: "ACTIVE",
 					keyword: "",
 					page: 1,
 				},
@@ -38,7 +39,7 @@ const Main = () => {
 				params: {
 					sortBy: "likes",
 					tags: "",
-					clubStatus: "",
+					clubStatus: "ACTIVE",
 					keyword: "",
 					page: 1,
 				},
@@ -112,34 +113,33 @@ const Main = () => {
 				<>
 					<ImageSlider />
 					<Title>지금 가장 인기있는 모임</Title>
-					<Row gutter={24}>
+					<CardRow>
 						{sortByLikesClubs
 							.filter((club, i) => i < 4)
 							.map((club) => (
-								<Col key={club.id}>
-									<MainClubCard
-										club={club}
-										handleLikedClubs={handleLikedClubs}
-										likedClubs={likedClubs}
-									/>
-								</Col>
+								<MainClubCard
+									key={club.id}
+									userId={userId}
+									club={club}
+									handleLikedClubs={handleLikedClubs}
+									likedClubs={likedClubs}
+								></MainClubCard>
 							))}
-					</Row>
+					</CardRow>
 					<Title>따끈따끈한 신규 모임</Title>
-					<Row gutter={24}>
+					<CardRow>
 						{sortByCreatedAtClubs
 							.filter((club, i) => i < 4)
 							.map((club) => (
-								<Col key={club.id}>
-									<MainClubCard
-										userId={userId}
-										club={club}
-										handleLikedClubs={handleLikedClubs}
-										likedClubs={likedClubs}
-									/>
-								</Col>
+								<MainClubCard
+									key={club.id}
+									userId={userId}
+									club={club}
+									handleLikedClubs={handleLikedClubs}
+									likedClubs={likedClubs}
+								></MainClubCard>
 							))}
-					</Row>
+					</CardRow>
 					<ButtonRow>
 						<Link to="/board">
 							<MainButton>독서모임 더보기</MainButton>
@@ -155,15 +155,60 @@ export default Main;
 
 const Wrapper = styled.section`
 	width: 1200px;
-	margin: 0 auto;
+  margin: 0 auto;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 295px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    width: 610px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    width: 880px;
+  `}
+
 `;
 
 const Title = styled.div`
-	font-family: Roboto;
 	font-weight: bold;
 	font-size: 24px;
-	line-height: 28px;
-	margin: 60px 0 40px 0;
+  margin: 60px 0 40px 0;
+
+  ${customMedia.lessThan("mobile")`
+    font-size: 20px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    font-size: 18px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    font-size: 20px;
+    margin: 50px 0 30px 0;
+  `}
+`;
+
+const CardRow = styled.div`
+	width: 100%;
+	display: flex;
+  gap: 24px;
+  
+  ${customMedia.lessThan("mobile")`
+    flex-wrap: wrap;
+    gap: 24px;
+  `}
+
+  ${customMedia.between("mobile", "tablet")`
+    flex-wrap: wrap;
+    gap: 40px;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    flex-wrap: wrap;
+    gap: 10px;
+  `}
 `;
 
 const ButtonRow = styled.div`
@@ -179,7 +224,20 @@ const MainButton = styled(Button)`
 	background-color: #ffffff;
 	border: 1px solid #ff6701;
 	padding: 10px 20px;
-	transition: all 0.3s;
+  transition: all 0.3s;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 16px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    font-size: 14px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    font-size: 16px;
+    margin: 60px 0;
+  `}
 
 	&:hover {
 		color: #ffffff;
