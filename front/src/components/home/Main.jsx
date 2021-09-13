@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { message } from "antd";
 import styled from "styled-components";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import ImageSlider from "./ImageSlider";
 import MainClubCard from "./MainClubCard";
@@ -156,6 +156,7 @@ export default Main;
 const Wrapper = styled.section`
 	width: 1200px;
   margin: 0 auto;
+  flex: 1;
   
   ${customMedia.lessThan("mobile")`
     width: 295px;

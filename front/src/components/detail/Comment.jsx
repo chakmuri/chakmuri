@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Input } from "antd";
 import Button from "../common/Button";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 const Comment = (props) => {
 	const createdAt = new Date(props.comment.createdAt).toLocaleString();

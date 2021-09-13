@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import {
 	Form,
@@ -12,11 +12,13 @@ import {
 } from "antd";
 import moment from "moment";
 import styled from "styled-components";
-import { customMedia } from "../../GlobalStyles";
+import { customMedia } from "../../../../GlobalStyles";
 
 import Button from "../../Button";
 import Tag from "../../Tag";
 import MapContainer from "../../MapContainer";
+
+import trash from "../../../../images/icons/trash.png";
 
 const RegisterForm = ({ ...props }) => {
 	const [registerForm] = Form.useForm();
@@ -39,6 +41,8 @@ const RegisterForm = ({ ...props }) => {
 
 	const fullAddress = addressStreet + addressDetail;
 	const userId = localStorage.getItem("user_id");
+
+	const ref = useRef();
 
 	const onChange = (e) => {
 		setInputText(e.target.value);
@@ -70,6 +74,11 @@ const RegisterForm = ({ ...props }) => {
 		if (file) {
 			reader.readAsDataURL(file);
 		}
+	};
+
+	const handleImgDelete = () => {
+		ref.current.value = "";
+		setPreview();
 	};
 
 	const handleSelectTags = (e) => {
@@ -105,10 +114,17 @@ const RegisterForm = ({ ...props }) => {
 
 		if (values.title.length > 10) {
 			message.warning("이름은 10자까지 입력 가능합니다.");
+			return;
 		}
 
 		if (values.contents.length > 40) {
 			message.warning("한 줄 소개는 40자까지 입력 가능합니다.");
+			return;
+		}
+
+		if (values.publishedAt < 0) {
+			message.warning("출판연도는 숫자 0 이상부터 입력 가능합니다.");
+			return;
 		}
 
 		formData.append("userId", userId);
@@ -146,10 +162,16 @@ const RegisterForm = ({ ...props }) => {
 			} else if (res.data) {
 				registerForm.resetFields();
 				setImgFile();
-				message.error("이미 등록한 독서모임이 존재합니다.");
+				message.warning("이미 등록한 독서모임이 존재합니다.");
 			}
 		} catch (err) {
-			console.log(err);
+			if (
+				err.response.data.message ===
+				"Maximum upload size exceeded; nested exception is java.lang.IllegalStateException: org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException: The field img exceeds its maximum permitted size of 1048576 bytes."
+			)
+				message.warning(
+					"사진 용량이 초과되었습니다! 사진을 다시 등록해주세요."
+				);
 		}
 	};
 
@@ -240,18 +262,29 @@ const RegisterForm = ({ ...props }) => {
 						>
 							<Row gutter={[0, 24]} justify="center">
 								{!preview ? (
-									<SkeletonImg />
+									<>
+										<SkeletonImg />
+										<TrashBtn>
+											<img src={trash} alt="Trash icon" />
+										</TrashBtn>
+									</>
 								) : (
-									<PreviewImage
-										src={preview}
-										alt="Preview image"
-									></PreviewImage>
+									<>
+										<PreviewImage
+											src={preview}
+											alt="Preview image"
+										></PreviewImage>
+										<TrashBtn onClick={handleImgDelete}>
+											<img src={trash} alt="Trash icon" />
+										</TrashBtn>
+									</>
 								)}
 								<FileInput>
 									<input
 										type="file"
 										accept="image/*"
 										onChange={handleImgChange}
+										ref={ref}
 									/>
 								</FileInput>
 							</Row>
@@ -703,7 +736,8 @@ const PreviewImage = styled.img`
 	width: 263px;
 	height: 263px;
 	border: none;
-	border-radius: 50%;
+  border-radius: 50%;
+  position: relative;
 
 	${customMedia.lessThan("mobile")`
     width: 80px;
@@ -725,6 +759,21 @@ const PreviewImage = styled.img`
     width: 180px;
     height: 180px;
   `}
+`;
+
+const TrashBtn = styled.div`
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+	z-index: 10;
+	position: absolute;
+	top: 10%;
+	right: 25%;
+
+	img {
+		width: 100%;
+		height: 100%;
+	}
 `;
 
 const ButtonRow = styled(Row)`

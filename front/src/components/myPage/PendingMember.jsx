@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import profile from "../../images/icons/profile.png";
 

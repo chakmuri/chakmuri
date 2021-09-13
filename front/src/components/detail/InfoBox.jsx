@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Skeleton, Modal, Row, message } from "antd";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import SmallTag from "../common/SmallTag";
 import Button from "../common/Button";
@@ -517,18 +517,26 @@ const FilledBtn = styled(Button)`
 const SkeletonImg = styled(Skeleton.Image)`
 	.ant-skeleton-image {
 		width: 493px;
-    height: 100%;
+    height: 332px;
     
   ${customMedia.lessThan("mobile")`
-    width: 147.5px;
+    width: 295px;
+    height: 186px;
   `}
 
-	${customMedia.between("mobile", "tablet")`
+	${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+    height: 170px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
     width: 305px;
+    height: 203px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
     width: 440px;
+    height: 293px;
   `}
 	}
 `;

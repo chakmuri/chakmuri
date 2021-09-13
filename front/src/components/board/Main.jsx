@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { Row, Col, Checkbox, Select, message } from "antd";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import TagFilter from "./TagFilter";
 import SearchBar from "./SearchBar";
@@ -167,7 +167,8 @@ const { Option } = Select;
 
 const Wrapper = styled.section`
 	width: 1200px;
-	margin: 90px auto;
+  margin: 90px auto;
+  flex: 1;
 
   ${customMedia.lessThan("mobile")`
     width: 295px;

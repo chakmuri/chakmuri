@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Modal, Menu, Dropdown } from "antd";
 import styled from "styled-components";
-import { customMedia } from "../GlobalStyles";
+import { customMedia } from "../../../GlobalStyles";
 
 import Login from "./login/Login";
 import RegisterForm from "./register/RegisterForm";

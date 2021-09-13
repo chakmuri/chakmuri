@@ -1,6 +1,6 @@
 import { Pagination } from "antd";
 import styled from "styled-components";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 const CustomPagination = (props) => {
 	return <StyledPagination {...props} />;

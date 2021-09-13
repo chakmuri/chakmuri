@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Card, Skeleton, message } from "antd";
 import styled from "styled-components";
-import { customMedia } from "../common/GlobalStyles";
+import { customMedia } from "../../GlobalStyles";
 
 import SmallTag from "../common/SmallTag";
 import unfilledHeart from "../../images/icons/unfilled_heart.png";
@@ -313,8 +313,8 @@ const ClubExpiredTag = styled(ExpiredTag)`
 
 const SkeletonImg = styled(Skeleton.Image)`
 .ant-skeleton-image {
-  width: 340px;
-  height: 190px;
+  width: 360px;
+  height: 192.5px;
   
   ${customMedia.lessThan("mobile")`
     width: 295px;
