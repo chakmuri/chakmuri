@@ -45,8 +45,9 @@ public class ClubController {
             @RequestParam(value = "tags") String tags,
             @RequestParam(value = "clubStatus") String clubStatus,
             @RequestParam(value = "keyword") String keyword,
-            @PageableDefault(direction = Sort.Direction.DESC, size = 9) Pageable pageable) {
-        List<Club> allClubs = clubService.findAllClubs(sortBy, tags, clubStatus, keyword);
+            @PageableDefault(size = 9) Pageable pageable) {
+        List<Club> allClubs = clubService.sortClubBySortBy(
+                clubService.findAllClubs(tags, clubStatus, keyword), sortBy);
         //page=0부터 동작하는 게 default이지만, yml 설정을 통해 1부터 시작하게 할 수 있음. 그러나 여전히 0이어도 동작은 한다.
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), allClubs.size());
@@ -56,7 +57,7 @@ public class ClubController {
                 .collect(Collectors.toList());  //스트림에서 작업한 결과를 담은 리스트로 반환
         //Collectors.joining(delimeter, prefix, suffix)로 스트링으로 조합할 수 있음
         ClubPageResponseDto pageResponseDto = new ClubPageResponseDto((long) allClubs.size(), clubResponseDtoList);
-        return new ResponseEntity(pageResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(pageResponseDto, HttpStatus.OK);
     }
 
     //독서모임 상세조회
@@ -76,7 +77,7 @@ public class ClubController {
         if (club != null) {
             return ResponseEntity.ok(new ClubDetailResponseDto(club));
         } else {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
@@ -90,7 +91,7 @@ public class ClubController {
             clubService.updateClub(clubUpdateRequestDto, userId, file);
             return new ResponseEntity("독서모임 수정이 완료되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
