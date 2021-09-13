@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { customMedia } from "../../GlobalStyles";
 
 const Footer = () => {
 	return (
@@ -18,16 +19,73 @@ const StyledFooter = styled.div`
 	display: flex;
 	gap: 600px;
 	justify-content: center;
-	align-items: center;
+  align-items: center;
+  
+  ${customMedia.lessThan("mobile")`
+    height: 40px;
+    gap: 100px;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    height: 40px;
+    gap: 150px;
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
+    height: 60px;
+    gap: 200px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    height: 60px;
+    gap: 400px;
+  `}
+	
 `;
 
 const Copyright = styled.div`
-	font-family: Roboto;
 	font-size: 22px;
-	font-weight: 500;
+  font-weight: 500;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 10px;
+    margin-left: 25px;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+   font-size: 10px;
+    margin-left: 25px;
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 14px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    font-size: 18px;
+  `}
+
 `;
 
 const Text = styled.div`
-	font-family: Roboto;
-	font-size: 20px;
+  font-size: 20px;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 10px;
+    margin-right: 25px;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+    margin-right: 25px;
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 14px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    font-size: 16px;
+  `}
+	
 `;

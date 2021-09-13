@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
-import { Form, Input, InputNumber, Row, Col, DatePicker, message } from "antd";
+import {
+	Form,
+	Input,
+	InputNumber,
+	Row,
+	Col,
+	DatePicker,
+	message,
+	Skeleton,
+} from "antd";
 import styled from "styled-components";
 import moment from "moment";
+import { customMedia } from "../../GlobalStyles";
 
 import MapContainer from "../common/MapContainer";
 import Button from "../common/Button";
 import Tag from "../common/Tag";
+
+import trash from "../../images/icons/trash.png";
 
 const EditForm = ({ ...props }) => {
 	const [editForm] = Form.useForm();
@@ -19,8 +31,8 @@ const EditForm = ({ ...props }) => {
 	);
 	const [imgFile, setImgFile] = useState(props.myClub.imgUrl);
 	const [preview, setPreview] = useState(props.myClub.imgUrl);
-	const [startDate, setStartDate] = useState("");
-	const [endDate, setEndDate] = useState("");
+	const [startDate, setStartDate] = useState(props.myClub.startDate);
+	const [endDate, setEndDate] = useState(props.myClub.endDate);
 	const [selectedTags, setSelectedTags] = useState(
 		props.myClub.tags ? props.myClub.tags.split(", ") : []
 	);
@@ -36,6 +48,8 @@ const EditForm = ({ ...props }) => {
 		"친목",
 		"독서 외 활동",
 	];
+
+	const ref = useRef();
 
 	const onChange = (e) => {
 		setInputText(e.target.value);
@@ -69,6 +83,11 @@ const EditForm = ({ ...props }) => {
 		}
 	};
 
+	const handleImgDelete = () => {
+		ref.current.value = "";
+		setPreview();
+	};
+
 	const handleSelectTags = (e) => {
 		let tagName = e.target.innerText;
 		let index = selectedTags.indexOf(tagName);
@@ -89,24 +108,29 @@ const EditForm = ({ ...props }) => {
 		setEndDate(values.date[1]._d.toISOString().substring(0, 10));
 		const sendTags = selectedTags.join(", ");
 		const formData = new FormData();
-		const config = {
-			headers: {
-				"content-type": "multipart/form-data",
-			},
-		};
 
 		if (!values.minPersonnel || !values.maxPersonnel) {
 			message.error("참여인원을 입력해주세요.");
 			return;
 		}
 
-		if (!imgFile) {
-			message.error("사진을 등록해주세요.");
+		if (!sendTags) {
+			message.error("태그를 선택해주세요.");
 			return;
 		}
 
-		if (!sendTags) {
-			message.error("태그를 선택해주세요.");
+		if (values.title.length > 10) {
+			message.warning("이름은 10자까지 입력 가능합니다.");
+			return;
+		}
+
+		if (values.contents.length > 40) {
+			message.warning("한 줄 소개는 40자까지 입력 가능합니다.");
+			return;
+		}
+
+		if (values.publishedAt < 0) {
+			message.warning("출판연도는 숫자 0 이상부터 입력 가능합니다.");
 			return;
 		}
 
@@ -119,15 +143,24 @@ const EditForm = ({ ...props }) => {
 		formData.append("tags", sendTags);
 		formData.append("bookTitle", values.bookTitle);
 		formData.append("author", values.author);
-		formData.append("publisher", values.publisher);
+		formData.append(
+			"publisher",
+			values.publisher === "없음" ? "" : values.publisher
+		);
 		formData.append(
 			"publishedAt",
-			values.publishedAt === 0 ? "미정" : values.publishedAt
+			values.publishedAt === 0 ? 0 : values.publishedAt
 		);
 		formData.append("bookDescription", values.bookDescription);
 		formData.append("description", values.description);
-		formData.append("addressStreet", values.addressStreet);
-		formData.append("addressDetail", values.addressDetail);
+		formData.append(
+			"addressStreet",
+			values.addressStreet === "없음" ? "" : values.addressStreet
+		);
+		formData.append(
+			"addressDetail",
+			values.addressDetail === "없음" ? "" : values.addressDetail
+		);
 
 		if (props.myClub.imgUrl !== imgFile) {
 			formData.append("img", imgFile);
@@ -136,23 +169,35 @@ const EditForm = ({ ...props }) => {
 		}
 
 		try {
-			const res = await axios.put(`/clubs/users/${userId}`, formData, config);
+			const res = await axios.put(`/clubs/users/${userId}`, formData);
 
 			if (res.status === 200)
 				message.success("독서모임이 성공적으로 수정되었습니다!");
 			else message.error("독서모임 수정에 실패했습니다.");
 		} catch (err) {
-			console.log(err);
+			if (
+				err.response.data.message ===
+				"Maximum upload size exceeded; nested exception is java.lang.IllegalStateException: org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException: The field img exceeds its maximum permitted size of 1048576 bytes."
+			)
+				message.warning(
+					"사진 용량이 초과되었습니다! 사진을 다시 등록해주세요."
+				);
 		}
 	};
 
 	const onFinish = async (values) => {
-		sendData(values);
+		try {
+			sendData(values);
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	const onFinishFailed = (errorInfo) => {
 		console.log("Failed: ", errorInfo);
 	};
+
+	const disabledDate = (current) => current && current < moment().endOf("day");
 
 	return (
 		<Wrapper>
@@ -200,9 +245,8 @@ const EditForm = ({ ...props }) => {
 									>
 										<StyledInputNumber min={2} placeholder={2} />
 									</Form.Item>
-									<span> 인 </span>
+									<StyledSpan> 인 ~ </StyledSpan>
 								</PersonnelRow>
-								<span> ~ </span>
 								<PersonnelRow>
 									<Form.Item
 										initialValue={props.myClub.maxPersonnel}
@@ -210,7 +254,7 @@ const EditForm = ({ ...props }) => {
 									>
 										<StyledInputNumber min={2} placeholder={2} />
 									</Form.Item>
-									<span> 인 </span>
+									<StyledSpan> 인 </StyledSpan>
 								</PersonnelRow>
 							</Row>
 						</Form.Item>
@@ -229,7 +273,7 @@ const EditForm = ({ ...props }) => {
 								},
 							]}
 						>
-							<StyledRangePicker />
+							<StyledRangePicker disabledDate={disabledDate} />
 						</Form.Item>
 					</Col>
 					<Col span={8}>
@@ -243,21 +287,29 @@ const EditForm = ({ ...props }) => {
 						>
 							<Row gutter={[0, 24]} justify="center">
 								{!preview ? (
-									<PreviewImage
-										src="https://placehold.co/263x263"
-										alt="Preview image"
-									></PreviewImage>
+									<>
+										<SkeletonImg />
+										<TrashBtn>
+											<img src={trash} alt="Trash icon" />
+										</TrashBtn>
+									</>
 								) : (
-									<PreviewImage
-										src={preview}
-										alt="Preview image"
-									></PreviewImage>
+									<>
+										<PreviewImage
+											src={preview}
+											alt="Preview image"
+										></PreviewImage>
+										<TrashBtn onClick={handleImgDelete}>
+											<img src={trash} alt="Trash icon" />
+										</TrashBtn>
+									</>
 								)}
 								<FileInput>
 									<input
 										type="file"
 										accept="image/*"
 										onChange={handleImgChange}
+										ref={ref}
 									/>
 								</FileInput>
 							</Row>
@@ -265,30 +317,20 @@ const EditForm = ({ ...props }) => {
 					</Col>
 				</Row>
 				<TagRow>
-					<Form.Item
-						label="태그 (최대 3개까지 선택 가능)"
-						name="tags"
-						rules={[
-							{
-								type: "array",
-								message: "모임의 태그를 선택하세요.",
-							},
-						]}
-					>
-						<TagContainer>
-							{tags.map((tag, i) => (
-								<Tag
-									type="button"
-									key={i}
-									value={i}
-									onClick={handleSelectTags}
-									selected={selectedTags.includes(tag) ? true : false}
-								>
-									{tag}
-								</Tag>
-							))}
-						</TagContainer>
-					</Form.Item>
+					<TagTitle>태그 (3개까지 선택 가능)</TagTitle>
+					<TagContainer>
+						{tags.map((tag, i) => (
+							<Tag
+								type="button"
+								key={i}
+								value={i}
+								onClick={handleSelectTags}
+								selected={selectedTags.includes(tag) ? true : false}
+							>
+								{tag}
+							</Tag>
+						))}
+					</TagContainer>
 				</TagRow>
 				<TitleRow>선정도서</TitleRow>
 				<Col span={16}>
@@ -314,17 +356,21 @@ const EditForm = ({ ...props }) => {
 				<Col span={16}>
 					<Form.Item
 						initialValue={
-							props.myClub.publisher === undefined ? "" : props.myClub.publisher
+							props.myClub.publisher === "undefined"
+								? ""
+								: props.myClub.publisher
 						}
 						label="출판사"
 						name="publisher"
 					>
-						<StyledInput placeholder="작가명" />
+						<StyledInput placeholder="출판사" />
 					</Form.Item>
 				</Col>
 				<Col span={16}>
 					<Form.Item
-						initialValue={props.myClub.publishedAt}
+						initialValue={
+							props.myClub.publishedAt === 0 ? 0 : props.myClub.publishedAt
+						}
 						label="출판연도"
 						name="publishedAt"
 					>
@@ -375,8 +421,8 @@ const EditForm = ({ ...props }) => {
 							<Form.Item
 								name="addressStreet"
 								initialValue={
-									!props.myClub.addressStreet
-										? "없음"
+									props.myClub.addressStreet === "undefined"
+										? ""
 										: props.myClub.addressStreet
 								}
 							>
@@ -389,8 +435,8 @@ const EditForm = ({ ...props }) => {
 							<Form.Item
 								name="addressDetail"
 								initialValue={
-									!props.myClub.addressDetail
-										? "없음"
+									props.myClub.addressDetail === "undefined"
+										? ""
 										: props.myClub.addressDetail
 								}
 							>
@@ -424,16 +470,54 @@ const Wrapper = styled.section`
 	margin: 0 auto;
 	border: 1.5px solid #c4c4c4;
 	border-radius: 5px;
+
+	${customMedia.lessThan("mobile")`
+    width: 295px;
+	  padding: 5px;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+    padding: 5px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
+    width: 610px;
+	  padding: 10px 20px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    width: 880px;
+	  padding: 20px 50px;
+
+  `}
 `;
 
 const StyledForm = styled(Form)`
+
 	.ant-form-item-label > label {
 		font-size: 18px;
-		font-weight: bold;
+    font-weight: bold;
+    
+    ${customMedia.lessThan("mobile")`
+      font-size: 10px;
+    `}
+
+    ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
+      font-size: 14px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 16px;
+    `}
 	}
 
 	.ant-form-item {
-		margin-bottom: 14px;
+    margin-bottom: 14px;
 	}
 
 	.ant-input:focus,
@@ -448,17 +532,36 @@ const StyledForm = styled(Form)`
 `;
 
 const StyledInput = styled(Input)`
-	font-family: Roboto;
 	font-size: 16px;
 	height: 48px;
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
-	border-radius: 5px;
+  border-radius: 5px;
+  
+ ${customMedia.lessThan("mobile")`
+      font-size: 10px;
+	    height: 28px;
+    `}
+
+
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+	    height: 28px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
+      font-size: 12px;
+	    height: 32px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 14px;
+	    height: 40px;
+    `}
 	}
 `;
 
 const StyledInputNumber = styled(InputNumber)`
-	font-family: Roboto;
 	font-weight: bold;
 	font-size: 16px;
 	width: 80px;
@@ -466,45 +569,154 @@ const StyledInputNumber = styled(InputNumber)`
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
+
+	.ant-input-number-input-wrap,
+	.ant-input-number-input {
+		height: 100%;
+	}
+
+	${customMedia.lessThan("mobile")`
+      font-size: 10px;
+      width: 30px;
+	    height: 20px;
+    `}
+
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+      width: 30px;
+	    height: 20px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
+     font-size: 12px;
+      width: 50px;
+	    height: 25px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 14px;
+      width: 60px;
+	    height: 30px;
+    `}
 `;
 
 const PersonnelRow = styled.div`
 	display: flex;
-	gap: 5px;
+	gap: 1px;
+`;
+
+const StyledSpan = styled.span`
+  align-self: center;
+  margin: 0 5px;
+
+  ${customMedia.lessThan("mobile")`
+      font-size: 10px;
+    `}
+
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
+     font-size: 12px;
+      
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 14px;
+      
+    `}
+
 `;
 
 const TitleRow = styled.div`
-	font-family: Roboto;
 	font-weight: bold;
 	font-size: 20px;
-	margin: 20px 0;
-`;
+  margin: 20px 0;
+  
+    ${customMedia.lessThan("mobile")`
+      font-size: 12px;
+    `}
 
-const TagRow = styled(Row)`
-	margin-top: 20px;
-`;
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 12px;
+  `}
 
-const FileInput = styled.div`
-	background-color: #f6f6f6;
-	border: 1px solid #94989b;
-	border-radius: 5px;
-	padding: 3px;
+    ${customMedia.between("largeMobile", "tablet")`
+      font-size: 14px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 16px;
+    `}
 `;
 
 const StyledRangePicker = styled(RangePicker)`
-	height: 48px;
-	background-color: #f6f6f6;
-	border: 1px solid #94989b;
-	border-radius: 5px;
+  height: 48px;
+  background-color: #f6f6f6;
+  border: 1px solid #94989b;
+  border-radius: 5px;
 
-	.ant-picker-input > input {
-		font-size: 16px;
-		text-align: center;
-	}
+  ${customMedia.lessThan("desktop")`
+	    height: 40px;
+    `}
+    
+    .ant-picker-input > input {
+      font-size: 16px;
+      text-align: center;
+      
+      ${customMedia.lessThan("mobile")`
+      font-size: 10px;
+      `}
 
-	.ant-picker-active-bar {
-		background: #f98404;
-	}
+       ${customMedia.between("mobile", "largeMobile")`
+         font-size: 10px;
+  `}
+      
+      ${customMedia.between("largeMobile", "tablet")`
+      font-size: 12px;
+      `}
+      
+      ${customMedia.between("tablet", "desktop")`
+      font-size: 14px;
+      `}
+    }
+    
+    .ant-picker-active-bar {
+      background: #f98404;
+    }
+  `;
+
+const FileInput = styled.div`
+  background-color: #f6f6f6;
+  border: 1px solid #94989b;
+  border-radius: 5px;
+  padding: 10px;
+  width: 250px;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 10px;
+    padding: 0;
+    width: 80px;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+    padding: 0;
+    width: 80px;
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 12px;
+    padding: 3px;
+    width: 170px;
+  `}
+  
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 14px;
+    padding: 5px;
+  `}
 `;
 
 const StyledTextArea = styled(TextArea)`
@@ -513,18 +725,110 @@ const StyledTextArea = styled(TextArea)`
 	background-color: #f6f6f6;
 	border: 1px solid #94989b;
 	border-radius: 5px;
+  
+	${customMedia.lessThan("mobile")`
+  font-size: 10px;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+
+  `}
+  
+  ${customMedia.between("largeMobile", "tablet")`
+  font-size: 12px;
+  `}
+  
+  ${customMedia.between("tablet", "desktop")`
+  font-size: 14px;
+  `}
+  `;
+
+const TagRow = styled(Row)`
+	margin-top: 20px;
+`;
+
+const TagTitle = styled.div`
+	font-weight: bold;
+	font-size: 20px;
+  margin-bottom: 7px; 
+  
+  ${customMedia.lessThan("mobile")`
+  font-size: 10px;
+  `} 
+
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+  `}
+  
+  ${customMedia.between("largeMobile", "tablet")`
+  font-size: 14px;
+  `} 
+  
+  ${customMedia.between("tablet", "desktop")`
+  font-size: 16px;
+  `};
 `;
 
 const TagContainer = styled.div`
 	display: flex;
 	gap: 10px;
+
+	${customMedia.lessThan("mobile")`
+    gap: 1px;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    gap: 2px;
+
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
+    gap: 5px;
+  `}
 `;
 
 const PreviewImage = styled.img`
-	width: 263px;
-	height: 263px;
+	width: 260px;
+	height: 260px;
 	border: none;
 	border-radius: 50%;
+
+	${customMedia.lessThan("mobile")`
+    width: 80px;
+	  height: 80px;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 80px;
+	  height: 80px;
+
+  `}
+
+  ${customMedia.between("largeMobile", "tablet")`
+    width: 120px;
+    height: 120px;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    width: 180px;
+    height: 180px;
+  `}
+`;
+
+const TrashBtn = styled.div`
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+	z-index: 10;
+	position: absolute;
+	top: 10%;
+	right: 25%;
+
+	img {
+		width: 100%;
+		height: 100%;
+	}
 `;
 
 const ButtonRow = styled.div`
@@ -536,7 +840,26 @@ const ButtonRow = styled.div`
 const MapWrapper = styled.div`
 	width: 1000px;
 	height: 250px;
-	margin-top: 40px;
+  margin-top: 40px;
+  
+	${customMedia.lessThan("mobile")`
+    width: 282px;
+	  height: 200px;
+    `}
+
+    ${customMedia.between("mobile", "largeMobile")`
+    width: 363px;
+	  height: 200px;
+
+  `}
+
+    ${customMedia.between("mobile", "tablet")`
+      width: 567px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      width: 777px;
+    `}
 `;
 
 const FilledBtn = styled(Button)`
@@ -545,6 +868,52 @@ const FilledBtn = styled(Button)`
 		background-color: #ff6701;
 		border: none;
 		border-radius: 6px;
-		outline: none;
+    outline: none;
+    
+    	${customMedia.lessThan("mobile")`
+      font-size: 10px;
+    `}
+
+    ${customMedia.between("mobile", "largeMobile")`
+         font-size: 10px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
+      font-size: 12px;
+
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 16px;
+
+    `}
+	}
+`;
+
+const SkeletonImg = styled(Skeleton.Image)`
+	.ant-skeleton-image {
+		width: 260px;
+		height: 260px;
+		border-radius: 50%;
+
+	  ${customMedia.lessThan("mobile")`
+      width: 60px;
+		  height: 60px;
+    `}
+
+    ${customMedia.between("mobile", "largeMobile")`
+      width: 80px;
+		  height: 80px;
+  `}
+
+    ${customMedia.between("largeMobile", "tablet")`
+      width: 120px;
+		  height: 120px;
+    `}
+
+    ${customMedia.between("tablet", "desktop")`
+      width: 180px;
+		  height: 180px;
+    `}
 	}
 `;

@@ -1,26 +1,20 @@
 package bookclub.chakmuri.service;
 
-import aj.org.objectweb.asm.Label;
+import bookclub.chakmuri.common.error.exception.ClubNotFoundException;
+import bookclub.chakmuri.common.error.exception.UserNotFoundException;
 import bookclub.chakmuri.controller.club.ClubCreateRequestDto;
 import bookclub.chakmuri.controller.club.ClubUpdateRequestDto;
 import bookclub.chakmuri.domain.*;
-import bookclub.chakmuri.repository.ClubRepository;
-import bookclub.chakmuri.repository.CommentRepository;
-import bookclub.chakmuri.repository.LikedClubRepository;
-import bookclub.chakmuri.repository.UserRepository;
+import bookclub.chakmuri.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,9 +24,11 @@ public class ClubService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final LikedClubRepository likedClubRepository;
+    private final MemberRepository memberRepository;
     private final S3Service s3Service;
+    private final String imageUrl = "https://cdn.lifestyleasia.com/wp-content/uploads/sites/2/2020/02/25145253/Photo-by-Alfons-Morales-on-Unsplash-scaled-1535x900.jpg";
 
-    //TODO: 독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> ??
+    //독서모임 생성, 수정할 때 시작일이 오늘 날짜보다 빠르면 예외처리 -> FE 측에서 처리??
 
     @Transactional
     public Club createClub(ClubCreateRequestDto requestDto, MultipartFile file) {
@@ -43,6 +39,8 @@ public class ClubService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else{
+            requestDto.setImgUrl(imageUrl);
         }
         Club club = requestDto.toEntity();
         String startDateString = requestDto.getStartDate();
@@ -61,7 +59,7 @@ public class ClubService {
     private Club convertToNewClub(final Club club, final Book book, final String userId,
                                   LocalDate startDate, LocalDate endDate) {
         final User user = userRepository.findById(userId)
-                .orElseThrow(); // -> TODO : UserNotFoundException 만들어서 넣기
+                .orElseThrow(UserNotFoundException::new);
         return Club.builder()
                 .user(user)
                 .title(club.getTitle())
@@ -82,64 +80,61 @@ public class ClubService {
     }
 
     //독서모임 만료 처리 메서드
-    private void changeClubStatus(Club club){
-        if(LocalDate.now().isAfter(club.getEndDate())){
+    private void changeClubStatus(Club club) {
+        if (LocalDate.now().isAfter(club.getEndDate())) {
             club.changeStatus(ClubStatus.EXPIRED);
-        }
-        else club.changeStatus(ClubStatus.ACTIVE);
+        } else club.changeStatus(ClubStatus.ACTIVE);
     }
 
-    private void changeAllClubStatus(){
+    private void changeAllClubStatus() {
         List<Club> clubList = clubRepository.findAll();
-        for(Club club : clubList){
+        for (Club club : clubList) {
             changeClubStatus(club);
         }
     }
 
     //독서모임 검색조건 조회
     //param 으로 아예 tags 나 keyword 를 포함하지 않을 수도 있기 때문에 ==null 로 비교
-    public List<Club> findAllClubs(String sortBy, String tags, String clubStatus, String keyword) {
+    public List<Club> findAllClubs(String tags, String clubStatus, String keyword) {
         //클럽 모집 여부 상태 확인
         changeAllClubStatus();
 
-        //sortBy 정렬
-        List<Club> clubs;
-        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
-        clubs = clubRepository.findAll(sort);
+        //모든 독서모임 조회
+        List<Club> clubs = clubRepository.findAll();
 
         //모집중 만 필터링
-        if(!clubStatus.isEmpty()){
+        if (!clubStatus.isEmpty()) {
             clubs.removeIf(club -> club.getClubStatus().equals(ClubStatus.EXPIRED));
         }
 
-        //tag와 keyword 값 확인 -> 둘 다 없으면 sortBy만 적용해서 리턴
-        if(tags.isEmpty() && keyword.isEmpty()){
+        //tag 와 keyword 값 확인 -> 둘 다 없으면 sortBy만 적용해서 리턴
+        if (tags.isEmpty() && keyword.isEmpty()) {
             return clubs;
         }
 
         //keyword 필터링 -> clubs 항목들의 제목이 keyword 를 포함하고 있는가
         List<Club> clubSortedByKeyword = new ArrayList<>();
 
-        if(keyword.isEmpty())
+        if (keyword.isEmpty())
             clubSortedByKeyword = clubs;
         else {
-            for(Club club: clubs){
-                if(club.getTitle().contains(keyword)) {
+            for (Club club : clubs) {
+                if (club.getTitle().contains(keyword)) {
                     clubSortedByKeyword.add(club);
                 }
             }
         }
 
-        if(tags.isEmpty())
+        if (tags.isEmpty())
             return clubSortedByKeyword;
 
         //tag 필터링
         Set<Club> clubSortedByTags = new HashSet<>();
         List<String> tag = Arrays.asList(tags.split(", "));
-        for(Club club : clubSortedByKeyword){
+        for (Club club : clubSortedByKeyword) {
             List<String> originTag = Arrays.asList(club.getTags().split(", "));
-            for(String tagString : tag){
-                if(originTag.contains(tagString))
+            for (String tagString : tag) {
+                if (originTag.contains(tagString))
                     clubSortedByTags.add(club);
             }
         }
@@ -147,16 +142,27 @@ public class ClubService {
         return new ArrayList<>(clubSortedByTags);
     }
 
+    //정렬 메서드
+    public List<Club> sortClubBySortBy(List<Club> clubs, String sortBy) {
+        if(sortBy.equals("createdAt")){
+            return clubs.stream().sorted(Comparator.comparing(Club::getCreatedAt).reversed())
+                    .collect(Collectors.toList());
+        } else {
+            return clubs.stream().sorted(Comparator.comparing(Club::getLikes).reversed())
+                    .collect(Collectors.toList());
+        }
+    }
+
     public Club findClubById(Long clubId) {
-        Club club = clubRepository.findById(clubId).orElseThrow();// -> TODO : ClubNotFoundException 만들기
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         changeClubStatus(club);
         return club;
     }
 
     public Club findClubByUserId(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(); // -> TODO : UserNotFoundException 만들어서 넣기
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Club club = clubRepository.findByUser(user).orElse(null);
-        if(club != null){
+        if (club != null) {
             changeClubStatus(club);
         }
         return club;
@@ -172,6 +178,8 @@ public class ClubService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            requestDto.setImgUrl(club.getImgUrl());
         }
         LocalDate startDate = LocalDate.parse(requestDto.getStartDate(), DateTimeFormatter.ISO_DATE);
         LocalDate endDate = LocalDate.parse(requestDto.getEndDate(), DateTimeFormatter.ISO_DATE);
@@ -196,8 +204,9 @@ public class ClubService {
     @Transactional
     public void deleteClub(String userId) {
         final Club club = findClubByUserId(userId);
-        commentRepository.deleteAllByClubId(club.getId());
-        likedClubRepository.deleteByClubId(club.getId());
+        commentRepository.deleteAllByClub(club);
+        likedClubRepository.deleteByClub(club);
+        memberRepository.deleteAllByClub(club);
         clubRepository.delete(club);
     }
 }

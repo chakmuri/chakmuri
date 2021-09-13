@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { customMedia } from "../../GlobalStyles";
 
 const Tag = (props) => {
 	return <StyledTag {...props}>{props.children}</StyledTag>;
@@ -16,6 +17,29 @@ const StyledTag = styled.button`
 	text-align: center;
 	letter-spacing: 2px;
 	cursor: pointer;
+
+	${customMedia.lessThan("mobile")`
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 15px;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+      font-size: 12px;
+      padding: 5px 7px;
+      border-radius: 15px;
+
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
+    font-size: 16px;
+	  padding: 7px 13px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    font-size: 16px;
+	  padding: 7px 13px;
+  `}
 
 	&:hover {
 		color: #ffffff;

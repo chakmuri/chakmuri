@@ -5,9 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class ClubCreateRequestDto {
 
@@ -29,7 +28,7 @@ public class ClubCreateRequestDto {
     private String addressDetail;
     private String addressStreet;
 
-    public Club toEntity(){
+    public Club toEntity() {
         return Club.builder()
                 .title(title)
                 .contents(contents)

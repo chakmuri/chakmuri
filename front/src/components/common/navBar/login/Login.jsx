@@ -1,14 +1,16 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import axios from "axios";
 import styled from "styled-components";
-import dotenv from "dotenv";
+import { customMedia } from "../../../../GlobalStyles";
 
+import { GOOGLE_CLIENT_ID } from "../../../../constants";
 import google from "../../../../images/icons/google.png";
 
-dotenv.config();
-
 const Login = ({ ...props }) => {
+	const history = useHistory();
+
 	const onSuccess = async (response) => {
 		const {
 			profileObj: { googleId, email, name, imageUrl },
@@ -26,15 +28,18 @@ const Login = ({ ...props }) => {
 				};
 
 				await axios.post("/users", user);
+
 				await axios.get(`users/${user.id}`);
 
 				localStorage.setItem("user_id", user.id);
 				localStorage.setItem("user_image", user.imgUrl);
 				props.onCancel();
+				history.go(0);
 			} else {
 				localStorage.setItem("user_id", res.data.id);
 				localStorage.setItem("user_image", res.data.imgUrl);
 				props.onCancel();
+				history.go(0);
 			}
 		} catch (err) {
 			console.log(err);
@@ -45,10 +50,12 @@ const Login = ({ ...props }) => {
 		console.log("Login Failed: ", response);
 	};
 
+	console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
+
 	return (
 		<>
 			<GoogleLogin
-				clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+				clientId={GOOGLE_CLIENT_ID}
 				render={(renderProps) => (
 					<GoogleLoginButton
 						onClick={renderProps.onClick}
@@ -76,9 +83,9 @@ const GoogleIcon = styled.span`
 `;
 
 const GoogleLoginButton = styled.button`
-	width: 280px;
-	height: 40px;
-	font-size: 16px;
+	width: 300px;
+	height: 50px;
+	font-size: 18px;
 	font-weight: bold;
 	color: #ffffff;
 	background-color: #db4437;
@@ -89,4 +96,14 @@ const GoogleLoginButton = styled.button`
 	cursor: pointer;
 
 	position: relative;
+
+	${customMedia.lessThan("mobile")`
+      font-size: 14px;
+      width: 220px;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+      font-size: 16px;
+      width: 240px;
+  `}
 `;

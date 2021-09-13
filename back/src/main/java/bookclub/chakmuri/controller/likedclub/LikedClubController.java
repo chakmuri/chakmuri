@@ -1,7 +1,6 @@
 package bookclub.chakmuri.controller.likedclub;
 
 import bookclub.chakmuri.domain.LikedClub;
-import bookclub.chakmuri.repository.LikedClubRepository;
 import bookclub.chakmuri.service.LikedClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,17 +17,16 @@ import java.util.stream.Collectors;
 public class LikedClubController {
 
     private final LikedClubService likedClubService;
-    private final LikedClubRepository likedClubRepository;
 
     @PostMapping
     public ResponseEntity<LikedClubResponseDto> createLikedClub(
             @RequestBody LikedClubCreateRequestDto likedClubRequestDto) {
-        try{
+        try {
             LikedClub likedClub = likedClubService.createLikedClub(likedClubRequestDto);
             return new ResponseEntity(
-                    "정상적으로 등록됐습니다. (likedClubId: " + likedClub.getId() + ")", HttpStatus.OK
+                    "좋아요한 독서모임에 등록되었습니다. (likedClubId: " + likedClub.getId() + ")", HttpStatus.OK
             );
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity("이미 등록된 좋아요한 독서모임 입니다.", HttpStatus.BAD_REQUEST);
         }
     }
@@ -39,7 +37,7 @@ public class LikedClubController {
             @RequestParam("userId") String userId) {
         likedClubService.deleteLikedClub(clubId, userId);
         return new ResponseEntity(
-                "정상적으로 삭제되었습니다.", HttpStatus.OK
+                "좋아요한 독서모임에서 삭제되었습니다.", HttpStatus.OK
         );
     }
 
@@ -56,6 +54,15 @@ public class LikedClubController {
                 .collect(Collectors.toList());
         LikedClubPageResponseDto likedClubPageResponseDto = new LikedClubPageResponseDto(totalCount, response);
         return new ResponseEntity(likedClubPageResponseDto, HttpStatus.OK);
+    }
+
+    // 사용자가 등록한 좋아요한 독서모임 아이디 조회 (FE 요청으로 추가적으로 만든 api)
+    @GetMapping("/ids")
+    public ResponseEntity<LikedClubIdListResponseDto> getUserLikedClubIds(
+            @RequestParam("userId") String userId) {
+        List<Long> likedClubIdList = likedClubService.getLikedClubIds(userId);
+        LikedClubIdListResponseDto responseDto = new LikedClubIdListResponseDto(likedClubIdList);
+        return new ResponseEntity(responseDto, HttpStatus.OK);
     }
 
 }

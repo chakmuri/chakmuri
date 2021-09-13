@@ -1,8 +1,9 @@
 package bookclub.chakmuri.service;
 
-import bookclub.chakmuri.controller.club.ClubCreateRequestDto;
+import bookclub.chakmuri.common.error.exception.ClubNotFoundException;
+import bookclub.chakmuri.common.error.exception.CommentNotFoundException;
+import bookclub.chakmuri.common.error.exception.UserNotFoundException;
 import bookclub.chakmuri.controller.comment.CommentCreateRequestDto;
-import bookclub.chakmuri.controller.comment.CommentResponseDto;
 import bookclub.chakmuri.controller.comment.CommentUpdateRequestDto;
 import bookclub.chakmuri.domain.Club;
 import bookclub.chakmuri.domain.Comment;
@@ -11,20 +12,11 @@ import bookclub.chakmuri.repository.ClubRepository;
 import bookclub.chakmuri.repository.CommentRepository;
 import bookclub.chakmuri.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.List;
-import java.util.Optional;
-
-import static lombok.Lombok.checkNotNull;
 
 @Service
 @Transactional(readOnly = true)
@@ -44,14 +36,13 @@ public class CommentService {
 
         final Comment newComment = convertToComment(comment, userId, clubId);
         return commentRepository.save(newComment);
-
     }
 
     private Comment convertToComment(final Comment comment, final String userId, final Long clubId) {
         final User user = userRepository.findById(userId)
-                .orElseThrow();// UserNotFoundException::new 추가하기
+                .orElseThrow(UserNotFoundException::new);
         final Club club = clubRepository.findById(clubId)
-                .orElseThrow(); // ClubNotFoundException::new 추가하기
+                .orElseThrow(ClubNotFoundException::new);
 
         return Comment.builder()
                 .contents(comment.getContents())
@@ -61,47 +52,36 @@ public class CommentService {
     }
 
     // 댓글 수정
-    // TODO: commentId 예외처리하기, checkArgument(lectureId > 0, "lectureId must be positive number"); import 안됨.
     @Transactional
     public void updateComment(CommentUpdateRequestDto commentUpdateRequestDto, Long commentId) {
-        String userId = commentUpdateRequestDto.getUserId();
         String contents = commentUpdateRequestDto.getContents();
-        final User user = userRepository.findById(userId)
-                .orElseThrow();   // TODO: UserNotFoundException::new 추가하기
-
         final Comment comment = commentRepository.findById(commentId)
-                .orElseThrow();   // TODO: CommentNotFoundException::new 추가하기
+                .orElseThrow(CommentNotFoundException::new);
 
         comment.changeComment(contents);
     }
+
     @Transactional
     public void deleteComment(final Long commentId) {
         final Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(); // TODO: CommentNotFoundException::new 추가하기
+                .orElseThrow(CommentNotFoundException::new);
 
         commentRepository.delete(comment);
-
-//        userRepository.findById(comment.getUser().getId()) // 댓글을 등록한 유저가 맞다면, 댓글을 삭제할 수 있습니다.
-//                .orElseThrow(); // TODO: UserNotFoundException::new 추가하기
-
-
     }
-    //TODO: 존재하지 않는 모임에 대한 검증 추가
-    public Page<Comment> findAllClubComments(Long clubId, int page) {
-        final Club club = clubRepository.findById(clubId)
-                .orElseThrow(); // TODO: ClubNotFoundException::new 추가하기
 
+    public Page<Comment> findAllClubComments(Long clubId, int page) {
         PageRequest pageRequest = PageRequest.of((page - 1), 5, Sort.by(Sort.Direction.DESC, "id"));
         return commentRepository.findAllByClubId(clubId, pageRequest);
     }
 
     public Page<Comment> findAllUserComments(String userId, int page) {
         User user = userRepository.findById(userId)
-                .orElseThrow();// TODO: UserNotFoundException::new 추가하기
+                .orElseThrow(UserNotFoundException::new);
         PageRequest pageRequest = PageRequest.of((page - 1), 10, Sort.by(Sort.Direction.DESC, "id"));
         return commentRepository.findAllByUser(user, pageRequest);
     }
 
+    // 실제로 사용되지는 않음
     @Transactional
     public void deleteAll() {
         commentRepository.deleteAll();

@@ -9,12 +9,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface LikedClubRepository extends JpaRepository<LikedClub, Long> {
 
     Page<LikedClub> findAllByUser(User user, Pageable pageable);
-    LikedClub findByClubAndUser(Club club, User user);
-    void deleteByClubId(Long clubId);
+
+    Optional<LikedClub> findByClubAndUser(Club club, User user);
+
+    void deleteByClub(Club club);
+
+    List<LikedClub> findAllByUser(User user);
 
 }

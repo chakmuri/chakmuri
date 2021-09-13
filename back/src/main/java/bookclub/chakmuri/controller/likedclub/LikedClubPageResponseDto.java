@@ -1,6 +1,5 @@
 package bookclub.chakmuri.controller.likedclub;
 
-import bookclub.chakmuri.controller.comment.CommentResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +13,7 @@ public class LikedClubPageResponseDto {
     private Long totalCount;
     private List<LikedClubResponseDto> likedClubList;
 
-    public LikedClubPageResponseDto(Long totalCount, List<LikedClubResponseDto> likedClubList){
+    public LikedClubPageResponseDto(Long totalCount, List<LikedClubResponseDto> likedClubList) {
         this.totalCount = totalCount;
         this.likedClubList = likedClubList;
     }

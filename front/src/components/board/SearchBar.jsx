@@ -1,15 +1,11 @@
 import React from "react";
 import { Input } from "antd";
 import styled from "styled-components";
+import { customMedia } from "../../GlobalStyles";
 
 const SearchBar = (props) => {
 	const onSearch = (value) => {
 		props.setKeyword(value);
-		value = "";
-	};
-
-	const onReset = () => {
-		props.setKeyword("");
 	};
 
 	return (
@@ -21,8 +17,7 @@ const SearchBar = (props) => {
 				placeholder="독서모임 검색"
 				onSearch={onSearch}
 				onPressEnter={(e) => {
-					props.setKeyword(e.target.value);
-					onReset();
+					onSearch(e.target.value);
 				}}
 			/>
 		</SearchBarContainer>
@@ -40,7 +35,42 @@ const SearchBarContainer = styled.div`
 `;
 
 const StyledSearchBar = styled(Search)`
-	width: 600px;
+  width: 600px;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 275px;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 303px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
+    width: 305px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    width: 440px;
+  `}
+
+  .ant-input-lg{
+    ${customMedia.lessThan("mobile")`
+      font-size: 14px;
+  `}
+
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 14px;
+  `}
+
+	${customMedia.between("largeMobile", "tablet")`
+    font-size: 14px;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    font-size: 16px;
+  `}
+    
+  }
 
 	.ant-btn-primary {
 		border-color: #ff6701;
