@@ -82,7 +82,7 @@ public class MemberController {
 
     //참여중인 독서모임 아이디 조회 (FE 요청으로 추가적으로 만든 api)
     @GetMapping("/ids")
-    public ResponseEntity<LikedClubIdListResponseDto> getUserLikedClubIds(
+    public ResponseEntity<JoiningClubIdListResponseDto> getJoiningClubIds(
             @RequestParam("userId") String userId) {
         List<Long> joiningClubIdList = memberService.getJoiningClubIds(userId);
         JoiningClubIdListResponseDto responseDto = new JoiningClubIdListResponseDto(joiningClubIdList);
