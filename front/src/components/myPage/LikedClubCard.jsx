@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Card, Skeleton } from "antd";
+import { Card, message, Skeleton } from "antd";
 import styled from "styled-components";
 import { customMedia } from "../common/GlobalStyles";
 
@@ -38,7 +38,11 @@ const LikedClubCard = ({ ...props }) => {
 			<LikeIcon
 				onClick={(e) => {
 					e.stopPropagation();
-					props.handleLikeDelete(props.club.clubId);
+					if (props.userId) {
+						props.handleLikeDelete(props.club.clubId);
+					} else {
+						message.warning("로그인이 필요한 기능입니다.");
+					}
 				}}
 			>
 				{props.like === props.club.clubId ? (

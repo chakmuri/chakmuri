@@ -25,8 +25,8 @@ const StyledTag = styled.button`
   `}
 
 	${customMedia.between("mobile", "tablet")`
-    font-size: 12px;
-	  padding: 3px 7px;
+    font-size: 16px;
+	  padding: 7px 13px;
   `}
 
 	${customMedia.between("tablet", "desktop")`

@@ -65,7 +65,7 @@ const TagContainer = styled.div`
   `}
 
 	${customMedia.between("mobile", "tablet")`
-    width: 555px;
+    width: 475px;
     margin: 40px auto;
     gap: 30px;
   `}
@@ -85,7 +85,7 @@ const BoardTag = styled(Tag)`
   `}
 
 	${customMedia.between("mobile", "tablet")`
-    width: 257.5px;
+    width: 222.5px;
   `}
 
 	${customMedia.between("tablet", "desktop")`

@@ -20,8 +20,8 @@ const Main = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [myClub, setMyClub] = useState();
 	const [likedClubs, setLikedClubs] = useState([]);
-	const [myLikedClubs, setMyLikedClubs] = useState(null);
-	const [myJoinedClubs, setMyJoinedClubs] = useState(null);
+	const [myLikedClubs, setMyLikedClubs] = useState([]);
+	const [myJoinedClubs, setMyJoinedClubs] = useState([]);
 	const [myComments, setMyComments] = useState(null);
 	const [myPendingMembers, setMyPendingMembers] = useState();
 	const [myPendingMembersTotal, setMyPendingMembersTotal] = useState(0);
@@ -103,14 +103,12 @@ const Main = () => {
 
 			setMyClub(myClubRes.data);
 
-			if (userId) {
-				const likedClubRes = await axios.get("/likedClubs/ids", {
-					params: {
-						userId: userId,
-					},
-				});
-				setLikedClubs(likedClubRes.data.likedClubIdList);
-			}
+			const likedClubRes = await axios.get("/likedClubs/ids", {
+				params: {
+					userId: userId,
+				},
+			});
+			setLikedClubs(likedClubRes.data.likedClubIdList);
 
 			setLoading(false);
 		} catch (err) {
@@ -296,6 +294,7 @@ const Main = () => {
 										{myLikedClubs.map((likedClub) => (
 											<LikedClubCard
 												key={likedClub.id}
+												userId={userId}
 												club={likedClub}
 												handleLikeDelete={handleLikeDelete}
 												like={likedClub.clubId}
@@ -322,6 +321,7 @@ const Main = () => {
 										{myJoinedClubs.map((joinedClub) => (
 											<JoinedClubCard
 												key={joinedClub.id}
+												userId={userId}
 												club={joinedClub}
 												likedClubs={likedClubs}
 												handleLikedClubs={handleLikedClubs}
@@ -721,6 +721,15 @@ const PaginationRow = styled(Row)`
 	width: 100%;
 	margin: 30px auto;
 	justify-content: center;
+
+	${customMedia.lessThan("mobile")`
+     	margin: 15px auto;
+
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    	margin: 15px auto;
+  `}
 `;
 
 const SpinContainer = styled.div`
@@ -730,6 +739,14 @@ const SpinContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	${customMedia.lessThan("mobile")`
+     	height: 40vh;
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    	height: 40vh;
+  `}
 `;
 
 const MemberNotFound = styled(NotFound)`

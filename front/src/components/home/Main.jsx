@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Row, Col, message } from "antd";
+import { message } from "antd";
 import styled from "styled-components";
 import { customMedia } from "../common/GlobalStyles";
 
@@ -252,4 +252,16 @@ const SpinContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	${customMedia.lessThan("mobile")`
+     	height: 40vh;
+
+
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    	height: 40vh;
+
+
+  `}
 `;

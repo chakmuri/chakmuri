@@ -98,8 +98,16 @@ const RegisterForm = ({ ...props }) => {
 		}
 
 		if (!sendTags) {
-			message.error("태그를 선택해주세요.");
+			message.warning("태그를 선택해주세요.");
 			return;
+		}
+
+		if (values.title.length > 10) {
+			message.warning("이름은 10자까지 입력 가능합니다.");
+		}
+
+		if (values.contents.length > 40) {
+			message.warning("한 줄 소개는 40자까지 입력 가능합니다.");
 		}
 
 		formData.append("userId", userId);

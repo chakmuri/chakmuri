@@ -325,6 +325,16 @@ const PaginationRow = styled(Row)`
 	width: 100%;
 	margin-top: 90px;
 	justify-content: center;
+
+	${customMedia.lessThan("mobile")`
+      	margin-top: 45px;
+
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+      	margin-top: 45px;
+
+  `}
 `;
 
 const SpinContainer = styled.div`
@@ -334,4 +344,16 @@ const SpinContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	${customMedia.lessThan("mobile")`
+     	height: 40vh;
+
+
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    	height: 40vh;
+
+
+  `}
 `;

@@ -41,6 +41,7 @@ const Main = (props) => {
 							userId: userId,
 						},
 					});
+
 					setLikedClubs(likedClubRes.data.likedClubIdList);
 
 					const applyRes = await axios.get("/members/ids", {
@@ -255,8 +256,12 @@ const Main = (props) => {
 							/>
 							<CmtPost
 								onClick={() => {
-									handlePostComment();
-									onReset();
+									if (props.userId) {
+										handlePostComment();
+										onReset();
+									} else {
+										message.warning("로그인이 필요한 기능입니다.");
+									}
 								}}
 							>
 								등록
@@ -457,6 +462,16 @@ const PaginationRow = styled(Row)`
 	width: 100%;
 	margin-top: 48px;
 	justify-content: center;
+
+	${customMedia.lessThan("mobile")`
+    margin-top: 24px;
+
+  `}
+
+	${customMedia.between("mobile", "tablet")`
+    margin-top: 24px;
+
+  `}
 `;
 
 const SpinContainer = styled.div`

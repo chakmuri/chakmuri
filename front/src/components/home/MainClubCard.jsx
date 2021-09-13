@@ -34,7 +34,7 @@ const MainClubCard = ({ ...props }) => {
 					if (props.userId) {
 						props.handleLikedClubs(props.club.id);
 					} else {
-						message.error("로그인이 필요한 기능입니다.");
+						message.warning("로그인이 필요한 기능입니다.");
 					}
 				}}
 			>

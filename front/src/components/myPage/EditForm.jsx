@@ -110,6 +110,14 @@ const EditForm = ({ ...props }) => {
 			return;
 		}
 
+		if (values.title.length > 10) {
+			message.warning("이름은 10자까지 입력 가능합니다.");
+		}
+
+		if (values.contents.length > 40) {
+			message.warning("한 줄 소개는 40자까지 입력 가능합니다.");
+		}
+
 		formData.append("title", values.title);
 		formData.append("contents", values.contents);
 		formData.append("startDate", startDate);
