@@ -145,7 +145,7 @@ public class ClubService {
     //정렬 메서드
     public List<Club> sortClubBySortBy(List<Club> clubs, String sortBy) {
         if(sortBy.equals("createdAt")){
-            return clubs.stream().sorted(Comparator.comparing(Club::getId).reversed())
+            return clubs.stream().sorted(Comparator.comparing(Club::getCreatedAt).reversed())
                     .collect(Collectors.toList());
         } else {
             return clubs.stream().sorted(Comparator.comparing(Club::getLikes).reversed())
