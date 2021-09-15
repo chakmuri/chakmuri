@@ -19,26 +19,23 @@ const StyledTag = styled.button`
 	cursor: pointer;
 
 	${customMedia.lessThan("mobile")`
-    font-size: 12px;
-    padding: 5px;
-    border-radius: 15px;
+    font-size: 10px;
+    padding: 3px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
-      font-size: 12px;
-      padding: 5px 7px;
-      border-radius: 15px;
-
+    font-size: 10px;
+    padding: 3px 5px;
   `}
 
-	${customMedia.between("largeMobile", "tablet")`
-    font-size: 16px;
-	  padding: 7px 13px;
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 14px;
+    padding: 6px 10px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
     font-size: 16px;
-	  padding: 7px 13px;
+    padding: 7px 13px;
   `}
 
 	&:hover {

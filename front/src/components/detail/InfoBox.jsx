@@ -146,7 +146,6 @@ const InfoBoxContainer = styled.div`
 	${customMedia.between("tablet", "desktop")`
     height: 293px;
   `}
-	
 `;
 
 const ClubThumbnail = styled.div`
@@ -160,12 +159,11 @@ const ClubThumbnail = styled.div`
     
     ${customMedia.lessThan("mobile")`
       border-radius: 10px 10px 0 0;
-  `}
+    `}
 
-  ${customMedia.between("mobile", "largeMobile")`
-    border-radius: 10px 10px 0 0;
-
-  `}
+    ${customMedia.between("mobile", "largeMobile")`
+      border-radius: 10px 10px 0 0;
+    `}
   }
   
   ${customMedia.lessThan("mobile")`
@@ -176,7 +174,6 @@ const ClubThumbnail = styled.div`
   ${customMedia.between("mobile", "largeMobile")`
     width: 363px;
     height: 50%;
-
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
@@ -234,11 +231,11 @@ const Title = styled.div`
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 18px;
+    font-size: 18px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
-   	font-size: 24px;
+    font-size: 24px;
   `}
 `;
 
@@ -247,8 +244,8 @@ const SubTitle = styled.div`
 	font-weight: 500;
 	color: #f98404;
 
-${customMedia.lessThan("mobile")`
-   	font-size: 14px;
+  ${customMedia.lessThan("mobile")`
+    font-size: 14px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -256,11 +253,11 @@ ${customMedia.lessThan("mobile")`
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 14px;
+    font-size: 14px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
-   	font-size: 18px;
+    font-size: 18px;
   `}
 `;
 
@@ -268,7 +265,7 @@ const Text = styled.div`
 	font-size: 20px;
 
 	${customMedia.lessThan("mobile")`
-   	font-size: 14px;
+    font-size: 14px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -276,11 +273,11 @@ const Text = styled.div`
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 14px;
+    font-size: 14px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
-   	font-size: 18px;
+    font-size: 18px;
   `}
 `;
 
@@ -290,7 +287,7 @@ const TagContainer = styled.div`
 	margin-top: 15px;
 
 	${customMedia.between("mobile", "largeMobile")`
-      margin-top: 5px;
+    margin-top: 5px;
   `}
 `;
 
@@ -299,29 +296,27 @@ const Tag = styled(SmallTag)`
 		font-size: 16px;
 		padding: 7px 25px;
 
-	${customMedia.lessThan("mobile")`
-    font-size: 10px;
-    padding: 5px 10px;
-	  margin-top: 0;
-    
-  `}
-
-   ${customMedia.between("mobile", "largeMobile")`
+    ${customMedia.lessThan("mobile")`
       font-size: 10px;
       padding: 5px 10px;
       margin-top: 0;
+    `}
 
-  `}
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+      padding: 5px 10px;
+      margin-top: 0;
+    `}
 
-	${customMedia.between("largeMobile", "tablet")`
-    font-size: 12px;
-		padding: 7px 13px;
-  `}
+    ${customMedia.between("largeMobile", "tablet")`
+      font-size: 12px;
+      padding: 7px 13px;
+    `}
 
-	${customMedia.between("tablet", "desktop")`
-    font-size: 16px;
-		padding: 7px 20px;
-  `}
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 16px;
+      padding: 7px 20px;
+    `}
 	}
 `;
 
@@ -331,17 +326,17 @@ const BtnRow = styled.div`
 	margin-top: 40px;
 
 	${customMedia.lessThan("mobile")`
-	  gap: 10px;
+    gap: 10px;
     margin-top: 10px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
     gap: 10px;
-     margin-top: 10px;
+    margin-top: 10px;
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-	  gap: 20px;
+    gap: 20px;
     margin-top: 15px;
   `}
 `;
@@ -357,19 +352,19 @@ const LikeIconContainer = styled.div`
 	align-items: center;
 
 	${customMedia.lessThan("mobile")`
-   	width: 40px;
+    width: 40px;
     height: 40px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
-   width: 30px;
+    width: 30px;
     height: 30px;
     padding-bottom: 8px;
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
     width: 40px;
-	  height: 40px;
+    height: 40px;
   `}
 `;
 
@@ -384,27 +379,25 @@ const LikeIcon = styled.div`
   }
 
 	${customMedia.lessThan("mobile")`
-   	width: 24px;
+    width: 24px;
     height: 22px;
-
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
-   width: 18px;
+    width: 18px;
     height: 16px;
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
     width: 24px;
-	  height: 22px;
+    height: 22px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
     width: 28px;
-	  height: 26px;
+    height: 26px;
   `}
-
-  `;
+`;
 
 const ApplyBtn = styled(Button)`
 	width: 300px;
@@ -424,7 +417,6 @@ const ApplyBtn = styled(Button)`
     width: 200px;
     height: 40px;
     font-size: 14px;
-    
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -444,7 +436,6 @@ const ApplyBtn = styled(Button)`
     height: 50px;
     font-size: 18px;
   `}
-
 `;
 
 const StyledModal = styled(Modal)`
@@ -457,12 +448,12 @@ const StyledModal = styled(Modal)`
 		align-items: center;
 
 		${customMedia.lessThan("mobile")`
-   	padding: 15px 25px;
-  `}
+      padding: 15px 25px;
+    `}
 
 		${customMedia.between("mobile", "tablet")`
-   	padding: 25px 50px;
-  `}
+      padding: 25px 50px;
+    `}
 	}
 
 	.ant-modal-body {
@@ -480,11 +471,11 @@ const ModalTitle = styled.div`
 	margin-bottom: 10px;
 
 	${customMedia.lessThan("mobile")`
-   	font-size: 14px;
+    font-size: 14px;
   `}
 
 	${customMedia.between("mobile", "tablet")`
-   		font-size: 18px;
+    font-size: 18px;
   `}
 `;
 
@@ -505,12 +496,12 @@ const FilledBtn = styled(Button)`
 		cursor: pointer;
 
 		${customMedia.lessThan("mobile")`
-   	font-size: 14px;
-  `}
+      font-size: 14px;
+    `}
 
 		${customMedia.between("mobile", "tablet")`
-   		font-size: 18px;
-  `}
+      font-size: 18px;
+    `}
 	}
 `;
 
@@ -519,24 +510,24 @@ const SkeletonImg = styled(Skeleton.Image)`
 		width: 493px;
     height: 332px;
     
-  ${customMedia.lessThan("mobile")`
-    width: 295px;
-    height: 186px;
-  `}
+    ${customMedia.lessThan("mobile")`
+      width: 295px;
+      height: 186px;
+    `}
 
-	${customMedia.between("mobile", "largeMobile")`
-    width: 363px;
-    height: 170px;
-  `}
+    ${customMedia.between("mobile", "largeMobile")`
+      width: 363px;
+      height: 170px;
+    `}
 
-	${customMedia.between("largeMobile", "tablet")`
-    width: 305px;
-    height: 203px;
-  `}
+    ${customMedia.between("largeMobile", "tablet")`
+      width: 305px;
+      height: 203px;
+    `}
 
-	${customMedia.between("tablet", "desktop")`
-    width: 440px;
-    height: 293px;
-  `}
-	}
+    ${customMedia.between("tablet", "desktop")`
+      width: 440px;
+      height: 293px;
+    `}
+  }
 `;

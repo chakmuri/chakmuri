@@ -33,7 +33,7 @@ const CommentBar = styled.div`
     height: 50px;
   `}
 
-    ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between("mobile", "largeMobile")`
     width: 363px;
     height: 50px;
   `}
@@ -56,29 +56,30 @@ const CommentProfileIcon = styled.div`
 	${customMedia.lessThan("mobile")`
     width: 24px;
     height: 24px;
-	  margin-left: 15px;
+    margin-left: 15px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
     width: 28px;
     height: 28px;
-	  margin-left: 15px;
+    margin-left: 15px;
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
     width: 32px;
     height: 32px;
-	  margin-left: 25px;
+    margin-left: 25px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
     width: 40px;
-	  height: 40px;
+    height: 40px;
   `}
 
 	img {
 		width: 100%;
-		height: 100%;
+    height: 100%;
+    border-radius: 50%;
 	}
 `;
 
@@ -88,14 +89,14 @@ const CommentText = styled.div`
 	margin-left: 25px;
 
 	${customMedia.lessThan("mobile")`
-    font-size: 14px;
+    font-size: 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
-    font-size: 14px;
+    font-size: 12px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -122,15 +123,15 @@ const CommentBtn = styled.button`
 	cursor: pointer;
 
 	${customMedia.lessThan("mobile")`
-    font-size: 12px;
+    font-size: 10px;
     padding: 5px 10px;
-	  margin-right: 15px;
+    margin-right: 15px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
     font-size: 12px;
     padding: 5px 10px;
-	  margin-right: 15px;
+    margin-right: 15px;
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
@@ -140,7 +141,6 @@ const CommentBtn = styled.button`
   `}
 
 	${customMedia.between("tablet", "desktop")`
-   	font-size: 16px;
-
+    font-size: 16px;
   `}
 `;

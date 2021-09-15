@@ -24,18 +24,18 @@ const StyledNotFound = styled.div`
 	align-items: center;
 
 	${customMedia.lessThan("mobile")`
-      font-size: 14px;
-    `}
+    font-size: 14px;
+  `}
 
-    ${customMedia.between("mobile", "largeMobile")`
-      font-size: 14px;
-    `}
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 14px;
+  `}
 
-    ${customMedia.between("largeMobile", "tablet")`
-      font-size: 16px;
-    `}
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 16px;
+  `}
 
-    ${customMedia.between("tablet", "desktop")`
-      font-size: 20px;
-    `}
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 20px;
+  `}
 `;

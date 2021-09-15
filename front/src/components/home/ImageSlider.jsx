@@ -61,8 +61,6 @@ const Wrapper = styled.section`
     width: 880px;
     height: 220px;
   `}
-
-	
 `;
 
 const StyledSlider = styled(Slider)`
@@ -76,22 +74,21 @@ const StyledSlider = styled(Slider)`
 		width: 100%;
     height: 300px;
     
-  ${customMedia.lessThan("mobile")`
-    display: none;
-  `}
+    ${customMedia.lessThan("mobile")`
+      display: none;
+    `}
 
-  ${customMedia.between("mobile", "largeMobile")`
-    display: none;
-  `}
+    ${customMedia.between("mobile", "largeMobile")`
+      display: none;
+    `}
 
-  ${customMedia.between("largeMobile", "tablet")`
-    height: 152.5px;
-  `}
+    ${customMedia.between("largeMobile", "tablet")`
+      height: 152.5px;
+    `}
 
-	${customMedia.lessThan("desktop")`
-    height: 220px;
-  `}
-
+    ${customMedia.lessThan("desktop")`
+      height: 220px;
+    `}
 	}
 `;
 

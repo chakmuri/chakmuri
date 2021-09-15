@@ -28,7 +28,7 @@ const StyledFooter = styled.div`
 
   ${customMedia.between("mobile", "largeMobile")`
     height: 40px;
-    gap: 150px;
+    gap: 100px;
   `}
 
   ${customMedia.between("largeMobile", "tablet")`
@@ -40,7 +40,6 @@ const StyledFooter = styled.div`
     height: 60px;
     gap: 400px;
   `}
-	
 `;
 
 const Copyright = styled.div`
@@ -53,7 +52,7 @@ const Copyright = styled.div`
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
-   font-size: 10px;
+    font-size: 10px;
     margin-left: 25px;
   `}
 
@@ -64,7 +63,6 @@ const Copyright = styled.div`
 	${customMedia.between("tablet", "desktop")`
     font-size: 18px;
   `}
-
 `;
 
 const Text = styled.div`
@@ -87,5 +85,4 @@ const Text = styled.div`
 	${customMedia.between("tablet", "desktop")`
     font-size: 16px;
   `}
-	
 `;
