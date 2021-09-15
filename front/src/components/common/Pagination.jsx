@@ -15,12 +15,12 @@ const StyledPagination = styled(Pagination)`
 		${customMedia.lessThan("mobile")`
     min-width: 28px;
     height: 28px;
-  `}
+    `}
 
 		${customMedia.between("mobile", "tablet")`
     min-width: 28px;
     height: 28px;
-  `}
+    `}
 	}
 
 	.ant-pagination-item a {
@@ -28,23 +28,25 @@ const StyledPagination = styled(Pagination)`
 		height: 100%;
 		${customMedia.lessThan("mobile")`
       font-size: 12px;
-  `}
+      line-height: 25px;
+    `}
 
 		${customMedia.between("mobile", "tablet")`
       font-size: 12px;
-  `}
+      line-height: 25px;
+    `}
 	}
 
 	.anticon {
 		${customMedia.lessThan("mobile")`
       display: flex;
-		  padding: 0 6px;
-  `}
+      padding: 6px;
+    `}
 
 		${customMedia.between("mobile", "tablet")`
       display: flex;
-		  padding: 0 6px;
-  `}
+      padding: 6px;
+    `}
 	}
 
 	.ant-pagination-item-active,

@@ -56,20 +56,19 @@ const StyledSearchBar = styled(Search)`
   .ant-input-lg{
     ${customMedia.lessThan("mobile")`
       font-size: 14px;
-  `}
+    `}
 
-  ${customMedia.between("mobile", "largeMobile")`
-    font-size: 14px;
-  `}
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 14px;
+    `}
 
-	${customMedia.between("largeMobile", "tablet")`
-    font-size: 14px;
-  `}
+    ${customMedia.between("largeMobile", "tablet")`
+      font-size: 14px;
+    `}
 
-	${customMedia.between("tablet", "desktop")`
-    font-size: 16px;
-  `}
-    
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 16px;
+    `}
   }
 
 	.ant-btn-primary {

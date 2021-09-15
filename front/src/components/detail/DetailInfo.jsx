@@ -18,8 +18,10 @@ const DetailInfo = ({ ...props }) => {
 			<TextBox>
 				<SubTitle>
 					{props.club.bookTitle}, {props.club.author},{" "}
-					{props.club.publisher === "undefined" ? "없음" : props.club.publisher}
-					, {props.club.publishedAt !== 0 ? props.club.publishedAt : "없음"}{" "}
+					{props.club.publisher === "undefined"
+						? "미입력"
+						: props.club.publisher}
+					, {props.club.publishedAt !== 0 ? props.club.publishedAt : "미입력"}{" "}
 				</SubTitle>
 				<Contents>{props.club.bookDescription}</Contents>
 			</TextBox>
@@ -56,7 +58,7 @@ const Title = styled.div`
   margin-bottom: 30px;
   
   ${customMedia.lessThan("mobile")`
-  	font-size: 18px;
+    font-size: 18px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -64,12 +66,11 @@ const Title = styled.div`
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-    	font-size: 20px;
+    font-size: 20px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
-  	font-size: 22px;
-
+    font-size: 22px;
   `}
 `;
 
@@ -79,8 +80,7 @@ const SubTitle = styled.div`
   margin-bottom: 15px;
   
   ${customMedia.lessThan("mobile")`
-  	font-size: 16px;
-
+    font-size: 16px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -88,13 +88,11 @@ const SubTitle = styled.div`
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-    	font-size: 18px;
-
+    font-size: 18px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
-  	font-size: 18px;
-
+    font-size: 18px;
   `}
 `;
 
@@ -103,8 +101,7 @@ const Contents = styled.div`
   white-space: pre-wrap;
   
   ${customMedia.lessThan("mobile")`
-  	font-size: 14px;
-
+    font-size: 14px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -112,13 +109,11 @@ const Contents = styled.div`
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-    	font-size: 14px;
-
+    font-size: 14px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
-  	font-size: 14px;
-
+    font-size: 14px;
   `}
 `;
 
@@ -131,8 +126,7 @@ const MapWrapper = styled.div`
   height: 250px;
   
   ${customMedia.lessThan("mobile")`
-  	width: 295px;
-
+    width: 295px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -144,6 +138,6 @@ const MapWrapper = styled.div`
   `}
 
 	${customMedia.between("tablet", "desktop")`
-  	width: 880px;
+    width: 880px;
   `}
 `;

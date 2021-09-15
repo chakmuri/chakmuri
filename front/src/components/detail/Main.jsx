@@ -304,10 +304,11 @@ const Wrapper = styled.section`
 	width: 996px;
   margin: 60px auto;
   flex: 1;
+  padding-bottom: 60px;
 
   ${customMedia.lessThan("mobile")`
     width: 295px;
-	  margin: 40px auto;
+    margin: 40px auto;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -317,7 +318,7 @@ const Wrapper = styled.section`
 
 	${customMedia.between("largeMobile", "tablet")`
     width: 610px;
-	  margin: 40px auto;
+    margin: 40px auto;
   `}
 
 	${customMedia.between("tablet", "desktop")`
@@ -338,7 +339,7 @@ const Title = styled.div`
   margin-top: 50px;
   
   ${customMedia.lessThan("mobile")`
-   	font-size: 16px;
+    font-size: 16px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -346,11 +347,11 @@ const Title = styled.div`
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 18px;
+    font-size: 18px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
-   	font-size: 20px;
+    font-size: 20px;
   `}
 `;
 
@@ -368,7 +369,7 @@ const InputBox = styled.div`
   display: flex;
   
   ${customMedia.lessThan("mobile")`
-   	width: 295px;
+    width: 295px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -376,11 +377,11 @@ const InputBox = styled.div`
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-   	width: 528px;
+    width: 528px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
-  	width: 724px;
+    width: 724px;
   `}
 `;
 
@@ -395,23 +396,23 @@ const ProfileIcon = styled.div`
   }
   
   ${customMedia.lessThan("mobile")`
-   	width: 28px;
-	  height: 28px;
+    width: 28px;
+    height: 28px;
   `}
 
-   ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between("mobile", "largeMobile")`
     width: 28px;
-	  height: 28px;
+    height: 28px;
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-   	width: 32px;
-	  height: 32px;
+    width: 32px;
+    height: 32px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
-  	width: 40px;
-	  height: 40px;
+    width: 40px;
+    height: 40px;
   `}
 `;
 
@@ -422,32 +423,30 @@ const StyledInput = styled.input`
   flex: 2;
   
   ${customMedia.lessThan("mobile")`
-   	font-size: 14px;
-
+    font-size: 14px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
-   font-size: 14px;
+    font-size: 14px;
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 14px;
-
+    font-size: 14px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
-  	font-size: 16px;
+    font-size: 16px;
   `}
 `;
 
 const CmtPost = styled(Button)`
   flex: 0.2;
 
-   ${customMedia.lessThan("mobile")`
-      flex: 0.3;
-    `}
+  ${customMedia.lessThan("mobile")`
+    flex: 0.3;
+  `}
 
-    ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between("mobile", "largeMobile")`
     flex: 0.3;
   `}
   
@@ -463,17 +462,15 @@ const CmtPost = styled(Button)`
     `}
 
     ${customMedia.between("mobile", "largeMobile")`
-    font-size: 10px;
-  `}
+      font-size: 10px;
+    `}
 
     ${customMedia.between("largeMobile", "tablet")`
       font-size: 12px;
-
     `}
 
     ${customMedia.between("tablet", "desktop")`
       font-size: 14px;
-
     `}
 	}
 `;
@@ -495,17 +492,14 @@ const PaginationRow = styled(Row)`
 
 	${customMedia.lessThan("mobile")`
     margin-top: 24px;
-
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
-        margin-top: 24px;
-
+    margin-top: 24px;
   `}
 
 	${customMedia.between("mobile", "tablet")`
     margin-top: 24px;
-
   `}
 `;
 
@@ -527,6 +521,5 @@ const SpinContainer = styled.div`
 
 	${customMedia.between("largeMobile", "tablet")`
     margin-top: 45px;
-
   `}
 `;
