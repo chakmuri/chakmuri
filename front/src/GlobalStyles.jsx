@@ -10,13 +10,18 @@ export const customMedia = generateMedia({
 
 const GlobalStyles = createGlobalStyle`
   html, body{
+    margin: 0;
+    padding: 0;
     height: 100%;
   }
 
   body{
     font-family: Roboto;
+  }
 
+  #root{
     display: flex;
+    min-height: 100vh;
     flex-direction: column;
   }
 `;

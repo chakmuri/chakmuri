@@ -168,11 +168,12 @@ const { Option } = Select;
 const Wrapper = styled.section`
 	width: 1200px;
   margin: 90px auto;
+  padding-bottom: 60px;
   flex: 1;
 
   ${customMedia.lessThan("mobile")`
     width: 295px;
-	  margin: 40px auto;
+    margin: 40px auto;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -182,7 +183,7 @@ const Wrapper = styled.section`
 
 	${customMedia.between("largeMobile", "tablet")`
     width: 610px;
-	  margin: 60px auto;
+    margin: 60px auto;
   `}
 
 	${customMedia.between("tablet", "desktop")`
@@ -197,7 +198,7 @@ const MainTitle = styled.div`
   cursor: pointer;
   
   ${customMedia.lessThan("mobile")`
-   	font-size: 18px;
+    font-size: 18px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -205,7 +206,7 @@ const MainTitle = styled.div`
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 20px;
+    font-size: 20px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
@@ -224,8 +225,8 @@ const Title = styled.div`
 	font-size: 24px;
 	flex: 5;
 
- ${customMedia.lessThan("mobile")`
-   	font-size: 16px;
+  ${customMedia.lessThan("mobile")`
+    font-size: 16px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -233,7 +234,7 @@ const Title = styled.div`
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 18px;
+    font-size: 18px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
@@ -245,7 +246,7 @@ const CheckboxFilter = styled(Checkbox)`
 	font-size: 18px;
 	flex: 0.7;
 
- ${customMedia.lessThan("mobile")`
+  ${customMedia.lessThan("mobile")`
     font-size: 12px;
     flex: 2;
   `}
@@ -268,25 +269,25 @@ const CheckboxFilter = styled(Checkbox)`
 		width: 20px;
     height: 20px;
     
-  ${customMedia.lessThan("mobile")`
-   	width: 12px;
-    height: 12px;
-  `}
+    ${customMedia.lessThan("mobile")`
+      width: 12px;
+      height: 12px;
+    `}
 
-  ${customMedia.between("mobile", "largeMobile")`
-    width: 12px;
-    height: 12px;
-  `}
+    ${customMedia.between("mobile", "largeMobile")`
+      width: 12px;
+      height: 12px;
+    `}
 
-	${customMedia.between("largeMobile", "tablet")`
-   	width: 14px;
-    height: 14px;
-  `}
+    ${customMedia.between("largeMobile", "tablet")`
+      width: 14px;
+      height: 14px;
+    `}
 
-	${customMedia.between("tablet", "desktop")`
-   	width: 16px;
-    height: 16px;
-  `}
+    ${customMedia.between("tablet", "desktop")`
+      width: 16px;
+      height: 16px;
+    `}
 	}
 
 	.ant-checkbox-checked .ant-checkbox-inner {
@@ -313,7 +314,7 @@ const SortFilter = styled(Select)`
 		font-size: 16px;
 
 	${customMedia.lessThan("mobile")`
-   	font-size: 12px;
+    font-size: 12px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -321,7 +322,7 @@ const SortFilter = styled(Select)`
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 14px;
+    font-size: 14px;
   `}
 	}
 
@@ -377,7 +378,7 @@ const SpinContainer = styled.div`
 	align-items: center;
 
 	${customMedia.lessThan("mobile")`
-     	height: 40vh;
+    height: 40vh;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -385,6 +386,6 @@ const SpinContainer = styled.div`
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-    	height: 40vh;
+    height: 40vh;
   `}
 `;

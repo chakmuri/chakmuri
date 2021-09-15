@@ -98,12 +98,12 @@ const GoogleLoginButton = styled.button`
 	position: relative;
 
 	${customMedia.lessThan("mobile")`
-      font-size: 14px;
-      width: 220px;
+    font-size: 14px;
+    width: 220px;
   `}
 
 	${customMedia.between("mobile", "tablet")`
-      font-size: 16px;
-      width: 240px;
+    font-size: 16px;
+    width: 240px;
   `}
 `;

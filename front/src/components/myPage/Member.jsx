@@ -37,23 +37,23 @@ const MemberBar = styled.div`
   
   ${customMedia.lessThan("mobile")`
     width: 295px;
-	  height: 40px;
-    `}
+    height: 40px;
+  `}
 
-    ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between("mobile", "largeMobile")`
     width: 363px;
     height: 40px;
   `}
 
-    ${customMedia.between("largeMobile", "tablet")`
+  ${customMedia.between("largeMobile", "tablet")`
     width: 610px;
-	  height: 60px;
-    `}
+    height: 60px;
+  `}
 
-    ${customMedia.between("tablet", "desktop")`
+  ${customMedia.between("tablet", "desktop")`
     width: 880px;
-	  height: 60px;
-    `}
+    height: 60px;
+  `}
 `;
 
 const MemberProfileIcon = styled.div`
@@ -64,35 +64,36 @@ const MemberProfileIcon = styled.div`
   
   ${customMedia.lessThan("mobile")`
     width: 24px;
-	  height: 24px;
-	  margin-left: 10px;
-    margin-right: 5px;
-    `}
-
-    ${customMedia.between("mobile", "largeMobile")`
-     width: 24px;
-	  height: 24px;
-	  margin-left: 10px;
+    height: 24px;
+    margin-left: 10px;
     margin-right: 5px;
   `}
 
-    ${customMedia.between("largeMobile", "tablet")`
-      width: 32px;
-      height: 32px;
-      margin-left: 25px;
-      margin-right: 15px;
-    `}
+  ${customMedia.between("mobile", "largeMobile")`
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+    margin-right: 5px;
+  `}
 
-    ${customMedia.between("tablet", "desktop")`
-      width: 40px;
-	    height: 40px;
-	    margin-left: 45px;
-      margin-right: 15px;
-    `}
+  ${customMedia.between("largeMobile", "tablet")`
+    width: 32px;
+    height: 32px;
+    margin-left: 25px;
+    margin-right: 15px;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    width: 40px;
+    height: 40px;
+    margin-left: 45px;
+    margin-right: 15px;
+  `}
 
 	img {
 		width: 100%;
-		heigt: 100%;
+    heigt: 100%;
+    border-radius: 50%;
 	}
 `;
 
@@ -103,21 +104,20 @@ const MemberUsername = styled.div`
   ${customMedia.lessThan("mobile")`
     font-size: 10px;
     margin-right: 15px;
-    `}
+  `}
 
-    ${customMedia.between("mobile", "largeMobile")`
-      font-size: 10px;
-      margin-right: 15px;
-    `}
-    
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+    margin-right: 15px;
+  `}
 
-    ${customMedia.between("largeMobile", "tablet")`
-      font-size: 16px;
-    `}
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 16px;
+  `}
 
-    ${customMedia.between("tablet", "desktop")`
-      font-size: 18px;
-    `}
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 18px;
+  `}
 `;
 
 const MemberEmail = styled.div`
@@ -125,26 +125,26 @@ const MemberEmail = styled.div`
   flex: 1;
   
   ${customMedia.lessThan("mobile")`
-      font-size: 10px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    `}
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  `}
 
-    ${customMedia.between("mobile", "largeMobile")`
-     font-size: 10px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    `}
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  `}
 
-    ${customMedia.between("largemobile", "tablet")`
-      font-size: 16px;
-    `}
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 16px;
+  `}
 
-    ${customMedia.between("tablet", "desktop")`
-      font-size: 18px;
-    `}
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 18px;
+  `}
 `;
 
 const MemberBtn = styled(Button)`
@@ -157,28 +157,28 @@ const MemberBtn = styled(Button)`
   margin-right: 55px;
   
   ${customMedia.lessThan("mobile")`
-      font-size: 8px;
-      padding: 2px 5px;
-	    margin-right: 7px;
-    `}
+    font-size: 10px;
+    padding: 3px 7px;
+    margin-right: 7px;
+  `}
 
-    ${customMedia.between("mobile", "largeMobile")`
-     font-size: 8px;
-      padding: 2px 5px;
-	    margin-right: 7px;
-    `}
+  ${customMedia.between("mobile", "largeMobile")`
+    font-size: 10px;
+    padding: 3px 7px;
+    margin-right: 7px;
+  `}
 
-    ${customMedia.between("largeMobile", "tablet")`
-      font-size: 12px;
-      padding: 5px 10px;
-	    margin-right: 15px;
-    `}
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 12px;
+    padding: 5px 10px;
+    margin-right: 15px;
+  `}
 
-    ${customMedia.between("tablet", "desktop")`
-      font-size: 14px;
-      padding: 5px 15px;
-	    margin-right: 25px;
-    `}
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 14px;
+    padding: 5px 15px;
+    margin-right: 25px;
+  `}
 `;
 
 export default Member;

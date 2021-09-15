@@ -77,22 +77,22 @@ const ProfileIcon = styled.div`
 
 	${customMedia.lessThan("mobile")`
     width: 28px;
-	  height: 28px;
+    height: 28px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
     width: 28px;
-	  height: 28px;
+    height: 28px;
   `}
 
-	${customMedia.between("largeMobile", "tablet")`
-   	width: 32px;
-	  height: 32px;
+  ${customMedia.between("largeMobile", "tablet")`
+    width: 32px;
+    height: 32px;
   `}
 
 	${customMedia.between("tablet", "desktop")`
     width: 40px;
-	  height: 40px;
+    height: 40px;
   `}
 
 	img {
@@ -114,22 +114,22 @@ const CmtBox = styled.div`
     width: 213px;
     display: flex;
     flex-direction: column;
-  	padding: 30px 15px;
+    padding: 30px 15px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
     width: 261px;
     display: flex;
     flex-direction: column;
-  	padding: 30px 15px;
+    padding: 30px 15px;
   `}
 
-	${customMedia.between("largeMobile", "tablet")`
-   	width: 446px;
+  ${customMedia.between("largeMobile", "tablet")`
+    width: 446px;
   `}
 
-	${customMedia.between("tablet", "desktop")`
-   	width: 642px;
+  ${customMedia.between("tablet", "desktop")`
+    width: 642px;
   `}
 `;
 
@@ -138,20 +138,20 @@ const CmtWriter = styled.span`
 	font-size: 22px;
 	margin-right: 5px;
 
-	${customMedia.lessThan("mobile")`
-   	font-size: 16px;
+  ${customMedia.lessThan("mobile")`
+    font-size: 16px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
     font-size: 16px;
   `}
 
-	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 18px;
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 18px;
   `}
 
-	${customMedia.between("tablet", "desktop")`
-   	font-size: 20px;
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 20px;
   `}
 `;
 
@@ -160,20 +160,20 @@ const CmtDate = styled.span`
 	font-size: 16px;
 	color: #959595;
 
-	${customMedia.lessThan("mobile")`
-   	font-size: 12px;
+  ${customMedia.lessThan("mobile")`
+    font-size: 12px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
     font-size: 12px;
   `}
 
-	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 12px;
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 12px;
   `}
 
-	${customMedia.between("tablet", "desktop")`
-   	font-size: 14px;
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 14px;
   `}
 `;
 
@@ -185,8 +185,7 @@ const CmtUpdateCheck = styled.span`
 
 	${customMedia.lessThan("mobile")`
     font-size: 10px;
-	  margin-left: 0;
-     
+    margin-left: 0;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -194,12 +193,12 @@ const CmtUpdateCheck = styled.span`
     margin-left: 0;
   `}
 
-	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 12px;
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 12px;
   `}
 
-	${customMedia.between("tablet", "desktop")`
-   	font-size: 14px;
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 14px;
   `}
 `;
 
@@ -210,25 +209,23 @@ const CmtUpdate = styled.span`
 	position: absolute;
 	right: 10%;
 
-${customMedia.lessThan("mobile")`
+  ${customMedia.lessThan("mobile")`
     font-size: 10px;
-	  right: 17%;
-    
+    right: 17%;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
     font-size: 10px;
-   right: 17%;
+    right: 17%;
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
     font-size: 12px;
-	  right: 11%;
-     
+    right: 11%;
   `}
 
-	${customMedia.between("tablet", "desktop")`
-   	font-size: 14px;
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 14px;
   `}
 `;
 
@@ -239,27 +236,26 @@ const CmtDelete = styled.span`
 	position: absolute;
 	right: 5%;
 
-	${customMedia.lessThan("mobile")`
-   	font-size: 10px;
+  ${customMedia.lessThan("mobile")`
+    font-size: 10px;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
     font-size: 10px;
   `}
 
-	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 12px;
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 12px;
   `}
 
-	${customMedia.between("tablet", "desktop")`
-   	font-size: 14px;
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 14px;
   `}
 `;
 
 const CmtText = styled.div`
 	font-size: 16px;
   padding: 5px 0;
-
   
   ${customMedia.lessThan("mobile")`
     font-size: 12px;
@@ -269,12 +265,12 @@ const CmtText = styled.div`
     font-size: 12px;
   `}
 
-	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 12px;
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 12px;
   `}
 
-	${customMedia.between("tablet", "desktop")`
-   	font-size: 14px;
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 14px;
   `}
 `;
 
@@ -288,7 +284,7 @@ const CmtInput = styled(Input)`
 
 ${customMedia.lessThan("mobile")`
     font-size: 10px;
-	  width: 100%;
+    width: 100%;
   `}
 
   ${customMedia.between("mobile", "largeMobile")`
@@ -296,12 +292,12 @@ ${customMedia.lessThan("mobile")`
     width: 100%;
   `}
 
-	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 12px;
+  ${customMedia.between("largeMobile", "tablet")`
+    font-size: 12px;
   `}
 
-	${customMedia.between("tablet", "desktop")`
-   	font-size: 14px;
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 14px;
   `}
 `;
 
@@ -322,25 +318,25 @@ const ConfirmBtn = styled(Button)`
       position: absolute;
       left: 30%;
       bottom: 5%;
-  `}
+    `}
 
-  ${customMedia.between("mobile", "largeMobile")`
-    font-size: 10px;
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
       padding: 3px 5px;
       margin-left: 0;
       margin-right: 15px;
       position: absolute;
       left: 30%;
       bottom: 5%;
-  `}
+    `}
 
-	${customMedia.between("largeMobile", "tablet")`
-     font-size: 12px;
-  `}
+    ${customMedia.between("largeMobile", "tablet")`
+      font-size: 12px;
+    `}
 
-	${customMedia.between("tablet", "desktop")`
-   	font-size: 14px;
-  `}
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 14px;
+    `}
 	}
 `;
 
@@ -354,31 +350,30 @@ const CancelBtn = styled(Button)`
 		border-radius: 5px;
 		margin-left: 15px;
 
-	${customMedia.lessThan("mobile")`
-    font-size: 10px;
-    padding: 3px 5px;
-    margin-left: 0;
-    position: absolute;
-    right: 30%;
-    bottom: 5%;
-  `}
+    ${customMedia.lessThan("mobile")`
+      font-size: 10px;
+      padding: 3px 5px;
+      margin-left: 0;
+      position: absolute;
+      right: 30%;
+      bottom: 5%;
+    `}
 
-	${customMedia.between("mobile", "largeMobile")`
-    font-size: 10px;
-    padding: 3px 5px;
-    margin-left: 0;
-    position: absolute;
-    right: 30%;
-    bottom: 5%;
+    ${customMedia.between("mobile", "largeMobile")`
+      font-size: 10px;
+      padding: 3px 5px;
+      margin-left: 0;
+      position: absolute;
+      right: 30%;
+      bottom: 5%;
+    `}
 
-  `}
+    ${customMedia.between("largeMobile", "tablet")`
+      font-size: 12px;
+    `}
 
-	${customMedia.between("largeMobile", "tablet")`
-   	font-size: 12px;
-  `}
-
-	${customMedia.between("tablet", "desktop")`
-   	font-size: 14px;
-  `}
-	}
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 14px;
+    `}
+  }
 `;

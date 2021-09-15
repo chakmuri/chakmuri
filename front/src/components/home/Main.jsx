@@ -156,6 +156,7 @@ export default Main;
 const Wrapper = styled.section`
 	width: 1200px;
   margin: 0 auto;
+  padding-bottom: 60px;
   flex: 1;
   
   ${customMedia.lessThan("mobile")`
@@ -271,16 +272,14 @@ const SpinContainer = styled.div`
 	align-items: center;
 
 	${customMedia.lessThan("mobile")`
-     	height: 40vh;
+    height: 40vh;
   `}
 
 	${customMedia.between("mobile", "largeMobile")`
-     	height: 40vh;
+    height: 40vh;
   `}
 
 	${customMedia.between("largeMobile", "tablet")`
-    	height: 40vh;
-
-
+    height: 40vh;
   `}
 `;
