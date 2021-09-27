@@ -58,8 +58,10 @@ const Main = (props) => {
 		};
 		fetchData();
 		fetchCmtData();
+		// dependency 배열에 comments를 추가하면 API가 무한 호출되는 문제 발생
 	}, [userImg, total, page]);
 
+	// 댓글 데이터를 요청하는 API
 	const fetchCmtData = async () => {
 		const res = await axios.get(`/comments/clubs/${clubId}`, {
 			params: { page: page },
@@ -94,6 +96,7 @@ const Main = (props) => {
 			}
 		} catch (err) {
 			console.log(err);
+			// useEffect API 무한 호출을 방지하기 위한 코드
 		} finally {
 			fetchCmtData();
 		}
@@ -115,6 +118,7 @@ const Main = (props) => {
 			}
 		} catch (err) {
 			console.log(err);
+			// useEffect API 무한 호출을 방지하기 위한 코드
 		} finally {
 			fetchCmtData();
 		}
@@ -131,6 +135,7 @@ const Main = (props) => {
 			}
 		} catch (err) {
 			console.log(err);
+			// useEffect API 무한 호출을 방지하기 위한 코드
 		} finally {
 			fetchCmtData();
 		}

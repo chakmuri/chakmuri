@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { Row, Checkbox, Select, message } from "antd";
@@ -23,11 +22,10 @@ const Main = () => {
 	const [loading, setLoading] = useState(true);
 	const userId = localStorage.getItem("user_id");
 
-	// const history = useHistory();
-
 	useEffect(() => {
 		fetchData();
 		setLoading(false);
+		// dependancy 배열에 likedClubs를 추가하면 API가 무한 호출되는 문제 발생
 	}, [clubStatus, page, keyword, selectedTags, sortBy, userId]);
 
 	const fetchData = async () => {
@@ -74,6 +72,7 @@ const Main = () => {
 			}
 		} catch (err) {
 			console.log(err);
+			// useEffect API 무한 호출을 방지하기 위한 코드
 		} finally {
 			fetchData();
 		}

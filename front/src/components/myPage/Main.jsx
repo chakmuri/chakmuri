@@ -42,6 +42,7 @@ const Main = () => {
 
 	useEffect(() => {
 		fetchData();
+		// dependancy 배열에 likedClubs, myPendingMembers, myMembers를 추가하면 API가 무한 호출되는 문제 발생
 	}, [
 		myMembersPage,
 		myPendingMembersPage,
@@ -160,6 +161,7 @@ const Main = () => {
 			}
 		} catch (err) {
 			console.log(err);
+			// useEffect API 무한 호출을 방지하기 위한 코드
 		} finally {
 			fetchData();
 		}
@@ -173,6 +175,7 @@ const Main = () => {
 			});
 		} catch (err) {
 			message.error("이미 좋아요한 독서모임입니다.");
+			// useEffect API 무한 호출을 방지하기 위한 코드
 		} finally {
 			fetchData();
 		}
@@ -185,6 +188,7 @@ const Main = () => {
 			});
 		} catch (err) {
 			console.log(err);
+			// useEffect API 무한 호출을 방지하기 위한 코드
 		} finally {
 			fetchData();
 		}
@@ -198,6 +202,7 @@ const Main = () => {
 			}
 		} catch (err) {
 			console.log(err);
+			// useEffect API 무한 호출을 방지하기 위한 코드
 		} finally {
 			fetchData();
 		}
@@ -217,6 +222,7 @@ const Main = () => {
 			}
 		} catch (err) {
 			console.log(err);
+			// useEffect API 무한 호출을 방지하기 위한 코드
 		} finally {
 			fetchData();
 		}
@@ -237,6 +243,7 @@ const Main = () => {
 			}
 		} catch (err) {
 			console.log(err);
+			// useEffect API 무한 호출을 방지하기 위한 코드
 		} finally {
 			fetchData();
 		}
