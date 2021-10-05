@@ -18,45 +18,46 @@ const Main = () => {
 	const userId = localStorage.getItem("user_id");
 
 	useEffect(() => {
-		fetchData();
-		setLoading(false);
-		// dependancy 배열에 likedClubs를 추가하면 API가 무한 호출되는 문제 발생
-	}, [userId]);
-
-	const fetchData = async () => {
-		try {
-			const createdAtRes = await axios.get("/clubs", {
-				params: {
-					sortBy: "createdAt",
-					tags: "",
-					clubStatus: "ACTIVE",
-					keyword: "",
-					page: 1,
-				},
-			});
-			setSortByCreatedAtClubs(createdAtRes.data.clubList);
-
-			const likesRes = await axios.get("/clubs", {
-				params: {
-					sortBy: "likes",
-					tags: "",
-					clubStatus: "ACTIVE",
-					keyword: "",
-					page: 1,
-				},
-			});
-			setsortByLikesClubs(likesRes.data.clubList);
-
-			if (userId) {
-				const likedClubRes = await axios.get("/likedClubs/ids", {
+		const fetchData = async () => {
+			try {
+				const createdAtRes = await axios.get("/clubs", {
 					params: {
-						userId: userId,
+						sortBy: "createdAt",
+						tags: "",
+						clubStatus: "ACTIVE",
+						keyword: "",
+						page: 1,
 					},
 				});
-				setLikedClubs(likedClubRes.data.likedClubIdList);
+				setSortByCreatedAtClubs(createdAtRes.data.clubList);
+
+				const likesRes = await axios.get("/clubs", {
+					params: {
+						sortBy: "likes",
+						tags: "",
+						clubStatus: "ACTIVE",
+						keyword: "",
+						page: 1,
+					},
+				});
+				setsortByLikesClubs(likesRes.data.clubList);
+			} catch (err) {
+				console.log(err);
 			}
-		} catch (err) {
-			console.log(err);
+		};
+		fetchData();
+		fetchLikedClubs();
+		setLoading(false);
+	}, []);
+
+	const fetchLikedClubs = async () => {
+		if (userId) {
+			const likedClubRes = await axios.get("/likedClubs/ids", {
+				params: {
+					userId: userId,
+				},
+			});
+			setLikedClubs(likedClubRes.data.likedClubIdList);
 		}
 	};
 
@@ -76,7 +77,7 @@ const Main = () => {
 			console.log(err);
 			// useEffect API 무한 호출을 방지하기 위한 코드
 		} finally {
-			fetchData();
+			fetchLikedClubs();
 		}
 	};
 
@@ -88,9 +89,6 @@ const Main = () => {
 			});
 		} catch (err) {
 			message.error("이미 좋아요한 독서모임입니다.");
-			// useEffect API 무한 호출을 방지하기 위한 코드
-		} finally {
-			fetchData();
 		}
 	};
 
@@ -101,9 +99,6 @@ const Main = () => {
 			});
 		} catch (err) {
 			console.log(err);
-			// useEffect API 무한 호출을 방지하기 위한 코드
-		} finally {
-			fetchData();
 		}
 	};
 

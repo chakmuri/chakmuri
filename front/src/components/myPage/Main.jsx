@@ -41,8 +41,65 @@ const Main = () => {
 	const history = useHistory();
 
 	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const res = await axios.get(`/comments/users/${userId}`, {
+					params: { page: myCommentsPage },
+				});
+
+				setMyComments(res.data.commentList);
+				setMyCommentsTotal(res.data.totalCount);
+
+				const likedClubsRes = await axios.get(`/likedClubs/users/${userId}`, {
+					params: { page: myLikedClubsPage },
+				});
+				setMyLikedClubs(likedClubsRes.data.likedClubList);
+				setMyLikedClubsTotal(likedClubsRes.data.totalCount);
+
+				const joinedClubsRes = await axios.get(`/members/users/${userId}`, {
+					params: {
+						page: myJoinedClubsPage,
+					},
+				});
+
+				setMyJoinedClubs(joinedClubsRes.data.joiningClubList);
+				setMyJoinedClubsTotal(joinedClubsRes.data.totalCount);
+
+				const myClubRes = await axios.get(`/clubs/users/${userId}`);
+
+				if (myClubRes.data) {
+					const pendingMembersRes = await axios.get("/members", {
+						params: {
+							userId: userId,
+							approvalStatus: "WAITING",
+							page: myPendingMembersPage,
+						},
+					});
+
+					setMyPendingMembers(pendingMembersRes.data.memberList);
+					setMyPendingMembersTotal(pendingMembersRes.data.totalCount);
+
+					const memberRes = await axios.get("/members", {
+						params: {
+							userId: userId,
+							approvalStatus: "CONFIRMED",
+							page: myMembersPage,
+						},
+					});
+
+					setMyMembers(memberRes.data.memberList);
+					setMyMembersTotal(memberRes.data.totalCount);
+				}
+
+				setMyClub(myClubRes.data);
+			} catch (err) {
+				console.log(err);
+			}
+		};
 		fetchData();
-		// dependancy 배열에 likedClubs, myPendingMembers, myMembers를 추가하면 API가 무한 호출되는 문제 발생
+		fetchLikedClubs();
+		setLoading(false);
+		// dependancy 배열에 myPendingMembers, myMembers를 추가하면 API가 무한 호출되는 문제 발생
 	}, [
 		myMembersPage,
 		myPendingMembersPage,
@@ -52,69 +109,13 @@ const Main = () => {
 		myCommentsPage,
 	]);
 
-	const fetchData = async () => {
-		try {
-			const res = await axios.get(`/comments/users/${userId}`, {
-				params: { page: myCommentsPage },
-			});
-
-			setMyComments(res.data.commentList);
-			setMyCommentsTotal(res.data.totalCount);
-
-			const likedClubsRes = await axios.get(`/likedClubs/users/${userId}`, {
-				params: { page: myLikedClubsPage },
-			});
-			setMyLikedClubs(likedClubsRes.data.likedClubList);
-			setMyLikedClubsTotal(likedClubsRes.data.totalCount);
-
-			const joinedClubsRes = await axios.get(`/members/users/${userId}`, {
-				params: {
-					page: myJoinedClubsPage,
-				},
-			});
-
-			setMyJoinedClubs(joinedClubsRes.data.joiningClubList);
-			setMyJoinedClubsTotal(joinedClubsRes.data.totalCount);
-
-			const myClubRes = await axios.get(`/clubs/users/${userId}`);
-
-			if (myClubRes.data) {
-				const pendingMembersRes = await axios.get("/members", {
-					params: {
-						userId: userId,
-						approvalStatus: "WAITING",
-						page: myPendingMembersPage,
-					},
-				});
-
-				setMyPendingMembers(pendingMembersRes.data.memberList);
-				setMyPendingMembersTotal(pendingMembersRes.data.totalCount);
-
-				const memberRes = await axios.get("/members", {
-					params: {
-						userId: userId,
-						approvalStatus: "CONFIRMED",
-						page: myMembersPage,
-					},
-				});
-
-				setMyMembers(memberRes.data.memberList);
-				setMyMembersTotal(memberRes.data.totalCount);
-			}
-
-			setMyClub(myClubRes.data);
-
-			const likedClubRes = await axios.get("/likedClubs/ids", {
-				params: {
-					userId: userId,
-				},
-			});
-			setLikedClubs(likedClubRes.data.likedClubIdList);
-
-			setLoading(false);
-		} catch (err) {
-			console.log(err);
-		}
+	const fetchLikedClubs = async () => {
+		const res = await axios.get("/likedClubs/ids", {
+			params: {
+				userId: userId,
+			},
+		});
+		setLikedClubs(res.data.likedClubIdList);
 	};
 
 	const showModal = () => {
@@ -161,9 +162,6 @@ const Main = () => {
 			}
 		} catch (err) {
 			console.log(err);
-			// useEffect API 무한 호출을 방지하기 위한 코드
-		} finally {
-			fetchData();
 		}
 	};
 
@@ -175,9 +173,6 @@ const Main = () => {
 			});
 		} catch (err) {
 			message.error("이미 좋아요한 독서모임입니다.");
-			// useEffect API 무한 호출을 방지하기 위한 코드
-		} finally {
-			fetchData();
 		}
 	};
 
@@ -188,23 +183,16 @@ const Main = () => {
 			});
 		} catch (err) {
 			console.log(err);
-			// useEffect API 무한 호출을 방지하기 위한 코드
-		} finally {
-			fetchData();
 		}
 	};
 
 	const handleMemberApproval = async (memberId) => {
 		try {
 			const res = axios.put("/members", { memberId: memberId });
-			if (res.status === 200) {
+			if (res.status === 200)
 				message.success("독서모임 참여가 승인되었습니다.");
-			}
 		} catch (err) {
 			console.log(err);
-			// useEffect API 무한 호출을 방지하기 위한 코드
-		} finally {
-			fetchData();
 		}
 	};
 
@@ -217,14 +205,10 @@ const Main = () => {
 					delete: "NO",
 				},
 			});
-			if (res.status === 200) {
+			if (res.status === 200)
 				message.warning("독서모임 참여가 거절되었습니다.");
-			}
 		} catch (err) {
 			console.log(err);
-			// useEffect API 무한 호출을 방지하기 위한 코드
-		} finally {
-			fetchData();
 		}
 	};
 
@@ -238,14 +222,10 @@ const Main = () => {
 				},
 			});
 
-			if (res.status === 200) {
+			if (res.status === 200)
 				message.warning("독서모임에서 내보내기 처리되었습니다.");
-			}
 		} catch (err) {
 			console.log(err);
-			// useEffect API 무한 호출을 방지하기 위한 코드
-		} finally {
-			fetchData();
 		}
 	};
 

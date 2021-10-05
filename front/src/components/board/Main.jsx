@@ -23,38 +23,40 @@ const Main = () => {
 	const userId = localStorage.getItem("user_id");
 
 	useEffect(() => {
-		fetchData();
-		setLoading(false);
-		// dependancy 배열에 likedClubs를 추가하면 API가 무한 호출되는 문제 발생
-	}, [clubStatus, page, keyword, selectedTags, sortBy, userId]);
+		const fetchData = async () => {
+			const sendTags = selectedTags.join(", ");
 
-	const fetchData = async () => {
-		const sendTags = selectedTags.join(", ");
-
-		try {
-			const res = await axios.get("/clubs", {
-				params: {
-					sortBy: sortBy,
-					tags: sendTags,
-					clubStatus: clubStatus,
-					keyword: keyword,
-					page: page,
-				},
-			});
-
-			setClubs(res.data.clubList);
-			setTotal(res.data.totalCount);
-
-			if (userId) {
-				const likedClubRes = await axios.get("/likedClubs/ids", {
+			try {
+				const res = await axios.get("/clubs", {
 					params: {
-						userId: userId,
+						sortBy: sortBy,
+						tags: sendTags,
+						clubStatus: clubStatus,
+						keyword: keyword,
+						page: page,
 					},
 				});
-				setLikedClubs(likedClubRes.data.likedClubIdList);
+
+				setClubs(res.data.clubList);
+				setTotal(res.data.totalCount);
+			} catch (err) {
+				console.log(err);
 			}
-		} catch (err) {
-			console.log(err);
+		};
+		fetchData();
+		fetchLikedClubs();
+
+		setLoading(false);
+	}, [clubStatus, page, keyword, selectedTags, sortBy, userId]);
+
+	const fetchLikedClubs = async () => {
+		if (userId) {
+			const likedClubRes = await axios.get("/likedClubs/ids", {
+				params: {
+					userId: userId,
+				},
+			});
+			setLikedClubs(likedClubRes.data.likedClubIdList);
 		}
 	};
 
@@ -64,17 +66,14 @@ const Main = () => {
 		try {
 			if (likedClubs.includes(clubId)) {
 				likedClubs.splice(index, 1);
-				setLikedClubs([...likedClubs]);
 				handleLikeDelete(clubId);
+				setLikedClubs([...likedClubs]);
 			} else {
-				setLikedClubs([...likedClubs, clubId]);
 				handleLikePost(clubId);
+				setLikedClubs([...likedClubs, clubId]);
 			}
 		} catch (err) {
 			console.log(err);
-			// useEffect API 무한 호출을 방지하기 위한 코드
-		} finally {
-			fetchData();
 		}
 	};
 
