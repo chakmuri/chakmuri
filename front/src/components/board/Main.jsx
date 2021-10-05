@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { Row, Checkbox, Select, message } from "antd";
@@ -23,40 +22,41 @@ const Main = () => {
 	const [loading, setLoading] = useState(true);
 	const userId = localStorage.getItem("user_id");
 
-	// const history = useHistory();
-
 	useEffect(() => {
+		const fetchData = async () => {
+			const sendTags = selectedTags.join(", ");
+
+			try {
+				const res = await axios.get("/clubs", {
+					params: {
+						sortBy: sortBy,
+						tags: sendTags,
+						clubStatus: clubStatus,
+						keyword: keyword,
+						page: page,
+					},
+				});
+
+				setClubs(res.data.clubList);
+				setTotal(res.data.totalCount);
+			} catch (err) {
+				console.log(err);
+			}
+		};
 		fetchData();
+		fetchLikedClubs();
+
 		setLoading(false);
 	}, [clubStatus, page, keyword, selectedTags, sortBy, userId]);
 
-	const fetchData = async () => {
-		const sendTags = selectedTags.join(", ");
-
-		try {
-			const res = await axios.get("/clubs", {
+	const fetchLikedClubs = async () => {
+		if (userId) {
+			const likedClubRes = await axios.get("/likedClubs/ids", {
 				params: {
-					sortBy: sortBy,
-					tags: sendTags,
-					clubStatus: clubStatus,
-					keyword: keyword,
-					page: page,
+					userId: userId,
 				},
 			});
-
-			setClubs(res.data.clubList);
-			setTotal(res.data.totalCount);
-
-			if (userId) {
-				const likedClubRes = await axios.get("/likedClubs/ids", {
-					params: {
-						userId: userId,
-					},
-				});
-				setLikedClubs(likedClubRes.data.likedClubIdList);
-			}
-		} catch (err) {
-			console.log(err);
+			setLikedClubs(likedClubRes.data.likedClubIdList);
 		}
 	};
 
@@ -66,16 +66,14 @@ const Main = () => {
 		try {
 			if (likedClubs.includes(clubId)) {
 				likedClubs.splice(index, 1);
-				setLikedClubs([...likedClubs]);
 				handleLikeDelete(clubId);
+				setLikedClubs([...likedClubs]);
 			} else {
-				setLikedClubs([...likedClubs, clubId]);
 				handleLikePost(clubId);
+				setLikedClubs([...likedClubs, clubId]);
 			}
 		} catch (err) {
 			console.log(err);
-		} finally {
-			fetchData();
 		}
 	};
 
