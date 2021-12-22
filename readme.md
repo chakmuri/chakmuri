@@ -123,7 +123,7 @@
   
 <h2 id="fe-be-role"> 👨‍💻 FE & BE 역할 분담 </h2>
 
-[프로젝트 칸반보드✨](https://github.com/chakmuri/chakmuri/projects)
+[프로젝트 칸반보드✨](https://github.com/chakmuri/chakmuri/projects/1)
  ### FE 
 * [`Sol-Ahn`](https://github.com/Sol-Ahn)
 
