@@ -81,7 +81,7 @@
 <!--SITE-->
 <h2 id="site"> 💻 사이트</h2>
  
- <strong>🚨 MM/DD ~ 서버 구동 중이 아닙니다.</strong><br> 
+ <strong>🚨 2022/01/01 ~ 서버 구동이 중지되었습니다.</strong><br> 
 * 실서버 링크 : http://chakmuri.club/<br>
 <br>
 
