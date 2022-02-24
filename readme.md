@@ -128,7 +128,7 @@
 * [`Sol-Ahn`](https://github.com/Sol-Ahn)
 
  ### BE 
-* [`Sharpie`](https://github.com/sharpie1330)
+* [`Taeyoung Kwak`](https://github.com/sharpie1330)
 * [`JunHo KANG`](https://github.com/JunHo-YH)
 
 <br>
